@@ -1,30 +1,44 @@
 using System;
 using UnityEngine;
+using Utilities;
 
 namespace Managers
 {
-    public enum WorldDimensions
+    public delegate void DimensionsChangedEventHandler(Dimensions oldValue, Dimensions newValue);
+    public enum Dimensions
     {
-        None,
-        One,
         Two,
         Three,
     }
     
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
-        [SerializeField] private WorldDimensions defaultWorldDimensions;
+        public static event DimensionsChangedEventHandler WorldDimensionsChanged;
+        [SerializeField] private Dimensions defaultWorldDimensions;
         
-        public WorldDimensions WorldDimensions { get; private set; }
+        public Dimensions WorldDimensions { get; private set; }
 
         private void Awake()
         {
             SetWorldDimensions(defaultWorldDimensions);
         }
 
-        public void SetWorldDimensions(WorldDimensions worldDimensions)
+        private void Update()
         {
-            if (worldDimensions == defaultWorldDimensions) return;
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                SetWorldDimensions(Dimensions.Two);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                SetWorldDimensions(Dimensions.Three);
+            }
+        }
+
+        public void SetWorldDimensions(Dimensions worldDimensions)
+        {
+            if (worldDimensions == WorldDimensions) return;
+            WorldDimensionsChanged?.Invoke(WorldDimensions, worldDimensions);
             WorldDimensions = worldDimensions;
         }
     }

@@ -2,8 +2,17 @@ Shader "Hidden/Edge Detection"
 {
     Properties
     {
-        _OutlineThickness ("Outline Thickness", Float) = 1
+        // … (we no longer use the old "_OutlineThickness" in pixels)
+        //_OutlineThickness ("Outline Thickness (Pixels)", Float) = 1  
+
+        // NEW: thickness in WORLD UNITS (for example, 0.05 world units)
+        _OutlineThicknessWorld ("Outline Thickness (World)", Float) = 0.05
+
         _OutlineColor ("Outline Color", Color) = (0, 0, 0, 1)
+
+        // These two get overridden every frame by the C# pass
+        _TanHalfFOV     ("TanHalfFOV", Float)       = 0.5  // placeholder
+        _ScreenHeightPx ("ScreenHeightPx", Float)   = 1080 // placeholder
     }
 
     SubShader
@@ -11,7 +20,7 @@ Shader "Hidden/Edge Detection"
         Tags
         {
             "RenderPipeline" = "UniversalPipeline"
-            "RenderType"="Opaque"
+            "RenderType"    = "Opaque"
         }
 
         ZWrite Off
@@ -21,93 +30,115 @@ Shader "Hidden/Edge Detection"
         Pass 
         {
             Name "EDGE DETECTION OUTLINE"
-            
+
             HLSLPROGRAM
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl" // needed to sample scene depth
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareNormalsTexture.hlsl" // needed to sample scene normals
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl" // needed to sample scene color/luminance
-
-            float _OutlineThickness;
-            float4 _OutlineColor;
-
-            #pragma vertex Vert // vertex shader is provided by the Blit.hlsl include
+            #pragma vertex Vert
             #pragma fragment frag
 
-            // Edge detection kernel that works by taking the sum of the squares of the differences between diagonally adjacent pixels (Roberts Cross).
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareNormalsTexture.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
+            
+
+            float _OutlineThicknessWorld;  // world‐space thickness
+            float4 _OutlineColor;
+
+            // NEW:
+            float _TanHalfFOV;
+            float _ScreenHeightPx;
+
+            //----------------------------------------------------------------
+            // Roberts Cross kernels (unchanged)
             float RobertsCross(float3 samples[4])
             {
-                const float3 difference_1 = samples[1] - samples[2];
-                const float3 difference_2 = samples[0] - samples[3];
-                return sqrt(dot(difference_1, difference_1) + dot(difference_2, difference_2));
+                const float3 d1 = samples[1] - samples[2];
+                const float3 d2 = samples[0] - samples[3];
+                return sqrt(dot(d1, d1) + dot(d2, d2));
             }
 
-            // The same kernel logic as above, but for a single-value instead of a vector3.
             float RobertsCross(float samples[4])
             {
-                const float difference_1 = samples[1] - samples[2];
-                const float difference_2 = samples[0] - samples[3];
-                return sqrt(difference_1 * difference_1 + difference_2 * difference_2);
+                const float d1 = samples[1] - samples[2];
+                const float d2 = samples[0] - samples[3];
+                return sqrt(d1 * d1 + d2 * d2);
             }
-            
-            // Helper function to sample scene normals remapped from [-1, 1] range to [0, 1].
+
             float3 SampleSceneNormalsRemapped(float2 uv)
             {
                 return SampleSceneNormals(uv) * 0.5 + 0.5;
             }
 
-            // Helper function to sample scene luminance.
             float SampleSceneLuminance(float2 uv)
             {
-                float3 color = SampleSceneColor(uv);
-                return color.r * 0.3 + color.g * 0.59 + color.b * 0.11;
+                float3 col = SampleSceneColor(uv);
+                return col.r * 0.3 + col.g * 0.59 + col.b * 0.11;
             }
 
             half4 frag(Varyings IN) : SV_TARGET
             {
-                // Screen-space coordinates which we will use to sample.
                 float2 uv = IN.texcoord;
-                float2 texel_size = float2(1.0 / _ScreenParams.x, 1.0 / _ScreenParams.y);
-                
-                // Generate 4 diagonally placed samples.
-                const float half_width_f = floor(_OutlineThickness * 0.5);
-                const float half_width_c = ceil(_OutlineThickness * 0.5);
+
+                // 1) Read the *hardware* depth, then convert to a LINEAR view‐space Z.
+                //    Note: UnityLinearEyeDepth returns a positive Z in eye‐space (0 at near plane, increasing as you go “into” the scene).
+                float rawDepth   = SampleSceneDepth(uv);
+                // new, correct call:
+                float viewZ = LinearEyeDepth(rawDepth, UNITY_REVERSED_Z);
+
+
+                // 2) Compute how many *screen pixels* correspond to 1 world‐unit at that viewZ:
+                //    world‐height‐at‐depth = 2 * tan(FOV/2) * viewZ
+                //    so worldUnitsPerPixel = (2 * tanHalfFOV * viewZ) / screenHeight
+                //    invert → pixelsPerWorldUnit:
+                float pxPerWU    = _ScreenHeightPx / (2.0 * _TanHalfFOV * viewZ);
+
+                // 3) desired thickness in screen‐pixels:
+                float thicknessPx = _OutlineThicknessWorld * pxPerWU;
+
+                // 4) now divide by ScreenParams to get a UV‐offset “in texture‐space”:
+                float2 texelSize = float2(1.0 / _ScreenParams.x, 1.0 / _ScreenParams.y);
+
+                // We want to sample four diagonals around the center at +-half of thicknessPx
+                float half_f = floor(thicknessPx * 0.5);
+                float half_c = ceil (thicknessPx * 0.5);
 
                 float2 uvs[4];
-                uvs[0] = uv + texel_size * float2(half_width_f, half_width_c) * float2(-1, 1);  // top left
-                uvs[1] = uv + texel_size * float2(half_width_c, half_width_c) * float2(1, 1);   // top right
-                uvs[2] = uv + texel_size * float2(half_width_f, half_width_f) * float2(-1, -1); // bottom left
-                uvs[3] = uv + texel_size * float2(half_width_c, half_width_f) * float2(1, -1);  // bottom right
-                
-                float3 normal_samples[4];
-                float depth_samples[4], luminance_samples[4];
-                
-                for (int i = 0; i < 4; i++) {
-                    depth_samples[i] = SampleSceneDepth(uvs[i]);
-                    normal_samples[i] = SampleSceneNormalsRemapped(uvs[i]);
-                    luminance_samples[i] = SampleSceneLuminance(uvs[i]);
+                uvs[0] = uv + texelSize * float2( half_f,  half_c) * float2(-1,  1); // top‐left
+                uvs[1] = uv + texelSize * float2( half_c,  half_c) * float2( 1,  1); // top‐right
+                uvs[2] = uv + texelSize * float2( half_f,  half_f) * float2(-1, -1); // bottom‐left
+                uvs[3] = uv + texelSize * float2( half_c,  half_f) * float2( 1, -1); // bottom‐right
+
+                // 5) Sample depth, normals, luminance at those 4 offsets:
+                float depthSamples[4];
+                float3 normalSamples[4];
+                float lumSamples[4];
+
+                #pragma unroll
+                for (int i = 0; i < 4; i++)
+                {
+                    depthSamples[i]  = SampleSceneDepth(uvs[i]);
+                    normalSamples[i] = SampleSceneNormalsRemapped(uvs[i]);
+                    lumSamples[i]    = SampleSceneLuminance(uvs[i]);
                 }
-                
-                // Apply edge detection kernel on the samples to compute edges.
-                float edge_depth = RobertsCross(depth_samples);
-                float edge_normal = RobertsCross(normal_samples);
-                float edge_luminance = RobertsCross(luminance_samples);
-                
-                // Threshold the edges (discontinuity must be above certain threshold to be counted as an edge). The sensitivities are hardcoded here.
-                float depth_threshold = 1 / 200.0f;
-                edge_depth = edge_depth > depth_threshold ? 1 : 0;
-                
-                float normal_threshold = 1 / 4.0f;
-                edge_normal = edge_normal > normal_threshold ? 1 : 0;
-                
-                float luminance_threshold = 1 / 0.5f;
-                edge_luminance = edge_luminance > luminance_threshold ? 1 : 0;
-                
-                // Combine the edges from depth/normals/luminance using the max operator.
-                float edge = max(edge_depth, max(edge_normal, edge_luminance));
-                
-                // Color the edge with a custom color.
+
+                // 6) Run Roberts Cross on each channel
+                float edgeDepth     = RobertsCross(depthSamples);
+                float edgeNormal    = RobertsCross(normalSamples);
+                float edgeLum       = RobertsCross(lumSamples);
+
+                // 7) Threshold each
+                float depthThresh     = 1.0 / 200.0;
+                float normalThresh    = 1.0 / 4.0;
+                float luminanceThresh = 1.0 / 0.5;
+
+                edgeDepth  = edgeDepth  > depthThresh     ? 1 : 0;
+                edgeNormal = edgeNormal > normalThresh   ? 1 : 0;
+                edgeLum    = edgeLum    > luminanceThresh? 1 : 0;
+
+                float edge = max(edgeDepth, max(edgeNormal, edgeLum));
+
+                // 8) Color it
                 return edge * _OutlineColor;
             }
             ENDHLSL

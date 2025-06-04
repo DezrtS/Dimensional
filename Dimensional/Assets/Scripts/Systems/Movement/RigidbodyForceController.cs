@@ -18,6 +18,11 @@ namespace Systems.Movement
             _rig.isKinematic = IsKinematic;
         }
 
+        protected override void OnSetUseGravity()
+        {
+            _rig.useGravity = UseGravity;
+        }
+
         protected override void OnApplyForce(Vector3 force, ForceMode forceMode)
         {
             _rig.AddForce(force, forceMode);

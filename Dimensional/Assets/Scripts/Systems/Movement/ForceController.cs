@@ -5,6 +5,7 @@ namespace Systems.Movement
     public abstract class ForceController : MonoBehaviour
     {
         private bool _isKinematic;
+        private bool _useGravity;
         private bool _isDisabled;
         
         public bool IsKinematic
@@ -14,6 +15,16 @@ namespace Systems.Movement
             {
                 _isKinematic = value;
                 OnSetIsKinematic();
+            }
+        }
+
+        public bool UseGravity
+        {
+            get => _useGravity;
+            set
+            {
+                _useGravity = value;
+                OnSetUseGravity();
             }
         }
 
@@ -28,6 +39,7 @@ namespace Systems.Movement
         }
 
         protected virtual void OnSetIsKinematic() {}
+        protected virtual void OnSetUseGravity() {}
         protected virtual void OnSetIsDisabled() {}
 
         public abstract Vector3 GetVelocity();

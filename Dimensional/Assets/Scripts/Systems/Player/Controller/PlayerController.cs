@@ -2,6 +2,7 @@ using System;
 using Interfaces;
 using Scriptables.Entities;
 using Systems.Movement;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,8 +11,11 @@ namespace Systems.Player
     public class PlayerController : MonoBehaviour, IEntity, IMove, IAim
     {
         [SerializeField] private EntityDatum entityDatum;
+        [SerializeField] private TextMeshProUGUI typeText;
         
         private PlayerMovementController _playerMovementController;
+        private PlayerLook _playerLook;
+        
         private PlayerInputSystem_Actions _playerInputSystemActions;
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
@@ -22,6 +26,11 @@ namespace Systems.Player
         {
             _playerMovementController = GetComponent<PlayerMovementController>();
             _playerMovementController.Initialize(this);
+            _playerMovementController.ShapeTypeChanged += PlayerMovementControllerOnShapeTypeChanged;
+            
+            _playerLook = GetComponent<PlayerLook>();
+            _playerLook.Initialize(this);
+            
             AssignControls();
         }
 
@@ -38,7 +47,17 @@ namespace Systems.Player
             
             var jumpInputAction = _playerInputSystemActions.Player.Jump;
             jumpInputAction.performed += OnJump;
+            jumpInputAction.canceled += OnJump;
             jumpInputAction.Enable();
+            
+            var crouchInputAction = _playerInputSystemActions.Player.Crouch;
+            crouchInputAction.performed += OnCrouch;
+            crouchInputAction.canceled += OnCrouch;
+            crouchInputAction.Enable();
+            
+            var switchInputAction = _playerInputSystemActions.Player.Switch;
+            switchInputAction.performed += OnSwitch;
+            switchInputAction.Enable();
         }
         
         Vector3 IMove.GetInput()
@@ -49,17 +68,17 @@ namespace Systems.Player
 
         Vector3 IAim.GetInput()
         {
-            return _lookInputAction.ReadValue<Vector3>();
+            return _lookInputAction.ReadValue<Vector2>();
         }
 
         private void FixedUpdate()
         {
-            _playerMovementController.Move();
+            _playerMovementController.Move(Quaternion.Euler(0, _playerLook.XRotation, 0));
         }
 
-        private void OnJump(InputAction.CallbackContext context)
+        private void LateUpdate()
         {
-            
+            _playerLook.Look();
         }
 
         private void OnAim(InputAction.CallbackContext context)
@@ -67,14 +86,39 @@ namespace Systems.Player
             
         }
         
-        private void OnBend(InputAction.CallbackContext context)
+        private void OnJump(InputAction.CallbackContext context)
         {
-            
+            if (context.performed) _playerMovementController.Jump();
+            else if (context.canceled) _playerMovementController.StopJumping();
+        }
+        
+        private void OnCrouch(InputAction.CallbackContext context)
+        {
+            if (context.performed) _playerMovementController.Crouch();
+            else if (context.canceled) _playerMovementController.StopCrouching();
+        }
+        
+        private void OnSwitch(InputAction.CallbackContext context)
+        {
+            var input = context.ReadValue<Vector2>();
+            if (input.x != 0)
+            {
+                _playerMovementController.ChangeShape(input.x > 0 ? PlayerMovementController.ShapeType.Boomarang : PlayerMovementController.ShapeType.Spring);
+            }
+            else
+            {
+                _playerMovementController.ChangeShape(input.y > 0 ? PlayerMovementController.ShapeType.Sphere : PlayerMovementController.ShapeType.Heavy);
+            }
         }
 
         private void OnPrimaryAction(InputAction.CallbackContext context)
         {
             
+        }
+
+        private void PlayerMovementControllerOnShapeTypeChanged(PlayerMovementController.ShapeType oldValue, PlayerMovementController.ShapeType newValue)
+        {
+            typeText.text = newValue.ToString();
         }
     }
 }

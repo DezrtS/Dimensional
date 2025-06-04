@@ -6,7 +6,7 @@ namespace Interfaces
     {
         public Vector3 GetInput();
 
-        public static Vector2 GetInput(GameObject target)
+        public static Vector3 GetInput(GameObject target)
         {
             return !target.TryGetComponent(out IAim aim) ? Vector3.zero : aim.GetInput();
         }
