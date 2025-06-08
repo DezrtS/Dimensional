@@ -8,10 +8,10 @@ namespace Interfaces
         public event UsedEventHandler Used;
         public bool IsUsing { get; }
         public bool IsDisabled { get; }
-        public abstract bool CanUse();
-        public abstract bool CanStopUsing();
-        public abstract void Use(UseContext useContext);
-        public abstract void StopUsing(UseContext useContext);
+        public bool CanUse();
+        public bool CanStopUsing();
+        public void Use(UseContext useContext);
+        public void StopUsing(UseContext useContext);
     }
 
     public struct UseContext

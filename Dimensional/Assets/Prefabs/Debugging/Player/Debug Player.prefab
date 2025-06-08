@@ -347,6 +347,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityDatum: {fileID: 11400000, guid: d62f3a79cb175d74f81e3aa0c380fba1, type: 2}
   typeText: {fileID: 0}
+  projectileDatum: {fileID: 11400000, guid: 6948855b0b572e44cbd4f54c3c581e0b, type: 2}
+  fireSpeed: 25
 --- !u!114 &5525861999645435359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +384,7 @@ MonoBehaviour:
   groundedCheckOffset: {x: 0, y: 0, z: 0}
   groundedLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   disableYInput: 1
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
@@ -391,8 +393,9 @@ MonoBehaviour:
   boomarangTime: 1.5
   heavyMultiplier: 25
   springTime: 0.75
-  springMultiplier: 2
+  springMultiplier: 2.25
   springScale: 0.5
+  smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
 --- !u!114 &608786289057175531
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,6 +29,8 @@ namespace Systems.Movement
         [SerializeField] private float springTime = 2;
         [SerializeField] private float springMultiplier = 2;
         [SerializeField] private float springScale = 0.5f;
+
+        [Space] [SerializeField] private GameObject smokePrefab;
         
         private PlayerMovementControllerDatum _playerMovementControllerDatum;
         private ShapeType _shapeType;
@@ -39,6 +41,9 @@ namespace Systems.Movement
 
         private float _boomarangPower;
 
+        private bool _wasGrounded;
+        private bool _spawnSmoke = false;
+
         protected override void Awake()
         {
             base.Awake();
@@ -48,6 +53,9 @@ namespace Systems.Movement
         private void FixedUpdate()
         {
             var velocity = ForceController.GetVelocity();
+            _spawnSmoke = Mathf.Abs(velocity.y) > 3f;
+            if (_spawnSmoke && !_wasGrounded && IsGrounded) Instantiate(smokePrefab, root.position, Quaternion.identity);
+            _wasGrounded = IsGrounded;
             velocity.y = 0;
             if (velocity.magnitude > 0.1f) root.forward = velocity;
             OnShapeType();
@@ -55,6 +63,7 @@ namespace Systems.Movement
 
         public void ChangeShape(ShapeType shapeType)
         {
+            if (_shapeType == shapeType) return;
             ShapeTypeChanged?.Invoke(_shapeType, shapeType);
             _shapeType = shapeType;
 
@@ -130,6 +139,7 @@ namespace Systems.Movement
                 else
                 {
                     if (_shapeType == ShapeType.Heavy) ChangeShape(ShapeType.Sphere);
+                    Instantiate(smokePrefab, root.position, Quaternion.identity);
                     ForceController.ApplyForce(Vector3.up * _playerMovementControllerDatum.JumpPower, ForceMode.Impulse);   
                 }
             }
@@ -155,6 +165,7 @@ namespace Systems.Movement
         private void SpringJump()
         {
             ForceController.ApplyForce(Vector3.up * _playerMovementControllerDatum.JumpPower * springMultiplier * (1 - _springTimer / springTime), ForceMode.Impulse);
+            Instantiate(smokePrefab, root.position, Quaternion.identity);
             ChangeShape(ShapeType.Sphere);
         }
 

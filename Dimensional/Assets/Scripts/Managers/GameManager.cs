@@ -15,6 +15,7 @@ namespace Managers
     {
         public static event DimensionsChangedEventHandler WorldDimensionsChanged;
         [SerializeField] private Dimensions defaultWorldDimensions;
+        [SerializeField] private GameObject controls;
         
         public Dimensions WorldDimensions { get; private set; }
 
@@ -32,6 +33,11 @@ namespace Managers
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 SetWorldDimensions(Dimensions.Three);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                controls.SetActive(!controls.activeSelf);
             }
         }
 

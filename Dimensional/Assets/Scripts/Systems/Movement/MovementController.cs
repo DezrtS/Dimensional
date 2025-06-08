@@ -38,7 +38,7 @@ namespace Systems.Movement
         private void Update()
         {
             if (disableGroundedCheck) return;
-            IsGrounded = Physics.Raycast(transform.position + groundedCheckOffset, Vector3.down, groundedCheckDistance, groundedLayerMask);
+            IsGrounded = Physics.Raycast(transform.position + groundedCheckOffset, Vector3.down, groundedCheckDistance, groundedLayerMask, QueryTriggerInteraction.Ignore);
         }
 
         public void Move()

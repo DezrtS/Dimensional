@@ -15,4 +15,4 @@ MonoBehaviour:
   maxSpeed: 7
   acceleration: 40
   deceleration: 40
-  jumpPower: 7.5
+  jumpPower: 5

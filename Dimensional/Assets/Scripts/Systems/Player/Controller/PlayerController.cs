@@ -1,6 +1,7 @@
 using System;
 using Interfaces;
 using Scriptables.Entities;
+using Scriptables.Projectiles;
 using Systems.Movement;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,9 @@ namespace Systems.Player
     {
         [SerializeField] private EntityDatum entityDatum;
         [SerializeField] private TextMeshProUGUI typeText;
+        
+        [SerializeField] private ProjectileDatum projectileDatum;
+        [SerializeField] private float fireSpeed;
         
         private PlayerMovementController _playerMovementController;
         private PlayerLook _playerLook;
@@ -54,6 +58,10 @@ namespace Systems.Player
             crouchInputAction.performed += OnCrouch;
             crouchInputAction.canceled += OnCrouch;
             crouchInputAction.Enable();
+            
+            var actionInputAction = _playerInputSystemActions.Player.Action;
+            actionInputAction.performed += OnPrimaryAction;
+            actionInputAction.Enable();
             
             var switchInputAction = _playerInputSystemActions.Player.Switch;
             switchInputAction.performed += OnSwitch;
@@ -113,7 +121,10 @@ namespace Systems.Player
 
         private void OnPrimaryAction(InputAction.CallbackContext context)
         {
-            
+            var projectile = projectileDatum.Spawn();
+            var position = transform.position;
+            var velocity = _playerMovementController.ForceController.GetVelocity();
+            projectile.Fire(FireContext.Construct(position, position + velocity, fireSpeed, true));
         }
 
         private void PlayerMovementControllerOnShapeTypeChanged(PlayerMovementController.ShapeType oldValue, PlayerMovementController.ShapeType newValue)
