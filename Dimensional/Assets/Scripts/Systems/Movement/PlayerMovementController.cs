@@ -10,7 +10,7 @@ namespace Systems.Movement
         {
             Sphere,
             Spring,
-            Boomarang,
+            Boomerang,
             Heavy,
         }
         
@@ -21,8 +21,8 @@ namespace Systems.Movement
         [SerializeField] private float scaleStrength = 0.1f;
         [SerializeField] private float scaleSpeed = 10;
 
-        [SerializeField] private float boomarangMultiplier = 5;
-        [SerializeField] private float boomarangTime = 1;
+        [SerializeField] private float boomerangMultiplier = 5;
+        [SerializeField] private float boomerangTime = 1;
         
         [SerializeField] private float heavyMultiplier = 5;
 
@@ -37,9 +37,9 @@ namespace Systems.Movement
 
         private bool _isCrouching;
         private float _springTimer = 0;
-        private float _boomarangTimer = 0;
+        private float _boomerangTimer = 0;
 
-        private float _boomarangPower;
+        private float _boomerangPower;
 
         private bool _wasGrounded;
         private bool _spawnSmoke = false;
@@ -75,10 +75,10 @@ namespace Systems.Movement
                 case ShapeType.Spring:
                     _springTimer = springTime;
                     break;
-                case ShapeType.Boomarang:
-                    _boomarangTimer = boomarangTime;
+                case ShapeType.Boomerang:
+                    _boomerangTimer = boomerangTime;
                     var velocity = ForceController.GetVelocity();
-                    _boomarangPower = -velocity.y;
+                    _boomerangPower = -velocity.y;
                     ForceController.UseGravity = false;
                     break;
                 case ShapeType.Heavy:
@@ -112,17 +112,17 @@ namespace Systems.Movement
                     var scale = (1 - _springTimer / springTime);
                     root.localScale = Vector3.Lerp(root.localScale, new Vector3(1 + springScale * scale, 1 - springScale * scale, 1 + springScale * scale), Time.fixedDeltaTime * scaleSpeed);
                     break;
-                case ShapeType.Boomarang:
+                case ShapeType.Boomerang:
                     root.localScale = Vector3.Lerp(root.localScale, Vector3.one, Time.fixedDeltaTime * scaleSpeed);
-                    if (_boomarangTimer > 0)
+                    if (_boomerangTimer > 0)
                     {
-                        _boomarangTimer -= Time.fixedDeltaTime;
-                        ForceController.ApplyForce(new Vector3(0, _boomarangPower, 0), ForceMode.Force);
-                        if (IsGrounded) _boomarangTimer = 0;
+                        _boomerangTimer -= Time.fixedDeltaTime;
+                        ForceController.ApplyForce(new Vector3(0, _boomerangPower, 0), ForceMode.Force);
+                        if (IsGrounded) _boomerangTimer = 0;
                     }
                     else
                     {
-                        if (!IsGrounded) ForceController.ApplyForce(Vector3.down * boomarangMultiplier, ForceMode.Force);   
+                        if (!IsGrounded) ForceController.ApplyForce(Vector3.down * boomerangMultiplier, ForceMode.Force);   
                     }
                     break;
             }
@@ -145,7 +145,7 @@ namespace Systems.Movement
             }
             else
             {
-                ChangeShape(ShapeType.Boomarang);
+                ChangeShape(ShapeType.Boomerang);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Systems.Movement
         {
             switch (_shapeType)
             {
-                case ShapeType.Boomarang:
+                case ShapeType.Boomerang:
                     ChangeShape(ShapeType.Sphere);
                     break;
                 case ShapeType.Spring:

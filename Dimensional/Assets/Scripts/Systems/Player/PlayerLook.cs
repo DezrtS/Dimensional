@@ -24,7 +24,7 @@ namespace Systems.Player
         private float _xRotation;
         private float _yRotation;
         
-        public bool IsDisabled { get; set; }
+        public bool IsDisabled { get; private set; }
         public float XRotation => _xRotation;
 
         private void Awake()

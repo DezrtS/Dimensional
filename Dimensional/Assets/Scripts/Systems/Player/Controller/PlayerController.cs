@@ -111,7 +111,7 @@ namespace Systems.Player
             var input = context.ReadValue<Vector2>();
             if (input.x != 0)
             {
-                _playerMovementController.ChangeShape(input.x > 0 ? PlayerMovementController.ShapeType.Boomarang : PlayerMovementController.ShapeType.Spring);
+                _playerMovementController.ChangeShape(input.x > 0 ? PlayerMovementController.ShapeType.Boomerang : PlayerMovementController.ShapeType.Spring);
             }
             else
             {
