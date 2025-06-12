@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13fbe615d3730f84a89e91352c325571, type: 3}
+  m_Name: 0-1-Debug
+  m_EditorClassIdentifier: 
+  dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
+  text: Hello, this is text that I am typing and it has <color=#fff000>a meaning
+    that is meaningful to the people who find meaning in it... Or something like
+    that.

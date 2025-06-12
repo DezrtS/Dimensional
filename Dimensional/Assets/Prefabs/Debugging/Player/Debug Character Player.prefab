@@ -306,12 +306,13 @@ GameObject:
   - component: {fileID: 5876258042476745320}
   - component: {fileID: 5525861999645435359}
   - component: {fileID: 3046191874044748012}
-  - component: {fileID: 608786289057175531}
-  - component: {fileID: 2073613607116406498}
+  - component: {fileID: 5445374899537773151}
+  - component: {fileID: -2357452987729926912}
+  - component: {fileID: 3158746514573188946}
   - component: {fileID: 5459988207746735620}
   m_Layer: 0
-  m_Name: Debug Player
-  m_TagString: Untagged
+  m_Name: Debug Character Player
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -379,24 +380,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementControllerDatum: {fileID: 11400000, guid: 670b9822948381e4c81cd3a40815b7e2, type: 2}
   movementDimensions: 0
+  disableYInput: 1
+  setYVelocityOnGrounded: 1
   disableGroundedCheck: 0
   groundedCheckDistance: 0.6
   groundedCheckOffset: {x: 0, y: 0, z: 0}
   groundedLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  disableYInput: 1
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
-  boomarangMultiplier: 7.5
-  boomarangTime: 1.5
+  boomerangMultiplier: 5
+  boomerangTime: 1
   heavyMultiplier: 25
   springTime: 0.75
   springMultiplier: 2.25
   springScale: 0.5
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
---- !u!114 &608786289057175531
+--- !u!114 &5445374899537773151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -405,10 +407,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 3206800854426569070}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d55db97137e013b4da0f6c39d19fff21, type: 3}
+  m_Script: {fileID: 11500000, guid: 24420a0b3f821a84c82f33f729f102cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &2073613607116406498
+  isKinematic: 0
+  useGravity: 1
+  isDisabled: 0
+  mass: 1
+  gravityForce: 9.8
+--- !u!143 &-2357452987729926912
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3206800854426569070}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.001
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &3158746514573188946
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -430,11 +462,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!135 &5459988207746735620
 SphereCollider:
   m_ObjectHideFlags: 0

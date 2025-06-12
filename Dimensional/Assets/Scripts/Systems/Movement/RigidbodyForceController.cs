@@ -7,14 +7,15 @@ namespace Systems.Movement
     {
         private Rigidbody _rig;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _rig = GetComponent<Rigidbody>();
         }
 
         protected override void OnSetIsKinematic()
         {
-            if (!IsKinematic) SetVelocity(Vector2.zero);
+            if (!IsKinematic) SetVelocity(Vector3.zero);
             _rig.isKinematic = IsKinematic;
         }
 

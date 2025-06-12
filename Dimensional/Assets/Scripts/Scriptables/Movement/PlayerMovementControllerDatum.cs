@@ -7,6 +7,10 @@ namespace Scriptables.Movement
     {
         [SerializeField] private float jumpPower;
         
+        [SerializeField] private float jumpHeight;
+        [SerializeField] private AnimationCurve jumpCurve;
+        [SerializeField] private AnimationCurve fallCurve;
+        
         public float JumpPower => jumpPower;
     }
 }

@@ -1,41 +1,49 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Systems.Movement
 {
     public abstract class ForceController : MonoBehaviour
     {
-        private bool _isKinematic;
-        private bool _useGravity;
-        private bool _isDisabled;
+        [SerializeField] private bool isKinematic;
+        [SerializeField] private bool useGravity;
+        [SerializeField] private bool isDisabled;
         
         public bool IsKinematic
         {
-            get => _isKinematic;
+            get => isKinematic;
             set
             {
-                _isKinematic = value;
+                isKinematic = value;
                 OnSetIsKinematic();
             }
         }
 
         public bool UseGravity
         {
-            get => _useGravity;
+            get => useGravity;
             set
             {
-                _useGravity = value;
+                useGravity = value;
                 OnSetUseGravity();
             }
         }
 
         public bool IsDisabled
         {
-            get => _isDisabled;
+            get => isDisabled;
             set
             {
-                _isDisabled = value;
+                isDisabled = value;
                 OnSetIsDisabled();
             }
+        }
+
+        protected virtual void Awake()
+        {
+            OnSetIsKinematic();
+            OnSetUseGravity();
+            OnSetIsDisabled();
         }
 
         protected virtual void OnSetIsKinematic() {}
@@ -45,7 +53,7 @@ namespace Systems.Movement
         public abstract Vector3 GetVelocity();
         public void SetVelocity(Vector3 velocity)
         {
-            if (_isDisabled) return;
+            if (isDisabled || isKinematic) return;
             OnSetVelocity(velocity);
         }
         protected abstract void OnSetVelocity(Vector3 velocity);
@@ -54,28 +62,28 @@ namespace Systems.Movement
 
         public void SetRotation(Quaternion rotation)
         {
-            if (_isDisabled) return;
+            if (isDisabled) return;
             OnSetRotation(rotation);
         }
         protected virtual void OnSetRotation(Quaternion rotation) => transform.rotation = rotation;
 
         public void ApplyForce(Vector3 force, ForceMode forceMode)
         {
-            if (_isDisabled) return;
+            if (isDisabled || isKinematic) return;
             OnApplyForce(force, forceMode);
         }
         protected abstract void OnApplyForce(Vector3 force, ForceMode forceMode);
 
         public void ApplyTorque(Vector3 torque, ForceMode forceMode)
         {
-            if (_isDisabled) return;
+            if (isDisabled || isKinematic) return;
             OnApplyTorque(torque, forceMode);
         }
         protected abstract void OnApplyTorque(Vector3 torque, ForceMode forceMode);
 
         public void Teleport(Vector3 position)
         {
-            if (_isDisabled) return;
+            if (isDisabled) return;
             OnTeleport(position);
         }
         protected virtual void OnTeleport(Vector3 position) => transform.position = position;

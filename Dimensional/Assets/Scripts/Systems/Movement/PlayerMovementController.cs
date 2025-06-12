@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Systems.Movement
 {
-    public class PlayerMovementController : RigidbodyMovementController
+    public class PlayerMovementController : MovementController
     {
         public enum ShapeType
         {
