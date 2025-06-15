@@ -8,6 +8,7 @@ namespace Systems.Movement
     {
         [SerializeField] private float mass = 1.0f;
         [SerializeField] private float gravityForce = 9.8f;
+        [SerializeField] private float maxFallSpeed;
         
         private CharacterController _characterController;
         private Vector3 Velocity { get; set; }
@@ -26,7 +27,10 @@ namespace Systems.Movement
         {
             if (IsKinematic) return;
             var fixedDeltaTime = Time.fixedDeltaTime;
-            if (UseGravity) Velocity += Vector3.down * (gravityForce * fixedDeltaTime); ;
+            if (UseGravity)
+            {
+                Velocity += Mathf.Min(gravityForce, maxFallSpeed + Velocity.y) * fixedDeltaTime * Vector3.down;
+            }
             _characterController.Move(Velocity * fixedDeltaTime);
         }
 

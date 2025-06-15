@@ -13,6 +13,210 @@ MonoBehaviour:
   m_Name: DebugPlayerMovementControllerDatum
   m_EditorClassIdentifier: 
   maxSpeed: 7
-  acceleration: 40
+  acceleration: 30
   deceleration: 40
-  jumpPower: 5
+  jumpHeight: 3
+  jumpTime: 0.5
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.71858
+      outSlope: 1.71858
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10352941
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  springJumpHeight: 5
+  springJumpTime: 0.75
+  springJumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.71858
+      outSlope: 1.71858
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10352941
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  balloonJumpHeight: 2
+  balloonJumpTime: 0.5
+  balloonJumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.71858
+      outSlope: 1.71858
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10352941
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  cutJumpMultiplier: 0.75
+  wallJumpHeight: 0
+  wallJumpTime: 0
+  wallJumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.71858
+      outSlope: 1.71858
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10352941
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  groundPoundSpeed: -30
+  groundPoundTime: 0.25
+  groundPoundCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 0
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.1
+      value: 0
+      inSlope: -0
+      outSlope: 1.7410896
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  afterGroundPoundTime: 0.25
+  boomerangHeight: -2
+  boomerangTime: 1
+  maxBoomerangSpeed: -5
+  boomerangCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 2
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.01
+      value: 0.5
+      inSlope: 2.2292407
+      outSlope: 0
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  initialRollSpeed: 10
+  rollMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}
+  attackVector: {x: 0, y: 0.1, z: 3}
+  attackTime: 0.3
+  attackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

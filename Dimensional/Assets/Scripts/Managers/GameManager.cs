@@ -47,5 +47,15 @@ namespace Managers
             WorldDimensionsChanged?.Invoke(WorldDimensions, worldDimensions);
             WorldDimensions = worldDimensions;
         }
+
+        public static float Derivative(AnimationCurve curve, float time)
+        {
+            const float delta = 0.001f;
+            var currentHeight = curve.Evaluate(time);
+            var nextHeight = curve.Evaluate(time + delta);
+            var slope = (nextHeight - currentHeight) / delta;
+        
+            return slope;
+        }
     }
 }

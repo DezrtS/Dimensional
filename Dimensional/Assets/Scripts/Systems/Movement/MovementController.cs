@@ -73,21 +73,21 @@ namespace Systems.Movement
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            OnMove(input);
+
+            OnMove(input, movementControllerDatum);
         }
 
-        protected virtual void OnMove(Vector3 input)
+        protected virtual void OnMove(Vector3 input, MovementControllerDatum datum)
         {
             var trueInput = ForceController.GetRotation() * input;
-            ForceController.ApplyForce(HandleMovement(trueInput), ForceMode.VelocityChange);
+            ForceController.ApplyForce(HandleMovement(trueInput, datum), ForceMode.VelocityChange);
         }
         
-        private Vector3 HandleMovement(Vector3 input)
+        protected Vector3 HandleMovement(Vector3 input, MovementControllerDatum datum)
         {
             if (disableYInput) input.y = 0;
             var currentVelocity =  ForceController.GetVelocity();
-            var targetVelocity = input.normalized * MovementControllerDatum.MaxSpeed;
+            var targetVelocity = input.normalized * datum.MaxSpeed;
             var targetSpeed = targetVelocity.magnitude;
 
             var velocityDifference = targetVelocity - currentVelocity;
@@ -97,11 +97,11 @@ namespace Systems.Movement
 
             if (currentVelocity.magnitude <= targetSpeed)
             {
-                accelerationIncrement = MovementControllerDatum.Acceleration * Time.deltaTime;
+                accelerationIncrement = datum.Acceleration * Time.deltaTime;
             }
             else
             {
-                accelerationIncrement = MovementControllerDatum.Deceleration * Time.deltaTime;
+                accelerationIncrement = datum.Deceleration * Time.deltaTime;
             }
 
             if (velocityDifference.magnitude < accelerationIncrement) return velocityDifference;

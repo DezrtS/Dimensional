@@ -391,12 +391,6 @@ MonoBehaviour:
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
-  boomerangMultiplier: 5
-  boomerangTime: 1
-  heavyMultiplier: 25
-  springTime: 0.75
-  springMultiplier: 2.25
-  springScale: 0.5
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
 --- !u!114 &5445374899537773151
 MonoBehaviour:
@@ -414,7 +408,8 @@ MonoBehaviour:
   useGravity: 1
   isDisabled: 0
   mass: 1
-  gravityForce: 9.8
+  gravityForce: 19.6
+  maxFallSpeed: 25
 --- !u!143 &-2357452987729926912
 CharacterController:
   m_ObjectHideFlags: 0

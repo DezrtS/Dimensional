@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Managers;
 using Scriptables.Movement;
 using UnityEngine;
 
@@ -6,7 +8,7 @@ namespace Systems.Movement
 {
     public class PlayerMovementController : MovementController
     {
-        public enum ShapeType
+        public enum MovementState
         {
             Sphere,
             Spring,
@@ -14,35 +16,39 @@ namespace Systems.Movement
             Heavy,
         }
         
-        public delegate void ShapeTypeChangeEventHandler(ShapeType oldValue, ShapeType newValue);
+        public delegate void ShapeTypeChangeEventHandler(MovementState oldValue, MovementState newValue);
         public event ShapeTypeChangeEventHandler ShapeTypeChanged;
         
         [SerializeField] private Transform root;
         [SerializeField] private float scaleStrength = 0.1f;
         [SerializeField] private float scaleSpeed = 10;
 
-        [SerializeField] private float boomerangMultiplier = 5;
-        [SerializeField] private float boomerangTime = 1;
-        
-        [SerializeField] private float heavyMultiplier = 5;
-
-        [SerializeField] private float springTime = 2;
-        [SerializeField] private float springMultiplier = 2;
-        [SerializeField] private float springScale = 0.5f;
-
         [Space] [SerializeField] private GameObject smokePrefab;
         
         private PlayerMovementControllerDatum _playerMovementControllerDatum;
-        private ShapeType _shapeType;
+        
+        private bool _isJumping;
+        private float _jumpTimer;
 
+        private bool _isSpringJump;
+        private bool _isBalloonJump;
+
+        private float _afterGroundPoundTimer;
+        
         private bool _isCrouching;
-        private float _springTimer = 0;
-        private float _boomerangTimer = 0;
 
-        private float _boomerangPower;
+        private bool _isGroundPounding;
+        private float _groundPoundTimer;
+        
+        private bool _isBoomerang;
+        private float _boomerangTimer;
+        private float _boomerangMultiplier;
 
-        private bool _wasGrounded;
-        private bool _spawnSmoke = false;
+        private bool _isRolling;
+
+        private bool _isAttacking;
+        private bool _attacked;
+        private float _attackTimer;
 
         protected override void Awake()
         {
@@ -53,138 +59,223 @@ namespace Systems.Movement
         private void FixedUpdate()
         {
             var velocity = ForceController.GetVelocity();
-            _spawnSmoke = Mathf.Abs(velocity.y) > 3f;
-            if (_spawnSmoke && !_wasGrounded && IsGrounded) Instantiate(smokePrefab, root.position, Quaternion.identity);
-            _wasGrounded = IsGrounded;
+            root.localScale = Vector3.Lerp(root.localScale, new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), Time.fixedDeltaTime * scaleSpeed);
             velocity.y = 0;
             if (velocity.magnitude > 0.1f) root.forward = velocity;
-            OnShapeType();
+
+            if (_afterGroundPoundTimer > 0)
+            {
+                _afterGroundPoundTimer -= Time.fixedDeltaTime;
+            }
+
+            if (_isBalloonJump)
+            {
+                _isBalloonJump = !IsGrounded;
+            }
+            
+            if (_attacked) _attacked = !IsGrounded;
+
+            if (_isJumping)
+            {
+                if (_isSpringJump) HandleJump(_playerMovementControllerDatum.SpringJumpTime, _playerMovementControllerDatum.SpringJumpHeight, _playerMovementControllerDatum.SpringJumpCurve);
+                else if (_isBalloonJump) HandleJump(_playerMovementControllerDatum.BalloonJumpTime, _playerMovementControllerDatum.BalloonJumpHeight, _playerMovementControllerDatum.BalloonJumpCurve);
+                else HandleJump(_playerMovementControllerDatum.JumpTime, _playerMovementControllerDatum.JumpHeight, _playerMovementControllerDatum.JumpCurve);
+            }
+            else if (_isGroundPounding) HandleCrouch();
+            else if (_isBoomerang) HandleBoomerang();
+            else if (_isAttacking) HandleAttacking();
         }
 
-        public void ChangeShape(ShapeType shapeType)
+        protected override void OnMove(Vector3 input, MovementControllerDatum datum)
         {
-            if (_shapeType == shapeType) return;
-            ShapeTypeChanged?.Invoke(_shapeType, shapeType);
-            _shapeType = shapeType;
-
-            ForceController.UseGravity = true;
-            switch (_shapeType)
-            {
-                case ShapeType.Sphere:
-                    break;
-                case ShapeType.Spring:
-                    _springTimer = springTime;
-                    break;
-                case ShapeType.Boomerang:
-                    _boomerangTimer = boomerangTime;
-                    var velocity = ForceController.GetVelocity();
-                    _boomerangPower = -velocity.y;
-                    ForceController.UseGravity = false;
-                    break;
-                case ShapeType.Heavy:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        
-        private void OnShapeType()
-        {
-            switch (_shapeType)
-            {
-                case ShapeType.Sphere or ShapeType.Heavy:
-                {
-                    var velocity = ForceController.GetVelocity();
-                    root.localScale = Vector3.Lerp(root.localScale, new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), Time.fixedDeltaTime * scaleSpeed);
-                    if (_shapeType == ShapeType.Heavy && !IsGrounded) ForceController.ApplyForce(Vector3.down * heavyMultiplier, ForceMode.Force);
-                    break;
-                }
-                case ShapeType.Spring:
-                    if (_springTimer > 0)
-                    {
-                        _springTimer -= Time.fixedDeltaTime;
-                        if (_springTimer <= 0)
-                        {
-                            _springTimer = 0;
-                        }
-                    }
-
-                    var scale = (1 - _springTimer / springTime);
-                    root.localScale = Vector3.Lerp(root.localScale, new Vector3(1 + springScale * scale, 1 - springScale * scale, 1 + springScale * scale), Time.fixedDeltaTime * scaleSpeed);
-                    break;
-                case ShapeType.Boomerang:
-                    root.localScale = Vector3.Lerp(root.localScale, Vector3.one, Time.fixedDeltaTime * scaleSpeed);
-                    if (_boomerangTimer > 0)
-                    {
-                        _boomerangTimer -= Time.fixedDeltaTime;
-                        ForceController.ApplyForce(new Vector3(0, _boomerangPower, 0), ForceMode.Force);
-                        if (IsGrounded) _boomerangTimer = 0;
-                    }
-                    else
-                    {
-                        if (!IsGrounded) ForceController.ApplyForce(Vector3.down * boomerangMultiplier, ForceMode.Force);   
-                    }
-                    break;
-            }
+            base.OnMove(input, _isRolling ? _playerMovementControllerDatum.RollMovementControllerDatum : datum);
         }
 
         public void Jump()
         {
-            if (IsGrounded)
+            if (_isAttacking) return;
+            if (!IsGrounded)
             {
-                if (_isCrouching)
-                {
-                    ChangeShape(ShapeType.Spring);
-                }
-                else
-                {
-                    if (_shapeType == ShapeType.Heavy) ChangeShape(ShapeType.Sphere);
-                    Instantiate(smokePrefab, root.position, Quaternion.identity);
-                    ForceController.ApplyForce(Vector3.up * _playerMovementControllerDatum.JumpPower, ForceMode.Impulse);   
-                }
+                if (_isBalloonJump || _isGroundPounding) return;
+                _isJumping = true;
+                _isRolling = false;
+                _isBalloonJump = true;
+                _jumpTimer = 0;
+                ForceController.UseGravity = false;
+                Instantiate(smokePrefab, root.position, Quaternion.identity);
+                return;
             }
-            else
+
+            if (_isCrouching && !_isRolling)
             {
-                ChangeShape(ShapeType.Boomerang);
+                _isRolling = true;
+                ForceController.ApplyForce(root.rotation * Vector3.forward * _playerMovementControllerDatum.InitialRollSpeed, ForceMode.VelocityChange);
+                return;
             }
+            
+            _isJumping = true;
+            _jumpTimer = 0;
+            ForceController.UseGravity = false;
+            Instantiate(smokePrefab, root.position, Quaternion.identity);
+
+            if (!(_afterGroundPoundTimer > 0)) return;
+            _isSpringJump = true;
+            _afterGroundPoundTimer = 0;
         }
 
         public void StopJumping()
         {
-            switch (_shapeType)
-            {
-                case ShapeType.Boomerang:
-                    ChangeShape(ShapeType.Sphere);
-                    break;
-                case ShapeType.Spring:
-                    SpringJump();
-                    break;
-            }
-        }
+            if (!_isJumping) return;
 
-        private void SpringJump()
+            _isJumping = false;
+            ForceController.UseGravity = true;
+
+            _isSpringJump = false;
+            
+            var velocity = ForceController.GetVelocity();
+            velocity.y *= _playerMovementControllerDatum.CutJumpMultiplier;
+            ForceController.SetVelocity(velocity);
+        }
+        
+        private void HandleJump(float jumpTime, float jumpHeight, AnimationCurve jumpCurve)
         {
-            ForceController.ApplyForce(Vector3.up * _playerMovementControllerDatum.JumpPower * springMultiplier * (1 - _springTimer / springTime), ForceMode.Impulse);
-            Instantiate(smokePrefab, root.position, Quaternion.identity);
-            ChangeShape(ShapeType.Sphere);
+            if (_jumpTimer > jumpTime)
+            {
+                _isJumping = false;
+                ForceController.UseGravity = true;
+                _isSpringJump = false;
+                return;
+            }
+            
+            var normalizedTime = _jumpTimer / jumpTime;
+            var slope = GameManager.Derivative(jumpCurve, normalizedTime);
+            var verticalVelocity = slope * (jumpHeight / jumpTime);
+            
+            var currentVelocity = ForceController.GetVelocity();
+            ForceController.SetVelocity(new Vector3(
+                currentVelocity.x,
+                verticalVelocity,
+                currentVelocity.z
+            ));
+            _jumpTimer += Time.fixedDeltaTime;
         }
 
         public void Crouch()
         {
-            if (IsGrounded)
-            {
-                _isCrouching = true;
-            }
-            else
-            {
-                ChangeShape(ShapeType.Heavy);   
-            }
+            _isCrouching = true;
+            if (IsGrounded || _isGroundPounding || _isAttacking) return;
+            _isGroundPounding = true;
+            _isRolling = false;
+            _groundPoundTimer = 0;
+            ForceController.UseGravity = false;
         }
 
         public void StopCrouching()
         {
             _isCrouching = false;
-            if (_shapeType == ShapeType.Spring) ChangeShape(ShapeType.Sphere);
+        }
+
+        private void HandleCrouch()
+        {
+            if (IsGrounded)
+            {
+                _isGroundPounding = false;
+                ForceController.UseGravity = true;
+                _afterGroundPoundTimer = _playerMovementControllerDatum.AfterGroundPoundTime;
+                return;
+            }
+            
+            var groundPoundSpeed = _playerMovementControllerDatum.GroundPoundSpeed;
+            var groundPoundTime = _playerMovementControllerDatum.GroundPoundTime;
+            var groundPoundCurve = _playerMovementControllerDatum.GroundPoundCurve;
+            
+            var normalizedTime = Mathf.Min(_groundPoundTimer / groundPoundTime, 1);
+            var verticalVelocity = groundPoundCurve.Evaluate(normalizedTime) * groundPoundSpeed;
+            
+            ForceController.SetVelocity(new Vector3(
+                0,
+                verticalVelocity,
+                0
+            ));
+            _groundPoundTimer += Time.fixedDeltaTime;
+        }
+
+        public void Boomerang()
+        {
+            if (IsGrounded || _isAttacking) return;
+            
+            _isBoomerang = true;
+            _boomerangTimer = 0;
+            ForceController.UseGravity = false;
+            
+            var maxBoomerangSpeed = _playerMovementControllerDatum.MaxBoomerangSpeed;
+            var velocity = ForceController.GetVelocity();
+            
+            _boomerangMultiplier = 1 - Mathf.Clamp(Mathf.Abs(velocity.y) / maxBoomerangSpeed, 0, 0.9f);
+
+            _isJumping = false;
+            _isSpringJump = false;
+            _isGroundPounding = false;
+        }
+
+        public void StopBoomerang()
+        {
+            if (!_isBoomerang) return;
+            
+            _isBoomerang = false;
+            ForceController.UseGravity = true;
+        }
+
+        private void HandleBoomerang()
+        {
+            var boomerangHeight = _playerMovementControllerDatum.BoomerangHeight * _boomerangMultiplier;
+            var boomerangTime = _playerMovementControllerDatum.BoomerangTime * _boomerangMultiplier;
+            var boomerangCurve = _playerMovementControllerDatum.BoomerangCurve;
+            
+            var normalizedTime = Mathf.Min(_boomerangTimer / boomerangTime, 1);
+            var slope = GameManager.Derivative(boomerangCurve, normalizedTime);
+            var verticalVelocity = slope * (boomerangHeight / boomerangTime);
+            
+            var currentVelocity = ForceController.GetVelocity();
+            ForceController.SetVelocity(new Vector3(
+                currentVelocity.x,
+                verticalVelocity,
+                currentVelocity.z
+            ));
+            _boomerangTimer += Time.fixedDeltaTime;
+        }
+
+        public void Attack()
+        {
+            if (_isAttacking || _attacked) return;
+            _isAttacking = true;
+            _attacked = true;
+            _attackTimer = 0;
+            
+            _isJumping = false;
+            _isSpringJump = false;
+            _isGroundPounding = false;
+            _isRolling = false;
+            _isBoomerang = false;
+            ForceController.UseGravity = false;
+        }
+
+        private void HandleAttacking()
+        {
+            if (_attackTimer > _playerMovementControllerDatum.AttackTime)
+            {
+                _isAttacking = false;
+                ForceController.UseGravity = true;
+                return;
+            }
+            
+            var normalizedTime = _attackTimer / _playerMovementControllerDatum.AttackTime;
+            var slope = GameManager.Derivative(_playerMovementControllerDatum.AttackCurve, normalizedTime);
+            var velocity = slope * (_playerMovementControllerDatum.AttackVector / _playerMovementControllerDatum.AttackTime);
+            
+            var newVelocity = root.rotation * velocity;
+            ForceController.SetVelocity(newVelocity);
+            _attackTimer += Time.fixedDeltaTime;
         }
     }
 }

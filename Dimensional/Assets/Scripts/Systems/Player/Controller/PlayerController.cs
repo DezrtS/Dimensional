@@ -30,7 +30,7 @@ namespace Systems.Player
         {
             _playerMovementController = GetComponent<PlayerMovementController>();
             _playerMovementController.Initialize(this);
-            _playerMovementController.ShapeTypeChanged += PlayerMovementControllerOnShapeTypeChanged;
+            //_playerMovementController.ShapeTypeChanged += PlayerMovementControllerOnShapeTypeChanged;
             
             _playerLook = GetComponent<PlayerLook>();
             _playerLook.Initialize(this);
@@ -61,7 +61,12 @@ namespace Systems.Player
             
             var actionInputAction = _playerInputSystemActions.Player.Action;
             actionInputAction.performed += OnPrimaryAction;
+            actionInputAction.canceled += OnPrimaryAction;
             actionInputAction.Enable();
+            
+            var attackInputAction = _playerInputSystemActions.Player.Attack;
+            attackInputAction.performed += OnAttack;
+            attackInputAction.Enable();
             
             var switchInputAction = _playerInputSystemActions.Player.Switch;
             switchInputAction.performed += OnSwitch;
@@ -111,25 +116,33 @@ namespace Systems.Player
             var input = context.ReadValue<Vector2>();
             if (input.x != 0)
             {
-                _playerMovementController.ChangeShape(input.x > 0 ? PlayerMovementController.ShapeType.Boomerang : PlayerMovementController.ShapeType.Spring);
+                //_playerMovementController.ChangeShape(input.x > 0 ? PlayerMovementController.ShapeType.Boomerang : PlayerMovementController.ShapeType.Spring);
             }
             else
             {
-                _playerMovementController.ChangeShape(input.y > 0 ? PlayerMovementController.ShapeType.Sphere : PlayerMovementController.ShapeType.Heavy);
+                //_playerMovementController.ChangeShape(input.y > 0 ? PlayerMovementController.ShapeType.Sphere : PlayerMovementController.ShapeType.Heavy);
             }
         }
 
         private void OnPrimaryAction(InputAction.CallbackContext context)
         {
-            var projectile = projectileDatum.Spawn();
-            var position = transform.position;
-            var velocity = _playerMovementController.ForceController.GetVelocity();
-            projectile.Fire(FireContext.Construct(position, position + velocity, fireSpeed, true));
+            if (context.performed) _playerMovementController.Boomerang();
+            else if (context.canceled) _playerMovementController.StopBoomerang();
+            
+            //var projectile = projectileDatum.Spawn();
+            //var position = transform.position;
+            //var velocity = _playerMovementController.ForceController.GetVelocity();
+            //projectile.Fire(FireContext.Construct(position, position + velocity, fireSpeed, true));
+        }
+        
+        private void OnAttack(InputAction.CallbackContext context)
+        {
+            _playerMovementController.Attack();
         }
 
-        private void PlayerMovementControllerOnShapeTypeChanged(PlayerMovementController.ShapeType oldValue, PlayerMovementController.ShapeType newValue)
-        {
-            typeText.text = newValue.ToString();
-        }
+        //private void PlayerMovementControllerOnShapeTypeChanged(PlayerMovementController.ShapeType oldValue, PlayerMovementController.ShapeType newValue)
+        //{
+        //    typeText.text = newValue.ToString();
+        //}
     }
 }
