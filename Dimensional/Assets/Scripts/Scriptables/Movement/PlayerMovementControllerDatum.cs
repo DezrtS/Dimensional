@@ -19,6 +19,8 @@ namespace Scriptables.Movement
         [SerializeField] private AnimationCurve balloonJumpCurve;
         [Space(10)] 
         [SerializeField] private float cutJumpMultiplier;
+        [SerializeField] private float queueJumpTime;
+        [SerializeField] private float coyoteTime;
         [Space(10)] 
         [SerializeField] private float wallJumpHeight;
         [SerializeField] private float wallJumpTime;
@@ -55,6 +57,8 @@ namespace Scriptables.Movement
         public AnimationCurve BalloonJumpCurve => balloonJumpCurve;
         
         public float CutJumpMultiplier => cutJumpMultiplier;
+        public float QueueJumpTime => queueJumpTime;
+        public float CoyoteTime => coyoteTime;
         
         public float WallJumpHeight => wallJumpHeight;
         public float WallJumpTime => wallJumpTime;

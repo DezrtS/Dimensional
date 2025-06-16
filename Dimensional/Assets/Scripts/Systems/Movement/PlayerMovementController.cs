@@ -50,6 +50,9 @@ namespace Systems.Movement
         private bool _attacked;
         private float _attackTimer;
 
+        private float _queueJumpTimer;
+        private float _coyoteTimer;
+
         protected override void Awake()
         {
             base.Awake();
@@ -62,6 +65,16 @@ namespace Systems.Movement
             root.localScale = Vector3.Lerp(root.localScale, new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), Time.fixedDeltaTime * scaleSpeed);
             velocity.y = 0;
             if (velocity.magnitude > 0.1f) root.forward = velocity;
+
+            if (_queueJumpTimer > 0)
+            {
+                if (IsGrounded && !_isGroundPounding)
+                {
+                    _queueJumpTimer = 0;
+                    Jump();
+                }
+                _queueJumpTimer -= Time.fixedDeltaTime;
+            }
 
             if (_afterGroundPoundTimer > 0)
             {
@@ -96,7 +109,11 @@ namespace Systems.Movement
             if (_isAttacking) return;
             if (!IsGrounded)
             {
-                if (_isBalloonJump || _isGroundPounding) return;
+                if (_isBalloonJump || _isGroundPounding)
+                {
+                    _queueJumpTimer = _playerMovementControllerDatum.QueueJumpTime;
+                    return;
+                }
                 _isJumping = true;
                 _isRolling = false;
                 _isBalloonJump = true;
@@ -105,6 +122,8 @@ namespace Systems.Movement
                 Instantiate(smokePrefab, root.position, Quaternion.identity);
                 return;
             }
+
+            if (_isGroundPounding) return;
 
             if (_isCrouching && !_isRolling)
             {

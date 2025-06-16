@@ -94,6 +94,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   cutJumpMultiplier: 0.75
+  queueJumpTime: 0.25
+  coyoteTime: 0
   wallJumpHeight: 0
   wallJumpTime: 0
   wallJumpCurve:
@@ -192,7 +194,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  initialRollSpeed: 10
+  initialRollSpeed: 5
   rollMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}
   attackVector: {x: 0, y: 0.1, z: 3}
   attackTime: 0.3
