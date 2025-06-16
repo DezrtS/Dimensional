@@ -6,11 +6,14 @@ using UnityEngine;
 
 namespace Systems.Movement
 {
-    public abstract class MovementController : MonoBehaviour
+    public class MovementController : MonoBehaviour
     {
         [SerializeField] private MovementControllerDatum movementControllerDatum;
         [SerializeField] private Dimensions movementDimensions;
         [Space] 
+        [SerializeField] private bool disableYInput;
+
+        [SerializeField] private bool setYVelocityOnGrounded;
         [SerializeField] private bool disableGroundedCheck;
         [SerializeField] private float groundedCheckDistance;
         [SerializeField] private Vector3 groundedCheckOffset;
@@ -39,6 +42,11 @@ namespace Systems.Movement
         {
             if (disableGroundedCheck) return;
             IsGrounded = Physics.Raycast(transform.position + groundedCheckOffset, Vector3.down, groundedCheckDistance, groundedLayerMask, QueryTriggerInteraction.Ignore);
+            if (!IsGrounded || !setYVelocityOnGrounded) return;
+            var velocity = ForceController.GetVelocity();
+            if (!(velocity.y < 0)) return;
+            velocity.y = -0.5f;
+            ForceController.SetVelocity(velocity);
         }
 
         public void Move()
@@ -65,11 +73,40 @@ namespace Systems.Movement
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            OnMove(input);
+
+            OnMove(input, movementControllerDatum);
         }
 
-        protected abstract void OnMove(Vector3 input);
+        protected virtual void OnMove(Vector3 input, MovementControllerDatum datum)
+        {
+            var trueInput = ForceController.GetRotation() * input;
+            ForceController.ApplyForce(HandleMovement(trueInput, datum), ForceMode.VelocityChange);
+        }
+        
+        protected Vector3 HandleMovement(Vector3 input, MovementControllerDatum datum)
+        {
+            if (disableYInput) input.y = 0;
+            var currentVelocity =  ForceController.GetVelocity();
+            var targetVelocity = input.normalized * datum.MaxSpeed;
+            var targetSpeed = targetVelocity.magnitude;
+
+            var velocityDifference = targetVelocity - currentVelocity;
+            if (disableYInput) velocityDifference.y = 0;
+            var differenceDirection = velocityDifference.normalized;
+            float accelerationIncrement;
+
+            if (currentVelocity.magnitude <= targetSpeed)
+            {
+                accelerationIncrement = datum.Acceleration * Time.deltaTime;
+            }
+            else
+            {
+                accelerationIncrement = datum.Deceleration * Time.deltaTime;
+            }
+
+            if (velocityDifference.magnitude < accelerationIncrement) return velocityDifference;
+            return differenceDirection * accelerationIncrement;
+        }
 
         private void GameManagerOnWorldDimensionsChanged(Dimensions oldValue, Dimensions newValue)
         {
