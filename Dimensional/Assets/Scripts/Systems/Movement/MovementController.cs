@@ -19,7 +19,7 @@ namespace Systems.Movement
         [SerializeField] private Vector3 groundedCheckOffset;
         [SerializeField] private LayerMask groundedLayerMask;
         
-        private IMove _move;
+        protected IMove Mover;
         
         public MovementControllerDatum MovementControllerDatum => movementControllerDatum;
         public Dimensions MovementDimensions => movementDimensions;
@@ -35,10 +35,15 @@ namespace Systems.Movement
 
         public void Initialize(IMove move)
         {
-            _move = move;
+            Mover = move;
         }
 
         private void Update()
+        {
+            OnUpdate();
+        }
+
+        protected virtual void OnUpdate()
         {
             if (disableGroundedCheck) return;
             IsGrounded = Physics.Raycast(transform.position + groundedCheckOffset, Vector3.down, groundedCheckDistance, groundedLayerMask, QueryTriggerInteraction.Ignore);
@@ -51,12 +56,12 @@ namespace Systems.Movement
 
         public void Move()
         {
-            Move(_move?.GetInput() ?? Vector3.zero);
+            Move(Mover?.GetInput() ?? Vector3.zero);
         }
         
         public void Move(Quaternion rotation)
         {
-            Move(TransformInput(_move?.GetInput() ?? Vector3.zero, rotation));
+            Move(TransformInput(Mover?.GetInput() ?? Vector3.zero, rotation));
         }
 
         private void Move(Vector3 input)

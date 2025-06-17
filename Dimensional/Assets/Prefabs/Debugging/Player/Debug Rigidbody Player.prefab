@@ -390,13 +390,16 @@ MonoBehaviour:
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
-  boomerangMultiplier: 5
-  boomerangTime: 1
-  heavyMultiplier: 25
-  springTime: 0.75
-  springMultiplier: 2.25
-  springScale: 0.5
+  wallSlideThreshold: 0.2
+  disableWallSlideCheck: 0
+  wallSlideChecks: 8
+  wallSlideCheckDistance: 0
+  wallSlideCheckOffset: {x: 0, y: 0, z: 0}
+  wallSlideLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
+  groundPoundSmokePrefab: {fileID: 1267202595665965921, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
 --- !u!114 &608786289057175531
 MonoBehaviour:
   m_ObjectHideFlags: 0

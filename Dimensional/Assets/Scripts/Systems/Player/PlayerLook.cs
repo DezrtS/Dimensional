@@ -102,5 +102,10 @@ namespace Systems.Player
             }
             lookDimensions = newValue;
         }
+
+        public Vector3 TransformInput(Vector3 input)
+        {
+            return root.rotation * input;
+        }
     }
 }

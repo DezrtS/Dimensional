@@ -444,6 +444,17 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6384c066-bcdc-4d73-bc9f-33c428ed8cdd"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""fc24a16c-e786-4238-ae2a-289d7504d743"",
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
