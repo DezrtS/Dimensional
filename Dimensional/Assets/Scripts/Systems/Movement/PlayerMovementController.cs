@@ -161,6 +161,7 @@ namespace Systems.Movement
 
         private void CancelJump()
         {
+            _animator.SetTrigger("Sphere");
             ForceController.UseGravity = true;
             _cutJump = false;
             if (_isJumping)
@@ -172,7 +173,6 @@ namespace Systems.Movement
             if (!_isWallJumping) return;
             StopCoroutine(_wallJumpCoroutine);
             _isWallJumping = false;
-            _animator.SetTrigger("Sphere");
         }
 
         public void Jump(bool skipCutJump = false)
@@ -288,6 +288,7 @@ namespace Systems.Movement
         {
             _isCrouching = true;
             if (IsGrounded || _isGroundPounding || _isAttacking) return;
+            _isCrouching = false;
             OnGroundPound();
         }
 

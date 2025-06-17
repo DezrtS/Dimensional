@@ -26961,10 +26961,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6936289059839347549, guid: 0a7e1487d7961aa498eab902ebd41494, type: 3}
-      propertyPath: Damping.x
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 8249629637010055299, guid: 0a7e1487d7961aa498eab902ebd41494, type: 3}
       propertyPath: m_Name
       value: CameraManager
