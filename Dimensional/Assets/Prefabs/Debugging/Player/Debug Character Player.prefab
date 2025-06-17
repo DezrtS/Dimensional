@@ -391,6 +391,14 @@ MonoBehaviour:
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
+  wallSlideThreshold: 0.2
+  disableWallSlideCheck: 0
+  wallSlideChecks: 8
+  wallSlideCheckDistance: 0.55
+  wallSlideCheckOffset: {x: 0, y: 0, z: 0}
+  wallSlideLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
 --- !u!114 &5445374899537773151
 MonoBehaviour:

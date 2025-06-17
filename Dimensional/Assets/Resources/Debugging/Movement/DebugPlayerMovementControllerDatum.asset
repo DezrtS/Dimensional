@@ -96,9 +96,62 @@ MonoBehaviour:
   cutJumpMultiplier: 0.75
   queueJumpTime: 0.25
   coyoteTime: 0
-  wallJumpHeight: 0
-  wallJumpTime: 0
-  wallJumpCurve:
+  minExitAngle: 100
+  wallSlideSpeed: -5
+  wallSlideTime: 1
+  wallSlideCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  wallJumpSpeed: 10
+  wallJumpSpeedTime: 0.25
+  wallJumpSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  wallJumpHeight: 2
+  wallJumpHeightTime: 0.5
+  wallJumpHeightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -158,38 +211,56 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   afterGroundPoundTime: 0.25
-  boomerangHeight: -2
-  boomerangTime: 1
-  maxBoomerangSpeed: -5
-  boomerangCurve:
+  maxBoomerangSpeed: 25
+  boomerangSlowDownTime: 0.75
+  boomerangSlowDownCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
-      outSlope: 2
-      tangentMode: 69
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
-      time: 0.5
+      time: 1
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 136
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boomerangFallSpeed: -3
+  boomerangMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}
+  boomerangArcHeight: 3
+  boomerangArcTime: 1
+  boomerangArcCurve:
+    serializedVersion: 2
+    m_Curve:
     - serializedVersion: 3
-      time: 1.01
-      value: 0.5
-      inSlope: 2.2292407
+      time: 0
+      value: 0
+      inSlope: 0
       outSlope: 0
-      tangentMode: 1
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 1
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
