@@ -211,8 +211,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   afterGroundPoundTime: 0.25
-  maxBoomerangSpeed: 25
-  boomerangSlowDownTime: 0.75
+  boomerangSlowDownSpeed: -10
+  boomerangSlowDownTime: 1
   boomerangSlowDownCurve:
     serializedVersion: 2
     m_Curve:
@@ -237,11 +237,33 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  boomerangFallSpeed: -3
-  boomerangMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}
-  boomerangArcHeight: 3
-  boomerangArcTime: 1
-  boomerangArcCurve:
+  boomerangSlowDownMultiplierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.9
+      inSlope: -0.9
+      outSlope: -0.9
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.9
+      outSlope: -0.9
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boomerangFallSpeed: -2
+  boomerangFallTime: 0.5
+  boomerangFallCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -265,6 +287,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  boomerangMovementControllerDatum: {fileID: 11400000, guid: 5b732f7c56c09e54e9d3017a7ab49b6d, type: 2}
   initialRollSpeed: 5
   rollMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}
   attackVector: {x: 0, y: 0.1, z: 3}

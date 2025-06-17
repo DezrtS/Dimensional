@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: -2357452987729926912}
   - component: {fileID: 3158746514573188946}
   - component: {fileID: 5459988207746735620}
+  - component: {fileID: 4144831987515317400}
   m_Layer: 0
   m_Name: Debug Character Player
   m_TagString: Player
@@ -400,6 +401,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
+  balloonJumpSmokePrefab: {fileID: 4772967992589099599, guid: 1e33b4cd74162f7439049e48f49d7bf8, type: 3}
+  groundPoundSmokePrefab: {fileID: 1267202595665965921, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
 --- !u!114 &5445374899537773151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,6 +494,28 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &4144831987515317400
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3206800854426569070}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 42af764aae53a2640942434fd9f97a6c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4482540929322462101
 GameObject:
   m_ObjectHideFlags: 0

@@ -41,15 +41,15 @@ namespace Scriptables.Movement
         [Space(10)] 
         [SerializeField] private float afterGroundPoundTime;
         [Space(10)] 
-        [SerializeField] private float maxBoomerangSpeed;
+        [SerializeField] private float boomerangSlowDownSpeed;
         [SerializeField] private float boomerangSlowDownTime;
         [SerializeField] private AnimationCurve boomerangSlowDownCurve;
-        [SerializeField] private float boomerangFallSpeed;
-        [SerializeField] private MovementControllerDatum boomerangMovementControllerDatum;
+        [SerializeField] private AnimationCurve boomerangSlowDownMultiplierCurve;
         [Space(10)] 
-        [SerializeField] private float boomerangArcHeight;
-        [SerializeField] private float boomerangArcTime;
-        [SerializeField] private AnimationCurve boomerangArcCurve;
+        [SerializeField] private float boomerangFallSpeed;
+        [SerializeField] private float boomerangFallTime;
+        [SerializeField] private AnimationCurve boomerangFallCurve;
+        [SerializeField] private MovementControllerDatum boomerangMovementControllerDatum;
         [Space(10)] 
         [SerializeField] private float initialRollSpeed;
         [SerializeField] private MovementControllerDatum rollMovementControllerDatum;
@@ -93,15 +93,15 @@ namespace Scriptables.Movement
         
         public float AfterGroundPoundTime => afterGroundPoundTime;
 
-        public float MaxBoomerangSpeed => maxBoomerangSpeed;
+        public float BoomerangSlowDownSpeed => boomerangSlowDownSpeed;
         public float BoomerangSlowDownTime => boomerangSlowDownTime;
         public AnimationCurve BoomerangSlowDownCurve => boomerangSlowDownCurve;
+        public AnimationCurve BoomerangSlowDownMultiplierCurve => boomerangSlowDownMultiplierCurve;
+        
         public float BoomerangFallSpeed => boomerangFallSpeed;
+        public float BoomerangFallTime => boomerangFallTime;
+        public AnimationCurve BoomerangFallCurve => boomerangFallCurve;
         public MovementControllerDatum BoomerangMovementControllerDatum => boomerangMovementControllerDatum;
-
-        public float BoomerangArcHeight => boomerangArcHeight;
-        public float BoomerangArcTime => boomerangArcTime;
-        public AnimationCurve BoomerangArcCurve => boomerangArcCurve;
         
         public float InitialRollSpeed => initialRollSpeed;
         public MovementControllerDatum RollMovementControllerDatum => rollMovementControllerDatum;
