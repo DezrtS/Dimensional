@@ -9,18 +9,12 @@ namespace Systems.Movement
 {
     public class PlayerMovementController : MovementController
     {
+        [Space] 
         [SerializeField] private Transform root;
         [SerializeField] private float scaleStrength = 0.1f;
         [SerializeField] private float scaleSpeed = 10;
-        
-        [SerializeField] private float wallSlideThreshold = 0.2f;
-        
+        [Space] 
         [SerializeField] private bool disableWallSlideCheck;
-        [SerializeField] private float wallSlideChecks = 8;
-        [SerializeField] private float wallSlideCheckDistance;
-        [SerializeField] private Vector3 wallSlideCheckOffset;
-        [SerializeField] private LayerMask wallSlideLayerMask;
-
         [Space] 
         [SerializeField] private GameObject smokePrefab; 
         [SerializeField] private GameObject balloonJumpSmokePrefab; 
@@ -46,10 +40,12 @@ namespace Systems.Movement
         private bool _canAttack;
 
         private Vector3 _wallSlideDirection;
+        private PowerLevel _groundPoundPowerLevel;
         
         private float _springJumpTimer;
         private float _queueJumpTimer;
         private float _coyoteTimer;
+        private float _wallSlideCoyoteTimer;
         
         private Coroutine _jumpCoroutine;
         private Coroutine _boomerangCoroutine;
@@ -64,6 +60,7 @@ namespace Systems.Movement
             _playerMovementControllerDatum = (PlayerMovementControllerDatum)MovementControllerDatum;
             _playerLook = GetComponent<PlayerLook>();
             _animator = GetComponent<Animator>();
+            Grounded += OnGrounded;
         }
         
         private void FixedUpdate()
@@ -72,8 +69,9 @@ namespace Systems.Movement
             var velocity = ForceController.GetVelocity();
             root.localScale = Vector3.Lerp(root.localScale, new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), deltaTime * scaleSpeed);
             velocity.y = 0;
+            _animator.SetFloat("xzVelocity", velocity.magnitude);
             if (velocity.magnitude > 0.1f) root.forward = velocity;
-
+            
             if (_springJumpTimer > 0)
             {
                 _springJumpTimer -= deltaTime;
@@ -92,6 +90,16 @@ namespace Systems.Movement
                 }
                 _queueJumpTimer -= deltaTime;
             }
+            
+            if (_coyoteTimer > 0)
+            {
+                _coyoteTimer -= deltaTime;
+            }
+
+            if (_wallSlideCoyoteTimer > 0)
+            {
+                _wallSlideCoyoteTimer -= deltaTime;
+            }
 
             if (!_canAttack) _canAttack = IsGrounded;
             if (!_canDoubleJump) _canDoubleJump = IsGrounded;
@@ -103,16 +111,16 @@ namespace Systems.Movement
             if (disableWallSlideCheck || IsGrounded || _isWallSliding || _isGroundPounding || _isRolling || _isAttacking || _isBoomeranging) return;
             
             var velocity = ForceController.GetVelocity();
-            if (!(velocity.y < wallSlideThreshold)) return;
+            if (!(velocity.y < _playerMovementControllerDatum.WallSlideYVelocityThreshold)) return;
             velocity.y = 0;
 
             if (velocity.magnitude < 0.5f) return;
-            var intervalAngle = (int)(360 / wallSlideChecks);
-            for (var i = 0; i < wallSlideChecks; i++)
+            var intervalAngle = (int)(360 / _playerMovementControllerDatum.WallSlideChecks);
+            for (var i = 0; i < _playerMovementControllerDatum.WallSlideChecks; i++)
             {
                 var direction = Quaternion.Euler(0, i * intervalAngle, 0) * Vector3.forward;
                 if (Vector3.Dot(velocity, direction) < 0) continue;
-                if (!Physics.Raycast(transform.position + wallSlideCheckOffset, direction, wallSlideCheckDistance, wallSlideLayerMask)) continue;
+                if (!Physics.Raycast(transform.position + _playerMovementControllerDatum.WallSlideCheckOffset, direction, _playerMovementControllerDatum.WallSlideCheckDistance, _playerMovementControllerDatum.WallSlideLayerMask)) continue;
                 _wallSlideDirection = direction;
                 OnWallSlide();
             }
@@ -123,8 +131,9 @@ namespace Systems.Movement
             if (_isWallSliding)
             {
                 if (input.magnitude < 0.5f) return;
-                if (Vector3.Angle(_wallSlideDirection, input) < _playerMovementControllerDatum.MinExitAngle) return;
+                if (Vector3.Angle(_wallSlideDirection, input) < _playerMovementControllerDatum.WallSlideMinExitAngle) return;
                 CancelWallSlide();
+                _wallSlideCoyoteTimer = _playerMovementControllerDatum.WallSlideCoyoteTime;
             }
             else if (_isBoomeranging)
             {
@@ -132,6 +141,14 @@ namespace Systems.Movement
                 return;
             }
             base.OnMove(input, _isRolling ? _playerMovementControllerDatum.RollMovementControllerDatum : datum);
+        }
+
+        private void OnGrounded(bool isGrounded)
+        {
+            if (!isGrounded && !_isJumping)
+            {
+                _coyoteTimer = _playerMovementControllerDatum.CoyoteTime;
+            }
         }
 
         private void CancelWallSlide()
@@ -184,9 +201,9 @@ namespace Systems.Movement
                 return;
             }
 
-            if (!IsGrounded)
+            if (!IsGrounded && _coyoteTimer <= 0)
             {
-                if (_isWallSliding)
+                if (_isWallSliding || _wallSlideCoyoteTimer > 0)
                 {
                     OnJump(_playerMovementControllerDatum.WallJumpHeightTime, _playerMovementControllerDatum.WallJumpHeight, _playerMovementControllerDatum.WallJumpHeightCurve);
                     OnWallJump(); // May need to separate from CancelJump();
@@ -215,7 +232,29 @@ namespace Systems.Movement
                 {
                     if (_canSpringJump)
                     {
-                        OnJump(_playerMovementControllerDatum.SpringJumpTime, _playerMovementControllerDatum.SpringJumpHeight, _playerMovementControllerDatum.SpringJumpCurve);
+                        var timeMultiplier = _groundPoundPowerLevel switch
+                        {
+                            PowerLevel.Low =>
+                                1,
+                            PowerLevel.Medium =>
+                                _playerMovementControllerDatum.SpringJumpMediumPowerTimeMultiplier,
+                            PowerLevel.High =>
+                                _playerMovementControllerDatum.SpringJumpHighPowerTimeMultiplier,
+                            _ => throw new System.ArgumentException("Unsupported power level")
+                        };
+                        
+                        var heightMultiplier = _groundPoundPowerLevel switch
+                        {
+                            PowerLevel.Low =>
+                                1,
+                            PowerLevel.Medium =>
+                                _playerMovementControllerDatum.SpringJumpMediumPowerHeightMultiplier,
+                            PowerLevel.High =>
+                                _playerMovementControllerDatum.SpringJumpHighPowerHeightMultiplier,
+                            _ => throw new System.ArgumentException("Unsupported power level")
+                        };
+                        
+                        OnJump(_playerMovementControllerDatum.SpringJumpTime * timeMultiplier, _playerMovementControllerDatum.SpringJumpHeight * heightMultiplier, _playerMovementControllerDatum.SpringJumpCurve);
                         Instantiate(smokePrefab, root.position, Quaternion.identity);
                         _animator.SetTrigger("Spring");
                     }
@@ -273,6 +312,7 @@ namespace Systems.Movement
         
         private void Roll()
         {
+            if (_isRolling) return;
             _isRolling = true;
             ForceController.ApplyForce(root.rotation * Vector3.forward * _playerMovementControllerDatum.InitialRollSpeed, ForceMode.VelocityChange);
         }
@@ -424,6 +464,7 @@ namespace Systems.Movement
         {
             ForceController.UseGravity = false;
             _isGroundPounding = true;
+            _groundPoundPowerLevel = PowerLevel.Low;
             //OnGrounded += MovementControllerOnGrounded
             
             var groundPoundTimer = 0f;
@@ -431,6 +472,9 @@ namespace Systems.Movement
             var groundPoundSpeed = _playerMovementControllerDatum.GroundPoundSpeed;
             var groundPoundTime = _playerMovementControllerDatum.GroundPoundTime;
             var groundPoundCurve = _playerMovementControllerDatum.GroundPoundCurve;
+            
+            var groundPoundMediumPowerTimeThreshold = _playerMovementControllerDatum.GroundPoundMediumPowerTimeThreshold;
+            var groundPoundHighPowerTimeThreshold = _playerMovementControllerDatum.GroundPoundHighPowerTimeThreshold;
 
             while (!IsGrounded)
             {
@@ -438,6 +482,19 @@ namespace Systems.Movement
                 var verticalVelocity = groundPoundCurve.Evaluate(normalizedTime) * groundPoundSpeed;
                 ForceController.SetVelocity(Vector3.up * verticalVelocity);
                 groundPoundTimer += Time.deltaTime;
+                switch (_groundPoundPowerLevel)
+                {
+                    case PowerLevel.Low:
+                        if (groundPoundTimer >= groundPoundMediumPowerTimeThreshold) _groundPoundPowerLevel = PowerLevel.Medium;
+                        break;
+                    case PowerLevel.Medium:
+                        if (groundPoundTimer >= groundPoundHighPowerTimeThreshold) _groundPoundPowerLevel = PowerLevel.High;
+                        break;
+                    case PowerLevel.High:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
                 yield return null;
             }
             
@@ -445,7 +502,7 @@ namespace Systems.Movement
             
             Instantiate(groundPoundSmokePrefab, root.position, Quaternion.identity);
             
-            _springJumpTimer = _playerMovementControllerDatum.AfterGroundPoundTime;
+            _springJumpTimer = _playerMovementControllerDatum.GroundPoundSpringJumpTime;
             _canSpringJump = true;
 
             ForceController.UseGravity = true;
@@ -469,7 +526,7 @@ namespace Systems.Movement
             var wallSlideTime = _playerMovementControllerDatum.WallSlideTime;
             var wallSlideCurve = _playerMovementControllerDatum.WallSlideCurve;
 
-            while (!IsGrounded && Physics.Raycast(transform.position + wallSlideCheckOffset, _wallSlideDirection, wallSlideCheckDistance, wallSlideLayerMask))
+            while (!IsGrounded && Physics.Raycast(transform.position + _playerMovementControllerDatum.WallSlideCheckOffset, _wallSlideDirection, _playerMovementControllerDatum.WallSlideCheckDistance, _playerMovementControllerDatum.WallSlideLayerMask))
             {
                 var normalizedTime = Mathf.Clamp01(wallSlideTimer / wallSlideTime);
                 var verticalVelocity = wallSlideCurve.Evaluate(normalizedTime) * wallSlideSpeed;
@@ -528,6 +585,11 @@ namespace Systems.Movement
             var attackDirection = Mover?.GetInput() ?? Vector3.zero;
             attackDirection = attackDirection.magnitude < 0.5f ? root.forward : _playerLook.TransformInput(attackDirection);
             attackDirection.y = 0;
+            if (MovementDimensions == Dimensions.Two)
+            {
+                attackDirection.z = 0;
+                if (attackDirection.x == 0) attackDirection.x = 1;
+            }
             var rotation = Quaternion.LookRotation(attackDirection.normalized);
 
             while (attackTimer < attackTime)

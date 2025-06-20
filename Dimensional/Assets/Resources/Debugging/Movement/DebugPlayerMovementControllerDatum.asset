@@ -15,6 +15,12 @@ MonoBehaviour:
   maxSpeed: 7
   acceleration: 30
   deceleration: 40
+  groundedCheckType: 1
+  groundedCheckDistance: 0.5
+  groundedCheckOffset: {x: 0, y: -0.1, z: 0}
+  groundedLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   jumpHeight: 3
   jumpTime: 0.5
   jumpCurve:
@@ -67,6 +73,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  springJumpMediumPowerHeightMultiplier: 1.75
+  springJumpMediumPowerTimeMultiplier: 1.5
+  springJumpHighPowerHeightMultiplier: 2.5
+  springJumpHighPowerTimeMultiplier: 2
   balloonJumpHeight: 2
   balloonJumpTime: 0.5
   balloonJumpCurve:
@@ -95,8 +105,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   cutJumpMultiplier: 0.75
   queueJumpTime: 0.25
-  coyoteTime: 0
-  minExitAngle: 100
+  coyoteTime: 0.1
+  wallSlideMinExitAngle: 100
   wallSlideSpeed: -5
   wallSlideTime: 1
   wallSlideCurve:
@@ -123,6 +133,14 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  wallSlideCoyoteTime: 0.1
+  wallSlideYVelocityThreshold: 0.2
+  wallSlideChecks: 8
+  wallSlideCheckDistance: 0.55
+  wallSlideCheckOffset: {x: 0, y: 0, z: 0}
+  wallSlideLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   wallJumpSpeed: 10
   wallJumpSpeedTime: 0.25
   wallJumpSpeedCurve:
@@ -210,9 +228,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  afterGroundPoundTime: 0.25
+  groundPoundMediumPowerTimeThreshold: 0.5
+  groundPoundHighPowerTimeThreshold: 1
+  groundPoundSpringJumpTime: 0.25
   boomerangSlowDownSpeed: -10
-  boomerangSlowDownTime: 1
+  boomerangSlowDownTime: 0.5
   boomerangSlowDownCurve:
     serializedVersion: 2
     m_Curve:
@@ -262,7 +282,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   boomerangFallSpeed: -2
-  boomerangFallTime: 0.5
+  boomerangFallTime: 0.25
   boomerangFallCurve:
     serializedVersion: 2
     m_Curve:

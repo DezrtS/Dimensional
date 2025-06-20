@@ -10,6 +10,20 @@ namespace Managers
         Two,
         Three,
     }
+
+    public enum PowerLevel
+    {
+        Low,
+        Medium,
+        High,
+    }
+
+    public enum GroundedCheckType
+    {
+        Ray,
+        Sphere,
+        Box,
+    }
     
     public class GameManager : Singleton<GameManager>
     {

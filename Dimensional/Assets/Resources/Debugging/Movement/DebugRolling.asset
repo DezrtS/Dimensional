@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DebugRolling
   m_EditorClassIdentifier: 
   maxSpeed: 12
-  acceleration: 10
-  deceleration: 10
+  acceleration: 15
+  deceleration: 5
