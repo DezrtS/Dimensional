@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DebugPlayerMovementControllerDatum
   m_EditorClassIdentifier: 
   maxSpeed: 7
-  acceleration: 30
+  acceleration: 40
   deceleration: 40
   groundedCheckType: 1
   groundedCheckDistance: 0.5

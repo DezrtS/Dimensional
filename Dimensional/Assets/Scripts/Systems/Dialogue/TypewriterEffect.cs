@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Managers;
 using TMPro;
@@ -5,70 +6,69 @@ using UnityEngine;
 
 namespace Systems.Dialogue
 {
-    public class TypewriterEffect
+    public class TypewriterEffect : MonoBehaviour
     {
         public delegate void TypewriterEventHandler();
-
         public event TypewriterEventHandler Finished;
         
-        private readonly TextMeshProUGUI _textComponent;
-        private readonly float _charactersPerSecond;
-        private readonly float _punctuationDelayMultiplier;
+        [SerializeField] private float defaultCharactersPerSecond = 20;
+        [SerializeField] private float defaultInterpunctuationDelay = 0.5f;
         
-        private Coroutine _typewriterCoroutine;
+        private TMP_Text _textComponent;
+        private bool _isTyping;
+        private string _strippedText;
+        private int _currentVisibleCharacterIndex;
+        
+        private Coroutine _coroutine;
 
-        public TypewriterEffect(TextMeshProUGUI textComponent, float charactersPerSecond, float punctuationDelayMultiplier)
+        public void Initialize(TMP_Text textComponent)
         {
             _textComponent = textComponent;
-            _charactersPerSecond = charactersPerSecond;
-            _punctuationDelayMultiplier = punctuationDelayMultiplier;
         }
 
-        public void StartTyping(string text)
+        public void StartTyping(string strippedText)
         {
-            if (_typewriterCoroutine != null) 
-                CoroutineManager.Instance.StopCoroutine(_typewriterCoroutine);
+            if (_isTyping) StopTyping();
             
-            _textComponent.text = text;
-            _textComponent.ForceMeshUpdate(); // Critical for accurate character count
-            
-            _typewriterCoroutine =  CoroutineManager.Instance.StartCoroutine(TypeText());
-        }
-
-        private IEnumerator TypeText()
-        {
+            _isTyping = true;
+            _strippedText = strippedText;
+            _currentVisibleCharacterIndex = 0;
             _textComponent.maxVisibleCharacters = 0;
-            var totalCharacters = _textComponent.textInfo.characterCount;
-            var visibleCount = 1;
-
-            while (visibleCount < totalCharacters)
-            {
-                visibleCount++;
-                _textComponent.maxVisibleCharacters = visibleCount;
-                if (_textComponent.textInfo.characterInfo[visibleCount - 1].isVisible) yield return GetWaitTime(visibleCount - 1);
-            }
-            
-            Finished?.Invoke();
+            _coroutine = StartCoroutine(Typewriter());
         }
 
-        private WaitForSeconds GetWaitTime(int charIndex)
+        private void StopTyping()
         {
-            var currentChar = _textComponent.text[charIndex];
-            var delay = 1f / _charactersPerSecond;
+            if (!_isTyping) return;
             
-            // Add extra pause for punctuation
-            if (char.IsPunctuation(currentChar)) delay *= _punctuationDelayMultiplier;
-            
-            return new WaitForSeconds(delay);
+            _isTyping = false;
+            StopCoroutine(_coroutine);
         }
 
         public void Skip()
         {
-            if (_typewriterCoroutine == null) return;
-            CoroutineManager.Instance.StopCoroutine(_typewriterCoroutine);
-            _textComponent.maxVisibleCharacters = _textComponent.textInfo.characterCount;
             
-            Finished?.Invoke();
+        }
+
+        private IEnumerator Typewriter()
+        {
+            foreach (var c in _strippedText)
+            {
+                _textComponent.maxVisibleCharacters = _currentVisibleCharacterIndex + 1;
+
+                if (char.IsPunctuation(c))
+                {
+                    yield return new WaitForSeconds(defaultInterpunctuationDelay);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(1 / defaultCharactersPerSecond);
+                }
+                
+                _currentVisibleCharacterIndex++;
+            }
+            
+            _isTyping = false;
         }
     }
 }

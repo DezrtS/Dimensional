@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: 0-1-Debug
   m_EditorClassIdentifier: 
   dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
-  text: Hello, this is text that I am typing and it has <color=#fff000>a meaning
-    that is meaningful to the people who find meaning in it... Or something like
-    that.
+  text: Hello, this is text that I am typing and it has <color=#fff000><color=#fff000><color=#fff000>a
+    meaning that is meaningful to the people who find meaning in it... Or something
+    like that.
