@@ -12,9 +12,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e585c14b997534ebb8d8cf1df12012, type: 3}
   m_Name: DebugPlayerMovementControllerDatum
   m_EditorClassIdentifier: 
-  maxSpeed: 7
+  maxSpeed: 9
   acceleration: 40
-  deceleration: 40
+  accelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  deceleration: 50
+  decelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.9
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  airborneMultiplier: 0.75
   groundedCheckType: 1
   groundedCheckDistance: 0.5
   groundedCheckOffset: {x: 0, y: -0.1, z: 0}
@@ -231,16 +289,49 @@ MonoBehaviour:
   groundPoundMediumPowerTimeThreshold: 0.5
   groundPoundHighPowerTimeThreshold: 1
   groundPoundSpringJumpTime: 0.25
-  boomerangSlowDownSpeed: -10
-  boomerangSlowDownTime: 0.5
-  boomerangSlowDownCurve:
+  parachuteOpenTime: 0.5
+  parachuteOpenTimeMultiplierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -0.25
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.75
+      inSlope: -0.25
+      outSlope: -6.499998
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.09882355
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.1
+      value: 0.1
+      inSlope: -6.499998
+      outSlope: 0
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  parachuteSlowDownTime: 1
+  parachuteSlowDownCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -257,23 +348,23 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  boomerangSlowDownMultiplierCurve:
+  parachuteSlowDownMultiplierCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0.9
-      inSlope: -0.9
-      outSlope: -0.9
+      inSlope: -0.875
+      outSlope: -0.875
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: -0.9
-      outSlope: -0.9
+      value: 0.025
+      inSlope: -0.875
+      outSlope: -0.875
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -281,9 +372,37 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  boomerangFallSpeed: -2
-  boomerangFallTime: 0.25
-  boomerangFallCurve:
+  parachuteFallSpeed: -2
+  parachuteMovementControllerDatum: {fileID: 11400000, guid: fc2becaf5be411a4bacbf6d8f161bb80, type: 2}
+  boomerangSpeed: 10
+  boomerangTime: 0.5
+  boomerangCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.40286255
+      outSlope: 0.40286255
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.188269
+      outSlope: -3.188269
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  boomerangReturnSpeed: 15
+  boomerangReturnTime: 0.3
+  boomerangReturnCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -307,7 +426,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  boomerangMovementControllerDatum: {fileID: 11400000, guid: 5b732f7c56c09e54e9d3017a7ab49b6d, type: 2}
   initialRollSpeed: 5
   rollMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}
   attackVector: {x: 0, y: 0.1, z: 3}

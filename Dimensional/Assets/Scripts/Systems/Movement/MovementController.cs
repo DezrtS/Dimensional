@@ -107,27 +107,32 @@ namespace Systems.Movement
             var trueInput = ForceController.GetRotation() * input;
             ForceController.ApplyForce(HandleMovement(trueInput, datum), ForceMode.VelocityChange);
         }
-        
-        protected Vector3 HandleMovement(Vector3 input, MovementControllerDatum datum)
+
+        private Vector3 HandleMovement(Vector3 input, MovementControllerDatum datum)
         {
-            if (disableYInput) input.y = 0;
             var currentVelocity =  ForceController.GetVelocity();
-            var targetVelocity = input.normalized * datum.MaxSpeed;
-            var targetSpeed = targetVelocity.magnitude;
+            var maxSpeed = datum.MaxSpeed;
+            
+            if (disableYInput)
+            {
+                input.y = 0;
+                currentVelocity.y = 0;
+            }
+            var targetVelocity = input.normalized * maxSpeed;
 
             var velocityDifference = targetVelocity - currentVelocity;
-            if (disableYInput) velocityDifference.y = 0;
             var differenceDirection = velocityDifference.normalized;
             float accelerationIncrement;
 
-            if (currentVelocity.magnitude <= targetSpeed)
+            if (Vector3.Dot(currentVelocity, differenceDirection) > 0 || currentVelocity.magnitude == 0)
             {
-                accelerationIncrement = datum.Acceleration * Time.deltaTime;
+                accelerationIncrement = datum.Acceleration * datum.AccelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }
             else
             {
-                accelerationIncrement = datum.Deceleration * Time.deltaTime;
+                accelerationIncrement = datum.Deceleration * datum.DecelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }
+            if (!IsGrounded) accelerationIncrement *= datum.AirborneMultiplier;
 
             if (velocityDifference.magnitude < accelerationIncrement) return velocityDifference;
             return differenceDirection * accelerationIncrement;

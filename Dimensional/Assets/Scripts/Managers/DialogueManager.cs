@@ -32,11 +32,22 @@ namespace Managers
             
             _typewriterEffect = GetComponent<TypewriterEffect>();
             _typewriterEffect.Initialize(dialogueTextComponent);
+            _typewriterEffect.CharacterRevealed += TypewriterEffectOnCharacterRevealed;
 
             if (!startDialogueOnAwake) return;
             StartDialogueSequence(currentDialogueSequence);
         }
-        
+
+        private void TypewriterEffectOnCharacterRevealed(char character, int index)
+        {
+            _dialogueEffectHandler.OnCharacterRevealed(character, index);
+        }
+
+        public void ChangeTypewriterSpeed(float speed)
+        {
+            _typewriterEffect.SetMultiplier(speed);
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space)) AdvanceDialogueSequence();
@@ -81,9 +92,9 @@ namespace Managers
 
         private void DisplayDialogueLine(DialogueLineDatum dialogueLineDatum)
         {
-            var strippedText = ProcessDialogueLine(dialogueLineDatum);
-            dialogueTextComponent.text = dialogueLineDatum.Text;
-            _typewriterEffect.StartTyping(strippedText);
+            var processData = ProcessDialogueLine(dialogueLineDatum);
+            dialogueTextComponent.text = processData.FormattedText;
+            _typewriterEffect.StartTyping(processData.BareText);
         }
 
         private void SkipDialogueLine()
@@ -91,7 +102,7 @@ namespace Managers
             
         }
 
-        private string ProcessDialogueLine(DialogueLineDatum dialogueLineDatum)
+        private DialogueEffectHandler.ProcessData ProcessDialogueLine(DialogueLineDatum dialogueLineDatum)
         {
             return _dialogueEffectHandler.ProcessTags(dialogueLineDatum.Text);
         }

@@ -54,23 +54,24 @@ namespace Systems.Player
             jumpInputAction.canceled += OnJump;
             jumpInputAction.Enable();
             
+            var parachuteInputAction = _playerInputSystemActions.Player.Parachute;
+            parachuteInputAction.performed += OnParachute;
+            parachuteInputAction.canceled += OnParachute;
+            parachuteInputAction.Enable();
+            
+            var boomerangInputAction = _playerInputSystemActions.Player.Boomerang;
+            boomerangInputAction.performed += OnBoomerang;
+            boomerangInputAction.canceled += OnBoomerang;
+            boomerangInputAction.Enable();
+            
             var crouchInputAction = _playerInputSystemActions.Player.Crouch;
             crouchInputAction.performed += OnCrouch;
             crouchInputAction.canceled += OnCrouch;
             crouchInputAction.Enable();
             
-            var actionInputAction = _playerInputSystemActions.Player.Action;
-            actionInputAction.performed += OnPrimaryAction;
-            actionInputAction.canceled += OnPrimaryAction;
-            actionInputAction.Enable();
-            
             var attackInputAction = _playerInputSystemActions.Player.Attack;
             attackInputAction.performed += OnAttack;
             attackInputAction.Enable();
-            
-            var switchInputAction = _playerInputSystemActions.Player.Switch;
-            switchInputAction.performed += OnSwitch;
-            switchInputAction.Enable();
         }
         
         Vector3 IMove.GetInput()
@@ -104,6 +105,18 @@ namespace Systems.Player
             if (context.performed) _playerMovementController.Jump();
             else if (context.canceled) _playerMovementController.StopJumping();
         }
+
+        private void OnParachute(InputAction.CallbackContext context)
+        {
+            if (context.performed) _playerMovementController.Parachute();
+            else if (context.canceled) _playerMovementController.StopParachute();
+        }
+
+        private void OnBoomerang(InputAction.CallbackContext context)
+        {
+            if (context.performed) _playerMovementController.Boomerang();
+            else if (context.canceled) _playerMovementController.StopBoomerang();
+        }
         
         private void OnCrouch(InputAction.CallbackContext context)
         {
@@ -111,38 +124,9 @@ namespace Systems.Player
             else if (context.canceled) _playerMovementController.StopCrouching();
         }
         
-        private void OnSwitch(InputAction.CallbackContext context)
-        {
-            var input = context.ReadValue<Vector2>();
-            if (input.x != 0)
-            {
-                //_playerMovementController.ChangeShape(input.x > 0 ? PlayerMovementController.ShapeType.Boomerang : PlayerMovementController.ShapeType.Spring);
-            }
-            else
-            {
-                //_playerMovementController.ChangeShape(input.y > 0 ? PlayerMovementController.ShapeType.Sphere : PlayerMovementController.ShapeType.Heavy);
-            }
-        }
-
-        private void OnPrimaryAction(InputAction.CallbackContext context)
-        {
-            if (context.performed) _playerMovementController.Boomerang();
-            else if (context.canceled) _playerMovementController.StopBoomerang();
-            
-            //var projectile = projectileDatum.Spawn();
-            //var position = transform.position;
-            //var velocity = _playerMovementController.ForceController.GetVelocity();
-            //projectile.Fire(FireContext.Construct(position, position + velocity, fireSpeed, true));
-        }
-        
         private void OnAttack(InputAction.CallbackContext context)
         {
             _playerMovementController.Attack();
         }
-
-        //private void PlayerMovementControllerOnShapeTypeChanged(PlayerMovementController.ShapeType oldValue, PlayerMovementController.ShapeType newValue)
-        //{
-        //    typeText.text = newValue.ToString();
-        //}
     }
 }

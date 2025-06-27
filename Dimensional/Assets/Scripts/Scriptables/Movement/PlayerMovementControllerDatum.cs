@@ -62,16 +62,25 @@ namespace Scriptables.Movement
         [SerializeField] private float groundPoundHighPowerTimeThreshold;
         [SerializeField] private float groundPoundSpringJumpTime;
         [Space(10)]
-        [Header("Boomerang Settings")]
-        [SerializeField] private float boomerangSlowDownSpeed;
-        [SerializeField] private float boomerangSlowDownTime;
-        [SerializeField] private AnimationCurve boomerangSlowDownCurve;
-        [SerializeField] private AnimationCurve boomerangSlowDownMultiplierCurve;
+        [Header("Parachute Settings")]
+        [SerializeField] private float parachuteOpenTime;
+        [SerializeField] private AnimationCurve parachuteOpenTimeMultiplierCurve;
         [Space(10)] 
-        [SerializeField] private float boomerangFallSpeed;
-        [SerializeField] private float boomerangFallTime;
-        [SerializeField] private AnimationCurve boomerangFallCurve;
-        [SerializeField] private MovementControllerDatum boomerangMovementControllerDatum;
+        [SerializeField] private float parachuteSlowDownTime;
+        [SerializeField] private AnimationCurve parachuteSlowDownCurve;
+        [SerializeField] private AnimationCurve parachuteSlowDownMultiplierCurve;
+        [Space(10)] 
+        [SerializeField] private float parachuteFallSpeed;
+        [SerializeField] private MovementControllerDatum parachuteMovementControllerDatum;
+        [Space(10)] 
+        [Header("Boomerang Settings")]
+        [SerializeField] private float boomerangSpeed;
+        [SerializeField] private float boomerangTime;
+        [SerializeField] private AnimationCurve boomerangCurve;
+        [Space(10)] 
+        [SerializeField] private float boomerangReturnSpeed;
+        [SerializeField] private float boomerangReturnTime;
+        [SerializeField] private AnimationCurve boomerangReturnCurve;
         [Space(10)]
         [Header("Roll Settings")]
         [SerializeField] private float initialRollSpeed;
@@ -131,16 +140,24 @@ namespace Scriptables.Movement
         public float GroundPoundMediumPowerTimeThreshold => groundPoundMediumPowerTimeThreshold;
         public float GroundPoundHighPowerTimeThreshold => groundPoundHighPowerTimeThreshold;
         public float GroundPoundSpringJumpTime => groundPoundSpringJumpTime;
-
-        public float BoomerangSlowDownSpeed => boomerangSlowDownSpeed;
-        public float BoomerangSlowDownTime => boomerangSlowDownTime;
-        public AnimationCurve BoomerangSlowDownCurve => boomerangSlowDownCurve;
-        public AnimationCurve BoomerangSlowDownMultiplierCurve => boomerangSlowDownMultiplierCurve;
         
-        public float BoomerangFallSpeed => boomerangFallSpeed;
-        public float BoomerangFallTime => boomerangFallTime;
-        public AnimationCurve BoomerangFallCurve => boomerangFallCurve;
-        public MovementControllerDatum BoomerangMovementControllerDatum => boomerangMovementControllerDatum;
+        public float ParachuteOpenTime => parachuteOpenTime;
+        public AnimationCurve ParachuteOpenTimeMultiplierCurve => parachuteOpenTimeMultiplierCurve;
+        
+        public float ParachuteSlowDownTime => parachuteSlowDownTime;
+        public AnimationCurve ParachuteSlowDownCurve => parachuteSlowDownCurve;
+        public AnimationCurve ParachuteSlowDownMultiplierCurve => parachuteSlowDownCurve;
+        
+        public float ParachuteFallSpeed => parachuteFallSpeed;
+        public MovementControllerDatum ParachuteMovementControllerDatum => parachuteMovementControllerDatum;
+
+        public float BoomerangSpeed => boomerangSpeed;
+        public float BoomerangTime => boomerangTime;
+        public AnimationCurve BoomerangCurve => boomerangCurve;
+        
+        public float BoomerangReturnSpeed => boomerangReturnSpeed;
+        public float BoomerangReturnTime => boomerangReturnTime;
+        public AnimationCurve BoomerangReturnCurve => boomerangReturnCurve;
         
         public float InitialRollSpeed => initialRollSpeed;
         public MovementControllerDatum RollMovementControllerDatum => rollMovementControllerDatum;

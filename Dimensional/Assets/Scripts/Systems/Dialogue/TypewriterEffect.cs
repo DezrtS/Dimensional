@@ -10,9 +10,13 @@ namespace Systems.Dialogue
     {
         public delegate void TypewriterEventHandler();
         public event TypewriterEventHandler Finished;
+        public delegate void CharacterEventHandler(char character, int index);
+        public event CharacterEventHandler CharacterRevealed;
         
         [SerializeField] private float defaultCharactersPerSecond = 20;
         [SerializeField] private float defaultInterpunctuationDelay = 0.5f;
+
+        private float _typingMultiplier = 1;
         
         private TMP_Text _textComponent;
         private bool _isTyping;
@@ -24,6 +28,11 @@ namespace Systems.Dialogue
         public void Initialize(TMP_Text textComponent)
         {
             _textComponent = textComponent;
+        }
+
+        public void SetMultiplier(float multiplier)
+        {
+            _typingMultiplier = multiplier;
         }
 
         public void StartTyping(string strippedText)
@@ -55,6 +64,7 @@ namespace Systems.Dialogue
             foreach (var c in _strippedText)
             {
                 _textComponent.maxVisibleCharacters = _currentVisibleCharacterIndex + 1;
+                CharacterRevealed?.Invoke(c, _currentVisibleCharacterIndex - 1);
 
                 if (char.IsPunctuation(c))
                 {
@@ -62,7 +72,7 @@ namespace Systems.Dialogue
                 }
                 else
                 {
-                    yield return new WaitForSeconds(1 / defaultCharactersPerSecond);
+                    yield return new WaitForSeconds(1 / (defaultCharactersPerSecond * _typingMultiplier));
                 }
                 
                 _currentVisibleCharacterIndex++;
