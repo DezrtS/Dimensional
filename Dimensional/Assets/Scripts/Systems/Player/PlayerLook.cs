@@ -10,7 +10,6 @@ namespace Systems.Player
     {
         [SerializeField] private PlayerLookDatum playerLookDatum;
         [SerializeField] private Dimensions lookDimensions;
-        [SerializeField] private bool lockCursor;
         [Space] 
         [SerializeField] private Transform root;
         

@@ -7,6 +7,7 @@ namespace Managers
 {
     public class CameraManager : Singleton<CameraManager>
     {
+        [SerializeField] private bool lockAndHideCursor;
         [SerializeField] private float yOffset2D;
         
         private Camera _camera;
@@ -19,6 +20,20 @@ namespace Managers
             _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
             _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
+            
+            if (!lockAndHideCursor) return;
+            LockAndHideCursor();
+        }
+        
+        [ContextMenu("Lock and Hide Cursor")]
+        private void LockAndHideCursor() => SetCursorState(CursorLockMode.Locked, false);
+        [ContextMenu("Unlock and Show Cursor")]
+        private void UnlockAndShowCursor() => SetCursorState(CursorLockMode.None, true);
+
+        private static void SetCursorState(CursorLockMode cursorLockMode, bool cursorVisible)
+        {
+            Cursor.lockState = cursorLockMode;
+            Cursor.visible = cursorVisible;
         }
 
         private void GameManagerOnWorldDimensionsChanged(Dimensions oldValue, Dimensions newValue)

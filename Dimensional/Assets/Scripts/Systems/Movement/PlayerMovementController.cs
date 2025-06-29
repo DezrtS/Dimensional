@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
+using Interfaces;
 using Managers;
 using Scriptables.Movement;
+using Systems.Interactables;
 using Systems.Player;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Systems.Movement
 {
@@ -15,6 +18,18 @@ namespace Systems.Movement
         [SerializeField] private float scaleSpeed = 10;
         [Space] 
         [SerializeField] private bool disableWallSlideCheck;
+        [SerializeField] private bool canShiftWallSlide;
+        [SerializeField] private MovementControllerDatum wallSlideMovementControllerDatum;
+        [Space]
+        [SerializeField] private bool swapBoomerangMovement;
+        [SerializeField] private float grappleBoomerangSpeed;
+        [SerializeField] private float grappleBoomerangTime;
+        [SerializeField] private AnimationCurve grappleBoomerangCurve;
+        [SerializeField] private float checkRadius;
+        [SerializeField] private LayerMask checkLayer;
+        [SerializeField] private float maxAngleDifference;
+        [Space]
+        [SerializeField] private VisualEffect[] visualEffects;
         [Space] 
         [SerializeField] private GameObject smokePrefab; 
         [SerializeField] private GameObject balloonJumpSmokePrefab; 
@@ -56,6 +71,8 @@ namespace Systems.Movement
         private Coroutine _wallSlideCoroutine;
         private Coroutine _wallJumpCoroutine;
         private Coroutine _attackCoroutine;
+        
+        private BoomerangTarget _boomerangTarget;
 
         protected override void Awake()
         {
@@ -68,6 +85,37 @@ namespace Systems.Movement
         
         private void FixedUpdate()
         {
+            if (swapBoomerangMovement)
+            {
+                var results = new Collider[10];
+                var size = Physics.OverlapSphereNonAlloc(transform.position, checkRadius, results, checkLayer, QueryTriggerInteraction.Collide);
+    
+                BoomerangTarget closestTarget = null;
+                var minAngle = float.MaxValue;
+    
+                var playerForward = _playerLook.TransformInput(Vector3.forward); // Cache player's forward direction
+    
+                for (var i = 0; i < size; i++)
+                {
+                    var boomerangTarget = results[i].GetComponent<BoomerangTarget>();
+                    if (!boomerangTarget) continue;
+        
+                    // Check if target is interactable
+                    if (!boomerangTarget.CanInteract(InteractContext.Construct(gameObject))) continue;
+        
+                    // Calculate direction to target and angular offset
+                    var directionToTarget = (boomerangTarget.transform.position - transform.position).normalized;
+                    var angle = Vector3.Angle(playerForward, directionToTarget);
+        
+                    // Check if within maximum allowed angle and has smallest angle found
+                    if (!(angle <= maxAngleDifference) || !(angle < minAngle)) continue;
+                    minAngle = angle;
+                    closestTarget = boomerangTarget;
+                }
+    
+                _boomerangTarget = closestTarget; // Store the closest valid target
+            }          
+            
             var deltaTime = Time.fixedDeltaTime;
             var velocity = ForceController.GetVelocity();
             root.localScale = Vector3.Lerp(root.localScale, new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), deltaTime * scaleSpeed);
@@ -134,6 +182,8 @@ namespace Systems.Movement
         {
             if (_isWallSliding)
             {
+                if (canShiftWallSlide) base.OnMove(input, wallSlideMovementControllerDatum);
+                
                 if (input.magnitude < 0.5f) return;
                 if (Vector3.Angle(_wallSlideDirection, input) < _playerMovementControllerDatum.WallSlideMinExitAngle) return;
                 CancelWallSlide();
@@ -323,11 +373,17 @@ namespace Systems.Movement
             StopCoroutine(_boomerangCoroutine);
             _isBoomeranging = false;
             _animator.SetTrigger("Sphere");
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.Stop();
+            }
         }
 
         public void Boomerang()
         {
             if (IsGrounded || !_canBoomerang || _isAttacking || _isWallSliding) return;
+
+            if (swapBoomerangMovement && !_boomerangTarget) return;
             OnBoomerang();
         }
 
@@ -337,8 +393,12 @@ namespace Systems.Movement
             CancelParachute();
             CancelGroundPound();
             _isRolling = false;
-            _canBoomerang = false;
-            _boomerangCoroutine = StartCoroutine(BoomerangCoroutine());
+            if (!swapBoomerangMovement) _canBoomerang = false;
+            _boomerangCoroutine = StartCoroutine(swapBoomerangMovement ? BoomerangCoroutine2() : BoomerangCoroutine());
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.SendEvent("OnPlay");
+            }
         }
 
         public void StopBoomerang()
@@ -550,6 +610,80 @@ namespace Systems.Movement
             ForceController.UseGravity = true;
             _isBoomeranging = false;
             _animator.SetTrigger("Sphere");
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.Stop();
+            }
+        }
+        
+        private IEnumerator BoomerangCoroutine2()
+        {
+            _animator.SetTrigger("Boomerang");
+            ForceController.UseGravity = false;
+            _isBoomeranging = true;
+
+            var boomerangTarget = _boomerangTarget;
+            boomerangTarget.Interact(InteractContext.Construct(gameObject));
+            
+            var direction = boomerangTarget.transform.position - transform.position;
+            if (MovementDimensions == Dimensions.Two) direction.z = 0;
+            direction = direction.normalized;
+            
+            var boomerangTimer = 0f;
+
+            var boomerangSpeed = grappleBoomerangSpeed; //_playerMovementControllerDatum.BoomerangSpeed;
+            var boomerangTime = grappleBoomerangTime; //_playerMovementControllerDatum.BoomerangTime;
+            var boomerangCurve = grappleBoomerangCurve; //_playerMovementControllerDatum.BoomerangReturnCurve;
+
+            while (true)
+            {
+                if (IsGrounded)
+                {
+                    CancelBoomerang();
+                    yield break;
+                }
+                
+                var normalizedTime = boomerangTimer / boomerangTime;
+                var boomerangVelocity = boomerangSpeed * boomerangCurve.Evaluate(normalizedTime) * direction;
+                
+                ForceController.SetVelocity(boomerangVelocity);
+                
+                direction = boomerangTarget.transform.position - transform.position;
+                if (MovementDimensions == Dimensions.Two) direction.z = 0;
+                direction = direction.normalized;
+
+                if (Vector3.Dot(boomerangVelocity, direction) < 0) break;
+                
+                boomerangTimer += Time.deltaTime;
+                yield return null;
+            }
+
+            /*
+            var boomerangReturnTimer = 0f;
+            
+            var boomerangReturnSpeed = _playerMovementControllerDatum.BoomerangReturnSpeed;
+            var boomerangReturnTime = _playerMovementControllerDatum.BoomerangReturnTime;
+            var boomerangReturnCurve = _playerMovementControllerDatum.BoomerangReturnCurve;
+            
+            while (boomerangReturnTimer < boomerangReturnTime)
+            {
+                var normalizedTime = Mathf.Clamp01(boomerangReturnTimer / boomerangReturnTime);
+                var returnVelocity = boomerangReturnSpeed * boomerangReturnCurve.Evaluate(normalizedTime) * -direction;
+                
+                ForceController.SetVelocity(returnVelocity);
+                
+                boomerangReturnTimer += Time.deltaTime;
+                yield return null;
+            }
+            */
+            
+            ForceController.UseGravity = true;
+            _isBoomeranging = false;
+            _animator.SetTrigger("Sphere");
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.Stop();
+            }
         }
 
         private IEnumerator GroundPoundCoroutine()
@@ -622,7 +756,10 @@ namespace Systems.Movement
             {
                 var normalizedTime = Mathf.Clamp01(wallSlideTimer / wallSlideTime);
                 var verticalVelocity = wallSlideCurve.Evaluate(normalizedTime) * wallSlideSpeed;
-                ForceController.SetVelocity(Vector3.up * verticalVelocity);
+                var velocity = ForceController.GetVelocity();
+                if (!canShiftWallSlide) velocity = Vector3.zero;
+                velocity.y = verticalVelocity;
+                ForceController.SetVelocity(velocity);
                 wallSlideTimer += Time.deltaTime;
                 yield return null;
             }
