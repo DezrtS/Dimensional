@@ -9,8 +9,8 @@ namespace Systems.Movement
 
         protected override void Awake()
         {
-            base.Awake();
             _rig = GetComponent<Rigidbody>();
+            base.Awake();
         }
 
         protected override void OnSetIsKinematic()

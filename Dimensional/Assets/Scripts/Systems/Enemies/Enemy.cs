@@ -1,16 +1,23 @@
+using System;
+using Interfaces;
+using Scriptables.Entities;
+using Systems.Entities;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+namespace Systems.Enemies
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public abstract class Enemy : MonoBehaviour, IEntity
     {
+        [SerializeField] private EntityDatum entityDatum;
         
-    }
+        
+        private Health _health;
+        
+        public EntityDatum EntityDatum => entityDatum;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+            _health = GetComponent<Health>();
+        }
     }
 }

@@ -6,27 +6,45 @@ namespace Scriptables.Movement
     public class PlayerMovementControllerDatum : MovementControllerDatum
     {
         [Space(10)] 
+        [Header("Default Jump Settings")]
         [SerializeField] private float jumpHeight;
         [SerializeField] private float jumpTime;
         [SerializeField] private AnimationCurve jumpCurve;
         [Space(10)] 
+        [Header("Spring Jump Settings")]
         [SerializeField] private float springJumpHeight;
         [SerializeField] private float springJumpTime;
         [SerializeField] private AnimationCurve springJumpCurve;
         [Space(10)] 
+        [SerializeField] private float springJumpMediumPowerHeightMultiplier;
+        [SerializeField] private float springJumpMediumPowerTimeMultiplier;
+        [SerializeField] private float springJumpHighPowerHeightMultiplier;
+        [SerializeField] private float springJumpHighPowerTimeMultiplier;
+        [Space(10)] 
+        [Header("Balloon Jump Settings")]
         [SerializeField] private float balloonJumpHeight;
         [SerializeField] private float balloonJumpTime;
         [SerializeField] private AnimationCurve balloonJumpCurve;
-        [Space(10)] 
+        [Space(10)]
+        [Header("General Jump Settings")]
         [SerializeField] private float cutJumpMultiplier;
         [SerializeField] private float queueJumpTime;
         [SerializeField] private float coyoteTime;
         [Space(10)] 
-        [SerializeField] private float minExitAngle;
+        [Header("Wall Slide Settings")]
+        [SerializeField] private float wallSlideMinExitAngle;
         [SerializeField] private float wallSlideSpeed;
         [SerializeField] private float wallSlideTime;
         [SerializeField] private AnimationCurve wallSlideCurve;
         [Space(10)] 
+        [SerializeField] private float wallSlideCoyoteTime;
+        [SerializeField] private float wallSlideYVelocityThreshold = 0.2f;
+        [SerializeField] private float wallSlideChecks = 8;
+        [SerializeField] private float wallSlideCheckDistance;
+        [SerializeField] private Vector3 wallSlideCheckOffset;
+        [SerializeField] private LayerMask wallSlideLayerMask;
+        [Space(10)] 
+        [Header("Wall Jump Settings")]
         [SerializeField] private float wallJumpSpeed;
         [SerializeField] private float wallJumpSpeedTime;
         [SerializeField] private AnimationCurve wallJumpSpeedCurve;
@@ -35,25 +53,40 @@ namespace Scriptables.Movement
         [SerializeField] private float wallJumpHeightTime;
         [SerializeField] private AnimationCurve wallJumpHeightCurve;
         [Space(10)] 
+        [Header("Ground Pound Settings")]
         [SerializeField] private float groundPoundSpeed;
         [SerializeField] private float groundPoundTime;
         [SerializeField] private AnimationCurve groundPoundCurve;
         [Space(10)] 
-        [SerializeField] private float afterGroundPoundTime;
+        [SerializeField] private float groundPoundMediumPowerTimeThreshold;
+        [SerializeField] private float groundPoundHighPowerTimeThreshold;
+        [SerializeField] private float groundPoundSpringJumpTime;
+        [Space(10)]
+        [Header("Parachute Settings")]
+        [SerializeField] private float parachuteOpenTime;
+        [SerializeField] private AnimationCurve parachuteOpenTimeMultiplierCurve;
         [Space(10)] 
-        [SerializeField] private float boomerangSlowDownSpeed;
-        [SerializeField] private float boomerangSlowDownTime;
-        [SerializeField] private AnimationCurve boomerangSlowDownCurve;
-        [SerializeField] private AnimationCurve boomerangSlowDownMultiplierCurve;
+        [SerializeField] private float parachuteSlowDownTime;
+        [SerializeField] private AnimationCurve parachuteSlowDownCurve;
+        [SerializeField] private AnimationCurve parachuteSlowDownMultiplierCurve;
         [Space(10)] 
-        [SerializeField] private float boomerangFallSpeed;
-        [SerializeField] private float boomerangFallTime;
-        [SerializeField] private AnimationCurve boomerangFallCurve;
-        [SerializeField] private MovementControllerDatum boomerangMovementControllerDatum;
+        [SerializeField] private float parachuteFallSpeed;
+        [SerializeField] private MovementControllerDatum parachuteMovementControllerDatum;
         [Space(10)] 
+        [Header("Boomerang Settings")]
+        [SerializeField] private float boomerangSpeed;
+        [SerializeField] private float boomerangTime;
+        [SerializeField] private AnimationCurve boomerangCurve;
+        [Space(10)] 
+        [SerializeField] private float boomerangReturnSpeed;
+        [SerializeField] private float boomerangReturnTime;
+        [SerializeField] private AnimationCurve boomerangReturnCurve;
+        [Space(10)]
+        [Header("Roll Settings")]
         [SerializeField] private float initialRollSpeed;
         [SerializeField] private MovementControllerDatum rollMovementControllerDatum;
-        [Space(10)] 
+        [Space(10)]
+        [Header("Attack Settings")]
         [SerializeField] private Vector3 attackVector;
         [SerializeField] private float attackTime;
         [SerializeField] private AnimationCurve attackCurve;
@@ -65,6 +98,11 @@ namespace Scriptables.Movement
         public float SpringJumpHeight => springJumpHeight;
         public float SpringJumpTime => springJumpTime;
         public AnimationCurve SpringJumpCurve => springJumpCurve;
+
+        public float SpringJumpMediumPowerHeightMultiplier => springJumpMediumPowerHeightMultiplier;
+        public float SpringJumpMediumPowerTimeMultiplier => springJumpMediumPowerTimeMultiplier;
+        public float SpringJumpHighPowerHeightMultiplier => springJumpHighPowerHeightMultiplier;
+        public float SpringJumpHighPowerTimeMultiplier => springJumpHighPowerTimeMultiplier;
         
         public float BalloonJumpHeight => balloonJumpHeight;
         public float BalloonJumpTime => balloonJumpTime;
@@ -74,10 +112,16 @@ namespace Scriptables.Movement
         public float QueueJumpTime => queueJumpTime;
         public float CoyoteTime => coyoteTime;
         
-        public float MinExitAngle => minExitAngle;
+        public float WallSlideMinExitAngle => wallSlideMinExitAngle;
         public float WallSlideSpeed => wallSlideSpeed;
         public float WallSlideTime => wallSlideTime;
         public AnimationCurve WallSlideCurve => wallSlideCurve;
+        
+        public float WallSlideYVelocityThreshold => wallSlideYVelocityThreshold;
+        public float WallSlideChecks => wallSlideChecks;
+        public float WallSlideCheckDistance => wallSlideCheckDistance;
+        public Vector3 WallSlideCheckOffset => wallSlideCheckOffset;
+        public LayerMask WallSlideLayerMask => wallSlideLayerMask;
 
         public float WallJumpSpeed => wallJumpSpeed;
         public float WallJumpSpeedTime => wallJumpSpeedTime;
@@ -87,21 +131,33 @@ namespace Scriptables.Movement
         public float WallJumpHeightTime => wallJumpHeightTime;
         public AnimationCurve WallJumpHeightCurve => wallJumpHeightCurve;
         
+        public float WallSlideCoyoteTime => wallSlideCoyoteTime;
+        
         public float GroundPoundSpeed => groundPoundSpeed;
         public float GroundPoundTime => groundPoundTime;
         public AnimationCurve GroundPoundCurve => groundPoundCurve;
         
-        public float AfterGroundPoundTime => afterGroundPoundTime;
-
-        public float BoomerangSlowDownSpeed => boomerangSlowDownSpeed;
-        public float BoomerangSlowDownTime => boomerangSlowDownTime;
-        public AnimationCurve BoomerangSlowDownCurve => boomerangSlowDownCurve;
-        public AnimationCurve BoomerangSlowDownMultiplierCurve => boomerangSlowDownMultiplierCurve;
+        public float GroundPoundMediumPowerTimeThreshold => groundPoundMediumPowerTimeThreshold;
+        public float GroundPoundHighPowerTimeThreshold => groundPoundHighPowerTimeThreshold;
+        public float GroundPoundSpringJumpTime => groundPoundSpringJumpTime;
         
-        public float BoomerangFallSpeed => boomerangFallSpeed;
-        public float BoomerangFallTime => boomerangFallTime;
-        public AnimationCurve BoomerangFallCurve => boomerangFallCurve;
-        public MovementControllerDatum BoomerangMovementControllerDatum => boomerangMovementControllerDatum;
+        public float ParachuteOpenTime => parachuteOpenTime;
+        public AnimationCurve ParachuteOpenTimeMultiplierCurve => parachuteOpenTimeMultiplierCurve;
+        
+        public float ParachuteSlowDownTime => parachuteSlowDownTime;
+        public AnimationCurve ParachuteSlowDownCurve => parachuteSlowDownCurve;
+        public AnimationCurve ParachuteSlowDownMultiplierCurve => parachuteSlowDownCurve;
+        
+        public float ParachuteFallSpeed => parachuteFallSpeed;
+        public MovementControllerDatum ParachuteMovementControllerDatum => parachuteMovementControllerDatum;
+
+        public float BoomerangSpeed => boomerangSpeed;
+        public float BoomerangTime => boomerangTime;
+        public AnimationCurve BoomerangCurve => boomerangCurve;
+        
+        public float BoomerangReturnSpeed => boomerangReturnSpeed;
+        public float BoomerangReturnTime => boomerangReturnTime;
+        public AnimationCurve BoomerangReturnCurve => boomerangReturnCurve;
         
         public float InitialRollSpeed => initialRollSpeed;
         public MovementControllerDatum RollMovementControllerDatum => rollMovementControllerDatum;

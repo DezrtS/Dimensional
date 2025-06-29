@@ -311,7 +311,7 @@ GameObject:
   - component: {fileID: 3158746514573188946}
   - component: {fileID: 5459988207746735620}
   - component: {fileID: 4144831987515317400}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Debug Character Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -382,24 +382,12 @@ MonoBehaviour:
   movementControllerDatum: {fileID: 11400000, guid: 670b9822948381e4c81cd3a40815b7e2, type: 2}
   movementDimensions: 0
   disableYInput: 1
-  setYVelocityOnGrounded: 1
   disableGroundedCheck: 0
-  groundedCheckDistance: 0.6
-  groundedCheckOffset: {x: 0, y: 0, z: 0}
-  groundedLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
+  setYVelocityOnGrounded: 1
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
-  wallSlideThreshold: 0.2
   disableWallSlideCheck: 0
-  wallSlideChecks: 8
-  wallSlideCheckDistance: 0.55
-  wallSlideCheckOffset: {x: 0, y: 0, z: 0}
-  wallSlideLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
   balloonJumpSmokePrefab: {fileID: 4772967992589099599, guid: 1e33b4cd74162f7439049e48f49d7bf8, type: 3}
   groundPoundSmokePrefab: {fileID: 1267202595665965921, guid: 75344c2930713a241a5da748c6e9848a, type: 3}

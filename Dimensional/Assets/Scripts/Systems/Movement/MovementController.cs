@@ -8,16 +8,16 @@ namespace Systems.Movement
 {
     public class MovementController : MonoBehaviour
     {
+        public delegate void GroundedEventHandler(bool isGrounded);
+        public event GroundedEventHandler Grounded;
+        
         [SerializeField] private MovementControllerDatum movementControllerDatum;
         [SerializeField] private Dimensions movementDimensions;
         [Space] 
         [SerializeField] private bool disableYInput;
-
-        [SerializeField] private bool setYVelocityOnGrounded;
+        [Space]
         [SerializeField] private bool disableGroundedCheck;
-        [SerializeField] private float groundedCheckDistance;
-        [SerializeField] private Vector3 groundedCheckOffset;
-        [SerializeField] private LayerMask groundedLayerMask;
+        [SerializeField] private bool setYVelocityOnGrounded;
         
         protected IMove Mover;
         
@@ -46,12 +46,32 @@ namespace Systems.Movement
         protected virtual void OnUpdate()
         {
             if (disableGroundedCheck) return;
-            IsGrounded = Physics.Raycast(transform.position + groundedCheckOffset, Vector3.down, groundedCheckDistance, groundedLayerMask, QueryTriggerInteraction.Ignore);
+            UpdateIsGrounded();
             if (!IsGrounded || !setYVelocityOnGrounded) return;
             var velocity = ForceController.GetVelocity();
             if (!(velocity.y < 0)) return;
             velocity.y = -0.5f;
             ForceController.SetVelocity(velocity);
+        }
+
+        private void UpdateIsGrounded()
+        {
+            var previousIsGrounded = IsGrounded;
+            var position = transform.position + movementControllerDatum.GroundedCheckOffset;
+            IsGrounded = movementControllerDatum.GroundedCheckType switch
+            {
+                GroundedCheckType.Ray =>
+                    Physics.Raycast(position, Vector3.down, movementControllerDatum.GroundedCheckDistance,
+                        movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                GroundedCheckType.Sphere =>
+                    Physics.CheckSphere(position, movementControllerDatum.GroundedCheckDistance,
+                        movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                GroundedCheckType.Box =>
+                    Physics.CheckBox(position, movementControllerDatum.GroundedCheckDistance / 2f * Vector3.one,
+                        Quaternion.identity, movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            if (previousIsGrounded != IsGrounded) Grounded?.Invoke(IsGrounded);
         }
 
         public void Move()
@@ -87,27 +107,32 @@ namespace Systems.Movement
             var trueInput = ForceController.GetRotation() * input;
             ForceController.ApplyForce(HandleMovement(trueInput, datum), ForceMode.VelocityChange);
         }
-        
-        protected Vector3 HandleMovement(Vector3 input, MovementControllerDatum datum)
+
+        private Vector3 HandleMovement(Vector3 input, MovementControllerDatum datum)
         {
-            if (disableYInput) input.y = 0;
             var currentVelocity =  ForceController.GetVelocity();
-            var targetVelocity = input.normalized * datum.MaxSpeed;
-            var targetSpeed = targetVelocity.magnitude;
+            var maxSpeed = datum.MaxSpeed;
+            
+            if (disableYInput)
+            {
+                input.y = 0;
+                currentVelocity.y = 0;
+            }
+            var targetVelocity = input.normalized * maxSpeed;
 
             var velocityDifference = targetVelocity - currentVelocity;
-            if (disableYInput) velocityDifference.y = 0;
             var differenceDirection = velocityDifference.normalized;
             float accelerationIncrement;
 
-            if (currentVelocity.magnitude <= targetSpeed)
+            if (Vector3.Dot(currentVelocity, differenceDirection) > 0 || currentVelocity.magnitude == 0)
             {
-                accelerationIncrement = datum.Acceleration * Time.deltaTime;
+                accelerationIncrement = datum.Acceleration * datum.AccelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }
             else
             {
-                accelerationIncrement = datum.Deceleration * Time.deltaTime;
+                accelerationIncrement = datum.Deceleration * datum.DecelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }
+            if (!IsGrounded) accelerationIncrement *= datum.AirborneMultiplier;
 
             if (velocityDifference.magnitude < accelerationIncrement) return velocityDifference;
             return differenceDirection * accelerationIncrement;

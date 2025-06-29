@@ -15,12 +15,12 @@ namespace Systems.Movement
 
         protected override void Awake()
         {
-            base.Awake();
             _characterController = GetComponent<CharacterController>();
             if (TryGetComponent(out Rigidbody rig))
             {
                 rig.mass = mass;
             }
+            base.Awake();
         }
 
         private void FixedUpdate()

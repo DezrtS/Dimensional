@@ -1,26 +1,35 @@
 using System;
 using System.Collections;
+using Interfaces;
 using Managers;
 using Scriptables.Movement;
+using Systems.Interactables;
 using Systems.Player;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Systems.Movement
 {
     public class PlayerMovementController : MovementController
     {
+        [Space] 
         [SerializeField] private Transform root;
         [SerializeField] private float scaleStrength = 0.1f;
         [SerializeField] private float scaleSpeed = 10;
-        
-        [SerializeField] private float wallSlideThreshold = 0.2f;
-        
+        [Space] 
         [SerializeField] private bool disableWallSlideCheck;
-        [SerializeField] private float wallSlideChecks = 8;
-        [SerializeField] private float wallSlideCheckDistance;
-        [SerializeField] private Vector3 wallSlideCheckOffset;
-        [SerializeField] private LayerMask wallSlideLayerMask;
-
+        [SerializeField] private bool canShiftWallSlide;
+        [SerializeField] private MovementControllerDatum wallSlideMovementControllerDatum;
+        [Space]
+        [SerializeField] private bool swapBoomerangMovement;
+        [SerializeField] private float grappleBoomerangSpeed;
+        [SerializeField] private float grappleBoomerangTime;
+        [SerializeField] private AnimationCurve grappleBoomerangCurve;
+        [SerializeField] private float checkRadius;
+        [SerializeField] private LayerMask checkLayer;
+        [SerializeField] private float maxAngleDifference;
+        [Space]
+        [SerializeField] private VisualEffect[] visualEffects;
         [Space] 
         [SerializeField] private GameObject smokePrefab; 
         [SerializeField] private GameObject balloonJumpSmokePrefab; 
@@ -31,32 +40,39 @@ namespace Systems.Movement
         private Animator _animator;
         
         private bool _isJumping;
+        private bool _isParachuting;
+        private bool _isBoomeranging;
         private bool _isWallJumping;
         private bool _isCrouching;
         private bool _isGroundPounding;
         private bool _isRolling;
         private bool _isWallSliding;
-        private bool _isBoomeranging;
         private bool _isAttacking;
         
         private bool _cutJump;
         
         private bool _canDoubleJump;
         private bool _canSpringJump;
+        private bool _canBoomerang;
         private bool _canAttack;
 
         private Vector3 _wallSlideDirection;
+        private PowerLevel _groundPoundPowerLevel;
         
         private float _springJumpTimer;
         private float _queueJumpTimer;
         private float _coyoteTimer;
+        private float _wallSlideCoyoteTimer;
         
         private Coroutine _jumpCoroutine;
+        private Coroutine _parachuteCoroutine;
         private Coroutine _boomerangCoroutine;
         private Coroutine _groundPoundCoroutine;
         private Coroutine _wallSlideCoroutine;
         private Coroutine _wallJumpCoroutine;
         private Coroutine _attackCoroutine;
+        
+        private BoomerangTarget _boomerangTarget;
 
         protected override void Awake()
         {
@@ -64,16 +80,49 @@ namespace Systems.Movement
             _playerMovementControllerDatum = (PlayerMovementControllerDatum)MovementControllerDatum;
             _playerLook = GetComponent<PlayerLook>();
             _animator = GetComponent<Animator>();
+            Grounded += OnGrounded;
         }
         
         private void FixedUpdate()
         {
+            if (swapBoomerangMovement)
+            {
+                var results = new Collider[10];
+                var size = Physics.OverlapSphereNonAlloc(transform.position, checkRadius, results, checkLayer, QueryTriggerInteraction.Collide);
+    
+                BoomerangTarget closestTarget = null;
+                var minAngle = float.MaxValue;
+    
+                var playerForward = _playerLook.TransformInput(Vector3.forward); // Cache player's forward direction
+    
+                for (var i = 0; i < size; i++)
+                {
+                    var boomerangTarget = results[i].GetComponent<BoomerangTarget>();
+                    if (!boomerangTarget) continue;
+        
+                    // Check if target is interactable
+                    if (!boomerangTarget.CanInteract(InteractContext.Construct(gameObject))) continue;
+        
+                    // Calculate direction to target and angular offset
+                    var directionToTarget = (boomerangTarget.transform.position - transform.position).normalized;
+                    var angle = Vector3.Angle(playerForward, directionToTarget);
+        
+                    // Check if within maximum allowed angle and has smallest angle found
+                    if (!(angle <= maxAngleDifference) || !(angle < minAngle)) continue;
+                    minAngle = angle;
+                    closestTarget = boomerangTarget;
+                }
+    
+                _boomerangTarget = closestTarget; // Store the closest valid target
+            }          
+            
             var deltaTime = Time.fixedDeltaTime;
             var velocity = ForceController.GetVelocity();
             root.localScale = Vector3.Lerp(root.localScale, new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), deltaTime * scaleSpeed);
             velocity.y = 0;
+            _animator.SetFloat("xzVelocity", velocity.magnitude);
             if (velocity.magnitude > 0.1f) root.forward = velocity;
-
+            
             if (_springJumpTimer > 0)
             {
                 _springJumpTimer -= deltaTime;
@@ -92,27 +141,38 @@ namespace Systems.Movement
                 }
                 _queueJumpTimer -= deltaTime;
             }
+            
+            if (_coyoteTimer > 0)
+            {
+                _coyoteTimer -= deltaTime;
+            }
+
+            if (_wallSlideCoyoteTimer > 0)
+            {
+                _wallSlideCoyoteTimer -= deltaTime;
+            }
 
             if (!_canAttack) _canAttack = IsGrounded;
             if (!_canDoubleJump) _canDoubleJump = IsGrounded;
+            if (!_canBoomerang) _canBoomerang = IsGrounded;
         }
 
         protected override void OnUpdate()
         {
             base.OnUpdate();
-            if (disableWallSlideCheck || IsGrounded || _isWallSliding || _isGroundPounding || _isRolling || _isAttacking || _isBoomeranging) return;
+            if (disableWallSlideCheck || IsGrounded || _isWallSliding || _isGroundPounding || _isRolling || _isAttacking || _isBoomeranging || _isParachuting) return;
             
             var velocity = ForceController.GetVelocity();
-            if (!(velocity.y < wallSlideThreshold)) return;
+            if (!(velocity.y < _playerMovementControllerDatum.WallSlideYVelocityThreshold)) return;
             velocity.y = 0;
 
             if (velocity.magnitude < 0.5f) return;
-            var intervalAngle = (int)(360 / wallSlideChecks);
-            for (var i = 0; i < wallSlideChecks; i++)
+            var intervalAngle = (int)(360 / _playerMovementControllerDatum.WallSlideChecks);
+            for (var i = 0; i < _playerMovementControllerDatum.WallSlideChecks; i++)
             {
                 var direction = Quaternion.Euler(0, i * intervalAngle, 0) * Vector3.forward;
                 if (Vector3.Dot(velocity, direction) < 0) continue;
-                if (!Physics.Raycast(transform.position + wallSlideCheckOffset, direction, wallSlideCheckDistance, wallSlideLayerMask)) continue;
+                if (!Physics.Raycast(transform.position + _playerMovementControllerDatum.WallSlideCheckOffset, direction, _playerMovementControllerDatum.WallSlideCheckDistance, _playerMovementControllerDatum.WallSlideLayerMask)) continue;
                 _wallSlideDirection = direction;
                 OnWallSlide();
             }
@@ -122,16 +182,27 @@ namespace Systems.Movement
         {
             if (_isWallSliding)
             {
+                if (canShiftWallSlide) base.OnMove(input, wallSlideMovementControllerDatum);
+                
                 if (input.magnitude < 0.5f) return;
-                if (Vector3.Angle(_wallSlideDirection, input) < _playerMovementControllerDatum.MinExitAngle) return;
+                if (Vector3.Angle(_wallSlideDirection, input) < _playerMovementControllerDatum.WallSlideMinExitAngle) return;
                 CancelWallSlide();
+                _wallSlideCoyoteTimer = _playerMovementControllerDatum.WallSlideCoyoteTime;
             }
-            else if (_isBoomeranging)
+            else if (_isParachuting)
             {
-                base.OnMove(input, _playerMovementControllerDatum.BoomerangMovementControllerDatum);
+                base.OnMove(input, _playerMovementControllerDatum.ParachuteMovementControllerDatum);
                 return;
             }
             base.OnMove(input, _isRolling ? _playerMovementControllerDatum.RollMovementControllerDatum : datum);
+        }
+
+        private void OnGrounded(bool isGrounded)
+        {
+            if (!isGrounded && !_isJumping)
+            {
+                _coyoteTimer = _playerMovementControllerDatum.CoyoteTime;
+            }
         }
 
         private void CancelWallSlide()
@@ -184,9 +255,9 @@ namespace Systems.Movement
                 return;
             }
 
-            if (!IsGrounded)
+            if (!IsGrounded && _coyoteTimer <= 0)
             {
-                if (_isWallSliding)
+                if (_isWallSliding || _wallSlideCoyoteTimer > 0)
                 {
                     OnJump(_playerMovementControllerDatum.WallJumpHeightTime, _playerMovementControllerDatum.WallJumpHeight, _playerMovementControllerDatum.WallJumpHeightCurve);
                     OnWallJump(); // May need to separate from CancelJump();
@@ -215,7 +286,29 @@ namespace Systems.Movement
                 {
                     if (_canSpringJump)
                     {
-                        OnJump(_playerMovementControllerDatum.SpringJumpTime, _playerMovementControllerDatum.SpringJumpHeight, _playerMovementControllerDatum.SpringJumpCurve);
+                        var timeMultiplier = _groundPoundPowerLevel switch
+                        {
+                            PowerLevel.Low =>
+                                1,
+                            PowerLevel.Medium =>
+                                _playerMovementControllerDatum.SpringJumpMediumPowerTimeMultiplier,
+                            PowerLevel.High =>
+                                _playerMovementControllerDatum.SpringJumpHighPowerTimeMultiplier,
+                            _ => throw new System.ArgumentException("Unsupported power level")
+                        };
+                        
+                        var heightMultiplier = _groundPoundPowerLevel switch
+                        {
+                            PowerLevel.Low =>
+                                1,
+                            PowerLevel.Medium =>
+                                _playerMovementControllerDatum.SpringJumpMediumPowerHeightMultiplier,
+                            PowerLevel.High =>
+                                _playerMovementControllerDatum.SpringJumpHighPowerHeightMultiplier,
+                            _ => throw new System.ArgumentException("Unsupported power level")
+                        };
+                        
+                        OnJump(_playerMovementControllerDatum.SpringJumpTime * timeMultiplier, _playerMovementControllerDatum.SpringJumpHeight * heightMultiplier, _playerMovementControllerDatum.SpringJumpCurve);
                         Instantiate(smokePrefab, root.position, Quaternion.identity);
                         _animator.SetTrigger("Spring");
                     }
@@ -232,6 +325,7 @@ namespace Systems.Movement
         {
             CancelWallSlide();
             CancelJump();
+            CancelParachute();
             CancelBoomerang();
             
             _jumpCoroutine = StartCoroutine(JumpCoroutine(jumpTime, jumpHeight, jumpCurve));
@@ -242,6 +336,36 @@ namespace Systems.Movement
             _cutJump = true;
         }
 
+        private void CancelParachute()
+        {
+            ForceController.UseGravity = true;
+            if (!_isParachuting) return;
+            StopCoroutine(_parachuteCoroutine);
+            _isParachuting = false;
+            _animator.SetTrigger("Sphere");
+        }
+
+        public void Parachute()
+        {
+            if (IsGrounded || _isAttacking || _isWallJumping || _isWallSliding) return;
+            OnParachute();
+        }
+
+        private void OnParachute()
+        {
+            CancelJump();
+            CancelBoomerang();
+            CancelGroundPound();
+            _isRolling = false;
+            _parachuteCoroutine = StartCoroutine(ParachuteCoroutine());
+        }
+        
+        public void StopParachute()
+        {
+            if (!_isParachuting) return;
+            CancelParachute();
+        }
+
         private void CancelBoomerang()
         {
             ForceController.UseGravity = true;
@@ -249,20 +373,32 @@ namespace Systems.Movement
             StopCoroutine(_boomerangCoroutine);
             _isBoomeranging = false;
             _animator.SetTrigger("Sphere");
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.Stop();
+            }
         }
 
         public void Boomerang()
         {
-            if (IsGrounded || _isAttacking || _isWallSliding) return;
+            if (IsGrounded || !_canBoomerang || _isAttacking || _isWallSliding) return;
+
+            if (swapBoomerangMovement && !_boomerangTarget) return;
             OnBoomerang();
         }
 
         private void OnBoomerang()
         {
             CancelJump();
+            CancelParachute();
             CancelGroundPound();
             _isRolling = false;
-            _boomerangCoroutine = StartCoroutine(BoomerangCoroutine());
+            if (!swapBoomerangMovement) _canBoomerang = false;
+            _boomerangCoroutine = StartCoroutine(swapBoomerangMovement ? BoomerangCoroutine2() : BoomerangCoroutine());
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.SendEvent("OnPlay");
+            }
         }
 
         public void StopBoomerang()
@@ -273,6 +409,7 @@ namespace Systems.Movement
         
         private void Roll()
         {
+            if (_isRolling) return;
             _isRolling = true;
             ForceController.ApplyForce(root.rotation * Vector3.forward * _playerMovementControllerDatum.InitialRollSpeed, ForceMode.VelocityChange);
         }
@@ -296,6 +433,7 @@ namespace Systems.Movement
         {
             _isRolling = false;
             CancelJump();
+            CancelParachute();
             CancelBoomerang();
             CancelWallSlide();
             
@@ -360,23 +498,82 @@ namespace Systems.Movement
             _animator.SetTrigger("Sphere");
         }
         
+        private IEnumerator ParachuteCoroutine()
+        {
+            _animator.SetTrigger("Parachute");
+            _isParachuting = true;
+
+            var velocity = ForceController.GetVelocity();
+            while (velocity.y > 0 && !IsGrounded)
+            {
+                yield return new WaitForFixedUpdate();
+                velocity = ForceController.GetVelocity();
+            }
+            
+            var initialY = velocity.y;
+            var parachuteOpenTimer = 0f;
+            
+            var parachuteFallSpeed = _playerMovementControllerDatum.ParachuteFallSpeed;
+            var parachuteOpenTime = _playerMovementControllerDatum.ParachuteOpenTime * _playerMovementControllerDatum.ParachuteOpenTimeMultiplierCurve.Evaluate(initialY / parachuteFallSpeed);
+
+            while (parachuteOpenTimer < parachuteOpenTime)
+            {
+                if (IsGrounded)
+                {
+                    CancelParachute();
+                    yield break;
+                }
+                parachuteOpenTimer += Time.deltaTime;
+                yield return null;
+            }
+            
+            ForceController.UseGravity = false;
+            initialY = ForceController.GetVelocity().y;
+            var parachuteSlowDownTimer = 0f;
+            
+            var diff = parachuteFallSpeed - initialY;
+            var parachuteSlowDownTime = _playerMovementControllerDatum.ParachuteSlowDownTime * _playerMovementControllerDatum.ParachuteSlowDownMultiplierCurve.Evaluate(initialY / parachuteFallSpeed);
+            var parachuteSlowDownCurve = _playerMovementControllerDatum.ParachuteSlowDownCurve;
+
+            while (!IsGrounded)
+            {
+                var normalizedTime = Mathf.Clamp01(parachuteSlowDownTimer / parachuteSlowDownTime);
+                var verticalVelocity = initialY + diff * parachuteSlowDownCurve.Evaluate(normalizedTime);
+                
+                velocity = ForceController.GetVelocity();
+                velocity.y = verticalVelocity;
+                ForceController.SetVelocity(velocity);
+                
+                parachuteSlowDownTimer += Time.deltaTime;
+                yield return null;
+            }
+            
+            ForceController.UseGravity = true;
+            _isParachuting = false;
+            _animator.SetTrigger("Sphere");
+        }
+        
         private IEnumerator BoomerangCoroutine()
         {
             _animator.SetTrigger("Boomerang");
             ForceController.UseGravity = false;
             _isBoomeranging = true;
             
-            var velocity = ForceController.GetVelocity();
-            var initialY = velocity.y;
-            var boomerangSlowDownTimer = 0f;
+            var direction = Mover?.GetInput() ?? Vector3.zero;
+            direction = direction.magnitude < 0.5f ? root.forward : _playerLook.TransformInput(direction);
+            if (MovementDimensions == Dimensions.Two)
+            {
+                direction.y = direction.z;
+                direction.z = 0;
+            }
             
-            var boomerangSlowDownSpeed = _playerMovementControllerDatum.BoomerangSlowDownSpeed;
-            var diff = boomerangSlowDownSpeed - initialY;
-            var multiplier = _playerMovementControllerDatum.BoomerangSlowDownMultiplierCurve.Evaluate(initialY / boomerangSlowDownSpeed);
-            var boomerangSlowDownTime = _playerMovementControllerDatum.BoomerangSlowDownTime * multiplier;
-            var boomerangSlowDownCurve = _playerMovementControllerDatum.BoomerangSlowDownCurve;
+            var boomerangTimer = 0f;
+            
+            var boomerangSpeed = _playerMovementControllerDatum.BoomerangSpeed;
+            var boomerangTime = _playerMovementControllerDatum.BoomerangTime;
+            var boomerangCurve = _playerMovementControllerDatum.BoomerangCurve;
 
-            while (boomerangSlowDownTimer < boomerangSlowDownTime)
+            while (boomerangTimer < boomerangTime)
             {
                 if (IsGrounded)
                 {
@@ -384,46 +581,116 @@ namespace Systems.Movement
                     yield break;
                 }
                 
-                var normalizedTime = boomerangSlowDownTimer / boomerangSlowDownTime;
-                var verticalVelocity = initialY + diff * boomerangSlowDownCurve.Evaluate(normalizedTime);
+                var normalizedTime = boomerangTimer / boomerangTime;
+                var boomerangVelocity = boomerangSpeed * boomerangCurve.Evaluate(normalizedTime) * direction;
                 
-                velocity = ForceController.GetVelocity();
-                velocity.y = verticalVelocity;
-                ForceController.SetVelocity(velocity);
+                ForceController.SetVelocity(boomerangVelocity);
                 
-                boomerangSlowDownTimer += Time.deltaTime;
+                boomerangTimer += Time.deltaTime;
                 yield return null;
             }
 
-            var boomerangFallTimer = 0f;
+            var boomerangReturnTimer = 0f;
             
-            var boomerangFallSpeed = _playerMovementControllerDatum.BoomerangFallSpeed;
-            diff = boomerangFallSpeed - boomerangSlowDownSpeed;
-            var boomerangFallTime = _playerMovementControllerDatum.BoomerangFallTime;
-            var boomerangFallCurve = _playerMovementControllerDatum.BoomerangFallCurve;
+            var boomerangReturnSpeed = _playerMovementControllerDatum.BoomerangReturnSpeed;
+            var boomerangReturnTime = _playerMovementControllerDatum.BoomerangReturnTime;
+            var boomerangReturnCurve = _playerMovementControllerDatum.BoomerangReturnCurve;
             
-            while (!IsGrounded)
+            while (boomerangReturnTimer < boomerangReturnTime)
             {
-                var normalizedTime = Mathf.Clamp01(boomerangFallTimer / boomerangFallTime);
-                var verticalVelocity = boomerangSlowDownSpeed + diff * boomerangFallCurve.Evaluate(normalizedTime);
+                var normalizedTime = Mathf.Clamp01(boomerangReturnTimer / boomerangReturnTime);
+                var returnVelocity = boomerangReturnSpeed * boomerangReturnCurve.Evaluate(normalizedTime) * -direction;
                 
-                velocity = ForceController.GetVelocity();
-                velocity.y = verticalVelocity;
-                ForceController.SetVelocity(velocity);
+                ForceController.SetVelocity(returnVelocity);
                 
-                boomerangFallTimer += Time.deltaTime;
+                boomerangReturnTimer += Time.deltaTime;
                 yield return null;
             }
             
             ForceController.UseGravity = true;
             _isBoomeranging = false;
             _animator.SetTrigger("Sphere");
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.Stop();
+            }
+        }
+        
+        private IEnumerator BoomerangCoroutine2()
+        {
+            _animator.SetTrigger("Boomerang");
+            ForceController.UseGravity = false;
+            _isBoomeranging = true;
+
+            var boomerangTarget = _boomerangTarget;
+            boomerangTarget.Interact(InteractContext.Construct(gameObject));
+            
+            var direction = boomerangTarget.transform.position - transform.position;
+            if (MovementDimensions == Dimensions.Two) direction.z = 0;
+            direction = direction.normalized;
+            
+            var boomerangTimer = 0f;
+
+            var boomerangSpeed = grappleBoomerangSpeed; //_playerMovementControllerDatum.BoomerangSpeed;
+            var boomerangTime = grappleBoomerangTime; //_playerMovementControllerDatum.BoomerangTime;
+            var boomerangCurve = grappleBoomerangCurve; //_playerMovementControllerDatum.BoomerangReturnCurve;
+
+            while (true)
+            {
+                if (IsGrounded)
+                {
+                    CancelBoomerang();
+                    yield break;
+                }
+                
+                var normalizedTime = boomerangTimer / boomerangTime;
+                var boomerangVelocity = boomerangSpeed * boomerangCurve.Evaluate(normalizedTime) * direction;
+                
+                ForceController.SetVelocity(boomerangVelocity);
+                
+                direction = boomerangTarget.transform.position - transform.position;
+                if (MovementDimensions == Dimensions.Two) direction.z = 0;
+                direction = direction.normalized;
+
+                if (Vector3.Dot(boomerangVelocity, direction) < 0) break;
+                
+                boomerangTimer += Time.deltaTime;
+                yield return null;
+            }
+
+            /*
+            var boomerangReturnTimer = 0f;
+            
+            var boomerangReturnSpeed = _playerMovementControllerDatum.BoomerangReturnSpeed;
+            var boomerangReturnTime = _playerMovementControllerDatum.BoomerangReturnTime;
+            var boomerangReturnCurve = _playerMovementControllerDatum.BoomerangReturnCurve;
+            
+            while (boomerangReturnTimer < boomerangReturnTime)
+            {
+                var normalizedTime = Mathf.Clamp01(boomerangReturnTimer / boomerangReturnTime);
+                var returnVelocity = boomerangReturnSpeed * boomerangReturnCurve.Evaluate(normalizedTime) * -direction;
+                
+                ForceController.SetVelocity(returnVelocity);
+                
+                boomerangReturnTimer += Time.deltaTime;
+                yield return null;
+            }
+            */
+            
+            ForceController.UseGravity = true;
+            _isBoomeranging = false;
+            _animator.SetTrigger("Sphere");
+            foreach (var visualEffect in visualEffects)
+            {
+                visualEffect.Stop();
+            }
         }
 
         private IEnumerator GroundPoundCoroutine()
         {
             ForceController.UseGravity = false;
             _isGroundPounding = true;
+            _groundPoundPowerLevel = PowerLevel.Low;
             //OnGrounded += MovementControllerOnGrounded
             
             var groundPoundTimer = 0f;
@@ -431,6 +698,9 @@ namespace Systems.Movement
             var groundPoundSpeed = _playerMovementControllerDatum.GroundPoundSpeed;
             var groundPoundTime = _playerMovementControllerDatum.GroundPoundTime;
             var groundPoundCurve = _playerMovementControllerDatum.GroundPoundCurve;
+            
+            var groundPoundMediumPowerTimeThreshold = _playerMovementControllerDatum.GroundPoundMediumPowerTimeThreshold;
+            var groundPoundHighPowerTimeThreshold = _playerMovementControllerDatum.GroundPoundHighPowerTimeThreshold;
 
             while (!IsGrounded)
             {
@@ -438,6 +708,19 @@ namespace Systems.Movement
                 var verticalVelocity = groundPoundCurve.Evaluate(normalizedTime) * groundPoundSpeed;
                 ForceController.SetVelocity(Vector3.up * verticalVelocity);
                 groundPoundTimer += Time.deltaTime;
+                switch (_groundPoundPowerLevel)
+                {
+                    case PowerLevel.Low:
+                        if (groundPoundTimer >= groundPoundMediumPowerTimeThreshold) _groundPoundPowerLevel = PowerLevel.Medium;
+                        break;
+                    case PowerLevel.Medium:
+                        if (groundPoundTimer >= groundPoundHighPowerTimeThreshold) _groundPoundPowerLevel = PowerLevel.High;
+                        break;
+                    case PowerLevel.High:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
                 yield return null;
             }
             
@@ -445,7 +728,7 @@ namespace Systems.Movement
             
             Instantiate(groundPoundSmokePrefab, root.position, Quaternion.identity);
             
-            _springJumpTimer = _playerMovementControllerDatum.AfterGroundPoundTime;
+            _springJumpTimer = _playerMovementControllerDatum.GroundPoundSpringJumpTime;
             _canSpringJump = true;
 
             ForceController.UseGravity = true;
@@ -469,11 +752,14 @@ namespace Systems.Movement
             var wallSlideTime = _playerMovementControllerDatum.WallSlideTime;
             var wallSlideCurve = _playerMovementControllerDatum.WallSlideCurve;
 
-            while (!IsGrounded && Physics.Raycast(transform.position + wallSlideCheckOffset, _wallSlideDirection, wallSlideCheckDistance, wallSlideLayerMask))
+            while (!IsGrounded && Physics.Raycast(transform.position + _playerMovementControllerDatum.WallSlideCheckOffset, _wallSlideDirection, _playerMovementControllerDatum.WallSlideCheckDistance, _playerMovementControllerDatum.WallSlideLayerMask))
             {
                 var normalizedTime = Mathf.Clamp01(wallSlideTimer / wallSlideTime);
                 var verticalVelocity = wallSlideCurve.Evaluate(normalizedTime) * wallSlideSpeed;
-                ForceController.SetVelocity(Vector3.up * verticalVelocity);
+                var velocity = ForceController.GetVelocity();
+                if (!canShiftWallSlide) velocity = Vector3.zero;
+                velocity.y = verticalVelocity;
+                ForceController.SetVelocity(velocity);
                 wallSlideTimer += Time.deltaTime;
                 yield return null;
             }
@@ -528,6 +814,11 @@ namespace Systems.Movement
             var attackDirection = Mover?.GetInput() ?? Vector3.zero;
             attackDirection = attackDirection.magnitude < 0.5f ? root.forward : _playerLook.TransformInput(attackDirection);
             attackDirection.y = 0;
+            if (MovementDimensions == Dimensions.Two)
+            {
+                attackDirection.z = 0;
+                if (attackDirection.x == 0) attackDirection.x = 1;
+            }
             var rotation = Quaternion.LookRotation(attackDirection.normalized);
 
             while (attackTimer < attackTime)

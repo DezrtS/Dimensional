@@ -10,6 +10,7 @@ namespace Interfaces
         
         public bool IsDisabled { get; }
         public InteractableDatum InteractableDatum { get; }
+        public bool CanInteract(InteractContext interactContext);
         public void Interact(InteractContext interactContext);
     }
 
@@ -17,7 +18,7 @@ namespace Interfaces
     {
         public GameObject SourceGameObject;
 
-        public InteractContext Construct(GameObject sourceGameObject)
+        public static InteractContext Construct(GameObject sourceGameObject)
         {
             return new InteractContext()
             {
