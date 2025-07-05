@@ -59,6 +59,11 @@ namespace Systems.Player
             parachuteInputAction.canceled += OnParachute;
             parachuteInputAction.Enable();
             
+            var grappleInputAction = _playerInputSystemActions.Player.Grapple;
+            grappleInputAction.performed += OnGrapple;
+            grappleInputAction.canceled += OnGrapple;
+            grappleInputAction.Enable();
+            
             var boomerangInputAction = _playerInputSystemActions.Player.Boomerang;
             boomerangInputAction.performed += OnBoomerang;
             boomerangInputAction.canceled += OnBoomerang;
@@ -103,19 +108,25 @@ namespace Systems.Player
         private void OnJump(InputAction.CallbackContext context)
         {
             if (context.performed) _playerMovementController.Jump();
-            else if (context.canceled) _playerMovementController.StopJumping();
+            else if (context.canceled) _playerMovementController.CutJump();
         }
 
         private void OnParachute(InputAction.CallbackContext context)
         {
-            if (context.performed) _playerMovementController.Parachute();
-            else if (context.canceled) _playerMovementController.StopParachute();
+            if (context.performed) _playerMovementController.Glide();
+            else if (context.canceled) _playerMovementController.StopGliding();
         }
 
         private void OnBoomerang(InputAction.CallbackContext context)
         {
             if (context.performed) _playerMovementController.Boomerang();
-            else if (context.canceled) _playerMovementController.StopBoomerang();
+            else if (context.canceled) _playerMovementController.StopBoomeranging();
+        }
+        
+        private void OnGrapple(InputAction.CallbackContext context)
+        {
+            if (context.performed) _playerMovementController.Grapple();
+            else if (context.canceled) _playerMovementController.StopGrappling();
         }
         
         private void OnCrouch(InputAction.CallbackContext context)

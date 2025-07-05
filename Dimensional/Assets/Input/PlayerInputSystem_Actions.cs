@@ -137,6 +137,15 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Grapple"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2d036f9-5102-404b-a707-91149018c095"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""b131e503-ecb8-4073-a281-a78bc7eac3a3"",
@@ -379,7 +388,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": """",
                     ""id"": ""d556cf4e-df62-4550-8601-facfe64e4325"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -390,11 +399,33 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": """",
                     ""id"": ""47141b53-f96e-48b8-af8d-5d5b4879fe0a"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Boomerang"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27981ec4-f620-454c-bbd5-461bb14e4df6"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grapple"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44b86885-79d3-4e9a-8e71-8194835cb352"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grapple"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1031,6 +1062,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Boomerang = m_Player.FindAction("Boomerang", throwIfNotFound: true);
+        m_Player_Grapple = m_Player.FindAction("Grapple", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Parachute = m_Player.FindAction("Parachute", throwIfNotFound: true);
         // UI
@@ -1131,6 +1163,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Boomerang;
+    private readonly InputAction m_Player_Grapple;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Parachute;
     /// <summary>
@@ -1164,6 +1197,10 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// Provides access to the underlying input action "Player/Boomerang".
         /// </summary>
         public InputAction @Boomerang => m_Wrapper.m_Player_Boomerang;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Grapple".
+        /// </summary>
+        public InputAction @Grapple => m_Wrapper.m_Player_Grapple;
         /// <summary>
         /// Provides access to the underlying input action "Player/Attack".
         /// </summary>
@@ -1213,6 +1250,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Boomerang.started += instance.OnBoomerang;
             @Boomerang.performed += instance.OnBoomerang;
             @Boomerang.canceled += instance.OnBoomerang;
+            @Grapple.started += instance.OnGrapple;
+            @Grapple.performed += instance.OnGrapple;
+            @Grapple.canceled += instance.OnGrapple;
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
@@ -1245,6 +1285,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Boomerang.started -= instance.OnBoomerang;
             @Boomerang.performed -= instance.OnBoomerang;
             @Boomerang.canceled -= instance.OnBoomerang;
+            @Grapple.started -= instance.OnGrapple;
+            @Grapple.performed -= instance.OnGrapple;
+            @Grapple.canceled -= instance.OnGrapple;
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
@@ -1586,6 +1629,13 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBoomerang(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Grapple" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGrapple(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

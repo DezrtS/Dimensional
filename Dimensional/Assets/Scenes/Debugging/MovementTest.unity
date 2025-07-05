@@ -34742,7 +34742,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 750, y: 675}
+  m_SizeDelta: {x: 750, y: 700}
   m_Pivot: {x: 0, y: 1}
 --- !u!43 &1021511839
 Mesh:
@@ -38403,29 +38403,31 @@ MonoBehaviour:
 
     <b>Shift or RT:</b> Glide
 
-    <b>E or RB:</b> Boomerang
+    <b>E or RB:</b> Grapple
 
     <b>CTRL
     or LT:</b> Crouch
 
-    <b>LMB or West Button:</b> Attack
+    <b>Q or LB:</b> Boomerang
+
+    <b>LMB or West Button:</b>
+    Attack
 
 
-    <b>Crouch while
-    Airborne:</b> Ground Pound
+    <b>Crouch while Airborne:</b> Ground Pound
 
-    <b>Jump after Ground Pound:</b> Spring Jump
+    <b>Jump after Ground
+    Pound:</b> Spring Jump
+
+    <b>Jump while Airborne:</b> Balloon Jump
 
     <b>Jump
-    while Airborne:</b> Balloon Jump
+    while Crouching:</b> Roll
 
-    <b>Jump while Crouching:</b> Roll
+    <b>Push against Wall while Airborne:</b> Wall
+    Slide
 
-    <b>Push
-    against Wall while Airborne:</b> Wall Slide
-
-    <b>Jump while Wall Sliding:</b>
-    Wall Jump'
+    <b>Jump while Wall Sliding:</b> Wall Jump'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

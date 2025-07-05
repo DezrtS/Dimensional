@@ -79,9 +79,38 @@ MonoBehaviour:
   groundedLayerMask:
     serializedVersion: 2
     m_Bits: 1
+  cutJumpMultiplier: 0.75
+  queueJumpTime: 0.25
+  coyoteTime: 0.1
   jumpHeight: 3
   jumpTime: 0.5
   jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.71858
+      outSlope: 1.71858
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10352941
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  doubleJumpHeight: 2
+  doubleJumpTime: 0.5
+  doubleJumpCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -135,73 +164,38 @@ MonoBehaviour:
   springJumpMediumPowerTimeMultiplier: 1.5
   springJumpHighPowerHeightMultiplier: 2.5
   springJumpHighPowerTimeMultiplier: 2
-  balloonJumpHeight: 2
-  balloonJumpTime: 0.5
-  balloonJumpCurve:
+  boomerangFallSpeedThreshold: -10
+  boomerangFallTimeThreshold: 1.5
+  boomerangTime: 2
+  boomerangCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 1.71858
-      outSlope: 1.71858
-      tangentMode: 0
+      value: 1
+      inSlope: -2
+      outSlope: -2
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.10352941
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: -1
+      inSlope: -2
+      outSlope: -2
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  cutJumpMultiplier: 0.75
-  queueJumpTime: 0.25
-  coyoteTime: 0.1
-  wallSlideMinExitAngle: 100
-  wallSlideSpeed: -5
-  wallSlideTime: 1
-  wallSlideCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallSlideCoyoteTime: 0.1
-  wallSlideYVelocityThreshold: 0.2
-  wallSlideChecks: 8
-  wallSlideCheckDistance: 0.55
-  wallSlideCheckOffset: {x: 0, y: 0, z: 0}
-  wallSlideLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  wallJumpSpeed: 10
-  wallJumpSpeedTime: 0.25
-  wallJumpSpeedCurve:
+  glideFallSpeedThreshold: -2
+  glideFallTimeThreshold: 0.3
+  glideFallSpeed: -3
+  glideSlowDownTime: 0.75
+  glideSlowDownCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -225,20 +219,26 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  wallJumpHeight: 2
-  wallJumpHeightTime: 0.5
-  wallJumpHeightCurve:
+  glideMovementControllerDatum: {fileID: 11400000, guid: fc2becaf5be411a4bacbf6d8f161bb80, type: 2}
+  grappleTargetCheckRadius: 25
+  grappleTargetCheckMaxAngleDifference: 45
+  grappleTargetCheckLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  grappleSpeed: 25
+  grappleTime: 1
+  grappleCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.71858
-      outSlope: 1.71858
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.10352941
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -289,42 +289,36 @@ MonoBehaviour:
   groundPoundMediumPowerTimeThreshold: 0.5
   groundPoundHighPowerTimeThreshold: 1
   groundPoundSpringJumpTime: 0.25
-  parachuteOpenTime: 0.5
-  parachuteOpenTimeMultiplierCurve:
+  wallJumpCoyoteTime: 0.1
+  wallJumpHeight: 2
+  wallJumpTime: 0.5
+  wallJumpCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 0
-      outSlope: -0.25
-      tangentMode: 69
+      value: 0
+      inSlope: 1.71858
+      outSlope: 1.71858
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0.10352941
     - serializedVersion: 3
       time: 1
-      value: 0.75
-      inSlope: -0.25
-      outSlope: -6.499998
-      tangentMode: 69
-      weightedMode: 0
-      inWeight: 0.09882355
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1.1
-      value: 0.1
-      inSlope: -6.499998
+      value: 1
+      inSlope: 0
       outSlope: 0
-      tangentMode: 69
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  parachuteSlowDownTime: 1
-  parachuteSlowDownCurve:
+  wallDashSpeed: 10
+  wallDashTime: 0.25
+  wallDashCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -348,61 +342,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  parachuteSlowDownMultiplierCurve:
+  wallSlideCheckIntervals: 8
+  wallSlideCheckDistance: 0.55
+  wallSlideCheckOffset: {x: 0, y: 0, z: 0}
+  wallSlideCheckLayerMask:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.9
-      inSlope: -0.875
-      outSlope: -0.875
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.025
-      inSlope: -0.875
-      outSlope: -0.875
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  parachuteFallSpeed: -2
-  parachuteMovementControllerDatum: {fileID: 11400000, guid: fc2becaf5be411a4bacbf6d8f161bb80, type: 2}
-  boomerangSpeed: 10
-  boomerangTime: 0.5
-  boomerangCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.40286255
-      outSlope: 0.40286255
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -3.188269
-      outSlope: -3.188269
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  boomerangReturnSpeed: 15
-  boomerangReturnTime: 0.3
-  boomerangReturnCurve:
+    m_Bits: 1
+  wallSlideYVelocityThreshold: 0.2
+  wallSlideMinExitAngle: 100
+  wallSlideSpeed: -5
+  wallSlideTime: 1
+  wallSlideCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -426,8 +376,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  initialRollSpeed: 5
-  rollMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}
+  wallSlideMovementControllerDatum: {fileID: 11400000, guid: c3cbe19673263bf4e8e2a94121330dd5, type: 2}
   attackVector: {x: 0, y: 0.1, z: 3}
   attackTime: 0.3
   attackCurve:
@@ -454,3 +403,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  initialRollSpeed: 5
+  rollMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}

@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Grapple",
+                    "type": "Button",
+                    "id": "c2d036f9-5102-404b-a707-91149018c095",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "b131e503-ecb8-4073-a281-a78bc7eac3a3",
@@ -293,7 +302,7 @@
                 {
                     "name": "",
                     "id": "d556cf4e-df62-4550-8601-facfe64e4325",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -304,11 +313,33 @@
                 {
                     "name": "",
                     "id": "47141b53-f96e-48b8-af8d-5d5b4879fe0a",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Boomerang",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27981ec4-f620-454c-bbd5-461bb14e4df6",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grapple",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "44b86885-79d3-4e9a-8e71-8194835cb352",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grapple",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

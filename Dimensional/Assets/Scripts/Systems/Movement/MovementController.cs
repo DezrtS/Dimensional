@@ -27,11 +27,14 @@ namespace Systems.Movement
         public bool IsDisabled { get; set; }
         public bool IsGrounded { get; private set; }
 
-        protected virtual void Awake()
+        private void Awake()
         {
             ForceController = GetComponent<ForceController>();
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
+            OnAwake();
         }
+        
+        protected virtual void OnAwake() { }
 
         public void Initialize(IMove move)
         {
