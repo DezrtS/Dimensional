@@ -356,9 +356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityDatum: {fileID: 11400000, guid: d62f3a79cb175d74f81e3aa0c380fba1, type: 2}
-  typeText: {fileID: 0}
-  projectileDatum: {fileID: 11400000, guid: 6948855b0b572e44cbd4f54c3c581e0b, type: 2}
-  fireSpeed: 25
 --- !u!114 &5525861999645435359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,27 +386,27 @@ MonoBehaviour:
   movementControllerDatum: {fileID: 11400000, guid: 670b9822948381e4c81cd3a40815b7e2, type: 2}
   movementDimensions: 0
   disableYInput: 1
+  cancelVelocityOnGrounded: 1
   disableGroundedCheck: 0
-  setYVelocityOnGrounded: 1
+  groundedCheckType: 1
+  groundedCheckDistance: 0.5
+  groundedCheckOffset: {x: 0, y: -0.1, z: 0}
+  groundedCheckLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  disableGroundNormalCheck: 0
+  groundNormalCheckRadius: 0.5
+  groundNormalCheckDistance: 0.1
+  groundNormalCheckOffset: {x: 0, y: 0, z: 0}
+  groundNormalCheckLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  minSlideAngle: 30
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
   debugResetMovementComponentData: 1
   disableWallSlideCheck: 0
-  wallSlideMovementControllerDatum: {fileID: 0}
-  grappleBoomerangSpeed: 0
-  grappleBoomerangTime: 0
-  grappleBoomerangCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  checkRadius: 0
-  checkLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  maxAngleDifference: 0
   visualEffects: []
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
   balloonJumpSmokePrefab: {fileID: 4772967992589099599, guid: 1e33b4cd74162f7439049e48f49d7bf8, type: 3}

@@ -939,7 +939,7 @@ namespace Systems.Movement
             _dashMovementComponent.SetDashMovementData(_playerMovementControllerDatum.AttackVector, _playerMovementControllerDatum.AttackTime, _playerMovementControllerDatum.AttackCurve);
         }
 
-        private void FixedUpdate()
+        protected override void OnFixedUpdate()
         {
             UpdateGrappleTarget();
 
@@ -1020,7 +1020,6 @@ namespace Systems.Movement
 
         protected override void OnUpdate()
         {
-            base.OnUpdate();
             WallSlide();
         }
 
@@ -1055,8 +1054,27 @@ namespace Systems.Movement
 
         private void MovementComponentOnDeactivated()
         {
+            ActivateBoomerangEffect(false);
             _animator.SetTrigger("Sphere");
             if (debugResetMovementComponentData) SetMovementComponentData();
+        }
+
+        private void ActivateBoomerangEffect(bool enable)
+        {
+            if (enable)
+            {
+                foreach (var visualEffect in visualEffects)
+                {
+                    visualEffect.SendEvent("OnPlay");
+                }
+            }
+            else
+            {
+                foreach (var visualEffect in visualEffects)
+                {
+                    visualEffect.Stop();
+                }
+            }
         }
 
         public void Jump(bool resetCutJump = true)
@@ -1179,12 +1197,20 @@ namespace Systems.Movement
             if (!(velocity.y < _playerMovementControllerDatum.WallSlideYVelocityThreshold)) return false;
             velocity.y = 0;
 
-            if (velocity.magnitude < 0.5f) return false;
+            var input = _playerLook.TransformInput(Mover.GetInput());
+            input.y = 0;
+            if (MovementDimensions == Dimensions.Two) input.z = 0;
+            
+            Debug.DrawRay(transform.position, input, Color.red, Time.fixedDeltaTime);
+
+            if (input.magnitude < 0.5f) return false;
+            
+            input = input.normalized;
             var intervalAngle = (int)(360 / _playerMovementControllerDatum.WallSlideCheckIntervals);
             for (var i = 0; i < _playerMovementControllerDatum.WallSlideCheckIntervals; i++)
             {
                 var direction = Quaternion.Euler(0, i * intervalAngle, 0) * Vector3.forward;
-                if (Vector3.Dot(velocity, direction) < 0) continue;
+                if (Vector3.Dot(input, direction) < 0) continue;
                 if (!Physics.Raycast(transform.position + _playerMovementControllerDatum.WallSlideCheckOffset,
                         direction, _playerMovementControllerDatum.WallSlideCheckDistance,
                         _playerMovementControllerDatum.WallSlideCheckLayerMask)) continue;
@@ -1235,7 +1261,8 @@ namespace Systems.Movement
             StopRolling();
             
             _canBoomerang = false;
-            
+
+            ActivateBoomerangEffect(true);
             _animator.SetTrigger("Boomerang");
             _boomerangMovementComponent.Activate();
         }
@@ -1262,6 +1289,7 @@ namespace Systems.Movement
             StopWallSliding();
             StopRolling();
             
+            ActivateBoomerangEffect(true);
             _animator.SetTrigger("Boomerang");
             _boomerangTarget.Interact(InteractContext.Construct(gameObject));
             _grappleMovementComponent.SetGrappleTarget(_boomerangTarget.transform.position);

@@ -16,10 +16,31 @@ namespace Systems.Movement
         [Space] 
         [SerializeField] private bool disableYInput;
         [Space]
+        [Header("Grounded Settings")]
+        [SerializeField] private bool cancelVelocityOnGrounded;
         [SerializeField] private bool disableGroundedCheck;
-        [SerializeField] private bool setYVelocityOnGrounded;
+        [SerializeField] private GroundedCheckType groundedCheckType;
+        [SerializeField] private float groundedCheckDistance;
+        [SerializeField] private Vector3 groundedCheckOffset;
+        [SerializeField] private LayerMask groundedCheckLayerMask;
+        [Space]
+        [Header("Gravity Settings")]
+        [SerializeField] private bool disableGroundNormalCheck;
+        [SerializeField] private float groundNormalCheckRadius;
+        [SerializeField] private float groundNormalCheckDistance;
+        [SerializeField] private Vector3 groundNormalCheckOffset;
+        [SerializeField] private LayerMask groundNormalCheckLayerMask;
+        [Space]
+        [SerializeField] private float minSlideAngle = 30f; // Minimum angle before sliding starts
+        [Space]
+        [SerializeField] private float edgeThreshold = 0.2f;
+        [SerializeField] private float edgeForce = 0.5f;
+        
+        [SerializeField] private float velocityThreshold = 0.5f;
+        [SerializeField] private float linearDamping = 3;
         
         protected IMove Mover;
+        private Vector3 _groundNormal = Vector3.up;
         
         public MovementControllerDatum MovementControllerDatum => movementControllerDatum;
         public Dimensions MovementDimensions => movementDimensions;
@@ -44,37 +65,82 @@ namespace Systems.Movement
         private void Update()
         {
             OnUpdate();
-        }
-
-        protected virtual void OnUpdate()
-        {
+            
             if (disableGroundedCheck) return;
-            UpdateIsGrounded();
-            if (!IsGrounded || !setYVelocityOnGrounded) return;
-            var velocity = ForceController.GetVelocity();
-            if (!(velocity.y < 0)) return;
-            velocity.y = -0.5f;
-            ForceController.SetVelocity(velocity);
+            
+            var previousIsGrounded = IsGrounded;
+            IsGrounded = CheckIsGrounded();
+            if (previousIsGrounded != IsGrounded) Grounded?.Invoke(IsGrounded);
         }
 
-        private void UpdateIsGrounded()
+        protected virtual void OnUpdate() { }
+
+        private bool CheckIsGrounded()
         {
-            var previousIsGrounded = IsGrounded;
-            var position = transform.position + movementControllerDatum.GroundedCheckOffset;
-            IsGrounded = movementControllerDatum.GroundedCheckType switch
+            var position = transform.position + groundedCheckOffset;
+            return groundedCheckType switch
             {
                 GroundedCheckType.Ray =>
-                    Physics.Raycast(position, Vector3.down, movementControllerDatum.GroundedCheckDistance,
-                        movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                    Physics.Raycast(position, Vector3.down, groundedCheckDistance,
+                        groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
                 GroundedCheckType.Sphere =>
-                    Physics.CheckSphere(position, movementControllerDatum.GroundedCheckDistance,
-                        movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                    Physics.CheckSphere(position, groundedCheckDistance,
+                        groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
                 GroundedCheckType.Box =>
-                    Physics.CheckBox(position, movementControllerDatum.GroundedCheckDistance / 2f * Vector3.one,
-                        Quaternion.identity, movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                    Physics.CheckBox(position, groundedCheckDistance / 2f * Vector3.one,
+                        Quaternion.identity, groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
                 _ => throw new ArgumentOutOfRangeException()
             };
-            if (previousIsGrounded != IsGrounded) Grounded?.Invoke(IsGrounded);
+        }
+
+        private void FixedUpdate()
+        {
+            OnFixedUpdate();
+            
+            if (!disableGroundNormalCheck) _groundNormal = CalculateGroundNormal();
+            //Debug.DrawRay(transform.position, _groundNormal, Color.red, Time.fixedDeltaTime);
+
+            var dot = Vector3.Dot(Vector3.up, _groundNormal);
+            if (dot < edgeThreshold && dot > -edgeThreshold) ForceController.ApplyForce(_groundNormal * edgeForce, ForceMode.VelocityChange);
+            
+            if ((IsGrounded || _groundNormal != Vector3.up) && cancelVelocityOnGrounded) ForceController.CancelVelocityInDirection(-_groundNormal);
+            ApplyGravity();
+            
+            if (ForceController.GetVelocity().magnitude < velocityThreshold && Mover.GetInput().magnitude == 0) ForceController.SetVelocity(Vector3.zero);
+        }
+
+        protected virtual void OnFixedUpdate() { }
+
+        private void ApplyGravity()
+        {
+            // Always apply base gravity
+            Vector3 baseGravity = Vector3.down * (movementControllerDatum.GravityForce * Time.fixedDeltaTime);
+            ForceController.ApplyForce(baseGravity, ForceMode.VelocityChange);
+    
+            // Apply slope gravity regardless of grounded state
+            ApplySlopeGravity();
+        }
+
+        private void ApplySlopeGravity()
+        {
+            // Calculate slope angle between ground normal and up vector
+            float slopeAngle = Vector3.Angle(_groundNormal, Vector3.up);
+    
+            // Only apply slope gravity if beyond minimum slide angle
+            if (slopeAngle > minSlideAngle)
+            {
+                // Calculate gravity direction along the slope
+                Vector3 slopeDirection = Vector3.ProjectOnPlane(Vector3.down, _groundNormal).normalized;
+                Vector3 slopeGravity = slopeDirection * (movementControllerDatum.GravityForce * Time.fixedDeltaTime);
+        
+                ForceController.ApplyForce(slopeGravity, ForceMode.VelocityChange);
+            }
+        }
+        
+        private Vector3 CalculateGroundNormal()
+        {
+            var position = transform.position + groundNormalCheckOffset;
+            return Physics.SphereCast(position, groundNormalCheckRadius, Vector3.down, out var hit, groundNormalCheckDistance, groundNormalCheckLayerMask, QueryTriggerInteraction.Ignore) ? hit.normal : Vector3.up;
         }
 
         public void Move()
@@ -122,12 +188,15 @@ namespace Systems.Movement
                 currentVelocity.y = 0;
             }
             var targetVelocity = input.normalized * maxSpeed;
-
+            
             var velocityDifference = targetVelocity - currentVelocity;
             var differenceDirection = velocityDifference.normalized;
+            
+            var velocityDot = Vector3.Dot(currentVelocity.normalized, differenceDirection);
+            var directionDot = Vector3.Dot(currentVelocity, targetVelocity);
+            
             float accelerationIncrement;
-
-            if (Vector3.Dot(currentVelocity, differenceDirection) > 0 || currentVelocity.magnitude == 0)
+            if (velocityDot > movementControllerDatum.DecelerationDotThreshold || currentVelocity.magnitude == 0 || (movementControllerDatum.CanAccelerateWhileDecelerating && directionDot < movementControllerDatum.DecelerationDotThreshold))
             {
                 accelerationIncrement = datum.Acceleration * datum.AccelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }

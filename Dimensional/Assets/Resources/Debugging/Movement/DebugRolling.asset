@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2dfc12f15020374d8c5a3c0144778ba, type: 3}
   m_Name: DebugRolling
   m_EditorClassIdentifier: 
+  gravityForce: 9.8
+  maxFallSpeed: 0
   maxSpeed: 20
-  acceleration: 15
+  acceleration: 20
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -38,7 +40,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  deceleration: 20
+  deceleration: 15
   decelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -63,10 +65,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  airborneMultiplier: 0.5
-  groundedCheckType: 0
-  groundedCheckDistance: 0
-  groundedCheckOffset: {x: 0, y: 0, z: 0}
-  groundedLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
+  canAccelerateWhileDecelerating: 1
+  decelerationDotThreshold: 0
+  airborneMultiplier: 0.1

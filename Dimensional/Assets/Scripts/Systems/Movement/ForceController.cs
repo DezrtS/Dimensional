@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Systems.Movement
 {
@@ -87,5 +86,23 @@ namespace Systems.Movement
             OnTeleport(position);
         }
         protected virtual void OnTeleport(Vector3 position) => transform.position = position;
+        
+        public void CancelVelocityInDirection(Vector3 direction)
+        {
+            if (isDisabled || isKinematic || direction.sqrMagnitude < Mathf.Epsilon) 
+                return;
+
+            var currentVelocity = GetVelocity();
+            var normalizedDirection = direction.normalized;
+    
+            // Calculate dot product to get velocity magnitude in target direction
+            var velocityComponent = Vector3.Dot(currentVelocity, normalizedDirection);
+    
+            // Only cancel if velocity is moving IN the direction (positive dot product)
+            if (!(velocityComponent > 0)) return;
+            var velocityToCancel = velocityComponent * normalizedDirection;
+            var newVelocity = currentVelocity - velocityToCancel;
+            OnSetVelocity(newVelocity);
+        }
     }
 }
