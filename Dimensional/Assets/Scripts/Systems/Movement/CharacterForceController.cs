@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Systems.Movement
@@ -8,7 +7,6 @@ namespace Systems.Movement
     {
         [SerializeField] private float mass = 1.0f;
         [SerializeField] private float gravityForce = 9.8f;
-        [SerializeField] private float maxFallSpeed;
         
         private CharacterController _characterController;
         private Vector3 Velocity { get; set; }

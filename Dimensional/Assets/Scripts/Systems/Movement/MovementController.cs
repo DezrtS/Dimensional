@@ -11,17 +11,22 @@ namespace Systems.Movement
         public delegate void GroundedEventHandler(bool isGrounded);
         public event GroundedEventHandler Grounded;
         
+        [Header("Movement Settings")]
         [SerializeField] private MovementControllerDatum movementControllerDatum;
         [SerializeField] private Dimensions movementDimensions;
-        [Space] 
         [SerializeField] private bool disableYInput;
         [Space]
+        [Header("Grounded Settings")]
         [SerializeField] private bool disableGroundedCheck;
-        [SerializeField] private bool setYVelocityOnGrounded;
+        [SerializeField] private GroundedCheckType groundedCheckType;
+        [SerializeField] private float groundedCheckDistance;
+        [SerializeField] private Vector3 groundedCheckOffset;
+        [SerializeField] private LayerMask groundedCheckLayerMask;
         
         protected IMove Mover;
         
         public MovementControllerDatum MovementControllerDatum => movementControllerDatum;
+        public MovementControllerDatum CurrentMovementControllerDatum { get; protected set; }
         public Dimensions MovementDimensions => movementDimensions;
         public ForceController ForceController { get; private set; }
         public bool IsDisabled { get; set; }
@@ -29,6 +34,7 @@ namespace Systems.Movement
 
         private void Awake()
         {
+            CurrentMovementControllerDatum = movementControllerDatum;
             ForceController = GetComponent<ForceController>();
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
             OnAwake();
@@ -44,37 +50,32 @@ namespace Systems.Movement
         private void Update()
         {
             OnUpdate();
-        }
-
-        protected virtual void OnUpdate()
-        {
+            
             if (disableGroundedCheck) return;
-            UpdateIsGrounded();
-            if (!IsGrounded || !setYVelocityOnGrounded) return;
-            var velocity = ForceController.GetVelocity();
-            if (!(velocity.y < 0)) return;
-            velocity.y = -0.5f;
-            ForceController.SetVelocity(velocity);
+            
+            var previousIsGrounded = IsGrounded;
+            IsGrounded = CheckIsGrounded();
+            if (previousIsGrounded != IsGrounded) Grounded?.Invoke(IsGrounded);
         }
 
-        private void UpdateIsGrounded()
+        protected virtual void OnUpdate() { }
+
+        private bool CheckIsGrounded()
         {
-            var previousIsGrounded = IsGrounded;
-            var position = transform.position + movementControllerDatum.GroundedCheckOffset;
-            IsGrounded = movementControllerDatum.GroundedCheckType switch
+            var position = transform.position + groundedCheckOffset;
+            return groundedCheckType switch
             {
                 GroundedCheckType.Ray =>
-                    Physics.Raycast(position, Vector3.down, movementControllerDatum.GroundedCheckDistance,
-                        movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                    Physics.Raycast(position, Vector3.down, groundedCheckDistance,
+                        groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
                 GroundedCheckType.Sphere =>
-                    Physics.CheckSphere(position, movementControllerDatum.GroundedCheckDistance,
-                        movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                    Physics.CheckSphere(position, groundedCheckDistance,
+                        groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
                 GroundedCheckType.Box =>
-                    Physics.CheckBox(position, movementControllerDatum.GroundedCheckDistance / 2f * Vector3.one,
-                        Quaternion.identity, movementControllerDatum.GroundedLayerMask, QueryTriggerInteraction.Ignore),
+                    Physics.CheckBox(position, groundedCheckDistance / 2f * Vector3.one,
+                        Quaternion.identity, groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
                 _ => throw new ArgumentOutOfRangeException()
             };
-            if (previousIsGrounded != IsGrounded) Grounded?.Invoke(IsGrounded);
         }
 
         public void Move()
@@ -102,7 +103,7 @@ namespace Systems.Movement
                     throw new ArgumentOutOfRangeException();
             }
 
-            OnMove(input, movementControllerDatum);
+            OnMove(input, CurrentMovementControllerDatum);
         }
 
         protected virtual void OnMove(Vector3 input, MovementControllerDatum datum)
@@ -122,12 +123,15 @@ namespace Systems.Movement
                 currentVelocity.y = 0;
             }
             var targetVelocity = input.normalized * maxSpeed;
-
+            
             var velocityDifference = targetVelocity - currentVelocity;
             var differenceDirection = velocityDifference.normalized;
+            
+            var velocityDot = Vector3.Dot(currentVelocity.normalized, differenceDirection);
+            var directionDot = Vector3.Dot(currentVelocity, targetVelocity);
+            
             float accelerationIncrement;
-
-            if (Vector3.Dot(currentVelocity, differenceDirection) > 0 || currentVelocity.magnitude == 0)
+            if (velocityDot > datum.DecelerationDotThreshold || currentVelocity.magnitude == 0 || (datum.CanAccelerateWhileDecelerating && directionDot < datum.DecelerationDotThreshold))
             {
                 accelerationIncrement = datum.Acceleration * datum.AccelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }

@@ -94,7 +94,7 @@ MonoBehaviour:
   CameraSide: 0.5
   CameraDistance: 10
   AvoidObstacles:
-    Enabled: 0
+    Enabled: 1
     CollisionFilter:
       serializedVersion: 2
       m_Bits: 1
@@ -318,4 +318,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff659ce2cee6dfe4b92ce370f6aecfec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockAndHideCursor: 0
   yOffset2D: 2

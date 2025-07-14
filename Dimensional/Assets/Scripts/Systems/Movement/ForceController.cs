@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Systems.Movement
 {
@@ -8,6 +7,8 @@ namespace Systems.Movement
         [SerializeField] private bool isKinematic;
         [SerializeField] private bool useGravity;
         [SerializeField] private bool isDisabled;
+        [Space] 
+        [SerializeField] protected float maxFallSpeed;
         
         public bool IsKinematic
         {
@@ -87,5 +88,27 @@ namespace Systems.Movement
             OnTeleport(position);
         }
         protected virtual void OnTeleport(Vector3 position) => transform.position = position;
+        
+        public void CancelVelocityInDirection(Vector3 direction)
+        {
+            if (isDisabled || isKinematic || direction.sqrMagnitude < Mathf.Epsilon) 
+                return;
+            
+            var newVelocity = GetCancelledVector(GetVelocity(), direction);
+            OnSetVelocity(newVelocity);
+        }
+
+        public static Vector3 GetCancelledVector(Vector3 vector, Vector3 direction)
+        {
+            var normalizedDirection = direction.normalized;
+    
+            // Calculate dot product to get velocity magnitude in target direction
+            var velocityComponent = Vector3.Dot(vector, normalizedDirection);
+    
+            // Only cancel if velocity is moving IN the direction (positive dot product)
+            if (!(velocityComponent > 0)) return vector;
+            var velocityToCancel = velocityComponent * normalizedDirection;
+            return vector - velocityToCancel;
+        }
     }
 }

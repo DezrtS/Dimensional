@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807f82c173752904eb32455257467d28, type: 3}
   m_Name: EdgeDetection
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     renderPassEvent: 500
     outlineThicknessWorld: 0.001

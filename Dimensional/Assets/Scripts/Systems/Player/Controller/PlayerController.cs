@@ -12,10 +12,6 @@ namespace Systems.Player
     public class PlayerController : MonoBehaviour, IEntity, IMove, IAim
     {
         [SerializeField] private EntityDatum entityDatum;
-        [SerializeField] private TextMeshProUGUI typeText;
-        
-        [SerializeField] private ProjectileDatum projectileDatum;
-        [SerializeField] private float fireSpeed;
         
         private PlayerMovementController _playerMovementController;
         private PlayerLook _playerLook;

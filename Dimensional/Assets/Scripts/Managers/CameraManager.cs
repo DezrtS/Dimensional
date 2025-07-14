@@ -42,10 +42,12 @@ namespace Managers
             {
                 case Dimensions.Two:
                     _thirdPersonFollow.VerticalArmLength = yOffset2D;
+                    _thirdPersonFollow.AvoidObstacles.Enabled = false;
                     _camera.orthographic = true;
                     break;
                 case Dimensions.Three:
                     _thirdPersonFollow.VerticalArmLength = 0;
+                    _thirdPersonFollow.AvoidObstacles.Enabled = true;
                     _camera.orthographic = false;
                     break;
                 default:
