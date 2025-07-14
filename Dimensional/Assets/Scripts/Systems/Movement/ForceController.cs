@@ -7,6 +7,8 @@ namespace Systems.Movement
         [SerializeField] private bool isKinematic;
         [SerializeField] private bool useGravity;
         [SerializeField] private bool isDisabled;
+        [Space] 
+        [SerializeField] protected float maxFallSpeed;
         
         public bool IsKinematic
         {
@@ -91,18 +93,22 @@ namespace Systems.Movement
         {
             if (isDisabled || isKinematic || direction.sqrMagnitude < Mathf.Epsilon) 
                 return;
+            
+            var newVelocity = GetCancelledVector(GetVelocity(), direction);
+            OnSetVelocity(newVelocity);
+        }
 
-            var currentVelocity = GetVelocity();
+        public static Vector3 GetCancelledVector(Vector3 vector, Vector3 direction)
+        {
             var normalizedDirection = direction.normalized;
     
             // Calculate dot product to get velocity magnitude in target direction
-            var velocityComponent = Vector3.Dot(currentVelocity, normalizedDirection);
+            var velocityComponent = Vector3.Dot(vector, normalizedDirection);
     
             // Only cancel if velocity is moving IN the direction (positive dot product)
-            if (!(velocityComponent > 0)) return;
+            if (!(velocityComponent > 0)) return vector;
             var velocityToCancel = velocityComponent * normalizedDirection;
-            var newVelocity = currentVelocity - velocityToCancel;
-            OnSetVelocity(newVelocity);
+            return vector - velocityToCancel;
         }
     }
 }

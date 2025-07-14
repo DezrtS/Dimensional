@@ -49,6 +49,15 @@ namespace Managers
                 SetWorldDimensions(Dimensions.Three);
             }
 
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Time.timeScale = Mathf.Min(Time.timeScale + 0.1f, 1);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Time.timeScale = Mathf.Max(Time.timeScale - 0.1f, 0.1f);
+            }
+
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 controls.SetActive(!controls.activeSelf);

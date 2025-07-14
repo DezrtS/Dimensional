@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Systems.Movement
@@ -26,10 +25,10 @@ namespace Systems.Movement
         {
             if (IsKinematic) return;
             var fixedDeltaTime = Time.fixedDeltaTime;
-            //if (UseGravity)
-            //{
-            //    Velocity += Mathf.Min(gravityForce, maxFallSpeed + Velocity.y) * fixedDeltaTime * Vector3.down;
-            //}
+            if (UseGravity)
+            {
+                Velocity += Mathf.Min(gravityForce, maxFallSpeed + Velocity.y) * fixedDeltaTime * Vector3.down;
+            }
             _characterController.Move(Velocity * fixedDeltaTime);
         }
 

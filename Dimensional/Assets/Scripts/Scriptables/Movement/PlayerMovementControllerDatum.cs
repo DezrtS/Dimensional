@@ -94,7 +94,10 @@ namespace Scriptables.Movement
         [SerializeField] private Vector3 attackVector;
         [SerializeField] private float attackTime;
         [SerializeField] private AnimationCurve attackCurve;
-        [Space(15)] 
+        [Space(15)]
+        [Header("Crouch Settings")]
+        [SerializeField] private MovementControllerDatum crouchMovementControllerDatum;
+        [Space(15)]
         [Header("Roll Settings")]
         [SerializeField] private float initialRollSpeed;
         [SerializeField] private MovementControllerDatum rollMovementControllerDatum;
@@ -157,6 +160,7 @@ namespace Scriptables.Movement
         public Vector3 AttackVector => attackVector;
         public float AttackTime => attackTime;
         public AnimationCurve AttackCurve => attackCurve;
+        public MovementControllerDatum CrouchMovementControllerDatum => crouchMovementControllerDatum;
         public float InitialRollSpeed => initialRollSpeed;
         public MovementControllerDatum RollMovementControllerDatum => rollMovementControllerDatum;
     }

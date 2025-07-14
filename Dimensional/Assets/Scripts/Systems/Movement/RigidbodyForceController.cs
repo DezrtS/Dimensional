@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Systems.Movement
@@ -11,6 +12,14 @@ namespace Systems.Movement
         {
             _rig = GetComponent<Rigidbody>();
             base.Awake();
+        }
+
+        private void FixedUpdate()
+        {
+            if (IsKinematic || !UseGravity) return;
+            var velocity = GetVelocity();
+            velocity.y = Mathf.Max(velocity.y, maxFallSpeed);
+            SetVelocity(velocity);
         }
 
         protected override void OnSetIsKinematic()

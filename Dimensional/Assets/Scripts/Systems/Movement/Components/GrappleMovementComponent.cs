@@ -11,7 +11,7 @@ namespace Systems.Movement.Components
         private float _grappleTime;
         private AnimationCurve _grappleCurve;
 
-        private Vector3 _grappleTarget;
+        private Transform _grappleTarget;
 
         public void SetGrappleMovementData(float grappleSpeed, float grappleTime, AnimationCurve grappleCurve)
         {
@@ -20,7 +20,7 @@ namespace Systems.Movement.Components
             _grappleCurve = grappleCurve;
         }
         
-        public void SetGrappleTarget(Vector3 grappleTarget) => _grappleTarget = grappleTarget;
+        public void SetGrappleTarget(Transform grappleTarget) => _grappleTarget = grappleTarget;
         
         protected override void OnActivate()
         {
@@ -43,7 +43,7 @@ namespace Systems.Movement.Components
         
         private IEnumerator GrappleCoroutine()
         {
-            var direction = (_grappleTarget - transform.position).normalized;
+            var direction = (_grappleTarget.position - transform.position).normalized;
             var grappleTimer = 0f;
 
             while (true)
@@ -53,7 +53,7 @@ namespace Systems.Movement.Components
                 
                 MovementController.ForceController.SetVelocity(velocity);
                 
-                direction = (_grappleTarget - transform.position).normalized;
+                direction = (_grappleTarget.position - transform.position).normalized;
                 if (Vector3.Dot(velocity, direction) < 0) break;
                 
                 grappleTimer += Time.deltaTime;

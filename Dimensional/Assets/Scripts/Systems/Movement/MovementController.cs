@@ -11,38 +11,22 @@ namespace Systems.Movement
         public delegate void GroundedEventHandler(bool isGrounded);
         public event GroundedEventHandler Grounded;
         
+        [Header("Movement Settings")]
         [SerializeField] private MovementControllerDatum movementControllerDatum;
         [SerializeField] private Dimensions movementDimensions;
-        [Space] 
         [SerializeField] private bool disableYInput;
         [Space]
         [Header("Grounded Settings")]
-        [SerializeField] private bool cancelVelocityOnGrounded;
         [SerializeField] private bool disableGroundedCheck;
         [SerializeField] private GroundedCheckType groundedCheckType;
         [SerializeField] private float groundedCheckDistance;
         [SerializeField] private Vector3 groundedCheckOffset;
         [SerializeField] private LayerMask groundedCheckLayerMask;
-        [Space]
-        [Header("Gravity Settings")]
-        [SerializeField] private bool disableGroundNormalCheck;
-        [SerializeField] private float groundNormalCheckRadius;
-        [SerializeField] private float groundNormalCheckDistance;
-        [SerializeField] private Vector3 groundNormalCheckOffset;
-        [SerializeField] private LayerMask groundNormalCheckLayerMask;
-        [Space]
-        [SerializeField] private float minSlideAngle = 30f; // Minimum angle before sliding starts
-        [Space]
-        [SerializeField] private float edgeThreshold = 0.2f;
-        [SerializeField] private float edgeForce = 0.5f;
-        
-        [SerializeField] private float velocityThreshold = 0.5f;
-        [SerializeField] private float linearDamping = 3;
         
         protected IMove Mover;
-        private Vector3 _groundNormal = Vector3.up;
         
         public MovementControllerDatum MovementControllerDatum => movementControllerDatum;
+        public MovementControllerDatum CurrentMovementControllerDatum { get; protected set; }
         public Dimensions MovementDimensions => movementDimensions;
         public ForceController ForceController { get; private set; }
         public bool IsDisabled { get; set; }
@@ -50,6 +34,7 @@ namespace Systems.Movement
 
         private void Awake()
         {
+            CurrentMovementControllerDatum = movementControllerDatum;
             ForceController = GetComponent<ForceController>();
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
             OnAwake();
@@ -93,56 +78,6 @@ namespace Systems.Movement
             };
         }
 
-        private void FixedUpdate()
-        {
-            OnFixedUpdate();
-            
-            if (!disableGroundNormalCheck) _groundNormal = CalculateGroundNormal();
-            //Debug.DrawRay(transform.position, _groundNormal, Color.red, Time.fixedDeltaTime);
-
-            var dot = Vector3.Dot(Vector3.up, _groundNormal);
-            if (dot < edgeThreshold && dot > -edgeThreshold) ForceController.ApplyForce(_groundNormal * edgeForce, ForceMode.VelocityChange);
-            
-            if ((IsGrounded || _groundNormal != Vector3.up) && cancelVelocityOnGrounded) ForceController.CancelVelocityInDirection(-_groundNormal);
-            ApplyGravity();
-            
-            if (ForceController.GetVelocity().magnitude < velocityThreshold && Mover.GetInput().magnitude == 0) ForceController.SetVelocity(Vector3.zero);
-        }
-
-        protected virtual void OnFixedUpdate() { }
-
-        private void ApplyGravity()
-        {
-            // Always apply base gravity
-            Vector3 baseGravity = Vector3.down * (movementControllerDatum.GravityForce * Time.fixedDeltaTime);
-            ForceController.ApplyForce(baseGravity, ForceMode.VelocityChange);
-    
-            // Apply slope gravity regardless of grounded state
-            ApplySlopeGravity();
-        }
-
-        private void ApplySlopeGravity()
-        {
-            // Calculate slope angle between ground normal and up vector
-            float slopeAngle = Vector3.Angle(_groundNormal, Vector3.up);
-    
-            // Only apply slope gravity if beyond minimum slide angle
-            if (slopeAngle > minSlideAngle)
-            {
-                // Calculate gravity direction along the slope
-                Vector3 slopeDirection = Vector3.ProjectOnPlane(Vector3.down, _groundNormal).normalized;
-                Vector3 slopeGravity = slopeDirection * (movementControllerDatum.GravityForce * Time.fixedDeltaTime);
-        
-                ForceController.ApplyForce(slopeGravity, ForceMode.VelocityChange);
-            }
-        }
-        
-        private Vector3 CalculateGroundNormal()
-        {
-            var position = transform.position + groundNormalCheckOffset;
-            return Physics.SphereCast(position, groundNormalCheckRadius, Vector3.down, out var hit, groundNormalCheckDistance, groundNormalCheckLayerMask, QueryTriggerInteraction.Ignore) ? hit.normal : Vector3.up;
-        }
-
         public void Move()
         {
             Move(Mover?.GetInput() ?? Vector3.zero);
@@ -168,7 +103,7 @@ namespace Systems.Movement
                     throw new ArgumentOutOfRangeException();
             }
 
-            OnMove(input, movementControllerDatum);
+            OnMove(input, CurrentMovementControllerDatum);
         }
 
         protected virtual void OnMove(Vector3 input, MovementControllerDatum datum)
@@ -196,7 +131,7 @@ namespace Systems.Movement
             var directionDot = Vector3.Dot(currentVelocity, targetVelocity);
             
             float accelerationIncrement;
-            if (velocityDot > movementControllerDatum.DecelerationDotThreshold || currentVelocity.magnitude == 0 || (movementControllerDatum.CanAccelerateWhileDecelerating && directionDot < movementControllerDatum.DecelerationDotThreshold))
+            if (velocityDot > datum.DecelerationDotThreshold || currentVelocity.magnitude == 0 || (datum.CanAccelerateWhileDecelerating && directionDot < datum.DecelerationDotThreshold))
             {
                 accelerationIncrement = datum.Acceleration * datum.AccelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }

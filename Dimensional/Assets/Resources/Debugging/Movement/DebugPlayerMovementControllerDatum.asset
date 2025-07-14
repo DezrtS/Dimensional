@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e585c14b997534ebb8d8cf1df12012, type: 3}
   m_Name: DebugPlayerMovementControllerDatum
   m_EditorClassIdentifier: 
-  gravityForce: 0
+  gravityForce: 19.8
   maxFallSpeed: 25
   maxSpeed: 9
   acceleration: 40
@@ -347,7 +347,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   wallSlideYVelocityThreshold: 0.2
-  wallSlideMinExitAngle: 100
+  wallSlideMinExitAngle: 135
   wallSlideSpeed: -5
   wallSlideTime: 1
   wallSlideCurve:

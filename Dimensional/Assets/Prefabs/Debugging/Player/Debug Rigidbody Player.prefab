@@ -385,7 +385,6 @@ MonoBehaviour:
   movementControllerDatum: {fileID: 11400000, guid: 670b9822948381e4c81cd3a40815b7e2, type: 2}
   movementDimensions: 0
   disableYInput: 1
-  cancelVelocityOnGrounded: 0
   disableGroundedCheck: 0
   groundedCheckType: 1
   groundedCheckDistance: 0.4
@@ -393,16 +392,6 @@ MonoBehaviour:
   groundedCheckLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  disableGroundNormalCheck: 1
-  groundNormalCheckRadius: 0
-  groundNormalCheckDistance: 0
-  groundNormalCheckOffset: {x: 0, y: 0, z: 0}
-  groundNormalCheckLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  minSlideAngle: 30
-  edgeThreshold: 0
-  edgeForce: 0.5
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
@@ -427,6 +416,7 @@ MonoBehaviour:
   isKinematic: 0
   useGravity: 1
   isDisabled: 0
+  maxFallSpeed: -25
 --- !u!54 &2073613607116406498
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -521,6 +511,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44cce5c6ff837b645897ec949b7e4a9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minRecordDistance: 0.1
+  rewindSpeed: 10
+  maxRewindDuration: 5
+  positionSnapThreshold: 0.05
+  rewindTime: 1
+  rewindCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -2.2944803
+      outSlope: -2.2944803
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1176471
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &5052429027574850150
 MonoBehaviour:
   m_ObjectHideFlags: 0

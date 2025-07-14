@@ -6,10 +6,6 @@ namespace Scriptables.Movement
     [CreateAssetMenu(fileName = "MovementControllerDatum", menuName = "Scriptable Objects/Movement/MovementControllerDatum")]
     public class MovementControllerDatum : ScriptableObject
     {
-        [Header("Gravity Settings")]
-        [SerializeField] private float gravityForce = 9.8f;
-        [SerializeField] private float maxFallSpeed;
-        [Space(15)] 
         [Header("Speed Settings")]
         [SerializeField] private float maxSpeed;
         [SerializeField] private float acceleration;
@@ -21,8 +17,6 @@ namespace Scriptables.Movement
         [SerializeField] private float decelerationDotThreshold;
         [SerializeField] private float airborneMultiplier;
         
-        public float GravityForce => gravityForce;
-        public float MaxFallSpeed => maxFallSpeed;
         public float MaxSpeed => maxSpeed;
         public float Acceleration => acceleration;
         public AnimationCurve AccelerationCurve => accelerationCurve;
