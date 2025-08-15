@@ -370,6 +370,8 @@ MonoBehaviour:
   playerLookDatum: {fileID: 11400000, guid: 85da3df00b1d3794d8881a671b0b22a6, type: 2}
   lookDimensions: 0
   root: {fileID: 3181895067545943186}
+  minDitherDistance: 5
+  playerMaterial: {fileID: 0}
 --- !u!114 &3046191874044748012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,18 +388,36 @@ MonoBehaviour:
   movementDimensions: 0
   disableYInput: 1
   disableGroundedCheck: 0
+  groundedNormalDotThreshold: 0.25
   groundedCheckType: 1
-  groundedCheckDistance: 0.4
-  groundedCheckOffset: {x: 0, y: -0.2, z: 0}
+  groundedCheckOffset: {x: 0, y: 0, z: 0}
+  groundedCheckSize: {x: 0.4, y: 0, z: 0}
+  groundedCheckDistance: 0.2
   groundedCheckLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 257
+  disableGroundPlatformCheck: 0
+  platformCheckRadius: 0.4
+  platformCheckOffset: {x: 0, y: -0.2, z: 0}
+  platformCheckLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
   debugResetMovementComponentData: 1
+  disableDoubleJump: 0
+  disableSpringJump: 0
+  disableBoomerang: 0
+  disableGlide: 0
+  disableGrapple: 0
+  disableGroundPound: 0
+  disableAttack: 0
   disableWallSlideCheck: 0
+  disableWallPlatformCheck: 0
   visualEffects: []
+  windStreaksVelocityThreshold: 15
+  windStreaksParticleSystem: {fileID: 0}
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
   balloonJumpSmokePrefab: {fileID: 4772967992589099599, guid: 1e33b4cd74162f7439049e48f49d7bf8, type: 3}
   groundPoundSmokePrefab: {fileID: 1267202595665965921, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
@@ -417,6 +437,7 @@ MonoBehaviour:
   useGravity: 1
   isDisabled: 0
   maxFallSpeed: -25
+  overSpeedDeceleration: 50
 --- !u!54 &2073613607116406498
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -425,7 +446,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3206800854426569070}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 5
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -552,6 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9011f845f750e4f40ad8501755ecd888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  glideMass: 1
 --- !u!114 &-9158318817335820013
 MonoBehaviour:
   m_ObjectHideFlags: 0

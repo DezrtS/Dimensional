@@ -9,14 +9,15 @@ namespace Managers
     {
         [SerializeField] private bool lockAndHideCursor;
         [SerializeField] private float yOffset2D;
-        
-        private Camera _camera;
+
         private CinemachineCamera _cinemachineCamera;
         private CinemachineThirdPersonFollow _thirdPersonFollow;
+        
+        public Camera Camera { get; private set; }
 
         private void Awake()
         {
-            _camera = GetComponentInChildren<Camera>();
+            Camera = GetComponentInChildren<Camera>();
             _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
             _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
@@ -43,16 +44,21 @@ namespace Managers
                 case Dimensions.Two:
                     _thirdPersonFollow.VerticalArmLength = yOffset2D;
                     _thirdPersonFollow.AvoidObstacles.Enabled = false;
-                    _camera.orthographic = true;
+                    Camera.orthographic = true;
                     break;
                 case Dimensions.Three:
                     _thirdPersonFollow.VerticalArmLength = 0;
                     _thirdPersonFollow.AvoidObstacles.Enabled = true;
-                    _camera.orthographic = false;
+                    Camera.orthographic = false;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newValue), newValue, null);
             }
+        }
+
+        private void OnDisable()
+        {
+            GameManager.WorldDimensionsChanged -= GameManagerOnWorldDimensionsChanged;
         }
     }
 }

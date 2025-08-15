@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using Interfaces;
 using Managers;
 using Scriptables.Movement;
+using Systems.Platforms;
 using UnityEngine;
 
 namespace Systems.Movement
@@ -18,19 +20,31 @@ namespace Systems.Movement
         [Space]
         [Header("Grounded Settings")]
         [SerializeField] private bool disableGroundedCheck;
-        [SerializeField] private GroundedCheckType groundedCheckType;
-        [SerializeField] private float groundedCheckDistance;
+        [SerializeField] private bool allowDefaultHitValues;
+        [SerializeField] private float groundedNormalDotThreshold;
+        [SerializeField] private CheckType groundedCheckType;
         [SerializeField] private Vector3 groundedCheckOffset;
+        [SerializeField] private Vector3 groundedCheckSize;
+        [SerializeField] private float groundedCheckDistance;
         [SerializeField] private LayerMask groundedCheckLayerMask;
+        [Header("Ground Platform Settings")]
+        [SerializeField] private bool disableGroundPlatformCheck;
+        [SerializeField] private float platformCheckRadius;
+        [SerializeField] private Vector3 platformCheckOffset;
+        [SerializeField] protected LayerMask platformCheckLayerMask;
+        
+        private Transform _platformTransform;
         
         protected IMove Mover;
-        
-        public MovementControllerDatum MovementControllerDatum => movementControllerDatum;
-        public MovementControllerDatum CurrentMovementControllerDatum { get; protected set; }
-        public Dimensions MovementDimensions => movementDimensions;
+
+        protected MovementControllerDatum MovementControllerDatum => movementControllerDatum;
+        public MovementControllerDatum CurrentMovementControllerDatum { get; set; }
+        protected Dimensions MovementDimensions => movementDimensions;
         public ForceController ForceController { get; private set; }
         public bool IsDisabled { get; set; }
-        public bool IsGrounded { get; private set; }
+        protected bool IsGrounded { get; private set; }
+        protected bool IsPlatformed { get; private set; }
+        protected bool SkipGroundPlatformCheck { get; set; }
 
         private void Awake()
         {
@@ -50,32 +64,67 @@ namespace Systems.Movement
         private void Update()
         {
             OnUpdate();
-            
-            if (disableGroundedCheck) return;
-            
-            var previousIsGrounded = IsGrounded;
-            IsGrounded = CheckIsGrounded();
-            if (previousIsGrounded != IsGrounded) Grounded?.Invoke(IsGrounded);
+
+            if (!disableGroundedCheck)
+            {
+                var previousIsGrounded = IsGrounded;
+                IsGrounded = CheckIsGrounded();
+                if (previousIsGrounded != IsGrounded) Grounded?.Invoke(IsGrounded);   
+            }
+
+            if (disableGroundPlatformCheck || SkipGroundPlatformCheck) return;
+            CheckGroundPlatform();
         }
 
         protected virtual void OnUpdate() { }
 
         private bool CheckIsGrounded()
         {
-            var position = transform.position + groundedCheckOffset;
-            return groundedCheckType switch
+            var raycastHits = GameManager.CheckCast(transform.position, groundedCheckType, groundedCheckOffset, Vector3.down, groundedCheckSize,
+                groundedCheckDistance, groundedCheckLayerMask);
+            return raycastHits.Any(hit => Vector3.Dot(hit.normal, Vector3.up) > groundedNormalDotThreshold && (allowDefaultHitValues || hit.point != Vector3.zero));
+        }
+
+        private void CheckGroundPlatform()
+        {
+            var results = new Collider[10];
+            var length = Physics.OverlapSphereNonAlloc(transform.position + platformCheckOffset, platformCheckRadius, results, platformCheckLayerMask, QueryTriggerInteraction.Ignore);
+            if (length == 0 && IsPlatformed)
             {
-                GroundedCheckType.Ray =>
-                    Physics.Raycast(position, Vector3.down, groundedCheckDistance,
-                        groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
-                GroundedCheckType.Sphere =>
-                    Physics.CheckSphere(position, groundedCheckDistance,
-                        groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
-                GroundedCheckType.Box =>
-                    Physics.CheckBox(position, groundedCheckDistance / 2f * Vector3.one,
-                        Quaternion.identity, groundedCheckLayerMask, QueryTriggerInteraction.Ignore),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                UnPlatform();
+                return;
+            }
+            
+            for (var i = 0; i < length; i++)
+            {
+                var platform = results[i].transform;
+                Platform(platform);
+                break;
+            }
+        }
+
+        protected void Platform(Transform platformTransform)
+        {
+            if (transform.parent == platformTransform) return;
+            if (IsPlatformed) UnPlatform();
+            
+            IsPlatformed = true;
+            transform.SetParent(platformTransform);
+            _platformTransform = platformTransform;
+            
+            var platform = platformTransform.GetComponent<Platform>();
+            ForceController.ApplyForce(-platform.Velocity, ForceMode.VelocityChange);
+        }
+
+        protected void UnPlatform()
+        {
+            if (!IsPlatformed) return;
+            
+            IsPlatformed = false;
+            transform.SetParent(null);
+            
+            var platform = _platformTransform.GetComponent<Platform>();
+            ForceController.ApplyForce(platform.Velocity, ForceMode.VelocityChange);
         }
 
         public void Move()
@@ -122,7 +171,8 @@ namespace Systems.Movement
                 input.y = 0;
                 currentVelocity.y = 0;
             }
-            var targetVelocity = input.normalized * maxSpeed;
+            
+            var targetVelocity = input * maxSpeed;
             
             var velocityDifference = targetVelocity - currentVelocity;
             var differenceDirection = velocityDifference.normalized;

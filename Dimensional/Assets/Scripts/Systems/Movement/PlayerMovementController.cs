@@ -12,13 +12,28 @@ namespace Systems.Movement
 {
     public class PlayerMovementController : MovementController
     {
-        [Space] [SerializeField] private Transform root;
+        [Space] 
+        [SerializeField] private Transform root;
         [SerializeField] private float scaleStrength = 0.1f;
         [SerializeField] private float scaleSpeed = 10;
-        [Space] [SerializeField] private bool debugResetMovementComponentData;
-        [Space] [SerializeField] private bool disableWallSlideCheck;
-        [Space] [SerializeField] private VisualEffect[] visualEffects;
-        [Space] [SerializeField] private GameObject smokePrefab;
+        [Space] 
+        [SerializeField] private bool debugResetMovementComponentData;
+        [SerializeField] private bool disableDoubleJump;
+        [SerializeField] private bool disableSpringJump;
+        [SerializeField] private bool disableBoomerang;
+        [SerializeField] private bool disableGlide;
+        [SerializeField] private bool disableGrapple;
+        [SerializeField] private bool disableGroundPound;
+        [SerializeField] private bool disableAttack;
+        [Space] 
+        [SerializeField] private bool disableWallSlideCheck;
+        [SerializeField] private bool disableWallPlatformCheck;
+        [Space] 
+        [SerializeField] private VisualEffect[] visualEffects;
+        [Space] 
+        [SerializeField] private float windStreaksVelocityThreshold = 10f;
+        [SerializeField] private ParticleSystem windStreaksParticleSystem;
+        [SerializeField] private GameObject smokePrefab;
         [SerializeField] private GameObject balloonJumpSmokePrefab;
         [SerializeField] private GameObject groundPoundSmokePrefab;
 
@@ -101,7 +116,7 @@ namespace Systems.Movement
         private void SetMovementComponentData()
         {
             //_boomerangMovementComponent.SetBoomerangMovementData(_playerMovementControllerDatum.BoomerangFallSpeedThreshold, _playerMovementControllerDatum.BoomerangFallTimeThreshold, _playerMovementControllerDatum.BoomerangTime, _playerMovementControllerDatum.BoomerangCurve);
-            _glideMovementComponent.SetGlideMovementData(_playerMovementControllerDatum.GlideFallSpeedThreshold, _playerMovementControllerDatum.GlideFallTimeThreshold, _playerMovementControllerDatum.GlideFallSpeed, _playerMovementControllerDatum.GlideSlowDownTime, _playerMovementControllerDatum.GlideSlowDownCurve);
+            _glideMovementComponent.SetGlideMovementData(_playerMovementControllerDatum.GlideFallSpeedThreshold, _playerMovementControllerDatum.GlideFallTimeThreshold, _playerMovementControllerDatum.GlideFallSpeed);
             _grappleMovementComponent.SetGrappleMovementData(_playerMovementControllerDatum.GrappleSpeed, _playerMovementControllerDatum.GrappleTime, _playerMovementControllerDatum.GrappleCurve);
             _groundPoundMovementComponent.SetGroundPoundMovementData(_playerMovementControllerDatum.GroundPoundSpeed, _playerMovementControllerDatum.GroundPoundTime, _playerMovementControllerDatum.GroundPoundCurve, _playerMovementControllerDatum.GroundPoundMediumPowerTimeThreshold, _playerMovementControllerDatum.GroundPoundHighPowerTimeThreshold);
             _wallSlideMovementComponent.SetWallSlideMovementData(_playerMovementControllerDatum.WallSlideSpeed, _playerMovementControllerDatum.WallSlideTime, _playerMovementControllerDatum.WallSlideCurve, _playerMovementControllerDatum.WallSlideCheckOffset, _playerMovementControllerDatum.WallSlideCheckDistance, _playerMovementControllerDatum.WallSlideCheckLayerMask);
@@ -119,6 +134,11 @@ namespace Systems.Movement
             root.localScale = Vector3.Lerp(root.localScale,
                 new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), deltaTime * scaleSpeed);
             _animator.SetFloat("yVelocity", velocity.y);
+            
+            if (velocity.magnitude > 0.1f) windStreaksParticleSystem.transform.forward = -velocity.normalized;
+            if (velocity.magnitude > windStreaksVelocityThreshold && !windStreaksParticleSystem.isPlaying) windStreaksParticleSystem.Play();
+            else if (velocity.magnitude < windStreaksVelocityThreshold && windStreaksParticleSystem.isPlaying) windStreaksParticleSystem.Stop();
+            
             velocity.y = 0;
             _animator.SetFloat("xzVelocity", velocity.magnitude / CurrentMovementControllerDatum.MaxSpeed);
             if (velocity.magnitude > 0.1f) root.forward = velocity;
@@ -193,6 +213,8 @@ namespace Systems.Movement
         protected override void OnUpdate()
         {
             WallSlide();
+            if (!_isWallSliding || disableWallPlatformCheck) return;
+            CheckWallPlatform();
         }
 
         protected override void OnMove(Vector3 input, MovementControllerDatum datum)
@@ -255,7 +277,7 @@ namespace Systems.Movement
                 QueueJump();
                 return;
             }
-
+            
             if (!IsGrounded && _coyoteTimer <= 0)
             {
                 if (_wallSlideMovementComponent.IsActive || _wallJumpCoyoteTimer > 0)
@@ -266,7 +288,7 @@ namespace Systems.Movement
                     OnWallDash(); // May need to separate from CancelJump();
                     Instantiate(smokePrefab, root.position, Quaternion.identity);
                 }
-                else if (_canDoubleJump)
+                else if (_canDoubleJump && !disableDoubleJump)
                 {
                     StopRolling();
                     _canDoubleJump = false;
@@ -289,7 +311,7 @@ namespace Systems.Movement
                 }
                 else
                 {
-                    if (_canSpringJump)
+                    if (_canSpringJump && !disableSpringJump)
                     {
                         var timeMultiplier = 1f;
                         var heightMultiplier = 1f;
@@ -330,25 +352,25 @@ namespace Systems.Movement
 
         public void Boomerang()
         {
-            if (IsGrounded || !_canBoomerang || _dashMovementComponent.IsActive || _wallSlideMovementComponent.IsActive) return;
+            if (IsGrounded || !_canBoomerang || _dashMovementComponent.IsActive || _wallSlideMovementComponent.IsActive || disableBoomerang) return;
             OnBoomerang();
         }
 
         public void Glide()
         {
-            if (IsGrounded || _dashMovementComponent.IsActive || _wallSlideMovementComponent.IsActive) return;
+            if (IsGrounded || _dashMovementComponent.IsActive || _wallSlideMovementComponent.IsActive || disableGlide) return;
             OnGlide();
         }
 
         public void Grapple()
         {
-            if (IsGrounded || _dashMovementComponent.IsActive || _wallSlideMovementComponent.IsActive || !_boomerangTarget) return;
+            if (IsGrounded || _dashMovementComponent.IsActive || _wallSlideMovementComponent.IsActive || !_boomerangTarget || disableGrapple) return;
             OnGrapple();
         }
 
         public void GroundPound()
         {
-            if (IsGrounded || _dashMovementComponent.IsActive) return;
+            if (IsGrounded || _dashMovementComponent.IsActive || disableGroundPound) return;
             OnGroundPound();
         }
 
@@ -367,10 +389,10 @@ namespace Systems.Movement
             velocity.y = 0;
 
             var input = _playerLook.TransformInput(Mover.GetInput());
+            if (input.magnitude < 0.5f) return false;
+            
             input.y = 0;
             if (MovementDimensions == Dimensions.Two) input.z = 0;
-
-            if (input.magnitude < 0.5f) return false;
             
             input = input.normalized;
             var intervalAngle = (int)(360 / _playerMovementControllerDatum.WallSlideCheckIntervals);
@@ -380,24 +402,44 @@ namespace Systems.Movement
                 if (Vector3.Dot(input, direction) < 0) continue;
                 if (!Physics.Raycast(transform.position + _playerMovementControllerDatum.WallSlideCheckOffset,
                         direction, _playerMovementControllerDatum.WallSlideCheckDistance,
-                        _playerMovementControllerDatum.WallSlideCheckLayerMask)) continue;
+                        _playerMovementControllerDatum.WallSlideCheckLayerMask, QueryTriggerInteraction.Ignore)) continue;
                 _wallSlideDirection = direction;
+                
                 return true;
             }
             return false;
         }
 
+        private void CheckWallPlatform()
+        {
+            if (Physics.Raycast(transform.position + _playerMovementControllerDatum.WallSlideCheckOffset,
+                    _wallSlideDirection, out var hit, _playerMovementControllerDatum.WallSlideCheckDistance,
+                    platformCheckLayerMask, QueryTriggerInteraction.Ignore))
+            {
+                Platform(hit.transform);
+            }
+            else if (IsPlatformed)
+            {
+                UnPlatform();
+            }
+        }
+
         public void Attack()
         {
-            if (_isAttacking || !_canAttack) return;
+            if (_isAttacking || !_canAttack || disableAttack) return;
             OnDash();
         }
 
         public void Crouch()
         {
+            if (IsGrounded && _isRolling)
+            {
+                StopRolling();
+                return;
+            }
+            
             _isCrouching = true;
-            if (IsGrounded && _isRolling) StopRolling();
-            else GroundPound();
+            GroundPound();
         }
 
         public void Roll()
@@ -490,6 +532,7 @@ namespace Systems.Movement
         private void OnWallSlide()
         {
             _isWallSliding = true;
+            SkipGroundPlatformCheck = true;
             CurrentMovementControllerDatum = _playerMovementControllerDatum.WallSlideMovementControllerDatum;
             _wallSlideMovementComponent.SetWallSlideDirection(_wallSlideDirection);
             _wallSlideMovementComponent.Activate();
@@ -498,6 +541,8 @@ namespace Systems.Movement
         private void WallSlideMovementComponentOnDeactivated()
         {
             _isWallSliding = false;
+            SkipGroundPlatformCheck = false;
+            UnPlatform();
         }
 
         private void OnWallDash()

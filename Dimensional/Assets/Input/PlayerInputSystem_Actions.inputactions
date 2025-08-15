@@ -69,7 +69,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Parachute",
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "6b8a56da-4cd7-43d8-a661-e36ccb2c215f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Glide",
                     "type": "Button",
                     "id": "a83b4dc2-3946-4180-8de6-ee5a7ff1193c",
                     "expectedControlType": "",
@@ -227,7 +236,7 @@
                     "id": "8c8e490b-c610-4785-884f-f04217b23ca4",
                     "path": "<Pointer>/delta",
                     "interactions": "",
-                    "processors": "ScaleVector2(x=0.2,y=0.2)",
+                    "processors": "ScaleVector2(x=0.5,y=0.5)",
                     "groups": ";Keyboard&Mouse;Touch",
                     "action": "Look",
                     "isComposite": false,
@@ -335,7 +344,7 @@
                 {
                     "name": "",
                     "id": "44b86885-79d3-4e9a-8e71-8194835cb352",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -350,7 +359,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Parachute",
+                    "action": "Glide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -361,7 +370,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Parachute",
+                    "action": "Glide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -384,6 +393,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d4a3799-e52c-43b5-a7d1-aac926ac09d9",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3be3c2ae-2f45-41cd-8848-fb26b39b5165",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

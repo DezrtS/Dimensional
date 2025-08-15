@@ -13,14 +13,18 @@ namespace Systems.Player
     {
         [SerializeField] private EntityDatum entityDatum;
         
+        
         private PlayerMovementController _playerMovementController;
         private PlayerLook _playerLook;
         
         private PlayerInputSystem_Actions _playerInputSystemActions;
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
+        
+        private IInteractable _interactable;
 
         public EntityDatum EntityDatum => entityDatum;
+        public GameObject GameObject => gameObject;
 
         private void Awake()
         {
@@ -50,10 +54,10 @@ namespace Systems.Player
             jumpInputAction.canceled += OnJump;
             jumpInputAction.Enable();
             
-            var parachuteInputAction = _playerInputSystemActions.Player.Parachute;
-            parachuteInputAction.performed += OnParachute;
-            parachuteInputAction.canceled += OnParachute;
-            parachuteInputAction.Enable();
+            var glideInputAction = _playerInputSystemActions.Player.Glide;
+            glideInputAction.performed += OnGlide;
+            glideInputAction.canceled += OnGlide;
+            glideInputAction.Enable();
             
             var grappleInputAction = _playerInputSystemActions.Player.Grapple;
             grappleInputAction.performed += OnGrapple;
@@ -73,8 +77,58 @@ namespace Systems.Player
             var attackInputAction = _playerInputSystemActions.Player.Attack;
             attackInputAction.performed += OnAttack;
             attackInputAction.Enable();
+            
+            var interactInputAction = _playerInputSystemActions.Player.Interact;
+            interactInputAction.performed += OnInteract;
+            interactInputAction.Enable();
         }
         
+        private void UnassignControls()
+        {
+            _moveInputAction.Disable();
+            
+            _lookInputAction.performed -= OnAim;
+            _lookInputAction.Disable();
+            
+            var jumpInputAction = _playerInputSystemActions.Player.Jump;
+            jumpInputAction.performed -= OnJump;
+            jumpInputAction.canceled -= OnJump;
+            jumpInputAction.Disable();
+            
+            var glideInputAction = _playerInputSystemActions.Player.Glide;
+            glideInputAction.performed -= OnGlide;
+            glideInputAction.canceled -= OnGlide;
+            glideInputAction.Disable();
+            
+            var grappleInputAction = _playerInputSystemActions.Player.Grapple;
+            grappleInputAction.performed -= OnGrapple;
+            grappleInputAction.canceled -= OnGrapple;
+            grappleInputAction.Disable();
+            
+            var boomerangInputAction = _playerInputSystemActions.Player.Boomerang;
+            boomerangInputAction.performed -= OnBoomerang;
+            boomerangInputAction.canceled -= OnBoomerang;
+            boomerangInputAction.Disable();
+            
+            var crouchInputAction = _playerInputSystemActions.Player.Crouch;
+            crouchInputAction.performed -= OnCrouch;
+            crouchInputAction.canceled -= OnCrouch;
+            crouchInputAction.Disable();
+            
+            var attackInputAction = _playerInputSystemActions.Player.Attack;
+            attackInputAction.performed -= OnAttack;
+            attackInputAction.Disable();
+            
+            var interactInputAction = _playerInputSystemActions.Player.Interact;
+            interactInputAction.performed -= OnInteract;
+            interactInputAction.Disable();
+        }
+
+        private void OnDisable()
+        {
+            UnassignControls();
+        }
+
         Vector3 IMove.GetInput()
         {
             var input = _moveInputAction.ReadValue<Vector2>();
@@ -96,6 +150,19 @@ namespace Systems.Player
             _playerLook.Look();
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.TryGetComponent(out IInteractable interactable)) return;
+            _interactable = interactable;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.TryGetComponent(out IInteractable interactable)) return;
+            if (_interactable != interactable) return;
+            _interactable = null;
+        }
+
         private void OnAim(InputAction.CallbackContext context)
         {
             
@@ -107,7 +174,7 @@ namespace Systems.Player
             else if (context.canceled) _playerMovementController.CutJump();
         }
 
-        private void OnParachute(InputAction.CallbackContext context)
+        private void OnGlide(InputAction.CallbackContext context)
         {
             if (context.performed) _playerMovementController.Glide();
             else if (context.canceled) _playerMovementController.StopGliding();
@@ -134,6 +201,11 @@ namespace Systems.Player
         private void OnAttack(InputAction.CallbackContext context)
         {
             _playerMovementController.Attack();
+        }
+        
+        private void OnInteract(InputAction.CallbackContext context)
+        {
+            _interactable?.Interact(InteractContext.Construct(gameObject));
         }
     }
 }

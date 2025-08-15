@@ -155,7 +155,16 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Parachute"",
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""6b8a56da-4cd7-43d8-a661-e36ccb2c215f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Glide"",
                     ""type"": ""Button"",
                     ""id"": ""a83b4dc2-3946-4180-8de6-ee5a7ff1193c"",
                     ""expectedControlType"": """",
@@ -313,7 +322,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""id"": ""8c8e490b-c610-4785-884f-f04217b23ca4"",
                     ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=0.2,y=0.2)"",
+                    ""processors"": ""ScaleVector2(x=0.5,y=0.5)"",
                     ""groups"": "";Keyboard&Mouse;Touch"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
@@ -421,7 +430,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": """",
                     ""id"": ""44b86885-79d3-4e9a-8e71-8194835cb352"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -436,7 +445,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Parachute"",
+                    ""action"": ""Glide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -447,7 +456,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Parachute"",
+                    ""action"": ""Glide"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -470,6 +479,28 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d4a3799-e52c-43b5-a7d1-aac926ac09d9"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3be3c2ae-2f45-41cd-8848-fb26b39b5165"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1064,7 +1095,8 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_Player_Boomerang = m_Player.FindAction("Boomerang", throwIfNotFound: true);
         m_Player_Grapple = m_Player.FindAction("Grapple", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-        m_Player_Parachute = m_Player.FindAction("Parachute", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_Glide = m_Player.FindAction("Glide", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1165,7 +1197,8 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     private readonly InputAction m_Player_Boomerang;
     private readonly InputAction m_Player_Grapple;
     private readonly InputAction m_Player_Attack;
-    private readonly InputAction m_Player_Parachute;
+    private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_Glide;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1206,9 +1239,13 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// </summary>
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Parachute".
+        /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
-        public InputAction @Parachute => m_Wrapper.m_Player_Parachute;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Glide".
+        /// </summary>
+        public InputAction @Glide => m_Wrapper.m_Player_Glide;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1256,9 +1293,12 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @Parachute.started += instance.OnParachute;
-            @Parachute.performed += instance.OnParachute;
-            @Parachute.canceled += instance.OnParachute;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @Glide.started += instance.OnGlide;
+            @Glide.performed += instance.OnGlide;
+            @Glide.canceled += instance.OnGlide;
         }
 
         /// <summary>
@@ -1291,9 +1331,12 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @Parachute.started -= instance.OnParachute;
-            @Parachute.performed -= instance.OnParachute;
-            @Parachute.canceled -= instance.OnParachute;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @Glide.started -= instance.OnGlide;
+            @Glide.performed -= instance.OnGlide;
+            @Glide.canceled -= instance.OnGlide;
         }
 
         /// <summary>
@@ -1644,12 +1687,19 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAttack(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Parachute" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnParachute(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Glide" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnGlide(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

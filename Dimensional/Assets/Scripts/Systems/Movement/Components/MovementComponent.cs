@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Systems.Movement.Components
 {
+    
     public abstract class MovementComponent : MonoBehaviour
     {
         public event Action Deactivated;

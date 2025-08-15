@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e585c14b997534ebb8d8cf1df12012, type: 3}
   m_Name: DebugPlayerMovementControllerDatum
   m_EditorClassIdentifier: 
-  gravityForce: 19.8
-  maxFallSpeed: 25
   maxSpeed: 9
   acceleration: 40
   accelerationCurve:
@@ -30,7 +28,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 0.25
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -345,7 +343,7 @@ MonoBehaviour:
   wallSlideCheckOffset: {x: 0, y: 0, z: 0}
   wallSlideCheckLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 257
   wallSlideYVelocityThreshold: 0.2
   wallSlideMinExitAngle: 135
   wallSlideSpeed: -5
@@ -401,5 +399,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  crouchMovementControllerDatum: {fileID: 0}
   initialRollSpeed: 5
   rollMovementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}

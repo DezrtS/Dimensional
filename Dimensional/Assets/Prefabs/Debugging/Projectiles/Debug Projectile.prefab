@@ -114,6 +114,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d55db97137e013b4da0f6c39d19fff21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKinematic: 0
+  useGravity: 1
+  isDisabled: 0
+  maxFallSpeed: -100
+  overSpeedDeceleration: 50
 --- !u!54 &1354296579507639157
 Rigidbody:
   m_ObjectHideFlags: 0

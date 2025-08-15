@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
 
@@ -17,8 +18,8 @@ namespace Managers
         Medium,
         High,
     }
-
-    public enum GroundedCheckType
+    
+    public enum CheckType
     {
         Ray,
         Sphere,
@@ -29,11 +30,10 @@ namespace Managers
     {
         public static event DimensionsChangedEventHandler WorldDimensionsChanged;
         [SerializeField] private Dimensions defaultWorldDimensions;
-        [SerializeField] private GameObject controls;
         
         public Dimensions WorldDimensions { get; private set; }
 
-        private void Awake()
+        private void Start()
         {
             SetWorldDimensions(defaultWorldDimensions);
         }
@@ -57,11 +57,6 @@ namespace Managers
             {
                 Time.timeScale = Mathf.Max(Time.timeScale - 0.1f, 0.1f);
             }
-
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                controls.SetActive(!controls.activeSelf);
-            }
         }
 
         public void SetWorldDimensions(Dimensions worldDimensions)
@@ -79,6 +74,39 @@ namespace Managers
             var slope = (nextHeight - currentHeight) / delta;
         
             return slope;
+        }
+        
+        public static List<RaycastHit> CheckCast(Vector3 worldPosition, CheckType checkType, Vector3 offset, Vector3 direction, Vector3 size, float distance, LayerMask layerMask)
+        {
+            var position = worldPosition + offset;
+            var hits = new List<RaycastHit>();
+            var results = new RaycastHit[10];
+            var count = 0;
+
+            switch (checkType)
+            {
+                case CheckType.Ray:
+                    if (Physics.Raycast(position, direction, out var hit, distance, layerMask, QueryTriggerInteraction.Ignore))
+                    {
+                        hits.Add(hit);
+                    }
+                    break;
+                case CheckType.Sphere:
+                    count = Physics.SphereCastNonAlloc(position, size.magnitude, direction, results, distance, layerMask, QueryTriggerInteraction.Ignore);
+                    break;
+                case CheckType.Box:
+                    count = Physics.BoxCastNonAlloc(position, size / 2f,  direction, results, Quaternion.identity, distance, layerMask, QueryTriggerInteraction.Ignore);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(checkType), checkType, null);
+            }
+            
+            for (var i = 0; i < count; i++)
+            {
+                hits.Add(results[i]);
+            }
+            
+            return hits;
         }
     }
 }

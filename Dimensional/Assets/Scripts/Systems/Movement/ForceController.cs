@@ -9,6 +9,7 @@ namespace Systems.Movement
         [SerializeField] private bool isDisabled;
         [Space] 
         [SerializeField] protected float maxFallSpeed;
+        [SerializeField] protected float overSpeedDeceleration;
         
         public bool IsKinematic
         {
@@ -39,6 +40,9 @@ namespace Systems.Movement
                 OnSetIsDisabled();
             }
         }
+
+        public float MaxFallSpeed { get => maxFallSpeed; set => maxFallSpeed = value; }
+        public abstract float Mass { get; set; }
 
         protected virtual void Awake()
         {
