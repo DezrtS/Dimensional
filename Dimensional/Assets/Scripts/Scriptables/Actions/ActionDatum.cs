@@ -8,6 +8,7 @@ namespace Scriptables.Actions
         // Movement
         JumpAction,
         DoubleJumpAction,
+        WallJumpAction,
         DashAction,
         DiveAction,
         AirAction,
