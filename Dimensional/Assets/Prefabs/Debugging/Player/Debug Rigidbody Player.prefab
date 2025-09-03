@@ -355,6 +355,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityDatum: {fileID: 11400000, guid: d62f3a79cb175d74f81e3aa0c380fba1, type: 2}
+  shapeData:
+  - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}
+  - {fileID: 11400000, guid: 7ed04a327d17dac41985c7271116c796, type: 2}
+  - {fileID: 11400000, guid: eb24c54811217a848b850084d311472a, type: 2}
+  - {fileID: 11400000, guid: 37a705e5358c5dd4cb35a6591d874538, type: 2}
+  - {fileID: 11400000, guid: 95f61075fca81604eaa1ba873a201843, type: 2}
+  - {fileID: 11400000, guid: 790162a82d371074c90e708f63f62a4a, type: 2}
+  movementActionShapes:
+  - movementActionType: 1
+    shapeType: 3
+  - movementActionType: 2
+    shapeType: 4
+  - movementActionType: 3
+    shapeType: 1
+  - movementActionType: 4
+    shapeType: 1
+  - movementActionType: 5
+    shapeType: 7
+  - movementActionType: 10
+    shapeType: 1
 --- !u!114 &5525861999645435359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,6 +408,7 @@ MonoBehaviour:
   movementDimensions: 0
   disableYInput: 1
   disableGroundedCheck: 0
+  allowDefaultHitValues: 0
   groundedNormalDotThreshold: 0.25
   groundedCheckType: 1
   groundedCheckOffset: {x: 0, y: 0, z: 0}
@@ -405,17 +426,8 @@ MonoBehaviour:
   root: {fileID: 7838676599979246005}
   scaleStrength: 0.025
   scaleSpeed: 40
-  debugResetMovementComponentData: 1
-  disableDoubleJump: 0
-  disableSpringJump: 0
-  disableBoomerang: 0
-  disableGlide: 0
-  disableGrapple: 0
-  disableGroundPound: 0
-  disableAttack: 0
   disableWallSlideCheck: 0
   disableWallPlatformCheck: 0
-  visualEffects: []
   windStreaksVelocityThreshold: 15
   windStreaksParticleSystem: {fileID: 0}
   smokePrefab: {fileID: 4772967992589099599, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}

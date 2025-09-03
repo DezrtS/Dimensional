@@ -42,7 +42,7 @@ namespace Systems.Movement
         protected Dimensions MovementDimensions => movementDimensions;
         public ForceController ForceController { get; private set; }
         public bool IsDisabled { get; set; }
-        protected bool IsGrounded { get; private set; }
+        public bool IsGrounded { get; private set; }
         protected bool IsPlatformed { get; private set; }
         protected bool SkipGroundPlatformCheck { get; set; }
 
@@ -59,7 +59,10 @@ namespace Systems.Movement
         public void Initialize(IMove move)
         {
             Mover = move;
+            OnInitialized(move);
         }
+
+        protected virtual void OnInitialized(IMove move) { }
 
         private void Update()
         {

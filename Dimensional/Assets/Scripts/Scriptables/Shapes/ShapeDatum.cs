@@ -1,14 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Scriptables.Actions;
-using Scriptables.Movement;
+using Scriptables.Actions.Movement;
+using Systems.Actions.Movement;
 using UnityEngine;
 
 namespace Scriptables.Shapes
 {
-    public enum Type
+    public enum ShapeType
     {
         None,
+        Sphere,
         Spring,
         Rocket,
         Balloon,
@@ -17,35 +19,43 @@ namespace Scriptables.Shapes
         Weight,
         Boomerang
     }
+    
+    [Serializable]
+    public struct ShapeMovementAction
+    {
+        [SerializeField] private MovementActionType movementActionType;
+        [SerializeField] private MovementActionDatum movementActionDatum;
+        [SerializeField] private MovementSynergy[] movementSynergies;
+        
+        public MovementActionType MovementActionType => movementActionType;
+        public MovementActionDatum MovementActionDatum => movementActionDatum;
+        public MovementSynergy[] MovementSynergies => movementSynergies;
+    }
 
     [Serializable]
-    public struct Synergy
+    public struct MovementSynergy
     {
-        [SerializeField] private Actions.Type actionType;
-        [SerializeField] private Type[] typeSynergies;
+        [SerializeField] private ShapeType shapeType;
+        [SerializeField] private MovementActionType movementActionType;
+        [SerializeField] private MovementActionDatum movementActionDatum;
         
-        public Actions.Type ActionType => actionType;
-        public bool HasSynergyWith(Type type) => typeSynergies.Contains(type);
+        public ShapeType ShapeType => shapeType;
+        public MovementActionType MovementActionType => movementActionType;
+        public MovementActionDatum MovementActionDatum => movementActionDatum;
     }
     
     [CreateAssetMenu(fileName = "ShapeDatum", menuName = "Scriptable Objects/Shapes/ShapeDatum")]
     public class ShapeDatum : ScriptableObject
     {
-        [SerializeField] private Type shapeType;
-        [SerializeField] private Synergy[] synergies;
-        [SerializeField] private Actions.Type[] actionTypes;
-        [Space(10)]
-        [SerializeField] private ValueTimeCurveActionDatum jumpActionDatum;
-        [SerializeField] private ValueTimeCurveActionDatum doubleJumpActionDatum;
-        [SerializeField] private ValueTimeCurveActionDatum wallJumpActionDatum;
-        [SerializeField] private ValueTimeCurveActionDatum wallDashActionDatum;
-        [SerializeField] private VectorTimeCurveActionDatum dashActionDatum;
-        [SerializeField] private VectorTimeCurveActionDatum diveActionDatum;
-        [Space(10)]
-        [SerializeField] private MovementControllerDatum rollMovementControllerDatum;
+        [SerializeField] private ShapeType shapeType;
+        [SerializeField] private ShapeMovementAction[] shapeMovementActions;
         
-        public Type ShapeType => shapeType;
-        public bool HasSynergyWith(Actions.Type actionType, Type otherShapeType) => synergies.Any(x => x.ActionType == actionType && x.HasSynergyWith(otherShapeType));
-        public bool HasActionType(Actions.Type actionType) => actionTypes.Contains(actionType);
+        public ShapeType ShapeType => shapeType;
+        public ShapeMovementAction[] ShapeMovementActions => shapeMovementActions;
+
+        public Dictionary<MovementActionType, MovementActionDatum> DefineMovementActions()
+        {
+            return shapeMovementActions.ToDictionary(action => action.MovementActionType, action => action.MovementActionDatum);
+        }
     }
 }

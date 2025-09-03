@@ -1,18 +1,31 @@
 using System;
+using System.Collections.Generic;
 using Interfaces;
+using Scriptables.Actions.Movement;
 using Scriptables.Entities;
-using Scriptables.Projectiles;
+using Scriptables.Shapes;
+using Systems.Actions.Movement;
 using Systems.Movement;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Systems.Player
 {
+    [Serializable]
+    public struct MovementActionShape
+    {
+        [SerializeField] private MovementActionType movementActionType;
+        [SerializeField] private ShapeType shapeType;
+        
+        public MovementActionType MovementActionType => movementActionType;
+        public ShapeType ShapeType => shapeType;
+    }
+    
     public class PlayerController : MonoBehaviour, IEntity, IMove, IAim
     {
         [SerializeField] private EntityDatum entityDatum;
-        
+        [SerializeField] private ShapeDatum[] shapeData;
+        [SerializeField] private MovementActionShape[] movementActionShapes;
         
         private PlayerMovementController _playerMovementController;
         private PlayerLook _playerLook;
@@ -25,9 +38,23 @@ namespace Systems.Player
 
         public EntityDatum EntityDatum => entityDatum;
         public GameObject GameObject => gameObject;
+        public Dictionary<ShapeType, ShapeDatum> ShapeData { get; private set; }
+
+        public MovementActionDatum GetMovementActionDatum(MovementActionType movementActionType)
+        {
+            var movementActionShape = Array.Find(movementActionShapes, x => x.MovementActionType == movementActionType);
+            var movementActionDictionary = ShapeData[movementActionShape.ShapeType].DefineMovementActions();
+            return movementActionDictionary[movementActionType];
+        }
 
         private void Awake()
         {
+            ShapeData = new Dictionary<ShapeType, ShapeDatum>();
+            foreach (var shapeDatum in shapeData)
+            {
+                ShapeData.Add(shapeDatum.ShapeType, shapeDatum);
+            }
+            
             _playerMovementController = GetComponent<PlayerMovementController>();
             _playerMovementController.Initialize(this);
             //_playerMovementController.ShapeTypeChanged += PlayerMovementControllerOnShapeTypeChanged;
@@ -117,6 +144,7 @@ namespace Systems.Player
             
             var attackInputAction = _playerInputSystemActions.Player.Attack;
             attackInputAction.performed -= OnAttack;
+            attackInputAction.canceled -= OnAttack;
             attackInputAction.Disable();
             
             var interactInputAction = _playerInputSystemActions.Player.Interact;
@@ -170,37 +198,38 @@ namespace Systems.Player
         
         private void OnJump(InputAction.CallbackContext context)
         {
-            if (context.performed) _playerMovementController.Jump();
-            else if (context.canceled) _playerMovementController.CutJump();
+            if (context.performed) _playerMovementController.StartJumping();
+            else if (context.canceled) _playerMovementController.StopJumping();
         }
 
         private void OnGlide(InputAction.CallbackContext context)
         {
-            if (context.performed) _playerMovementController.Glide();
-            else if (context.canceled) _playerMovementController.StopGliding();
+            //if (context.performed) _playerMovementController.Glide();
+            //else if (context.canceled) _playerMovementController.StopGliding();
         }
 
         private void OnBoomerang(InputAction.CallbackContext context)
         {
-            if (context.performed) _playerMovementController.Boomerang();
-            else if (context.canceled) _playerMovementController.StopBoomeranging();
+            //if (context.performed) _playerMovementController.Boomerang();
+            //else if (context.canceled) _playerMovementController.StopBoomeranging();
         }
         
         private void OnGrapple(InputAction.CallbackContext context)
         {
-            if (context.performed) _playerMovementController.Grapple();
-            else if (context.canceled) _playerMovementController.StopGrappling();
+            //if (context.performed) _playerMovementController.Grapple();
+            //else if (context.canceled) _playerMovementController.StopGrappling();
         }
         
         private void OnCrouch(InputAction.CallbackContext context)
         {
-            if (context.performed) _playerMovementController.Crouch();
+            if (context.performed) _playerMovementController.StartCrouching();
             else if (context.canceled) _playerMovementController.StopCrouching();
         }
         
         private void OnAttack(InputAction.CallbackContext context)
         {
-            _playerMovementController.Attack();
+            if (context.performed) _playerMovementController.StartDashing();
+            else if (context.canceled) _playerMovementController.StopDashing();
         }
         
         private void OnInteract(InputAction.CallbackContext context)

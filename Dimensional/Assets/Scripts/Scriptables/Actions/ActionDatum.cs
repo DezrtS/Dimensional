@@ -1,26 +1,15 @@
+using Interfaces;
+using Systems.Actions;
 using UnityEngine;
 
 namespace Scriptables.Actions
 {
-    public enum Type
-    {
-        None,
-        // Movement
-        JumpAction,
-        DoubleJumpAction,
-        WallJumpAction,
-        DashAction,
-        DiveAction,
-        AirAction,
-        RollAction,
-        LeftSpecialAction,
-        RightSpecialAction,
-    }
     
     public abstract class ActionDatum : ScriptableObject
     {
-        [SerializeField] private Type actionType;
-        
-        public Type ActionType => actionType;
+        [SerializeField] private float activationTime;
+        public float ActivationTime => activationTime;
+
+        public abstract Action AttachAction(GameObject actionHolder);
     }
 }
