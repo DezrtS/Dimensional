@@ -63,7 +63,8 @@ namespace Systems.Actions.Movement
                 PositionMovementActionDatum.RightDuration, PositionMovementActionDatum.ForwardCurve,
                 PositionMovementActionDatum.UpCurve, PositionMovementActionDatum.RightCurve, 
                 PositionMovementActionDatum.IsXDistance, PositionMovementActionDatum.IsYDistance, 
-                PositionMovementActionDatum.IsZDistance);
+                PositionMovementActionDatum.IsZDistance, PositionMovementActionDatum.IsForwardBlend,
+                PositionMovementActionDatum.IsUpBlend, PositionMovementActionDatum.IsRightBlend);
             Context.SetMovementData(PositionMovementActionDatum.HasForward, PositionMovementActionDatum.HasUp, PositionMovementActionDatum.HasRight);
             Context.SetMovementDirection(context.TargetDirection);
         }
@@ -80,7 +81,7 @@ namespace Systems.Actions.Movement
             var velocity = GetVelocity(elapsedTime, MovementController.ForceController.GetVelocity(), Context);
             MovementController.ForceController.SetVelocity(velocity);
             
-            if (Context.HasUpVelocity && elapsedTime <= PositionMovementActionDatum.UpDuration) return;
+            if (PositionMovementActionDatum.DisableDurationLimit || !Context.HasUpVelocity || elapsedTime <= PositionMovementActionDatum.UpDuration) return;
             Context.HasUpVelocity = false;
             MovementController.ForceController.UseGravity = true;
         }

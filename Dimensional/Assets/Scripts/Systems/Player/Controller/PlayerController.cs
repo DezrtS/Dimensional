@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Interfaces;
+using Managers;
 using Scriptables.Actions.Movement;
 using Scriptables.Entities;
 using Scriptables.Shapes;
@@ -38,6 +39,7 @@ namespace Systems.Player
 
         public EntityDatum EntityDatum => entityDatum;
         public GameObject GameObject => gameObject;
+        public uint Id { get; private set; }
         public Dictionary<ShapeType, ShapeDatum> ShapeData { get; private set; }
 
         public MovementActionDatum GetMovementActionDatum(MovementActionType movementActionType)
@@ -49,6 +51,8 @@ namespace Systems.Player
 
         private void Awake()
         {
+            Id = EntityManager.GetNextEntityId();
+            
             ShapeData = new Dictionary<ShapeType, ShapeDatum>();
             foreach (var shapeDatum in shapeData)
             {
@@ -204,8 +208,8 @@ namespace Systems.Player
 
         private void OnGlide(InputAction.CallbackContext context)
         {
-            //if (context.performed) _playerMovementController.Glide();
-            //else if (context.canceled) _playerMovementController.StopGliding();
+            if (context.performed) _playerMovementController.StartAir();
+            else if (context.canceled) _playerMovementController.StopAir();
         }
 
         private void OnBoomerang(InputAction.CallbackContext context)

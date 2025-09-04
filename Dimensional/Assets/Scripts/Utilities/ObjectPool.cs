@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Interfaces;
 using Scriptables.Utilities;
 using UnityEngine;
 
 namespace Utilities
 {
-    public class ObjectPool<T> where T : MonoBehaviour
+    public class ObjectPool<T> where T : MonoBehaviour, IObjectPoolable<T>
     {
         private readonly Queue<T> _pool;
         private readonly HashSet<T> _activePool;
@@ -26,10 +27,12 @@ namespace Utilities
 
             for (var i = 0; i < objectPoolDatum.ObjectPoolSize; i++)
             {
-                var instance = Object.Instantiate(prefab, _poolObject.transform);
-                instance.name = $"{objectPoolDatum.ObjectName} {i}";
-                instance.SetActive(false);
-                _pool.Enqueue(instance.GetComponent<T>());
+                var instanceObject = Object.Instantiate(prefab, _poolObject.transform);
+                instanceObject.name = $"{objectPoolDatum.ObjectName} {i}";
+                instanceObject.SetActive(false);
+                var instance = instanceObject.GetComponent<T>();
+                instance.Returned += ReturnToPool;
+                _pool.Enqueue(instance);
             }
         }
 
@@ -44,17 +47,18 @@ namespace Utilities
             }
             else if (ObjectPoolDatum.IsDynamic)
             {
-                var instance = Object.Instantiate(_prefab, _poolObject.transform);
-                instance.name = $"{ObjectPoolDatum.ObjectName} {_activePool.Count + 1}";
-                var activeObject = instance.GetComponent<T>();
-                _activePool.Add(activeObject);
-                return activeObject;
+                var instanceObject = Object.Instantiate(_prefab, _poolObject.transform);
+                instanceObject.name = $"{ObjectPoolDatum.ObjectName} {_activePool.Count + 1}";
+                var instance = instanceObject.GetComponent<T>();
+                instance.Returned += ReturnToPool;
+                _activePool.Add(instance);
+                return instance;
             }
 
             return null;
         }
 
-        public void ReturnToPool(T objectToReturn)
+        private void ReturnToPool(T objectToReturn)
         {
             _activePool.Remove(objectToReturn);
 
@@ -62,6 +66,7 @@ namespace Utilities
             {
                 if (_pool.Count > ObjectPoolDatum.ObjectPoolSize)
                 {
+                    objectToReturn.Returned -= ReturnToPool;
                     Object.Destroy(objectToReturn.gameObject);
                 }
             }

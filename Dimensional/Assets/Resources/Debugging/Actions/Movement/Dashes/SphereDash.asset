@@ -13,10 +13,17 @@ MonoBehaviour:
   m_Name: SphereDash
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: 794fb69ba94c9a24782e8c5bf5bb3185, type: 2}
   movementActionType: 4
-  movementVector: {x: 0, y: 0, z: 5}
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
+  stopMovementOnDisable: 0
+  disableDurationLimit: 0
+  movementVector: {x: 0, y: 0, z: 3}
   hasRight: 1
   isXDistance: 0
+  isRightBlend: 0
   rightDuration: 0.3
   rightCurve:
     serializedVersion: 2
@@ -44,6 +51,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasUp: 1
   isYDistance: 0
+  isUpBlend: 0
   upDuration: 0.3
   upCurve:
     serializedVersion: 2
@@ -71,6 +79,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasForward: 1
   isZDistance: 1
+  isForwardBlend: 0
   forwardDuration: 0.3
   forwardCurve:
     serializedVersion: 2

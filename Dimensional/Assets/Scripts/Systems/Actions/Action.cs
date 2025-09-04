@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Interfaces;
 using Scriptables.Actions;
+using Systems.Visual_Effects;
 using UnityEngine;
 
 namespace Systems.Actions
@@ -10,20 +12,32 @@ namespace Systems.Actions
         
     }
 
+    public enum ActionEventType
+    {
+        None,
+        Activated,
+        Triggered,
+        Deactivated,
+        Interrupted,
+        Cancelled,
+    }
+
     public class ActionContext
     {
         public IActivateActions ActionActivator;
-        
+     
+        public IEntity SourceEntity;
         public GameObject SourceGameObject;
         public ScriptableObject SourceData;
 
         public Vector3 TargetDirection;
 
-        public static ActionContext Construct(IActivateActions actionActivator, GameObject sourceGameObject, ScriptableObject sourceData, Vector3 targetDirection)
+        public static ActionContext Construct(IActivateActions actionActivator, IEntity sourceEntity, GameObject sourceGameObject, ScriptableObject sourceData, Vector3 targetDirection)
         {
             var context = new ActionContext()
             {
                 ActionActivator = actionActivator,
+                SourceEntity = sourceEntity,
                 SourceGameObject = sourceGameObject,
                 SourceData = sourceData,
                 TargetDirection = targetDirection
@@ -43,8 +57,12 @@ namespace Systems.Actions
         public event ActionEventHandler Interrupted;
         public event ActionEventHandler Cancelled;
 
+        public event ActionEventHandler EntityChanged;
+
         private IActivateActions _actionActivator;
         private float _activationTimer;
+        
+        private List<ActionVisualEffect> _actionVisualEffects;
         
         public ActionDatum ActionDatum { get; private set; }
         public bool IsActive { get; private set; }
@@ -55,6 +73,14 @@ namespace Systems.Actions
         {
             ActionDatum = actionDatum;
             IsActive = false;
+
+            _actionVisualEffects = new List<ActionVisualEffect>();
+            foreach (var actionVisualEffectDatum in actionDatum.ActionVisualEffectData)
+            {
+                var actionVisualEffect = actionVisualEffectDatum.AttachActionVisualEffect(transform);
+                actionVisualEffect.SetAction(this);
+                _actionVisualEffects.Add(actionVisualEffect);
+            }
         }
 
         private void FixedUpdate()
@@ -91,7 +117,7 @@ namespace Systems.Actions
             IsActive = true;
             _actionActivator = context.ActionActivator;
             _activationTimer = ActionDatum.ActivationTime;
-            PreviousContext = context;
+            UpdateActionContext(context);
             Activated?.Invoke(this, context);
 
             if (_activationTimer == 0) Trigger(context);
@@ -181,5 +207,27 @@ namespace Systems.Actions
             _activationTimer = 0;
             Cancelled?.Invoke(this, context);
         }
+
+        private void UpdateActionContext(ActionContext context)
+        {
+            var entityChanged = CheckEntityChanged(context);
+            if (entityChanged)
+            {
+                OnEntityChanged(context);
+                EntityChanged?.Invoke(this, context);
+            }
+            
+            PreviousContext = context;
+        }
+
+        private bool CheckEntityChanged(ActionContext context)
+        {
+            if (PreviousContext == null) return true;
+            
+            var previousEntityId = PreviousContext.SourceEntity.Id;
+            return previousEntityId != context.SourceEntity.Id;
+        }
+
+        protected abstract void OnEntityChanged(ActionContext context);
     }
 }

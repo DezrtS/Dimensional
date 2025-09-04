@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: WeightDive
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: 3b357fedbecad6e4b9eb69c004732b77, type: 2}
   movementActionType: 5
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 1
   disableDurationLimit: 1
   movementVector: {x: 0, y: -30, z: 0}
   hasRight: 1
   isXDistance: 0
+  isRightBlend: 0
   rightDuration: 0.5
   rightCurve:
     serializedVersion: 2
@@ -46,6 +51,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasUp: 1
   isYDistance: 0
+  isUpBlend: 0
   upDuration: 0.5
   upCurve:
     serializedVersion: 2
@@ -82,6 +88,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasForward: 1
   isZDistance: 0
+  isForwardBlend: 0
   forwardDuration: 0.5
   forwardCurve:
     serializedVersion: 2

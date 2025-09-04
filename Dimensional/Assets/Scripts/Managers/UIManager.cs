@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using User_Interface.VFXs;
+using User_Interface.Visual_Effects;
 using Utilities;
 
 namespace Managers

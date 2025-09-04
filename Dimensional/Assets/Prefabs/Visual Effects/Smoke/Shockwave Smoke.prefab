@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5995671561658241682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3392980906736525197}
+  - component: {fileID: 2254717608876954945}
+  m_Layer: 0
+  m_Name: Shockwave Smoke
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3392980906736525197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995671561658241682}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5510048303157592380}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2254717608876954945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995671561658241682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21455f4c6fc095e469d122d40147c885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasDuration: 1
+  duration: 0.5
+  visualEffect: {fileID: 5659788147628111443}
+--- !u!1001 &6054340707292469126
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3392980906736525197}
+    m_Modifications:
+    - target: {fileID: 1267202595665965921, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_Name
+      value: GroundPoundSmokeVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+--- !u!4 &5510048303157592380 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1761691918194513594, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+  m_PrefabInstance: {fileID: 6054340707292469126}
+  m_PrefabAsset: {fileID: 0}
+--- !u!2083052967 &5659788147628111443 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 1913692972785607125, guid: 75344c2930713a241a5da748c6e9848a, type: 3}
+  m_PrefabInstance: {fileID: 6054340707292469126}
+  m_PrefabAsset: {fileID: 0}

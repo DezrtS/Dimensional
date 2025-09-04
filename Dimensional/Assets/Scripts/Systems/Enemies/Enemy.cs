@@ -1,5 +1,6 @@
 using System;
 using Interfaces;
+using Managers;
 using Scriptables.Entities;
 using Systems.Entities;
 using UnityEngine;
@@ -33,11 +34,13 @@ namespace Systems.Enemies
 
         public EntityDatum EntityDatum => entityDatum;
         public GameObject GameObject => gameObject;
+        public uint Id { get; private set; }
         protected State State { get; private set; }
         protected MovementState MovementState { get; private set; }
 
         private void Awake()
         {
+            Id = EntityManager.GetNextEntityId();
             _health = GetComponent<Health>();
             _health.HealthStateChanged += HealthOnHealthStateChanged;
             OnAwake();

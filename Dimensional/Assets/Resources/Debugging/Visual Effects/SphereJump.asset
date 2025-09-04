@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad555e2f34720454e9320b21e337f62d, type: 3}
+  m_Name: SphereJump
+  m_EditorClassIdentifier: 
+  actionVisualEffectPrefab: {fileID: 4808601044559737743, guid: 459cb71ef9e821147805c3b93040b776, type: 3}
+  actionParticleEffects:
+  - effectPlayerPrefab: {fileID: 3370579995639009541, guid: 15edf32345116f84ca7128378a2d11fb, type: 3}
+    attachPoolToTransform: 0
+    objectPoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
+    actionEventType: 2

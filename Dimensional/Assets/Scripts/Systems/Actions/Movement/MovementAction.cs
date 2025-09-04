@@ -39,12 +39,16 @@ namespace Systems.Actions.Movement
         public readonly bool IsXDistance;
         public readonly bool IsYDistance;
         public readonly bool IsZDistance;
+        
+        public readonly bool IsForwardBlend;
+        public readonly bool IsUpBlend;
+        public readonly bool IsRightBlend;
 
         public Vector3 Forward { get; private set; }
         public Vector3 Right { get; private set; }
         public Vector3 Up { get; private set; }
 
-        public MovementActionContext(Vector3 movementVector, float movementTime, AnimationCurve movementCurve, bool isDistance) 
+        public MovementActionContext(Vector3 movementVector, float movementTime, AnimationCurve movementCurve, bool isDistance, bool isBlend) 
         {
             MovementVector = movementVector;
             
@@ -59,11 +63,15 @@ namespace Systems.Actions.Movement
             IsXDistance = isDistance;
             IsYDistance = isDistance;
             IsZDistance = isDistance;
+            
+            IsForwardBlend = isBlend;
+            IsUpBlend = isBlend;
+            IsRightBlend = isBlend;
         }
 
         public MovementActionContext(Vector3 movementVector, float forwardMovementTime, float upMovementTime, float rightMovementTime,
             AnimationCurve forwardMovementCurve, AnimationCurve upMovementCurve, AnimationCurve rightMovementCurve,
-            bool isXDistance, bool isYDistance, bool isZDistance)
+            bool isXDistance, bool isYDistance, bool isZDistance, bool isForwardBlend, bool isUpBlend, bool isRightBlend)
         {
             MovementVector = movementVector;
             
@@ -78,6 +86,10 @@ namespace Systems.Actions.Movement
             IsXDistance = isXDistance;
             IsYDistance = isYDistance;
             IsZDistance = isZDistance;
+            
+            IsForwardBlend = isForwardBlend;
+            IsUpBlend = isUpBlend;
+            IsRightBlend = isRightBlend;
         }
         
         public void SetMovementData(bool hasForwardVelocity, bool hasUpVelocity, bool hasRightVelocity)
@@ -98,47 +110,77 @@ namespace Systems.Actions.Movement
     public abstract class MovementAction : Action
     {
         protected MovementController MovementController { get; private set; }
-
-        public void InitializeMovementController(MovementController movementController)
-        {
-            MovementController = movementController;
-        }
         
         protected static Vector3 GetVelocity(float elapsedTime, Vector3 currentVelocity, MovementActionContext context)
         {
             var normalizedForwardTime =
                 context.HasForwardVelocity ? Mathf.Clamp01(elapsedTime / context.ForwardMovementTime) : 1;
-            var normalizedUpTime = 
+            var normalizedUpTime =
                 context.HasUpVelocity ? Mathf.Clamp01(elapsedTime / context.UpMovementTime) : 1;
-            var normalizedRightTime = 
+            var normalizedRightTime =
                 context.HasRightVelocity ? Mathf.Clamp01(elapsedTime / context.RightMovementTime) : 1;
-            
-            var multiplier = Vector3.one;
-            multiplier.x = context.IsXDistance ? 
-                GameManager.Derivative(context.RightMovementCurve, normalizedRightTime) / context.RightMovementTime 
-                : context.RightMovementCurve.Evaluate(normalizedRightTime);
-            multiplier.y = context.IsYDistance ? 
-                GameManager.Derivative(context.UpMovementCurve, normalizedUpTime) / context.UpMovementTime 
-                : context.UpMovementCurve.Evaluate(normalizedUpTime);
-            multiplier.z = context.IsZDistance ? 
-                GameManager.Derivative(context.ForwardMovementCurve, normalizedForwardTime) / context.ForwardMovementTime 
-                : context.ForwardMovementCurve.Evaluate(normalizedForwardTime);
 
-            var targetVelocity =
-                context.Forward * (context.MovementVector.z * multiplier.z) +
-                context.Up * (context.MovementVector.y * multiplier.y) +
-                context.Right * (context.MovementVector.x * multiplier.x);
+            // Precompute curve values (multiplier or blend factors depending on flags)
+            var forwardCurveValue = context.ForwardMovementCurve.Evaluate(normalizedForwardTime);
+            var upCurveValue = context.UpMovementCurve.Evaluate(normalizedUpTime);
+            var rightCurveValue = context.RightMovementCurve.Evaluate(normalizedRightTime);
 
+            // Handle distance curves
+            if (context.IsZDistance && !context.IsForwardBlend)
+                forwardCurveValue = GameManager.Derivative(context.ForwardMovementCurve, normalizedForwardTime) / context.ForwardMovementTime;
+
+            if (context.IsYDistance && !context.IsUpBlend)
+                upCurveValue = GameManager.Derivative(context.UpMovementCurve, normalizedUpTime) / context.UpMovementTime;
+
+            if (context.IsXDistance && !context.IsRightBlend)
+                rightCurveValue = GameManager.Derivative(context.RightMovementCurve, normalizedRightTime) / context.RightMovementTime;
+
+            // Target components (only matter for override or blend-to-target)
+            var targetForward = context.MovementVector.z;
+            var targetUp = context.MovementVector.y;
+            var targetRight = context.MovementVector.x;
+
+            // Current components
             var currentForward = Vector3.Dot(currentVelocity, context.Forward);
             var currentUp = Vector3.Dot(currentVelocity, context.Up);
             var currentRight = Vector3.Dot(currentVelocity, context.Right);
 
-            var finalForward = context.HasForwardVelocity ? Vector3.Dot(targetVelocity, context.Forward) : currentForward;
-            var finalUp = context.HasUpVelocity ? Vector3.Dot(targetVelocity, context.Up) : currentUp;
-            var finalRight = context.HasRightVelocity ? Vector3.Dot(targetVelocity, context.Right) : currentRight;
-            
-            var finalVelocity = context.Forward * finalForward + context.Right * finalRight + context.Up * finalUp;
-            return finalVelocity;
+            // Final axis velocities
+            float finalForward, finalUp, finalRight;
+
+            if (context.HasForwardVelocity)
+            {
+                finalForward = context.IsForwardBlend
+                    ? Mathf.Lerp(currentForward, targetForward, forwardCurveValue) // curve = blend factor
+                    : targetForward * forwardCurveValue;                           // curve = velocity/distance multiplier
+            }
+            else finalForward = currentForward;
+
+            if (context.HasUpVelocity)
+            {
+                finalUp = context.IsUpBlend
+                    ? Mathf.Lerp(currentUp, targetUp, upCurveValue)
+                    : targetUp * upCurveValue;
+            }
+            else finalUp = currentUp;
+
+            if (context.HasRightVelocity)
+            {
+                finalRight = context.IsRightBlend
+                    ? Mathf.Lerp(currentRight, targetRight, rightCurveValue)
+                    : targetRight * rightCurveValue;
+            }
+            else finalRight = currentRight;
+
+            // Reconstruct final velocity
+            return context.Forward * finalForward +
+                   context.Right * finalRight +
+                   context.Up * finalUp;
+        }
+
+        protected override void OnEntityChanged(ActionContext context)
+        {
+            MovementController = context.SourceGameObject.GetComponent<MovementController>();
         }
     }
 }

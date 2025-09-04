@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c4e46ed95b49769a52ade551fead4b, type: 3}
+  m_Name: ParachuteAir
+  m_EditorClassIdentifier: 
+  activationTime: 0.4
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: 9e96be4ea896f624da87a8b27d0df625, type: 2}
+  movementActionType: 6
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
+  stopMovementOnDisable: 1
+  disableDurationLimit: 1
+  movementVector: {x: 0, y: -3, z: 0}
+  hasRight: 0
+  isXDistance: 0
+  isRightBlend: 0
+  rightDuration: 0
+  rightCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hasUp: 1
+  isYDistance: 0
+  isUpBlend: 1
+  upDuration: 1
+  upCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hasForward: 0
+  isZDistance: 0
+  isForwardBlend: 0
+  forwardDuration: 0
+  forwardCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

@@ -30,6 +30,7 @@ namespace Systems.Actions.Movement
             }
         }
 
+        // Change Class to Only run HandleTrigger after _chargeTimer is complete
         protected override void OnTrigger(ActionContext context)
         {
             HandleTrigger(context);
@@ -73,7 +74,8 @@ namespace Systems.Actions.Movement
                 _springJumpMovementActionDatum.RightDuration, _springJumpMovementActionDatum.ForwardCurve,
                 _springJumpMovementActionDatum.UpCurve, _springJumpMovementActionDatum.RightCurve, 
                 _springJumpMovementActionDatum.IsXDistance, _springJumpMovementActionDatum.IsYDistance, 
-                _springJumpMovementActionDatum.IsZDistance);
+                _springJumpMovementActionDatum.IsZDistance, _springJumpMovementActionDatum.IsForwardBlend,
+                _springJumpMovementActionDatum.IsUpBlend, _springJumpMovementActionDatum.IsRightBlend);
             Context.SetMovementData(_springJumpMovementActionDatum.HasForward, _springJumpMovementActionDatum.HasUp, _springJumpMovementActionDatum.HasRight);
             Context.SetMovementDirection(context.TargetDirection);
         }
