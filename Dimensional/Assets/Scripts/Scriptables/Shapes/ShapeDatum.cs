@@ -17,7 +17,8 @@ namespace Scriptables.Shapes
         Drill,
         Parachute,
         Weight,
-        Boomerang
+        Boomerang,
+        PaperAirplane,
     }
     
     [Serializable]

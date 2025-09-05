@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: SphereWallSlide
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionVisualEffectData: []
   movementActionType: 10
+  hasMovementDatum: 1
+  movementControllerDatum: {fileID: 11400000, guid: c3cbe19673263bf4e8e2a94121330dd5, type: 2}
   stopMovementOnDisable: 1
   disableDurationLimit: 1
   movementVector: {x: 0, y: -5, z: 0}
   hasRight: 0
   isXDistance: 0
+  isRightBlend: 0
   rightDuration: 1
   rightCurve:
     serializedVersion: 2
@@ -46,6 +50,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasUp: 1
   isYDistance: 0
+  isUpBlend: 0
   upDuration: 1
   upCurve:
     serializedVersion: 2
@@ -73,6 +78,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasForward: 0
   isZDistance: 0
+  isForwardBlend: 0
   forwardDuration: 1
   forwardCurve:
     serializedVersion: 2

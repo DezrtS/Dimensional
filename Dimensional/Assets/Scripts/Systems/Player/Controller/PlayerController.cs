@@ -40,7 +40,7 @@ namespace Systems.Player
         public EntityDatum EntityDatum => entityDatum;
         public GameObject GameObject => gameObject;
         public uint Id { get; private set; }
-        public Dictionary<ShapeType, ShapeDatum> ShapeData { get; private set; }
+        private Dictionary<ShapeType, ShapeDatum> ShapeData { get; set; }
 
         public MovementActionDatum GetMovementActionDatum(MovementActionType movementActionType)
         {

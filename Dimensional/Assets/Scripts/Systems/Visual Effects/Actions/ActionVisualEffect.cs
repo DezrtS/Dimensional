@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Scriptables.Actions;
 using Scriptables.Visual_Effects;
 using Systems.Actions;
@@ -11,22 +12,22 @@ namespace Systems.Visual_Effects
     {
         private Action _action;
 
-        private Dictionary<ActionEventType, List<ObjectPool<EffectPlayer>>> _actionEffectPlayers;
+        private Dictionary<ActionEventType, List<ObjectPool<EffectPlayer>>> _actionEffectPlayersDictionary;
         
         protected ActionContext PreviousContext { get; private set; }
 
         public virtual void Initialize(ActionVisualEffectDatum actionVisualActionDatum)
         {
             //_actionVisualActionDatum = actionVisualActionDatum;
-            _actionEffectPlayers = new Dictionary<ActionEventType, List<ObjectPool<EffectPlayer>>>();
+            _actionEffectPlayersDictionary = new Dictionary<ActionEventType, List<ObjectPool<EffectPlayer>>>();
             foreach (var actionParticleEffect in actionVisualActionDatum.ActionParticleEffects)
             {
-                if (!_actionEffectPlayers.ContainsKey(actionParticleEffect.ActionEventType))
+                if (!_actionEffectPlayersDictionary.ContainsKey(actionParticleEffect.ActionEventType))
                 {
-                    _actionEffectPlayers.Add(actionParticleEffect.ActionEventType, new List<ObjectPool<EffectPlayer>>());
+                    _actionEffectPlayersDictionary.Add(actionParticleEffect.ActionEventType, new List<ObjectPool<EffectPlayer>>());
                 }
                 
-                _actionEffectPlayers[actionParticleEffect.ActionEventType].Add(new ObjectPool<EffectPlayer>(actionParticleEffect.ObjectPoolDatum, actionParticleEffect.EffectPlayerPrefab, actionParticleEffect.AttachPoolToTransform ? transform : null));
+                _actionEffectPlayersDictionary[actionParticleEffect.ActionEventType].Add(new ObjectPool<EffectPlayer>(actionParticleEffect.ObjectPoolDatum, actionParticleEffect.EffectPlayerPrefab, actionParticleEffect.AttachPoolToTransform ? transform : null));
             }
         }
 
@@ -82,16 +83,31 @@ namespace Systems.Visual_Effects
 
         private void PlayParticleEffects(ActionEventType actionEventType, ActionContext context)
         {
-            if (!_actionEffectPlayers.ContainsKey(actionEventType)) return;
+            if (!_actionEffectPlayersDictionary.ContainsKey(actionEventType)) return;
             
-            for (var i = 0; i < _actionEffectPlayers[actionEventType].Count; i++)
+            for (var i = 0; i < _actionEffectPlayersDictionary[actionEventType].Count; i++)
             {
-                var effectPlayerObjectPool = _actionEffectPlayers[actionEventType][i];
+                var effectPlayerObjectPool = _actionEffectPlayersDictionary[actionEventType][i];
                 var effectPlayer = effectPlayerObjectPool.GetObject();
                 effectPlayer.transform.position = transform.position;
                 effectPlayer.transform.forward = context.TargetDirection;
                 effectPlayer.Play(true);
             }
+        }
+
+        public virtual void Destroy()
+        {
+            foreach (var actionEffectPlayers in _actionEffectPlayersDictionary.Select(keyValuePair => keyValuePair.Value))
+            {
+                for (var i = actionEffectPlayers.Count - 1; i >= 0; i--)
+                {
+                    var objectPool = actionEffectPlayers[i];
+                    objectPool.DestroyObjectPool();
+                    actionEffectPlayers.RemoveAt(i);
+                }
+            }
+            
+            Destroy(this);
         }
     }
 }

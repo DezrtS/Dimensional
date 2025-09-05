@@ -85,15 +85,54 @@ namespace Systems.Movement
 
         protected override void OnInitialized(IMove move)
         {
+            SetMovementActions();
+        }
+
+        private void SetMovementActions()
+        {
             _jumpMovementAction = _playerController.GetMovementActionDatum(MovementActionType.JumpAction).AttachAction(gameObject);
             _doubleJumpMovementAction = _playerController.GetMovementActionDatum(MovementActionType.DoubleJumpAction).AttachAction(gameObject);
             _wallJumpMovementAction = _playerController.GetMovementActionDatum(MovementActionType.WallJumpAction).AttachAction(gameObject);
+
+            _jumpMovementAction.Triggered += ActionOnTriggered;
+            _doubleJumpMovementAction.Triggered += ActionOnTriggered;
+            _wallJumpMovementAction.Triggered += ActionOnTriggered;
             
             _dashMovementAction = _playerController.GetMovementActionDatum(MovementActionType.DashAction).AttachAction(gameObject);
             _diveMovementAction = _playerController.GetMovementActionDatum(MovementActionType.DiveAction).AttachAction(gameObject);
             _airMovementAction = _playerController.GetMovementActionDatum(MovementActionType.AirAction).AttachAction(gameObject);
             
             _wallSlideMovementAction = _playerController.GetMovementActionDatum(MovementActionType.WallSlideAction).AttachAction(gameObject);
+        }
+
+        [ContextMenu("Reset Movement Actions")]
+        private void ResetMovementActions()
+        {
+            _jumpMovementAction.Triggered -= ActionOnTriggered;
+            _doubleJumpMovementAction.Triggered -= ActionOnTriggered;
+            _wallJumpMovementAction.Triggered -= ActionOnTriggered;
+            
+            VerifyMovementAction(ref _jumpMovementAction, MovementActionType.JumpAction);
+            VerifyMovementAction(ref _doubleJumpMovementAction, MovementActionType.DoubleJumpAction);
+            VerifyMovementAction(ref _wallJumpMovementAction, MovementActionType.WallJumpAction);
+            VerifyMovementAction(ref _dashMovementAction, MovementActionType.DashAction);
+            VerifyMovementAction(ref _diveMovementAction, MovementActionType.DiveAction);
+            VerifyMovementAction(ref _airMovementAction, MovementActionType.AirAction);
+            VerifyMovementAction(ref _wallSlideMovementAction, MovementActionType.WallSlideAction);
+            
+            _jumpMovementAction.Triggered += ActionOnTriggered;
+            _doubleJumpMovementAction.Triggered += ActionOnTriggered;
+            _wallJumpMovementAction.Triggered += ActionOnTriggered;
+        }
+
+        private void VerifyMovementAction(ref Action action, MovementActionType movementActionType)
+        {
+            var movementActionDatum = _playerController.GetMovementActionDatum(movementActionType);
+            if (action.ActionDatum == movementActionDatum) return;
+            
+            action.Cancel(GetActionContext());
+            action.Destroy();
+            action = movementActionDatum.AttachAction(gameObject);
         }
 
         private void FixedUpdate()
@@ -135,11 +174,13 @@ namespace Systems.Movement
             if (_coyoteTimer > 0)
             {
                 _coyoteTimer -= deltaTime;
+                if (_coyoteTimer <= 0) CancelActiveJumping();
             }
 
             if (_wallCoyoteTimer > 0)
             {
                 _wallCoyoteTimer -= deltaTime;
+                if (_wallCoyoteTimer <= 0) CancelActiveJumping();
             }
 
             if (!_canDash) _canDash = IsGrounded;
@@ -172,6 +213,11 @@ namespace Systems.Movement
 
         private void OnGrounded(bool isGrounded)
         {
+            //if (!isGrounded)
+            //{
+            //    CancelActiveJumping();
+            //}
+            
             switch (isGrounded)
             {
                 case false when !_jumpMovementAction.IsActive || !_doubleJumpMovementAction.IsActive || !_wallJumpMovementAction.IsActive:
@@ -179,7 +225,6 @@ namespace Systems.Movement
                     break;
                 case true when _diveMovementAction.IsActive:
                     _diveMovementAction.Deactivate(GetActionContext());
-                    //Instantiate(groundPoundSmokePrefab, root.position, Quaternion.identity);
                     break;
             }
         }
@@ -208,7 +253,6 @@ namespace Systems.Movement
                 else
                 {
                     _jumpMovementAction.Activate(GetActionContext());
-                    //Instantiate(smokePrefab, root.position, Quaternion.identity);   
                 }
             }
             else
@@ -216,13 +260,11 @@ namespace Systems.Movement
                 if (IsWallSliding || _wallCoyoteTimer > 0)
                 {
                     _wallJumpMovementAction.Activate(GetActionContext());
-                    //Instantiate(smokePrefab, root.position, Quaternion.identity);
                 }
                 else if (_canDoubleJump)
                 {
                     StopRolling();
                     _doubleJumpMovementAction.Activate(GetActionContext());
-                    //Instantiate(balloonJumpSmokePrefab, root.position, Quaternion.identity);
                     _canDoubleJump = false;
                 }
                 else
@@ -230,7 +272,10 @@ namespace Systems.Movement
                     QueueJump();
                 }
             }
-            
+        }
+
+        private void ActionOnTriggered(Action action, ActionContext context)
+        {
             StopWallSliding();
         }
 
@@ -293,7 +338,6 @@ namespace Systems.Movement
             _wallSlideMovementAction.Activate(GetActionContext());
             IsWallSliding = true;
             SkipGroundPlatformCheck = true;
-            CurrentMovementControllerDatum = _playerMovementControllerDatum.WallSlideMovementControllerDatum;
         }
 
         public void StopJumping()
@@ -344,11 +388,11 @@ namespace Systems.Movement
         private void StopWallSliding()
         {
             if (!IsWallSliding) return;
+            //CancelActiveJumping();
             
             _wallSlideMovementAction.Deactivate(GetActionContext());
             IsWallSliding = false;
             SkipGroundPlatformCheck = false;
-            CurrentMovementControllerDatum = _playerMovementControllerDatum;
             UnPlatform();
         }
 
@@ -357,6 +401,13 @@ namespace Systems.Movement
             _jumpMovementAction.Cancel(GetActionContext());
             _doubleJumpMovementAction.Cancel(GetActionContext());
             _wallJumpMovementAction.Cancel(GetActionContext());
+        }
+
+        private void CancelActiveJumping()
+        {
+            if (_jumpMovementAction.IsActive && !_jumpMovementAction.IsTriggering) _jumpMovementAction.Cancel(GetActionContext());
+            if (_doubleJumpMovementAction.IsActive && !_doubleJumpMovementAction.IsTriggering) _doubleJumpMovementAction.Cancel(GetActionContext());
+            if (_wallJumpMovementAction.IsActive && !_wallJumpMovementAction.IsTriggering) _wallJumpMovementAction.Cancel(GetActionContext());
         }
 
         private void CancelDashing() => _dashMovementAction.Cancel(GetActionContext());
@@ -371,7 +422,7 @@ namespace Systems.Movement
         private void WallSlide()
         {
             if (_isRolling || _jumpMovementAction.IsActive || 
-                _doubleJumpMovementAction.IsActive || _wallJumpMovementAction.IsActive 
+                _doubleJumpMovementAction.IsActive || _wallJumpMovementAction.IsTriggering 
                 || _dashMovementAction.IsActive || _diveMovementAction.IsActive) return;
 
             var canWallSlide = CheckWallSlide();
@@ -382,6 +433,7 @@ namespace Systems.Movement
                     StartWallSliding();
                     break;
                 case false when _wallSlideMovementAction.IsActive:
+                    if (!IsGrounded) _wallCoyoteTimer = _playerMovementControllerDatum.WallJumpCoyoteTime;
                     StopWallSliding();
                     break;
             }

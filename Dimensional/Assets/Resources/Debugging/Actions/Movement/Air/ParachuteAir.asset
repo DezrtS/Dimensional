@@ -16,8 +16,8 @@ MonoBehaviour:
   actionVisualEffectData:
   - {fileID: 11400000, guid: 9e96be4ea896f624da87a8b27d0df625, type: 2}
   movementActionType: 6
-  hasMovementDatum: 0
-  movementControllerDatum: {fileID: 0}
+  hasMovementDatum: 1
+  movementControllerDatum: {fileID: 11400000, guid: fc2becaf5be411a4bacbf6d8f161bb80, type: 2}
   stopMovementOnDisable: 1
   disableDurationLimit: 1
   movementVector: {x: 0, y: -3, z: 0}

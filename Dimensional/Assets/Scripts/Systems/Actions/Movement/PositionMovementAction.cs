@@ -18,6 +18,17 @@ namespace Systems.Actions.Movement
             PositionMovementActionDatum = (PositionMovementActionDatum)actionDatum;
         }
 
+        private bool HasReachedMaxTime()
+        {
+            var maxTime = Mathf.Max(
+                Context.HasForwardVelocity ? Context.ForwardMovementTime : 0,
+                Context.HasUpVelocity ? Context.UpMovementTime : 0,
+                Context.HasRightVelocity ? Context.RightMovementTime : 0
+            );
+
+            return _movementTimer >= maxTime;
+        }
+
         protected override void OnTrigger(ActionContext context)
         {
             base.OnTrigger(context);
@@ -45,13 +56,12 @@ namespace Systems.Actions.Movement
 
             if (PositionMovementActionDatum.DisableDurationLimit) return;
             
-            var maxTime = Mathf.Max(
-                Context.HasForwardVelocity ? Context.ForwardMovementTime : 0,
-                Context.HasUpVelocity ? Context.UpMovementTime : 0,
-                Context.HasRightVelocity ? Context.RightMovementTime : 0
-            );
+            if (!HasReachedMaxTime()) return;
+            OnReachedMaxTime();
+        }
 
-            if (_movementTimer < maxTime) return;
+        protected virtual void OnReachedMaxTime()
+        {
             StopMovement();
             base.OnDeactivation(PreviousContext);
         }

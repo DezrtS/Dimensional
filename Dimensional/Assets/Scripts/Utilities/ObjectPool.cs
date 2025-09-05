@@ -74,5 +74,22 @@ namespace Utilities
             objectToReturn.gameObject.SetActive(false);
             _pool.Enqueue(objectToReturn);
         }
+
+        public void DestroyObjectPool()
+        {
+            foreach (var activeObject in _activePool)
+            {
+                ReturnToPool(activeObject);
+            }
+
+            while (_pool.Count > 0)
+            {
+                var instance = _pool.Dequeue();
+                instance.Returned -= ReturnToPool;
+                Object.Destroy(instance.gameObject);
+            }
+            
+            Object.Destroy(_poolObject);
+        }
     }
 }

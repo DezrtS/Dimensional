@@ -81,6 +81,8 @@ namespace Systems.Movement
 
         protected virtual void OnUpdate() { }
 
+        public void ResetMovementControllerDatum() => CurrentMovementControllerDatum = movementControllerDatum;
+
         private bool CheckIsGrounded()
         {
             var raycastHits = GameManager.CheckCast(transform.position, groundedCheckType, groundedCheckOffset, Vector3.down, groundedCheckSize,

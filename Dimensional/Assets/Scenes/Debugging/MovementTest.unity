@@ -78513,11 +78513,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: movementActionShapes.Array.data[0].shapeType
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: movementActionShapes.Array.data[1].shapeType
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
+      propertyPath: movementActionShapes.Array.data[2].shapeType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7590422267349021090, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: m_Enabled

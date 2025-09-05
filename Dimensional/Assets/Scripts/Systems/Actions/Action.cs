@@ -66,7 +66,7 @@ namespace Systems.Actions
         
         public ActionDatum ActionDatum { get; private set; }
         public bool IsActive { get; private set; }
-        protected bool IsTriggering { get; private set; }
+        public bool IsTriggering { get; private set; }
         protected ActionContext PreviousContext { get; private set; }
 
         public virtual void Initialize(ActionDatum actionDatum)
@@ -229,5 +229,18 @@ namespace Systems.Actions
         }
 
         protected abstract void OnEntityChanged(ActionContext context);
+
+        public void Destroy()
+        {
+            for (var i = _actionVisualEffects.Count - 1; i >= 0; i--)
+            {
+                var actionVisualEffect = _actionVisualEffects[i];
+                _actionVisualEffects.RemoveAt(i);
+                actionVisualEffect.Destroy();
+                Destroy(actionVisualEffect.gameObject);
+            }
+            
+            Destroy(this);
+        }
     }
 }

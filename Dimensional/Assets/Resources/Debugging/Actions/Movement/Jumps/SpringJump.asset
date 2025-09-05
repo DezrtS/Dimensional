@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: SpringJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: e45469543114461488d07d349eee8bcf, type: 2}
   movementActionType: 1
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0
   disableDurationLimit: 0
   movementVector: {x: 0, y: 7, z: 0}
   hasRight: 0
   isXDistance: 0
+  isRightBlend: 0
   rightDuration: 0
   rightCurve:
     serializedVersion: 2
@@ -46,6 +51,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasUp: 1
   isYDistance: 1
+  isUpBlend: 0
   upDuration: 0.7
   upCurve:
     serializedVersion: 2
@@ -73,6 +79,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasForward: 0
   isZDistance: 0
+  isForwardBlend: 0
   forwardDuration: 0
   forwardCurve:
     serializedVersion: 2

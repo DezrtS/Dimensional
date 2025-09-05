@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: SpringWallJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionVisualEffectData: []
   movementActionType: 3
-  cutJumpMultiplier: 0.75
-  jumpVector: {x: 0, y: 6, z: 11}
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
+  stopMovementOnDisable: 0
+  disableDurationLimit: 0
+  movementVector: {x: 0, y: 5, z: 11}
   hasRight: 1
   isXDistance: 0
+  isRightBlend: 0
   rightDuration: 0.1
   rightCurve:
     serializedVersion: 2
@@ -45,6 +50,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasUp: 1
   isYDistance: 1
+  isUpBlend: 0
   upDuration: 0.75
   upCurve:
     serializedVersion: 2
@@ -72,6 +78,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasForward: 1
   isZDistance: 0
+  isForwardBlend: 0
   forwardDuration: 0.25
   forwardCurve:
     serializedVersion: 2
@@ -97,6 +104,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  cutJumpMultiplier: 0.75
   minChargeDuration: 0.1
   maxChargeDuration: 0.5
   autoJumpOnCharge: 0

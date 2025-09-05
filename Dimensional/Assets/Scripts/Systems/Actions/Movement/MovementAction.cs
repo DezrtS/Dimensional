@@ -1,4 +1,6 @@
 using Managers;
+using Scriptables.Actions;
+using Scriptables.Actions.Movement;
 using Systems.Movement;
 using UnityEngine;
 
@@ -109,8 +111,40 @@ namespace Systems.Actions.Movement
     
     public abstract class MovementAction : Action
     {
-        protected MovementController MovementController { get; private set; }
+        private MovementActionDatum _movementActionDatum;
         
+        protected MovementController MovementController { get; private set; }
+
+        public override void Initialize(ActionDatum actionDatum)
+        {
+            base.Initialize(actionDatum);
+            _movementActionDatum = (MovementActionDatum)actionDatum;
+        }
+
+        protected override void OnActivation(ActionContext context)
+        {
+            base.OnActivation(context);
+            if (_movementActionDatum.HasMovementDatum) MovementController.CurrentMovementControllerDatum = _movementActionDatum.MovementControllerDatum;
+        }
+
+        protected override void OnDeactivation(ActionContext context)
+        {
+            base.OnDeactivation(context);
+            if (_movementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
+        }
+
+        protected override void OnInterruption(ActionContext context)
+        {
+            base.OnInterruption(context);
+            if (_movementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
+        }
+
+        protected override void OnCancellation(ActionContext context)
+        {
+            base.OnCancellation(context);
+            if (_movementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
+        }
+
         protected static Vector3 GetVelocity(float elapsedTime, Vector3 currentVelocity, MovementActionContext context)
         {
             var normalizedForwardTime =
