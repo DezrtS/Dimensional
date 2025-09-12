@@ -10,6 +10,7 @@ namespace Systems.Movement
         
         private CharacterController _characterController;
         private Vector3 Velocity { get; set; }
+        public override float Mass { get => mass; set => mass = value; }
 
         protected override void Awake()
         {

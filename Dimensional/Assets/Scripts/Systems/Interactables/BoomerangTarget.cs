@@ -36,5 +36,10 @@ namespace Systems.Interactables
             _timer = rechargeDuration;
             IsDisabled = true;
         }
+
+        public void View(bool show)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

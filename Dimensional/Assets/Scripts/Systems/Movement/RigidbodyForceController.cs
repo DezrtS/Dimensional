@@ -7,6 +7,7 @@ namespace Systems.Movement
     public class RigidbodyForceController : ForceController
     {
         private Rigidbody _rig;
+        public override float Mass { get => _rig.mass; set => _rig.mass = value; }
 
         protected override void Awake()
         {
@@ -18,7 +19,8 @@ namespace Systems.Movement
         {
             if (IsKinematic || !UseGravity) return;
             var velocity = GetVelocity();
-            velocity.y = Mathf.Max(velocity.y, maxFallSpeed);
+            if (velocity.y >= maxFallSpeed) return;
+            velocity.y = Mathf.Min(velocity.y + overSpeedDeceleration * Time.fixedDeltaTime, maxFallSpeed);
             SetVelocity(velocity);
         }
 

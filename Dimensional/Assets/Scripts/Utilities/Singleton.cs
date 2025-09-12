@@ -17,7 +17,7 @@ namespace Utilities
 
         public virtual void InitializeSingleton()
         {
-            if (Instance != null)
+            if (Instance)
             {
                 Debug.LogWarning($"There were multiple instances of {name} in the scene");
 

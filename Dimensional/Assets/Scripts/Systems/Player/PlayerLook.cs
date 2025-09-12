@@ -12,7 +12,11 @@ namespace Systems.Player
         [SerializeField] private Dimensions lookDimensions;
         [Space] 
         [SerializeField] private Transform root;
-        
+
+        [SerializeField] private float minDitherDistance = 5f;
+        [SerializeField] private Material playerMaterial;
+
+        private Transform _cameraTransform;
         private IAim _aim;
 
         // 2D
@@ -29,6 +33,32 @@ namespace Systems.Player
         private void Awake()
         {
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
+            var instance = CameraManager.Instance;
+            if (instance)
+            {
+                CameraManagerOnInitialized(instance);
+            }
+            else
+            {
+                CameraManager.Initialized += CameraManagerOnInitialized;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            CameraManager.Initialized -= CameraManagerOnInitialized;
+        }
+
+        private void CameraManagerOnInitialized(CameraManager instance)
+        {
+            _cameraTransform = instance.Camera.transform;
+        }
+
+        private void FixedUpdate()
+        {
+            var distance = Vector3.Distance(_cameraTransform.position, root.position);
+            var ratio = 1f - distance / minDitherDistance;
+            playerMaterial.SetFloat("_dither", Mathf.Clamp01(ratio));
         }
 
         public void Initialize(IAim aim)

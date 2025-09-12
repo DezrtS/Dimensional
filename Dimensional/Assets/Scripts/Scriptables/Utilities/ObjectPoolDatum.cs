@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scriptables.Object_Pools
+namespace Scriptables.Utilities
 {
     [CreateAssetMenu(fileName = "ObjectPoolDatum", menuName = "Scriptable Objects/Object Pools/ObjectPoolDatum")]
     public class ObjectPoolDatum : ScriptableObject

@@ -1,0 +1,70 @@
+using System;
+using Interfaces;
+using Managers;
+using Scriptables.Interactables;
+using Systems.Movement;
+using UnityEngine;
+
+namespace Systems.Interactables
+{
+    public class Door : MonoBehaviour, IInteractable
+    {
+        private static readonly int Show = Animator.StringToHash("Show");
+
+        public delegate void DoorEventHandler(InteractContext interactContext, string from, string to);
+        public static event DoorEventHandler Opened;
+
+        [SerializeField] private InteractableDatum interactableDatum;
+        [SerializeField] private Transform spawnTransform;
+        [SerializeField] private string id;
+        [Space]
+        [SerializeField] private bool destinationIsScene;
+        [SerializeField] private string destinationId;
+
+        private Animator _animator;
+        
+        public bool IsDisabled { get; private set; }
+        public InteractableDatum InteractableDatum => interactableDatum;
+
+        private void Awake()
+        {
+            Opened += DoorOnOpened;
+            _animator = GetComponent<Animator>();
+        }
+
+        private void OnDisable()
+        {
+            Opened -= DoorOnOpened;
+        }
+
+        private void DoorOnOpened(InteractContext interactContext, string from, string to)
+        {
+            if (id != to) return;
+            interactContext.SourceGameObject.GetComponent<ForceController>().Teleport(spawnTransform.position);
+        }
+        
+        public bool CanInteract(InteractContext interactContext)
+        {
+            return !IsDisabled;
+        }
+
+        public void Interact(InteractContext interactContext)
+        {
+            if (destinationId == string.Empty) return;
+            
+            if (destinationIsScene)
+            {
+                SceneManager.Instance.LoadSceneWithTransition(destinationId);
+            }
+            else
+            {
+                Opened?.Invoke(interactContext, id, destinationId);   
+            }
+        }
+        
+        public void View(bool show)
+        {
+            _animator.SetBool(Show, show);
+        }
+    }
+}

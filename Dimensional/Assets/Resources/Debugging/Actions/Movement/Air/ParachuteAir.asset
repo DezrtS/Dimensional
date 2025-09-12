@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc8f6e253ea9c80479568007161207c7, type: 3}
+  m_Name: ParachuteAir
+  m_EditorClassIdentifier: 
+  activationTime: 0
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: 9e96be4ea896f624da87a8b27d0df625, type: 2}
+  movementActionType: 6
+  performEventOnGrounded: 1
+  groundedActionEventType: 3
+  hasMovementDatum: 1
+  movementControllerDatum: {fileID: 11400000, guid: fc2becaf5be411a4bacbf6d8f161bb80, type: 2}
+  glideFallSpeedThreshold: -3
+  glideFallTimeThreshold: 0.2
+  glideFallSpeed: -3
+  glideMass: 1

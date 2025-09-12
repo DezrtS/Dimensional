@@ -12,6 +12,7 @@ namespace Interfaces
         public InteractableDatum InteractableDatum { get; }
         public bool CanInteract(InteractContext interactContext);
         public void Interact(InteractContext interactContext);
+        public void View(bool show);
     }
 
     public struct InteractContext
