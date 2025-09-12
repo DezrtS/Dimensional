@@ -70,7 +70,6 @@ namespace Systems.Actions.Movement
 
             if (_chargeTimer <= _springJumpMovementActionDatum.MinChargeDuration || IsTriggering)
             {
-                if (_springJumpMovementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
                 HandleDeactivation(context);
                 StopMovement();
             }

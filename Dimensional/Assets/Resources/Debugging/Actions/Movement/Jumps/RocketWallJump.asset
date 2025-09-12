@@ -20,7 +20,7 @@ MonoBehaviour:
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 0, z: 0}
+  movementVector: {x: 0, y: 2, z: 18}
   hasRight: 1
   isXDistance: 0
   isRightBlend: 0

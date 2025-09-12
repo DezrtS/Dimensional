@@ -9,6 +9,7 @@ using Systems.Actions.Movement;
 using Systems.Movement;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utilities;
 
 namespace Systems.Player
 {
@@ -20,9 +21,16 @@ namespace Systems.Player
         
         public MovementActionType MovementActionType => movementActionType;
         public ShapeType ShapeType => shapeType;
+
+        public MovementActionShape(MovementActionType actionType, ShapeType shapeType)
+        {
+            this.movementActionType = actionType;
+            this.shapeType = shapeType;
+        }
     }
+
     
-    public class PlayerController : MonoBehaviour, IEntity, IMove, IAim
+    public class PlayerController : Singleton<PlayerController>, IEntity, IMove, IAim
     {
         [SerializeField] private EntityDatum entityDatum;
         [SerializeField] private ShapeDatum[] shapeData;
@@ -40,6 +48,8 @@ namespace Systems.Player
         public EntityDatum EntityDatum => entityDatum;
         public GameObject GameObject => gameObject;
         public uint Id { get; private set; }
+        public bool DebugDisable { get; set; }
+        public MovementActionShape[] MovementActionShapes => movementActionShapes;
         private Dictionary<ShapeType, ShapeDatum> ShapeData { get; set; }
 
         public MovementActionDatum GetMovementActionDatum(MovementActionType movementActionType)
@@ -48,6 +58,20 @@ namespace Systems.Player
             var movementActionDictionary = ShapeData[movementActionShape.ShapeType].DefineMovementActions();
             return movementActionDictionary[movementActionType];
         }
+        
+        public void SetMovementActionShape(MovementActionType movementActionType, ShapeType shapeType)
+        {
+            for (int i = 0; i < movementActionShapes.Length; i++)
+            {
+                if (movementActionShapes[i].MovementActionType == movementActionType)
+                {
+                    movementActionShapes[i] = new MovementActionShape(movementActionType, shapeType);
+                    break;
+                }
+            }
+        }
+
+        public void ResetMovementActions() => _playerMovementController.ResetMovementActions();
 
         private void Awake()
         {
@@ -202,42 +226,49 @@ namespace Systems.Player
         
         private void OnJump(InputAction.CallbackContext context)
         {
+            if (DebugDisable) return;
             if (context.performed) _playerMovementController.StartJumping();
             else if (context.canceled) _playerMovementController.StopJumping();
         }
 
         private void OnGlide(InputAction.CallbackContext context)
         {
+            if (DebugDisable) return;
             if (context.performed) _playerMovementController.StartAir();
             else if (context.canceled) _playerMovementController.StopAir();
         }
 
         private void OnBoomerang(InputAction.CallbackContext context)
         {
+            if (DebugDisable) return;
             //if (context.performed) _playerMovementController.Boomerang();
             //else if (context.canceled) _playerMovementController.StopBoomeranging();
         }
         
         private void OnGrapple(InputAction.CallbackContext context)
         {
+            if (DebugDisable) return;
             //if (context.performed) _playerMovementController.Grapple();
             //else if (context.canceled) _playerMovementController.StopGrappling();
         }
         
         private void OnCrouch(InputAction.CallbackContext context)
         {
+            if (DebugDisable) return;
             if (context.performed) _playerMovementController.StartCrouching();
             else if (context.canceled) _playerMovementController.StopCrouching();
         }
         
         private void OnAttack(InputAction.CallbackContext context)
         {
+            if (DebugDisable) return;
             if (context.performed) _playerMovementController.StartDashing();
             else if (context.canceled) _playerMovementController.StopDashing();
         }
         
         private void OnInteract(InputAction.CallbackContext context)
         {
+            if (DebugDisable) return;
             _interactable?.Interact(InteractContext.Construct(gameObject));
         }
     }

@@ -15,7 +15,7 @@ MonoBehaviour:
   shapeType: 5
   shapeMovementActions:
   - movementActionType: 4
-    movementActionDatum: {fileID: 11400000, guid: 1ad775b1a2880fe48a8fb83d605a8829, type: 2}
+    movementActionDatum: {fileID: 11400000, guid: 344368e8837e9de4abc9d77e958329f3, type: 2}
     movementSynergies: []
   - movementActionType: 5
     movementActionDatum: {fileID: 11400000, guid: 19cb6228363217f4ca72498d3f0137ea, type: 2}

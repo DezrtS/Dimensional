@@ -11,8 +11,11 @@ namespace Utilities
         private readonly HashSet<T> _activePool;
         
         private readonly GameObject _poolObject;
+        
         private readonly GameObject _prefab;
-
+        private readonly ISpawnPoolableObjects<T> _spawner;
+        private readonly bool _useSpawner;
+        
         private ObjectPoolDatum ObjectPoolDatum { get; set; }
         
         public ObjectPool(ObjectPoolDatum objectPoolDatum, GameObject prefab, Transform parent)
@@ -24,6 +27,7 @@ namespace Utilities
             _poolObject = new GameObject($"{objectPoolDatum.PoolName}");
             _poolObject.transform.SetParent(parent);
             _prefab = prefab;
+            _useSpawner = false;
 
             for (var i = 0; i < objectPoolDatum.ObjectPoolSize; i++)
             {
@@ -31,6 +35,28 @@ namespace Utilities
                 instanceObject.name = $"{objectPoolDatum.ObjectName} {i}";
                 instanceObject.SetActive(false);
                 var instance = instanceObject.GetComponent<T>();
+                instance.Returned += ReturnToPool;
+                _pool.Enqueue(instance);
+            }
+        }
+
+        public ObjectPool(ObjectPoolDatum objectPoolDatum, ISpawnPoolableObjects<T> spawner, Transform parent)
+        {
+            _pool = new Queue<T>();
+            _activePool = new HashSet<T>();
+            
+            ObjectPoolDatum = objectPoolDatum;
+            _poolObject = new GameObject($"{objectPoolDatum.PoolName}");
+            _poolObject.transform.SetParent(parent);
+            _spawner = spawner;
+            _useSpawner = true;
+
+            for (var i = 0; i < objectPoolDatum.ObjectPoolSize; i++)
+            {
+                var instance = spawner.Spawn();
+                instance.transform.SetParent(_poolObject.transform);
+                instance.name = $"{objectPoolDatum.ObjectName} {i}";
+                instance.gameObject.SetActive(false);
                 instance.Returned += ReturnToPool;
                 _pool.Enqueue(instance);
             }
@@ -45,17 +71,27 @@ namespace Utilities
                 _activePool.Add(activeObject);
                 return activeObject;
             }
-            else if (ObjectPoolDatum.IsDynamic)
+
+            if (!ObjectPoolDatum.IsDynamic) return null;
+            
+            if (_useSpawner)
+            {
+                var instance = _spawner.Spawn();
+                instance.transform.SetParent(_poolObject.transform);
+                instance.name = $"{ObjectPoolDatum.ObjectName} {_activePool.Count + 1}";
+                instance.Returned += ReturnToPool;
+                _activePool.Add(instance);
+                return instance;
+            }
+            else
             {
                 var instanceObject = Object.Instantiate(_prefab, _poolObject.transform);
                 instanceObject.name = $"{ObjectPoolDatum.ObjectName} {_activePool.Count + 1}";
                 var instance = instanceObject.GetComponent<T>();
                 instance.Returned += ReturnToPool;
                 _activePool.Add(instance);
-                return instance;
+                return instance;   
             }
-
-            return null;
         }
 
         private void ReturnToPool(T objectToReturn)

@@ -16,6 +16,8 @@ MonoBehaviour:
   actionVisualEffectData:
   - {fileID: 11400000, guid: 3b357fedbecad6e4b9eb69c004732b77, type: 2}
   movementActionType: 5
+  performEventOnGrounded: 1
+  groundedActionEventType: 3
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 1

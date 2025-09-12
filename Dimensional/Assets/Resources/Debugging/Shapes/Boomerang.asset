@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeType: 8
   shapeMovementActions:
+  - movementActionType: 2
+    movementActionDatum: {fileID: 11400000, guid: 87ed808349d3e2f45884150a5fa6609c, type: 2}
+    movementSynergies: []
   - movementActionType: 4
     movementActionDatum: {fileID: 11400000, guid: af6914d1bb3cf324f9b6756340495c2e, type: 2}
     movementSynergies: []

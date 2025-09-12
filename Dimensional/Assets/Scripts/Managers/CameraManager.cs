@@ -27,9 +27,9 @@ namespace Managers
         }
         
         [ContextMenu("Lock and Hide Cursor")]
-        private void LockAndHideCursor() => SetCursorState(CursorLockMode.Locked, false);
+        public void LockAndHideCursor() => SetCursorState(CursorLockMode.Locked, false);
         [ContextMenu("Unlock and Show Cursor")]
-        private void UnlockAndShowCursor() => SetCursorState(CursorLockMode.None, true);
+        public void UnlockAndShowCursor() => SetCursorState(CursorLockMode.None, true);
 
         private static void SetCursorState(CursorLockMode cursorLockMode, bool cursorVisible)
         {

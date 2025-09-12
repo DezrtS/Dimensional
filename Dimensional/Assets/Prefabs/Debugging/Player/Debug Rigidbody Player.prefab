@@ -356,6 +356,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 790162a82d371074c90e708f63f62a4a, type: 2}
   - {fileID: 11400000, guid: f80463c9f2b40624080e9cd1ab5903d8, type: 2}
   - {fileID: 11400000, guid: e3ebf381034f4c549a2dac7a18b8870c, type: 2}
+  - {fileID: 11400000, guid: 646dbf0ef8be1c04ca3aa2883217c5f4, type: 2}
   movementActionShapes:
   - movementActionType: 1
     shapeType: 3

@@ -106,7 +106,7 @@ namespace Systems.Movement
         }
 
         [ContextMenu("Reset Movement Actions")]
-        private void ResetMovementActions()
+        public void ResetMovementActions()
         {
             _jumpMovementAction.Triggered -= ActionOnTriggered;
             _doubleJumpMovementAction.Triggered -= ActionOnTriggered;
@@ -223,9 +223,9 @@ namespace Systems.Movement
                 case false when !_jumpMovementAction.IsActive || !_doubleJumpMovementAction.IsActive || !_wallJumpMovementAction.IsActive:
                     _coyoteTimer = _playerMovementControllerDatum.CoyoteTime;
                     break;
-                case true when _diveMovementAction.IsActive:
-                    _diveMovementAction.Deactivate(GetActionContext());
-                    break;
+                //case true when _diveMovementAction.IsActive:
+                //    _diveMovementAction.Deactivate(GetActionContext());
+                //    break;
             }
         }
         
@@ -311,6 +311,7 @@ namespace Systems.Movement
 
         public void StartAir()
         {
+            CancelDiving();
             _airMovementAction.Activate(GetActionContext());
         }
 

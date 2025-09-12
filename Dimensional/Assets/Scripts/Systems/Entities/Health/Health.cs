@@ -35,6 +35,7 @@ namespace Systems.Entities
 
         public void Damage(int damage)
         {
+            if (damage <= 0) return;
             if (!CanDamage()) Debug.LogWarning("Damaging Invincible Entity");
             AddHealth(-damage);
             if (!_isDead) GiveInvincibility(healthDatum.HitInvincibilityDuration);

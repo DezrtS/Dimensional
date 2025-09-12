@@ -9,63 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32c4e46ed95b49769a52ade551fead4b, type: 3}
+  m_Script: {fileID: 11500000, guid: dc8f6e253ea9c80479568007161207c7, type: 3}
   m_Name: ParachuteAir
   m_EditorClassIdentifier: 
-  activationTime: 0.4
+  activationTime: 0
   actionVisualEffectData:
   - {fileID: 11400000, guid: 9e96be4ea896f624da87a8b27d0df625, type: 2}
   movementActionType: 6
+  performEventOnGrounded: 1
+  groundedActionEventType: 3
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: fc2becaf5be411a4bacbf6d8f161bb80, type: 2}
-  stopMovementOnDisable: 1
-  disableDurationLimit: 1
-  movementVector: {x: 0, y: -3, z: 0}
-  hasRight: 0
-  isXDistance: 0
-  isRightBlend: 0
-  rightDuration: 0
-  rightCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  hasUp: 1
-  isYDistance: 0
-  isUpBlend: 1
-  upDuration: 1
-  upCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  hasForward: 0
-  isZDistance: 0
-  isForwardBlend: 0
-  forwardDuration: 0
-  forwardCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  glideFallSpeedThreshold: -3
+  glideFallTimeThreshold: 0.2
+  glideFallSpeed: -3
+  glideMass: 1

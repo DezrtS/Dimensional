@@ -1,3 +1,4 @@
+using System;
 using Managers;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
@@ -121,28 +122,64 @@ namespace Systems.Actions.Movement
             _movementActionDatum = (MovementActionDatum)actionDatum;
         }
 
-        protected override void OnActivation(ActionContext context)
+        private void MovementControllerOnGrounded(bool isGrounded)
         {
-            base.OnActivation(context);
+            if (!isGrounded) return;
+            
+            switch (_movementActionDatum.GroundedActionEventType)
+            {
+                case ActionEventType.Activated:
+                    Activate(PreviousContext);
+                    break;
+                case ActionEventType.Triggered:
+                    Trigger(PreviousContext);
+                    break;
+                case ActionEventType.Deactivated:
+                    Deactivate(PreviousContext);
+                    break;
+                case ActionEventType.Interrupted:
+                    Interrupt(PreviousContext);
+                    break;
+                case ActionEventType.Cancelled:
+                    Cancel(PreviousContext);
+                    break;
+                case ActionEventType.None:
+                default:
+                    break;
+            }
+        }
+
+        protected override void HandleActivation(ActionContext context)
+        {
+            base.HandleActivation(context);
+            if (_movementActionDatum.PerformEventOnGrounded) MovementController.Grounded += MovementControllerOnGrounded;
             if (_movementActionDatum.HasMovementDatum) MovementController.CurrentMovementControllerDatum = _movementActionDatum.MovementControllerDatum;
         }
 
-        protected override void OnDeactivation(ActionContext context)
+        protected override void HandleDeactivation(ActionContext context)
         {
-            base.OnDeactivation(context);
+            base.HandleDeactivation(context);
+            if (_movementActionDatum.PerformEventOnGrounded) MovementController.Grounded -= MovementControllerOnGrounded;
             if (_movementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
         }
 
-        protected override void OnInterruption(ActionContext context)
+        protected override void HandleInterruption(ActionContext context)
         {
-            base.OnInterruption(context);
+            base.HandleInterruption(context);
+            if (_movementActionDatum.PerformEventOnGrounded) MovementController.Grounded -= MovementControllerOnGrounded;
             if (_movementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
         }
 
-        protected override void OnCancellation(ActionContext context)
+        protected override void HandleCancellation(ActionContext context)
         {
-            base.OnCancellation(context);
+            base.HandleCancellation(context);
+            if (_movementActionDatum.PerformEventOnGrounded) MovementController.Grounded -= MovementControllerOnGrounded;
             if (_movementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
+        }
+
+        protected override void OnEntityChanged(ActionContext context)
+        {
+            MovementController = context.SourceGameObject.GetComponent<MovementController>();
         }
 
         protected static Vector3 GetVelocity(float elapsedTime, Vector3 currentVelocity, MovementActionContext context)
@@ -210,11 +247,6 @@ namespace Systems.Actions.Movement
             return context.Forward * finalForward +
                    context.Right * finalRight +
                    context.Up * finalUp;
-        }
-
-        protected override void OnEntityChanged(ActionContext context)
-        {
-            MovementController = context.SourceGameObject.GetComponent<MovementController>();
         }
     }
 }

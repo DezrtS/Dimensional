@@ -112,7 +112,7 @@ namespace Systems.Actions
             HandleActivation(context);
         }
 
-        protected void HandleActivation(ActionContext context)
+        protected virtual void HandleActivation(ActionContext context)
         {
             IsActive = true;
             _actionActivator = context.ActionActivator;
@@ -123,7 +123,7 @@ namespace Systems.Actions
             if (_activationTimer == 0) Trigger(context);
         }
 
-        private void Trigger(ActionContext context)
+        protected void Trigger(ActionContext context)
         {
             if (!IsActive) return;
             OnTrigger(context);
@@ -134,7 +134,7 @@ namespace Systems.Actions
             HandleTrigger(context);
         }
 
-        protected void HandleTrigger(ActionContext context)
+        protected virtual void HandleTrigger(ActionContext context)
         {
             IsTriggering = true;
             _actionActivator = context.ActionActivator;
@@ -159,7 +159,7 @@ namespace Systems.Actions
             HandleDeactivation(context);
         }
 
-        protected void HandleDeactivation(ActionContext context)
+        protected virtual void HandleDeactivation(ActionContext context)
         {
             IsActive = false;
             IsTriggering = false;
@@ -179,7 +179,7 @@ namespace Systems.Actions
             HandleInterruption(context);
         }
         
-        protected void HandleInterruption(ActionContext context)
+        protected virtual void HandleInterruption(ActionContext context)
         {
             IsActive = false;
             IsTriggering = false;
@@ -199,7 +199,7 @@ namespace Systems.Actions
             HandleCancellation(context);
         }
 
-        protected void HandleCancellation(ActionContext context)
+        protected virtual void HandleCancellation(ActionContext context)
         {
             IsActive = false;
             IsTriggering = false;

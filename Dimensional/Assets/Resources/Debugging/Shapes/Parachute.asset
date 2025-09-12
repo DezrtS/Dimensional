@@ -17,6 +17,9 @@ MonoBehaviour:
   - movementActionType: 4
     movementActionDatum: {fileID: 11400000, guid: 65605b94ea7b7764fb8c1729c9b9f56b, type: 2}
     movementSynergies: []
+  - movementActionType: 5
+    movementActionDatum: {fileID: 11400000, guid: 011b9113885fcad4c84889a9ecfba861, type: 2}
+    movementSynergies: []
   - movementActionType: 6
-    movementActionDatum: {fileID: 11400000, guid: a22c6b41d6dd4e241ab09a7d808dc0b7, type: 2}
+    movementActionDatum: {fileID: 11400000, guid: 7ff8568e125ae4747b824c86798f9575, type: 2}
     movementSynergies: []

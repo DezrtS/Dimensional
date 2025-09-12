@@ -20,7 +20,7 @@ namespace Systems.Actions.Movement
             CutJump();
             if (Context.HasForwardVelocity || Context.HasRightVelocity || Context.HasUpVelocity) return;
             StopMovement();
-            base.OnDeactivation(context);
+            HandleDeactivation(context);
         }
 
         private void CutJump()

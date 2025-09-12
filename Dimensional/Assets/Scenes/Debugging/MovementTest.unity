@@ -23395,6 +23395,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5128241181974869758, guid: cb402aacf9e54144d9cfe38f84a8dc54, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1344745586}
+    - target: {fileID: 7403300783198503255, guid: cb402aacf9e54144d9cfe38f84a8dc54, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -56045,6 +56053,11 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &1344745586 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3206800854426569070, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
+  m_PrefabInstance: {fileID: 1928030055}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1359050276
 GameObject:
   m_ObjectHideFlags: 0
@@ -78513,15 +78526,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: movementActionShapes.Array.data[0].shapeType
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: movementActionShapes.Array.data[1].shapeType
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: movementActionShapes.Array.data[2].shapeType
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
+      propertyPath: movementActionShapes.Array.data[3].shapeType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
+      propertyPath: movementActionShapes.Array.data[4].shapeType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
+      propertyPath: movementActionShapes.Array.data[5].shapeType
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7590422267349021090, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: m_Enabled

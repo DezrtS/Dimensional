@@ -1,12 +1,13 @@
 using Interfaces;
 using Scriptables.Projectiles;
+using Systems.Projectiles;
 using UnityEngine;
 
 namespace Systems.Entities.Behaviours
 {
     public class LaunchProjectileBehaviourComponent : BehaviourComponent
     {
-        [SerializeField] private ProjectileDatum projectileDatum;
+        [SerializeField] private BaseProjectileDatum projectileDatum;
         [SerializeField] private float launchSpeed;
         [SerializeField] private Vector3 launchDirection;
         
@@ -25,7 +26,7 @@ namespace Systems.Entities.Behaviours
         {
             var projectile = projectileDatum.Spawn();
             var position = transform.position;
-            var fireContext = FireContext.Construct(position, position + launchDirection, launchSpeed, true);
+            var fireContext = FireContext.Construct(position, launchDirection, TargetValueType.Direction, launchSpeed, HitResponseType.Destroy, DestroyResponseType.DestroyGameObject);
             projectile.Fire(fireContext);
         }
     }

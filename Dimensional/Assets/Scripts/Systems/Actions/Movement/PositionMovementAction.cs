@@ -38,8 +38,9 @@ namespace Systems.Actions.Movement
 
         protected override void OnDeactivation(ActionContext context)
         {
+            if (!PositionMovementActionDatum.StopMovementOnDisable) return;
             base.OnDeactivation(context);
-            if (PositionMovementActionDatum.StopMovementOnDisable) StopMovement();
+            StopMovement();
         }
 
         protected override void OnCancellation(ActionContext context)

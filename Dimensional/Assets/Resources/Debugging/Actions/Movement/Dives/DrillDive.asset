@@ -13,7 +13,12 @@ MonoBehaviour:
   m_Name: DrillDive
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionVisualEffectData: []
   movementActionType: 5
+  performEventOnGrounded: 1
+  groundedActionEventType: 3
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 1
   disableDurationLimit: 0
   movementVector: {x: 0, y: -20, z: 0}

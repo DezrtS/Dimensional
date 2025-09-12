@@ -1,4 +1,5 @@
 using System;
+using Systems.Player;
 using UnityEngine;
 using User_Interface.Visual_Effects;
 using Utilities;
@@ -27,6 +28,16 @@ namespace Managers
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 controls.SetActive(!controls.activeSelf);
+                if (controls.activeSelf)
+                {
+                    PlayerController.Instance.DebugDisable = true;
+                    CameraManager.Instance.UnlockAndShowCursor();
+                }
+                else
+                {
+                    PlayerController.Instance.DebugDisable = false;
+                    CameraManager.Instance.LockAndHideCursor();
+                }
             }
         }
 
