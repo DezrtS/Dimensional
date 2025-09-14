@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{2562ad22-947b-45ca-8c76-9f27f153faae}">
+		<property name="assetPath">
+			<value>SpringJump/SpringJump2.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.2141269841269842</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{e817790e-6576-45a6-bf0a-df057d845bee}</destination>
+		</relationship>
+	</object>
+</objects>
