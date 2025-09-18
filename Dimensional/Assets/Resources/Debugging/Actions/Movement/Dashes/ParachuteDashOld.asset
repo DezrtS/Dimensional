@@ -9,24 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c7e01b4552e644aa76b519b3b36993, type: 3}
-  m_Name: WeightDive2
+  m_Script: {fileID: 11500000, guid: 32c4e46ed95b49769a52ade551fead4b, type: 3}
+  m_Name: ParachuteDashOld
   m_EditorClassIdentifier: 
   activationTime: 0
-  actionVisualEffectData:
-  - {fileID: 11400000, guid: 3b357fedbecad6e4b9eb69c004732b77, type: 2}
-  movementActionType: 5
-  performEventOnGrounded: 1
-  groundedActionEventType: 3
-  hasMovementDatum: 0
-  movementControllerDatum: {fileID: 0}
-  stopMovementOnDisable: 1
-  disableDurationLimit: 1
-  movementVector: {x: 0, y: -30, z: 0}
+  movementActionType: 4
+  stopMovementOnDisable: 0
+  disableDurationLimit: 0
+  movementVector: {x: 0, y: 0, z: 4}
   hasRight: 1
   isXDistance: 0
-  isRightBlend: 0
-  rightDuration: 0.5
+  rightDuration: 0.3
   rightCurve:
     serializedVersion: 2
     m_Curve:
@@ -53,29 +46,46 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasUp: 1
   isYDistance: 0
-  isUpBlend: 0
-  upDuration: 0.5
+  upDuration: 0.3
   upCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 2
+      value: 1
+      inSlope: 0
       outSlope: 0
-      tangentMode: 69
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.1
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hasForward: 1
+  isZDistance: 1
+  forwardDuration: 0.3
+  forwardCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
       value: 0
       inSlope: 0
-      outSlope: 1.7410896
-      tangentMode: 5
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -88,46 +98,3 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hasForward: 1
-  isZDistance: 0
-  isForwardBlend: 0
-  forwardDuration: 0.5
-  forwardCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  attackEventType: 3
-  attackDamage: 0
-  attackRadius: 5
-  attackOffset: {x: 0, y: 0, z: 0}
-  attackDirection: {x: 0, y: 0, z: 0}
-  attackLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  hasKnockback: 1
-  knockbackPower: 15
-  knockbackType: 2
-  projectileEventType: 0
-  projectileDatum: {fileID: 0}
-  projectilePoolDatum: {fileID: 0}
-  fireDirection: {x: 0, y: 0, z: 0}

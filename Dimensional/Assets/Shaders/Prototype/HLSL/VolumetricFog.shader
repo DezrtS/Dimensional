@@ -73,18 +73,25 @@ Shader "Unlit/VolumetricFog"
                 float transmittance = 1;
                 float4 fogCol = _Color;
 
-                while(distTravelled < distLimit)
+                int maxSteps = min(256, (int)(_MaxDistance / _StepSize)); // safety cap
+                for (int i = 0; i < maxSteps; i++)
                 {
                     float3 rayPos = entryPoint + rayDir * distTravelled;
                     float density = get_density(rayPos);
+
                     if (density > 0)
                     {
                         Light mainLight = GetMainLight(TransformWorldToShadowCoord(rayPos));
-                        fogCol.rgb += mainLight.color.rgb * _LightContribution.rgb * henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) * density * mainLight.shadowAttenuation * _StepSize;
+                        fogCol.rgb += mainLight.color.rgb * _LightContribution.rgb * 
+                            henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) * 
+                            density * mainLight.shadowAttenuation * _StepSize;
                         transmittance *= exp(-density * _StepSize);
                     }
+
                     distTravelled += _StepSize;
+                    if (distTravelled >= distLimit) break;
                 }
+
                 
                 return lerp(col, fogCol, 1.0 - saturate(transmittance));
             }

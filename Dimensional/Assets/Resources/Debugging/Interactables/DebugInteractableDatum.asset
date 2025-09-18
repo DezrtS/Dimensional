@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: DebugInteractableDatum
   m_EditorClassIdentifier: 
   interactableTitle: Debug Interactable
+  interactionDelay: 1
+  enterTransitionDuration: 1
+  exitTransitionDuration: 1
