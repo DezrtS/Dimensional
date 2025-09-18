@@ -10,8 +10,6 @@ namespace Debugging
 {
     public class ActionShapeSetter : MonoBehaviour
     {
-        [SerializeField] private GameObject player;
-
         [Header("Action Dropdowns")]
         [SerializeField] private TMP_Dropdown jumpDropdown;
         [SerializeField] private TMP_Dropdown doubleJumpDropdown;
@@ -27,10 +25,10 @@ namespace Debugging
         private PlayerController _playerController;
         private string[] _shapeNames;
 
-        private void Awake()
+        private void Start()
         {
-            _playerController = player.GetComponent<PlayerController>();
-
+            _playerController = PlayerController.Instance;
+            
             // Populate dropdowns with ShapeType enum names (skip None)
             _shapeNames = Enum.GetNames(typeof(ShapeType)).Skip(1).ToArray();
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using Utilities;
@@ -7,23 +8,45 @@ namespace Managers
 {
     public class CameraManager : Singleton<CameraManager>
     {
+        public delegate void CameraActiveEventHandler(Camera camera, bool active);
+        public event CameraActiveEventHandler ActiveStateChanged;
+        public delegate void CameraTransitionEventHandler(CinemachineCamera from, CinemachineCamera to);
+        public event CameraTransitionEventHandler TransitionStarted;
+        public event CameraTransitionEventHandler TransitionFinished;
+        
         [SerializeField] private bool lockAndHideCursor;
+        [SerializeField] private Vector3 thirdPersonDamping;
         [SerializeField] private float yOffset2D;
 
+        private CinemachineBrain _cinemachineBrain;
         private CinemachineCamera _cinemachineCamera;
         private CinemachineThirdPersonFollow _thirdPersonFollow;
         
+        private Coroutine _transitionCoroutine;
+        
         public Camera Camera { get; private set; }
+        public CinemachineCamera TargetCinemachineCamera { get; private set; }
+
+        public override void InitializeSingleton()
+        {
+            Camera = GetComponentInChildren<Camera>();
+            _cinemachineBrain = Camera.GetComponent<CinemachineBrain>();
+            _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
+            TargetCinemachineCamera = _cinemachineCamera;
+            _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
+            _thirdPersonFollow.Damping = thirdPersonDamping;
+            base.InitializeSingleton();
+        }
 
         private void Awake()
         {
-            Camera = GetComponentInChildren<Camera>();
-            _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
-            _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
-            
-            if (!lockAndHideCursor) return;
-            LockAndHideCursor();
+            if (lockAndHideCursor) LockAndHideCursor();
+        }
+
+        private void SetIsActive(bool isActive)
+        {
+            ActiveStateChanged?.Invoke(Camera, isActive);
         }
         
         [ContextMenu("Lock and Hide Cursor")]
@@ -35,6 +58,54 @@ namespace Managers
         {
             Cursor.lockState = cursorLockMode;
             Cursor.visible = cursorVisible;
+        }
+        
+        public void EnableDamping() => _thirdPersonFollow.Damping = thirdPersonDamping;
+        public void DisableDamping() => _thirdPersonFollow.Damping = Vector3.zero;
+
+        public void Transition(CinemachineCamera from, CinemachineCamera to, float duration, CinemachineBlendDefinition.Styles style = CinemachineBlendDefinition.Styles.EaseInOut)
+        {
+            if (to == TargetCinemachineCamera || from == to) return;
+            if (!from) from = TargetCinemachineCamera;
+            if (!to) to = TargetCinemachineCamera;
+            if (duration <= 0) style = CinemachineBlendDefinition.Styles.Cut;
+            
+            if (_transitionCoroutine != null) StopCoroutine(_transitionCoroutine);
+            _transitionCoroutine = StartCoroutine(TransitionRoutine(from, to, duration, style));
+        }
+
+        public void TransitionToDefault(bool waitForEndOfFrame, float duration, CinemachineBlendDefinition.Styles style = CinemachineBlendDefinition.Styles.EaseInOut)
+        {
+            if (waitForEndOfFrame) StartCoroutine(DefaultTransitionRoutine(duration, style));
+            else Transition(TargetCinemachineCamera, _cinemachineCamera, duration, style);
+        }
+
+        private IEnumerator DefaultTransitionRoutine(float duration, CinemachineBlendDefinition.Styles style)
+        {
+            yield return new WaitForEndOfFrame();
+            Transition(TargetCinemachineCamera, _cinemachineCamera, duration, style);
+        }
+        
+        private IEnumerator TransitionRoutine(CinemachineCamera from, CinemachineCamera to, float duration, CinemachineBlendDefinition.Styles style)
+        {
+            SetIsActive(false);
+            if (TargetCinemachineCamera && TargetCinemachineCamera != from)
+            {
+                _cinemachineBrain.DefaultBlend.Style = CinemachineBlendDefinition.Styles.Cut;
+                from.Priority = 1;
+                TargetCinemachineCamera.Priority = -1;
+                yield return new WaitForEndOfFrame();
+            }
+            
+            TransitionStarted?.Invoke(from, to);
+            TargetCinemachineCamera = to;
+            _cinemachineBrain.DefaultBlend.Style = style;
+            _cinemachineBrain.DefaultBlend.Time = duration;
+            to.Priority = 1;
+            from.Priority = -1;
+            yield return new WaitForSeconds(duration);
+            TransitionFinished?.Invoke(from, to);
+            SetIsActive(true);
         }
 
         private void GameManagerOnWorldDimensionsChanged(Dimensions oldValue, Dimensions newValue)

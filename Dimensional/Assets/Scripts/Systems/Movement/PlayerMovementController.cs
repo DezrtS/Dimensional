@@ -305,6 +305,9 @@ namespace Systems.Movement
 
         private void StartDiving()
         {
+            CancelAir();
+            StopRolling();
+            
             _isCrouching = false;
             _diveMovementAction.Activate(GetActionContext());
         }
@@ -312,6 +315,8 @@ namespace Systems.Movement
         public void StartAir()
         {
             CancelDiving();
+            StopRolling();
+            
             _airMovementAction.Activate(GetActionContext());
         }
 
@@ -377,8 +382,8 @@ namespace Systems.Movement
         }
 
         public void StopLeftSpecial()
-        {
-         _leftSpecialMovementAction.Deactivate(GetActionContext());   
+        { 
+            _leftSpecialMovementAction.Deactivate(GetActionContext());   
         }
 
         public void StopRightSpecial()

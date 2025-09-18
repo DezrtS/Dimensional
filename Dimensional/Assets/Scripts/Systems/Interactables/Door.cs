@@ -1,20 +1,19 @@
 using System;
+using System.Collections;
 using Interfaces;
 using Managers;
-using Scriptables.Interactables;
 using Systems.Movement;
 using UnityEngine;
 
 namespace Systems.Interactables
 {
-    public class Door : MonoBehaviour, IInteractable
+    public class Door : Interactable
     {
         private static readonly int Show = Animator.StringToHash("Show");
 
         public delegate void DoorEventHandler(InteractContext interactContext, string from, string to);
         public static event DoorEventHandler Opened;
-
-        [SerializeField] private InteractableDatum interactableDatum;
+        
         [SerializeField] private Transform spawnTransform;
         [SerializeField] private string id;
         [Space]
@@ -22,9 +21,6 @@ namespace Systems.Interactables
         [SerializeField] private string destinationId;
 
         private Animator _animator;
-        
-        public bool IsDisabled { get; private set; }
-        public InteractableDatum InteractableDatum => interactableDatum;
 
         private void Awake()
         {
@@ -40,7 +36,9 @@ namespace Systems.Interactables
         private void DoorOnOpened(InteractContext interactContext, string from, string to)
         {
             if (id != to) return;
+            if (InteractableCamera) CameraManager.Instance.Transition(null, InteractableCamera, 0);
             interactContext.SourceGameObject.GetComponent<ForceController>().Teleport(spawnTransform.position);
+            if (InteractableCamera) CameraManager.Instance.TransitionToDefault(true, InteractableDatum.ExitTransitionDuration);
         }
         
         public bool CanInteract(InteractContext interactContext)
@@ -48,8 +46,9 @@ namespace Systems.Interactables
             return !IsDisabled;
         }
 
-        public void Interact(InteractContext interactContext)
+        protected override void OnInteraction(InteractContext context)
         {
+            HandleInteraction(context);
             if (destinationId == string.Empty) return;
             
             if (destinationIsScene)
@@ -58,13 +57,8 @@ namespace Systems.Interactables
             }
             else
             {
-                Opened?.Invoke(interactContext, id, destinationId);   
+                Opened?.Invoke(context, id, destinationId);   
             }
-        }
-        
-        public void View(bool show)
-        {
-            _animator.SetBool(Show, show);
         }
     }
 }

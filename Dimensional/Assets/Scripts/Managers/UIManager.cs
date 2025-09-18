@@ -1,4 +1,5 @@
 using System;
+using Scriptables.Interactables;
 using Systems.Player;
 using UnityEngine;
 using User_Interface.Visual_Effects;
@@ -12,6 +13,8 @@ namespace Managers
 
         [SerializeField] private GameObject controls;
         [SerializeField] private bool transitionOnAwake;
+
+        [SerializeField] private Transform interactableIconTransform;
         
         private MaskReveal _maskReveal;
 
@@ -39,6 +42,11 @@ namespace Managers
                     CameraManager.Instance.LockAndHideCursor();
                 }
             }
+        }
+
+        public void SpawnInteractableIcon(InteractableIconDatum interactableIconDatum, Transform interactableTransform)
+        {
+            interactableIconDatum.Spawn(interactableIconTransform, interactableTransform);
         }
 
         public void Transition(bool reverse)

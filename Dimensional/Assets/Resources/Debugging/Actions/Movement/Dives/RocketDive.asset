@@ -9,24 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c7e01b4552e644aa76b519b3b36993, type: 3}
-  m_Name: DrillDash2
+  m_Script: {fileID: 11500000, guid: 32c4e46ed95b49769a52ade551fead4b, type: 3}
+  m_Name: RocketDive
   m_EditorClassIdentifier: 
   activationTime: 0
-  actionVisualEffectData:
-  - {fileID: 11400000, guid: 794fb69ba94c9a24782e8c5bf5bb3185, type: 2}
-  movementActionType: 4
-  performEventOnGrounded: 0
-  groundedActionEventType: 0
+  actionVisualEffectData: []
+  movementActionType: 0
+  performEventOnGrounded: 1
+  groundedActionEventType: 3
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
-  stopMovementOnDisable: 0
+  stopMovementOnDisable: 1
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 0, z: 5}
+  movementVector: {x: 0, y: -35, z: 0}
   hasRight: 1
   isXDistance: 0
   isRightBlend: 0
-  rightDuration: 0.3
+  rightDuration: 0.5
   rightCurve:
     serializedVersion: 2
     m_Curve:
@@ -54,7 +53,7 @@ MonoBehaviour:
   hasUp: 1
   isYDistance: 0
   isUpBlend: 0
-  upDuration: 0.3
+  upDuration: 0.25
   upCurve:
     serializedVersion: 2
     m_Curve:
@@ -80,18 +79,18 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   hasForward: 1
-  isZDistance: 1
+  isZDistance: 0
   isForwardBlend: 0
-  forwardDuration: 0.3
+  forwardDuration: 0.5
   forwardCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -100,22 +99,10 @@ MonoBehaviour:
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hasAttackDatum: 1
-  attackDamage: 1
-  attackRadius: 10
-  attackOffset: {x: 0, y: 0, z: 0}
-  attackDirection: {x: 3, y: 3, z: 3}
-  attackLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  hasProjectileDatum: 0
-  projectileDatum: {fileID: 0}
-  projectilePoolDatum: {fileID: 0}
-  fireDirection: {x: 0, y: 0, z: 0}

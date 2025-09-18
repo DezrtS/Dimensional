@@ -52,6 +52,12 @@ namespace Systems.Player
         private void CameraManagerOnInitialized(CameraManager instance)
         {
             _cameraTransform = instance.Camera.transform;
+            instance.ActiveStateChanged += CameraManagerOnActiveStateChanged;
+        }
+
+        private void CameraManagerOnActiveStateChanged(Camera currentCamera, bool active)
+        {
+            IsDisabled = !active;
         }
 
         private void FixedUpdate()

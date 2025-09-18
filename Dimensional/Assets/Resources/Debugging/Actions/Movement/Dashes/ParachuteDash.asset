@@ -9,16 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32c4e46ed95b49769a52ade551fead4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 09c7e01b4552e644aa76b519b3b36993, type: 3}
   m_Name: ParachuteDash
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionVisualEffectData: []
   movementActionType: 4
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0
   disableDurationLimit: 0
   movementVector: {x: 0, y: 0, z: 4}
   hasRight: 1
   isXDistance: 0
+  isRightBlend: 0
   rightDuration: 0.3
   rightCurve:
     serializedVersion: 2
@@ -46,6 +52,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasUp: 1
   isYDistance: 0
+  isUpBlend: 0
   upDuration: 0.3
   upCurve:
     serializedVersion: 2
@@ -73,6 +80,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   hasForward: 1
   isZDistance: 1
+  isForwardBlend: 0
   forwardDuration: 0.3
   forwardCurve:
     serializedVersion: 2
@@ -98,3 +106,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  attackEventType: 0
+  attackDamage: 0
+  attackRadius: 0
+  attackOffset: {x: 0, y: 0, z: 0}
+  attackDirection: {x: 0, y: 0, z: 0}
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  hasKnockback: 0
+  knockbackPower: 0
+  knockbackType: 0
+  projectileEventType: 3
+  projectileDatum: {fileID: 11400000, guid: 660b2527473f9d34a95eeb1a6b7b41da, type: 2}
+  projectilePoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
+  fireDirection: {x: 0, y: 0, z: 1}
