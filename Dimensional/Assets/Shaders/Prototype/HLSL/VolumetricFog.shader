@@ -3,6 +3,7 @@ Shader "Unlit/VolumetricFog"
     Properties
     {
         _Color("Color", Color) = (1, 1, 1, 1)
+        _MinDistance("Min distance", float) = 25
         _MaxDistance("Max distance", float) = 100
         _StepSize("Step size", Range(0.1, 20)) = 1
         _DensityMultiplier("Density multiplier", Range(0, 10)) = 1
@@ -33,6 +34,7 @@ Shader "Unlit/VolumetricFog"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 
             float4 _Color;
+            float _MinDistance;
             float _MaxDistance;
             float _DensityMultiplier;
             float _StepSize;
@@ -69,29 +71,37 @@ Shader "Unlit/VolumetricFog"
 
                 float2 pixelCoords = IN.texcoord * _BlitTexture_TexelSize.zw;
                 float distLimit = min(viewLength, _MaxDistance);
-                float distTravelled = InterleavedGradientNoise(pixelCoords, (int)(_Time.y / max(HALF_EPS, unity_DeltaTime.x))) * _NoiseOffset;
+
+                // Start at MinDistance + jitter
+                float distTravelled = _MinDistance + 
+                    InterleavedGradientNoise(pixelCoords, (int)(_Time.y / max(HALF_EPS, unity_DeltaTime.x))) 
+                    * _NoiseOffset;
+
                 float transmittance = 1;
                 float4 fogCol = _Color;
 
-                int maxSteps = min(256, (int)(_MaxDistance / _StepSize)); // safety cap
+                // Cap iterations
+                int maxSteps = min(256, (int)((_MaxDistance - _MinDistance) / _StepSize));
+
                 for (int i = 0; i < maxSteps; i++)
                 {
+                    if (distTravelled >= distLimit) break;
+
                     float3 rayPos = entryPoint + rayDir * distTravelled;
                     float density = get_density(rayPos);
 
                     if (density > 0)
                     {
                         Light mainLight = GetMainLight(TransformWorldToShadowCoord(rayPos));
-                        fogCol.rgb += mainLight.color.rgb * _LightContribution.rgb * 
-                            henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) * 
+                        fogCol.rgb += mainLight.color.rgb * _LightContribution.rgb *
+                            henyey_greenstein(dot(rayDir, mainLight.direction), _LightScattering) *
                             density * mainLight.shadowAttenuation * _StepSize;
+
                         transmittance *= exp(-density * _StepSize);
                     }
 
                     distTravelled += _StepSize;
-                    if (distTravelled >= distLimit) break;
                 }
-
                 
                 return lerp(col, fogCol, 1.0 - saturate(transmittance));
             }
