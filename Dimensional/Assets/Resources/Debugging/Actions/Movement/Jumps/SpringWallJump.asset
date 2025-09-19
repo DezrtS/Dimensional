@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: SpringWallJump
   m_EditorClassIdentifier: 
   activationTime: 0
-  actionVisualEffectData: []
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: 8bfae146f4a37e348b82dccb459dcdce, type: 2}
   movementActionType: 3
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0

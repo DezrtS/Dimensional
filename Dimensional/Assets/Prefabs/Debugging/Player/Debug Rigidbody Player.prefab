@@ -5509,7 +5509,7 @@ MonoBehaviour:
   lookDimensions: 0
   root: {fileID: 3181895067545943186}
   minDitherDistance: 5
-  playerMaterial: {fileID: 0}
+  playerMaterial: {fileID: 2100000, guid: 3c6735f5279d2114c8746fd8ac8f2f73, type: 2}
 --- !u!114 &3046191874044748012
 MonoBehaviour:
   m_ObjectHideFlags: 0
