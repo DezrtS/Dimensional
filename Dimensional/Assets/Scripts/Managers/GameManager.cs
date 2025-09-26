@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Utilities;
 
 namespace Managers
@@ -29,9 +30,12 @@ namespace Managers
     public class GameManager : Singleton<GameManager>
     {
         public static event DimensionsChangedEventHandler WorldDimensionsChanged;
+        
         [SerializeField] private Dimensions defaultWorldDimensions;
+        [SerializeField] private InputActionAsset defaultInputActionAsset;
         
         public Dimensions WorldDimensions { get; private set; }
+        public InputActionAsset InputActionAsset => defaultInputActionAsset;
 
         private void Start()
         {
@@ -59,11 +63,26 @@ namespace Managers
             }
         }
 
+        public static void SetTimeScale(float timeScale = 1)
+        {
+            var clampedTimeScale = Mathf.Clamp(timeScale, 0.1f, 1f);
+            Time.timeScale = clampedTimeScale;
+            Time.fixedDeltaTime = 0.02f * clampedTimeScale;
+        }
+
         public void SetWorldDimensions(Dimensions worldDimensions)
         {
             if (worldDimensions == WorldDimensions) return;
             WorldDimensionsChanged?.Invoke(WorldDimensions, worldDimensions);
             WorldDimensions = worldDimensions;
+        }
+
+        public void ResetInputActionMapToDefault() => SwitchInputActionMaps("Player");
+
+        public void SwitchInputActionMaps(string newInputActionMap)
+        {
+            InputActionAsset.Disable();
+            InputActionAsset.FindActionMap(newInputActionMap).Enable();
         }
 
         public static float Derivative(AnimationCurve curve, float time)

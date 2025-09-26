@@ -13,6 +13,7 @@ using Utilities;
 
 namespace Systems.Player
 {
+    /*
     [Serializable]
     public struct MovementActionShape
     {
@@ -28,18 +29,20 @@ namespace Systems.Player
             this.shapeType = shapeType;
         }
     }
+    */
 
     
     public class PlayerController : Singleton<PlayerController>, IEntity, IMove, IAim
     {
+        [SerializeField] private bool setCameraFollowOnStart;
+        [Space]
         [SerializeField] private EntityDatum entityDatum;
         [SerializeField] private ShapeDatum[] shapeData;
-        [SerializeField] private MovementActionShape[] movementActionShapes;
+        [SerializeField] private MovementActionShapesPreset defaultMovementActionShapesPreset;
         
         private PlayerMovementController _playerMovementController;
-        private PlayerLook _playerLook;
-        
-        private PlayerInputSystem_Actions _playerInputSystemActions;
+
+        private InputActionMap _inputActionMap;
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
         
@@ -49,29 +52,43 @@ namespace Systems.Player
         public GameObject GameObject => gameObject;
         public uint Id { get; private set; }
         public bool DebugDisable { get; set; }
-        public MovementActionShape[] MovementActionShapes => movementActionShapes;
+        public PlayerLook PlayerLook { get; private set; }
+
+        public List<MovementActionShape> MovementActionShapes { get; private set; }
         private Dictionary<ShapeType, ShapeDatum> ShapeData { get; set; }
 
         public MovementActionDatum GetMovementActionDatum(MovementActionType movementActionType)
         {
-            var movementActionShape = Array.Find(movementActionShapes, x => x.MovementActionType == movementActionType);
+            var movementActionShape = Array.Find(MovementActionShapes.ToArray(), x => x.MovementActionType == movementActionType);
+            if (movementActionShape == null) return null;
             var movementActionDictionary = ShapeData[movementActionShape.ShapeType].DefineMovementActions();
             return movementActionDictionary[movementActionType];
         }
         
         public void SetMovementActionShape(MovementActionType movementActionType, ShapeType shapeType)
         {
-            for (int i = 0; i < movementActionShapes.Length; i++)
+            for (var i = 0; i < MovementActionShapes.Count; i++)
             {
-                if (movementActionShapes[i].MovementActionType == movementActionType)
-                {
-                    movementActionShapes[i] = new MovementActionShape(movementActionType, shapeType);
-                    break;
-                }
+                if (MovementActionShapes[i].MovementActionType != movementActionType) continue;
+                MovementActionShapes[i] = new MovementActionShape(movementActionType, shapeType);
+                return;
             }
+            
+            MovementActionShapes.Add(new MovementActionShape(movementActionType, shapeType));
         }
 
         public void ResetMovementActions() => _playerMovementController.ResetMovementActions();
+
+        public void SetMovementActionShapesPreset(MovementActionShapesPreset movementActionShapesPreset, bool resetMovementActions = true)
+        {
+            MovementActionShapes = new List<MovementActionShape>();
+            foreach (var movementActionShape in movementActionShapesPreset.MovementActionShapes)
+            {
+                MovementActionShapes.Add(movementActionShape);
+            }
+            
+            if (resetMovementActions) ResetMovementActions();
+        }
 
         private void Awake()
         {
@@ -82,102 +99,97 @@ namespace Systems.Player
             {
                 ShapeData.Add(shapeDatum.ShapeType, shapeDatum);
             }
+
+            SetMovementActionShapesPreset(defaultMovementActionShapesPreset, false);
             
             _playerMovementController = GetComponent<PlayerMovementController>();
             _playerMovementController.Initialize(this);
-            //_playerMovementController.ShapeTypeChanged += PlayerMovementControllerOnShapeTypeChanged;
             
-            _playerLook = GetComponent<PlayerLook>();
-            _playerLook.Initialize(this);
-            
+            PlayerLook = GetComponent<PlayerLook>();
+            PlayerLook.Initialize(this);
+        }
+
+        private void Start()
+        {
+            _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
             AssignControls();
+            
+            if (!setCameraFollowOnStart) return;
+            CameraManager.Instance.SetFollow(PlayerLook.Root);
+            CameraManager.Instance.SetLookAt(null);
         }
 
         private void AssignControls()
         {
-            _playerInputSystemActions ??= new PlayerInputSystem_Actions();
+            _moveInputAction ??= _inputActionMap.FindAction("Move");
+            _lookInputAction ??= _inputActionMap.FindAction("Look");
             
-            _moveInputAction ??= _playerInputSystemActions.Player.Move;
-            _moveInputAction.Enable();
-            
-            _lookInputAction ??= _playerInputSystemActions.Player.Look;
-            _lookInputAction.performed += OnAim;
-            _lookInputAction.Enable();
-            
-            var jumpInputAction = _playerInputSystemActions.Player.Jump;
+            var jumpInputAction = _inputActionMap.FindAction("Jump");
             jumpInputAction.performed += OnJump;
             jumpInputAction.canceled += OnJump;
-            jumpInputAction.Enable();
             
-            var glideInputAction = _playerInputSystemActions.Player.Glide;
-            glideInputAction.performed += OnGlide;
-            glideInputAction.canceled += OnGlide;
-            glideInputAction.Enable();
+            var dashInputAction = _inputActionMap.FindAction("Dash");
+            dashInputAction.performed += OnDash;
+            dashInputAction.canceled += OnDash;
             
-            var grappleInputAction = _playerInputSystemActions.Player.Grapple;
-            grappleInputAction.performed += OnGrapple;
-            grappleInputAction.canceled += OnGrapple;
-            grappleInputAction.Enable();
-            
-            var boomerangInputAction = _playerInputSystemActions.Player.Boomerang;
-            boomerangInputAction.performed += OnBoomerang;
-            boomerangInputAction.canceled += OnBoomerang;
-            boomerangInputAction.Enable();
-            
-            var crouchInputAction = _playerInputSystemActions.Player.Crouch;
+            var crouchInputAction = _inputActionMap.FindAction("Crouch");
             crouchInputAction.performed += OnCrouch;
             crouchInputAction.canceled += OnCrouch;
-            crouchInputAction.Enable();
             
-            var attackInputAction = _playerInputSystemActions.Player.Attack;
-            attackInputAction.performed += OnAttack;
-            attackInputAction.Enable();
+            var airInputAction = _inputActionMap.FindAction("Air");
+            airInputAction.performed += OnAir;
+            airInputAction.canceled += OnAir;
             
-            var interactInputAction = _playerInputSystemActions.Player.Interact;
+            var leftSpecialInputAction = _inputActionMap.FindAction("Left Special");
+            leftSpecialInputAction.performed += OnLeftSpecial;
+            leftSpecialInputAction.canceled += OnLeftSpecial;
+            
+            var rightSpecialInputAction = _inputActionMap.FindAction("Right Special");
+            rightSpecialInputAction.performed += OnRightSpecial;
+            rightSpecialInputAction.canceled += OnRightSpecial;
+            
+            var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed += OnInteract;
-            interactInputAction.Enable();
+            
+            var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
+            openWheelInputAction.performed += OnOpenWheel;
+            
+            _inputActionMap.Enable();
         }
         
         private void UnassignControls()
         {
-            _moveInputAction.Disable();
-            
-            _lookInputAction.performed -= OnAim;
-            _lookInputAction.Disable();
-            
-            var jumpInputAction = _playerInputSystemActions.Player.Jump;
+            var jumpInputAction = _inputActionMap.FindAction("Jump");
             jumpInputAction.performed -= OnJump;
             jumpInputAction.canceled -= OnJump;
-            jumpInputAction.Disable();
             
-            var glideInputAction = _playerInputSystemActions.Player.Glide;
-            glideInputAction.performed -= OnGlide;
-            glideInputAction.canceled -= OnGlide;
-            glideInputAction.Disable();
+            var dashInputAction = _inputActionMap.FindAction("Dash");
+            dashInputAction.performed -= OnDash;
+            dashInputAction.canceled -= OnDash;
             
-            var grappleInputAction = _playerInputSystemActions.Player.Grapple;
-            grappleInputAction.performed -= OnGrapple;
-            grappleInputAction.canceled -= OnGrapple;
-            grappleInputAction.Disable();
-            
-            var boomerangInputAction = _playerInputSystemActions.Player.Boomerang;
-            boomerangInputAction.performed -= OnBoomerang;
-            boomerangInputAction.canceled -= OnBoomerang;
-            boomerangInputAction.Disable();
-            
-            var crouchInputAction = _playerInputSystemActions.Player.Crouch;
+            var crouchInputAction = _inputActionMap.FindAction("Crouch");
             crouchInputAction.performed -= OnCrouch;
             crouchInputAction.canceled -= OnCrouch;
-            crouchInputAction.Disable();
             
-            var attackInputAction = _playerInputSystemActions.Player.Attack;
-            attackInputAction.performed -= OnAttack;
-            attackInputAction.canceled -= OnAttack;
-            attackInputAction.Disable();
+            var airInputAction = _inputActionMap.FindAction("Air");
+            airInputAction.performed -= OnAir;
+            airInputAction.canceled -= OnAir;
             
-            var interactInputAction = _playerInputSystemActions.Player.Interact;
+            var leftSpecialInputAction = _inputActionMap.FindAction("Left Special");
+            leftSpecialInputAction.performed -= OnLeftSpecial;
+            leftSpecialInputAction.canceled -= OnLeftSpecial;
+            
+            var rightSpecialInputAction = _inputActionMap.FindAction("Right Special");
+            rightSpecialInputAction.performed -= OnRightSpecial;
+            rightSpecialInputAction.canceled -= OnRightSpecial;
+            
+            var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed -= OnInteract;
-            interactInputAction.Disable();
+            
+            var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
+            openWheelInputAction.performed -= OnOpenWheel;
+            
+            _inputActionMap.Disable();
         }
 
         private void OnDisable()
@@ -198,12 +210,12 @@ namespace Systems.Player
 
         private void FixedUpdate()
         {
-            _playerMovementController.Move(Quaternion.Euler(0, _playerLook.XRotation, 0));
+            _playerMovementController.Move(Quaternion.Euler(0, PlayerLook.XRotation, 0));
         }
 
         private void LateUpdate()
         {
-            _playerLook.Look();
+            PlayerLook.Look();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -218,11 +230,6 @@ namespace Systems.Player
             if (_interactable != interactable) return;
             _interactable = null;
         }
-
-        private void OnAim(InputAction.CallbackContext context)
-        {
-            
-        }
         
         private void OnJump(InputAction.CallbackContext context)
         {
@@ -231,45 +238,50 @@ namespace Systems.Player
             else if (context.canceled) _playerMovementController.StopJumping();
         }
 
-        private void OnGlide(InputAction.CallbackContext context)
+        private void OnDash(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartAir();
-            else if (context.canceled) _playerMovementController.StopAir();
+            if (context.performed) _playerMovementController.StartDashing();
+            else if (context.canceled) _playerMovementController.StopDashing();
         }
 
-        private void OnBoomerang(InputAction.CallbackContext context)
-        {
-            if (DebugDisable) return;
-            //if (context.performed) _playerMovementController.Boomerang();
-            //else if (context.canceled) _playerMovementController.StopBoomeranging();
-        }
-        
-        private void OnGrapple(InputAction.CallbackContext context)
-        {
-            if (DebugDisable) return;
-            //if (context.performed) _playerMovementController.Grapple();
-            //else if (context.canceled) _playerMovementController.StopGrappling();
-        }
-        
         private void OnCrouch(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
             if (context.performed) _playerMovementController.StartCrouching();
             else if (context.canceled) _playerMovementController.StopCrouching();
         }
-        
-        private void OnAttack(InputAction.CallbackContext context)
+
+        private void OnAir(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartDashing();
-            else if (context.canceled) _playerMovementController.StopDashing();
+            if (context.performed) _playerMovementController.StartAir();
+            else if (context.canceled) _playerMovementController.StopAir();
+        }
+
+        private void OnLeftSpecial(InputAction.CallbackContext context)
+        {
+            if (DebugDisable) return;
+            if (context.performed) _playerMovementController.StartLeftSpecial();
+            else if (context.canceled) _playerMovementController.StopLeftSpecial();
+        }
+
+        private void OnRightSpecial(InputAction.CallbackContext context)
+        {
+            if (DebugDisable) return;
+            if (context.performed) _playerMovementController.StartRightSpecial();
+            else if (context.canceled) _playerMovementController.StopRightSpecial();
         }
         
         private void OnInteract(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
             _interactable?.Interact(InteractContext.Construct(gameObject));
+        }
+
+        private static void OnOpenWheel(InputAction.CallbackContext context)
+        {
+            UIManager.Instance.ActivateActionSelectionWheel();
         }
     }
 }

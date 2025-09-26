@@ -113,7 +113,8 @@ namespace Utilities
 
         public void DestroyObjectPool()
         {
-            foreach (var activeObject in _activePool)
+            var activeObjects = new List<T>(_activePool);
+            foreach (var activeObject in activeObjects)
             {
                 ReturnToPool(activeObject);
             }
@@ -124,7 +125,7 @@ namespace Utilities
                 instance.Returned -= ReturnToPool;
                 Object.Destroy(instance.gameObject);
             }
-            
+
             Object.Destroy(_poolObject);
         }
     }
