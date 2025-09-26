@@ -7,10 +7,10 @@ namespace Scriptables.Dialogue
     {
         [SerializeField] private string speakerKey;
         [SerializeField] private string speakerName;
-        [SerializeField] private bool canTalk;
+        [SerializeField] private Sprite speakerIcon;
         
         public string SpeakerKey => speakerKey;
         public string SpeakerName => speakerName;
-        public bool CanTalk => canTalk;
+        public Sprite SpeakerIcon => speakerIcon;
     }
 }

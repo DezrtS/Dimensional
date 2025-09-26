@@ -18,6 +18,7 @@ namespace Managers
 
         private void Awake()
         {
+            _eventInstances = new List<EventInstance>();
             if (!startMusicOnAwake) return;
             ChangeMusic(defaultMusic);
         }

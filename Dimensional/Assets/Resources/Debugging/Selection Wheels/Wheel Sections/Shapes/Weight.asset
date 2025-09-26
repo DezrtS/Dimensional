@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481c75d81418fc945af13cde4a9c8625, type: 3}
+  m_Name: Weight
+  m_EditorClassIdentifier: 
+  wheelSectionPrefab: {fileID: 1181458309690274975, guid: 3d3611f8ebb277542b72919261cffdb8, type: 3}
+  sectionName: Weight
+  sectionIcon: {fileID: -1926013054, guid: 0b91b40848e8db2488888ea5ca1b729e, type: 3}
+  shapeType: 7

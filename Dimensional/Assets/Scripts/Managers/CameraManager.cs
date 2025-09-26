@@ -44,10 +44,13 @@ namespace Managers
             if (lockAndHideCursor) LockAndHideCursor();
         }
 
-        private void SetIsActive(bool isActive)
+        public void SetIsActive(bool isActive)
         {
             ActiveStateChanged?.Invoke(Camera, isActive);
         }
+
+        public void SetFollow(Transform follow) => _cinemachineCamera.Follow = follow;
+        public void SetLookAt(Transform lookAt) => _cinemachineCamera.LookAt = lookAt;
         
         [ContextMenu("Lock and Hide Cursor")]
         public void LockAndHideCursor() => SetCursorState(CursorLockMode.Locked, false);

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DebugDialogueSpeakerDatum
   m_EditorClassIdentifier: 
   speakerKey: debug
-  speakerName: Debug Speaker
-  canTalk: 0
+  speakerName: Debug
+  speakerIcon: {fileID: -1590509086, guid: 5175e7d8756e14849b4272d58e9ad4ae, type: 3}
