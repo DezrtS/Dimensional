@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{920823b8-4c7e-4bda-a799-ddadabcda365}">
 		<property name="name">
-			<value>CompleteingQuest</value>
+			<value>CompletingQuest</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -32,7 +32,7 @@
 			<destination>{db9d47e6-17c2-4583-b71e-d33f2b1e255f}</destination>
 		</relationship>
 		<relationship name="banks">
-			<destination>{26ff267d-cb1d-47ae-aa1d-a557ccf01a20}</destination>
+			<destination>{769b4570-58e6-42b7-b9b8-c09599885420}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{3e71ba50-aa35-4715-bceb-bd8402ede1c3}">
