@@ -1,0 +1,25 @@
+ Area 1 Tutorial - Convex Village
+
+ Sections:
+1. Sphere’s House - Movement & Interaction
+2. Convex Village - Light exploration
+3. Forest Path - Platforming & Collectible
+4. Tesseract Rift Event - Lightning & Drama
+5. Return to Village - Rolling & Panic
+6. Cone Encounter - Dialogue & Catapult
+
+ Teaches:
+- Move (LS)
+- Jump (A)
+- Interact (Y)
+- Roll (LT + A)
+- Pick up item
+- Talk to NPC (Cone)
+- Use catapult to new region
+
+ Collectibles:
+- Forest Fruit (test pickup)
+
+ Quest:
+- Get Forest Fruit
+- Return to Family
