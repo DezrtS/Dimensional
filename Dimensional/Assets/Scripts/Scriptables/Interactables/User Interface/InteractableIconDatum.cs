@@ -1,33 +1,24 @@
+using Scriptables.User_Interface;
 using UnityEngine;
+using User_Interface;
 using User_Interface.Interactables;
 
 namespace Scriptables.Interactables
 {
-    [CreateAssetMenu(fileName = "InteractableIconDatum", menuName = "Scriptable Objects/Interactables/InteractableIconDatum")]
-    public class InteractableIconDatum : ScriptableObject
+    [CreateAssetMenu(fileName = "InteractableIconDatum", menuName = "Scriptable Objects/User Interface/InteractableIconDatum")]
+    public class InteractableIconDatum : WorldUIAnchorDatum
     {
-        [SerializeField] private GameObject interactableIconPrefab;
-        [SerializeField] private Vector3 offset;
-        [SerializeField] private Sprite icon;
-        [SerializeField] private float minRange;
-        [SerializeField] private float maxRange;
-        [SerializeField] private float minDot;
-        [SerializeField] private float maxDot;
-        [SerializeField] private AnimationCurve sizeCurve;
+        [SerializeField] private Sprite keyboardIcon;
+        [SerializeField] private Sprite gamepadIcon;
         
-        public Vector3 Offset => offset;
-        public Sprite Icon => icon;
-        public float MinRange => minRange;
-        public float MaxRange => maxRange;
-        public float MinDot => minDot;
-        public float MaxDot => maxDot;
-        public AnimationCurve SizeCurve => sizeCurve;
+        public Sprite KeyboardIcon => keyboardIcon;
+        public Sprite GamepadIcon => gamepadIcon;
 
-        public InteractableIcon Spawn(Transform parent, Transform interactableTransform)
+        public override WorldUIAnchor SpawnWorldUIAnchor(Transform parent, Transform worldTransform)
         {
-            var interactableIconObject = Instantiate(interactableIconPrefab, parent);
+            var interactableIconObject = Instantiate(Prefab, parent);
             var interactableIcon = interactableIconObject.GetComponent<InteractableIcon>();
-            interactableIcon.Initialize(this, interactableTransform);
+            interactableIcon.Initialize(this, worldTransform);
             return interactableIcon;
         }
     }

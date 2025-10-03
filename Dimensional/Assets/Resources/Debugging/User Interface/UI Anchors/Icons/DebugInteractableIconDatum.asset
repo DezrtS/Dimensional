@@ -12,13 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1e29ef57400f946a0900635412da0e, type: 3}
   m_Name: DebugInteractableIconDatum
   m_EditorClassIdentifier: 
-  interactableIconPrefab: {fileID: 405281314265279603, guid: 8dad7b27c9c00c94b95fde8f8d9b0813, type: 3}
+  prefab: {fileID: 405281314265279603, guid: 8dad7b27c9c00c94b95fde8f8d9b0813, type: 3}
   offset: {x: 0, y: 3.5, z: 0}
-  icon: {fileID: 1451665743, guid: 15ff8e8c4a83e3b4ab750595dc8511a5, type: 3}
-  minRange: 15
-  maxRange: 20
-  minDot: 1
-  maxDot: 0
+  minDistance: 5
+  maxDistance: 10
+  minAngle: 30
+  maxAngle: 90
   sizeCurve:
     serializedVersion: 2
     m_Curve:
@@ -43,3 +42,5 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  keyboardIcon: {fileID: 1451665743, guid: 15ff8e8c4a83e3b4ab750595dc8511a5, type: 3}
+  gamepadIcon: {fileID: 1451665743, guid: 15ff8e8c4a83e3b4ab750595dc8511a5, type: 3}

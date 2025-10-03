@@ -13,25 +13,6 @@ using Utilities;
 
 namespace Systems.Player
 {
-    /*
-    [Serializable]
-    public struct MovementActionShape
-    {
-        [SerializeField] private MovementActionType movementActionType;
-        [SerializeField] private ShapeType shapeType;
-        
-        public MovementActionType MovementActionType => movementActionType;
-        public ShapeType ShapeType => shapeType;
-
-        public MovementActionShape(MovementActionType actionType, ShapeType shapeType)
-        {
-            this.movementActionType = actionType;
-            this.shapeType = shapeType;
-        }
-    }
-    */
-
-    
     public class PlayerController : Singleton<PlayerController>, IEntity, IMove, IAim
     {
         [SerializeField] private bool setCameraFollowOnStart;
@@ -39,6 +20,7 @@ namespace Systems.Player
         [SerializeField] private EntityDatum entityDatum;
         [SerializeField] private ShapeDatum[] shapeData;
         [SerializeField] private MovementActionShapesPreset defaultMovementActionShapesPreset;
+        [SerializeField] private MovementActionShapesPreset[] movementActionShapesPresets;
         
         private PlayerMovementController _playerMovementController;
 
@@ -103,7 +85,6 @@ namespace Systems.Player
             SetMovementActionShapesPreset(defaultMovementActionShapesPreset, false);
             
             _playerMovementController = GetComponent<PlayerMovementController>();
-            _playerMovementController.Initialize(this);
             
             PlayerLook = GetComponent<PlayerLook>();
             PlayerLook.Initialize(this);
@@ -111,6 +92,8 @@ namespace Systems.Player
 
         private void Start()
         {
+            _playerMovementController.Initialize(this);
+            
             _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
             AssignControls();
             
@@ -153,6 +136,9 @@ namespace Systems.Player
             
             var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
             openWheelInputAction.performed += OnOpenWheel;
+            
+            var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
+            switchShapesInputAction.performed += OnSwitchShapes;
             
             _inputActionMap.Enable();
         }
@@ -222,11 +208,13 @@ namespace Systems.Player
         {
             if (!other.TryGetComponent(out IInteractable interactable)) return;
             _interactable = interactable;
+            _interactable.View(InteractContext.Construct(gameObject), true);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (!other.TryGetComponent(out IInteractable interactable)) return;
+            interactable.View(InteractContext.Construct(gameObject), false);
             if (_interactable != interactable) return;
             _interactable = null;
         }
@@ -282,6 +270,22 @@ namespace Systems.Player
         private static void OnOpenWheel(InputAction.CallbackContext context)
         {
             UIManager.Instance.ActivateActionSelectionWheel();
+        }
+        
+        private void OnSwitchShapes(InputAction.CallbackContext context)
+        {
+            var input = context.ReadValue<Vector2>();
+            var indexMap = new Dictionary<Vector2, int>()
+            {
+                { Vector2.left, 0 },
+                { Vector2.up, 1 },
+                { Vector2.right, 2 },
+                { Vector2.down, 3 },
+            };
+
+            var index = indexMap[input];
+            if (index >= movementActionShapesPresets.Length) return;
+            SetMovementActionShapesPreset(movementActionShapesPresets[index]);
         }
     }
 }

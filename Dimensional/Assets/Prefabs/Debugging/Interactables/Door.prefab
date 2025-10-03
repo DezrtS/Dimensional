@@ -337,7 +337,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 2
+  m_Radius: 10
   m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!114 &5430494591229526391
 MonoBehaviour:
@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactableDatum: {fileID: 11400000, guid: b13d58cd494ce394193cf026ee0bf9aa, type: 2}
-  interactableIconDatum: {fileID: 11400000, guid: a4dcd1df90c3ab4499b280f9a84f3783, type: 2}
+  worldUIAnchorDatum: {fileID: 11400000, guid: a4dcd1df90c3ab4499b280f9a84f3783, type: 2}
   interactableCamera: {fileID: 7238213286689390062}
   spawnTransform: {fileID: 298615982539456399}
   id: 0

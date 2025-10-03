@@ -2,8 +2,10 @@ using System;
 using Interfaces;
 using Managers;
 using Scriptables.Interactables;
+using Scriptables.User_Interface;
 using Unity.Cinemachine;
 using UnityEngine;
+using User_Interface;
 
 namespace Systems.Interactables
 {
@@ -13,11 +15,15 @@ namespace Systems.Interactables
         public event InteractionEventHandler Interacted;
         
         [SerializeField] private InteractableDatum interactableDatum;
-        [SerializeField] private InteractableIconDatum interactableIconDatum;
+        [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
         [SerializeField] private CinemachineCamera interactableCamera;
 
+        private Transform _targetTransform;
+        private bool _isInRange;
+        
         private bool _isInteracting;
         private float _interactionTimer;
+        private WorldUIAnchor _worldUIAnchor;
         
         public bool IsDisabled { get; set; }
         public InteractableDatum InteractableDatum => interactableDatum;
@@ -26,13 +32,17 @@ namespace Systems.Interactables
 
         private void Start()
         {
-            if (interactableIconDatum) UIManager.Instance.SpawnInteractableIcon(interactableIconDatum, transform);
+            if (!worldUIAnchorDatum) return;
+            _worldUIAnchor = UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, transform);
         }
 
         private void FixedUpdate()
         {
-            if (!_isInteracting || IsDisabled) return;
+            if (IsDisabled) return;
 
+            if (_targetTransform) _isInRange = Vector3.Distance(_targetTransform.position, transform.position) < InteractableDatum.InteractableDistance;
+            
+            if (!_isInteracting) return;
             if (_interactionTimer <= 0) return;
             _interactionTimer -= Time.fixedDeltaTime;
             if (_interactionTimer > 0) return;
@@ -41,7 +51,7 @@ namespace Systems.Interactables
 
         public void Interact(InteractContext context)
         {
-            if (_isInteracting || IsDisabled) return;
+            if (!_isInRange || _isInteracting || IsDisabled) return;
 
             PreviousInteractContext = context;
             _isInteracting = true;
@@ -68,7 +78,21 @@ namespace Systems.Interactables
             _isInteracting = false;
         }
 
-        public void View(bool show)
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!GameManager.CheckLayerMask(InteractableDatum.InteractableLayerMask, other.gameObject)) return;
+            _targetTransform = other.transform;
+            _worldUIAnchor.SetTargetTransform(_targetTransform);
+        }
+        
+        private void OnTriggerExit(Collider other)
+        {
+            if (_targetTransform != other.transform) return;
+            _targetTransform = null;
+            _worldUIAnchor.SetTargetTransform(null);
+        }
+
+        public void View(InteractContext interactContext, bool show)
         {
             
         }

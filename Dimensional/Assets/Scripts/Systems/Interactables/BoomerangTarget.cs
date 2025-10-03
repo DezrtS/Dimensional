@@ -37,7 +37,7 @@ namespace Systems.Interactables
             IsDisabled = true;
         }
 
-        public void View(bool show)
+        public void View(InteractContext interactContext, bool show)
         {
             throw new NotImplementedException();
         }

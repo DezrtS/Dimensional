@@ -14,8 +14,12 @@ namespace Systems.Visual_Effects
 
         private float _timer;
         private bool _returnToPoolOnFinished;
-        
-        public void ReturnToPool() => Returned?.Invoke(this);
+
+        public void ReturnToPool()
+        {
+            Stop();
+            Returned?.Invoke(this);
+        }
 
         private void FixedUpdate()
         {

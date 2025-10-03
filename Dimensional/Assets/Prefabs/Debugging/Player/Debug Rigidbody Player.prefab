@@ -5274,6 +5274,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e3ebf381034f4c549a2dac7a18b8870c, type: 2}
   - {fileID: 11400000, guid: 646dbf0ef8be1c04ca3aa2883217c5f4, type: 2}
   defaultMovementActionShapesPreset: {fileID: 11400000, guid: 562c2b86065d81940a376295dbbc5d9a, type: 2}
+  movementActionShapesPresets:
+  - {fileID: 11400000, guid: 5783660e523b5ee468da84a585bd73a1, type: 2}
+  - {fileID: 11400000, guid: b5352841b5f658547b8b930cbd5804b1, type: 2}
+  - {fileID: 11400000, guid: 730a3ada1a14e9e46977f8f2c629d549, type: 2}
+  - {fileID: 11400000, guid: 562c2b86065d81940a376295dbbc5d9a, type: 2}
 --- !u!114 &5525861999645435359
 MonoBehaviour:
   m_ObjectHideFlags: 0

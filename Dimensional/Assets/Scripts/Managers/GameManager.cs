@@ -94,6 +94,11 @@ namespace Managers
         
             return slope;
         }
+
+        public static bool CheckLayerMask(LayerMask layerMask, GameObject gameObject)
+        {
+            return ((layerMask.value & (1 << gameObject.layer)) != 0);
+        }
         
         public static List<RaycastHit> CheckCast(Vector3 worldPosition, CheckType checkType, Vector3 offset, Vector3 direction, Vector3 size, float distance, LayerMask layerMask)
         {

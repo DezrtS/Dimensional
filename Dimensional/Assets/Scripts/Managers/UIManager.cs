@@ -1,7 +1,10 @@
+using System;
 using Scriptables.Interactables;
 using Scriptables.Selection_Wheels;
+using Scriptables.User_Interface;
 using Systems.Actions.Movement;
 using UnityEngine;
+using User_Interface;
 using User_Interface.Selection_Wheels;
 using User_Interface.Visual_Effects;
 using Utilities;
@@ -33,21 +36,32 @@ namespace Managers
             _maskReveal = GetComponent<MaskReveal>();
             _maskReveal.Finished += MaskRevealOnFinished;
             
-            if (transitionOnAwake) Transition(false);
+            if (transitionOnAwake) Transition(true, false);
+        }
 
+        private void Start()
+        {
             if (!actionSelectionWheelDatum) return;
             _actionSelectionWheel = actionSelectionWheelDatum.AttachSelectionWheel(selectionWheelTransform);
             _actionSelectionWheel.GenerateSelectionWheel();
         }
 
-        public void SpawnInteractableIcon(InteractableIconDatum interactableIconDatum, Transform interactableTransform)
+        private void Update()
         {
-            interactableIconDatum.Spawn(interactableIconTransform, interactableTransform);
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                controls.SetActive(!controls.activeSelf);
+            }
         }
 
-        public void Transition(bool reverse, float duration = -1)
+        public WorldUIAnchor SpawnWorldUIAnchor(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform)
         {
-            _maskReveal.Transition(true, reverse, duration);
+            return worldUIAnchorDatum.SpawnWorldUIAnchor(interactableIconTransform, worldTransform);
+        }
+
+        public void Transition(bool invert, bool reverse, float duration = -1)
+        {
+            _maskReveal.Transition(invert, reverse, duration);
         }
         
         public void EnableFade() => fade.SetActive(true);
