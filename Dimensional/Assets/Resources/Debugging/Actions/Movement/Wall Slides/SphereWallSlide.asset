@@ -13,7 +13,17 @@ MonoBehaviour:
   m_Name: SphereWallSlide
   m_EditorClassIdentifier: 
   activationTime: 0
-  actionAudioEvents: []
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 210470586
+        Data2: 1265166940
+        Data3: -1017299532
+        Data4: -1491806305
+      Path: event:/WallSlide
+    attachToGameObject: 1
+    createInstance: 1
+    activationEventType: 2
   actionVisualEffectData: []
   movementActionType: 10
   performEventOnGrounded: 0

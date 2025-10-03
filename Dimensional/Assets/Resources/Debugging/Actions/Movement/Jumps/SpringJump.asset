@@ -13,6 +13,17 @@ MonoBehaviour:
   m_Name: SpringJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 1839149501
+        Data2: 1176948225
+        Data3: 1231551890
+        Data4: -370594178
+      Path: event:/SpringJump
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 2
   actionVisualEffectData:
   - {fileID: 11400000, guid: 786027cb90f063c4c85fed0e990528de, type: 2}
   movementActionType: 1

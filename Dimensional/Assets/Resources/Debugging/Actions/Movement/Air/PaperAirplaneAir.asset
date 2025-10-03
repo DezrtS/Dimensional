@@ -13,6 +13,17 @@ MonoBehaviour:
   m_Name: PaperAirplaneAir
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: -263076225
+        Data2: 1152228617
+        Data3: -985897329
+        Data4: -2028369071
+      Path: event:/ParachuteGlide
+    attachToGameObject: 1
+    createInstance: 1
+    activationEventType: 1
   actionVisualEffectData: []
   movementActionType: 6
   performEventOnGrounded: 1

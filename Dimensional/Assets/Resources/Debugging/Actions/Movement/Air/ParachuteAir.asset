@@ -13,6 +13,27 @@ MonoBehaviour:
   m_Name: ParachuteAir
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 66335378
+        Data2: 1145544333
+        Data3: 2117282986
+        Data4: 505063354
+      Path: event:/ParachuteDeploy
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 2
+  - eventReference:
+      Guid:
+        Data1: -263076225
+        Data2: 1152228617
+        Data3: -985897329
+        Data4: -2028369071
+      Path: event:/ParachuteGlide
+    attachToGameObject: 1
+    createInstance: 1
+    activationEventType: 2
   actionVisualEffectData:
   - {fileID: 11400000, guid: 9e96be4ea896f624da87a8b27d0df625, type: 2}
   movementActionType: 6

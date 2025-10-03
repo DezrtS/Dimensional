@@ -8,17 +8,17 @@ using Action = Systems.Actions.Action;
 namespace Scriptables.Actions
 {
     [Serializable]
-    public struct ActionAudioEvent
+    public class ActionAudioEvent
     {
         [SerializeField] private EventReference eventReference;
         [SerializeField] private bool attachToGameObject;
+        [SerializeField] private bool createInstance;
         [SerializeField] private ActionEventType activationEventType;
-        [SerializeField] private ActionEventType deactivationEventType;
         
         public EventReference EventReference => eventReference;
         public bool AttachToGameObject => attachToGameObject;
+        public bool CreateInstance => createInstance;
         public ActionEventType ActivationEventType => activationEventType;
-        public ActionEventType DeactivationEventType => deactivationEventType;
     }
     
     [CreateAssetMenu(fileName = "ActionDatum", menuName = "Scriptable Objects/Actions/EmptyActionDatum")]

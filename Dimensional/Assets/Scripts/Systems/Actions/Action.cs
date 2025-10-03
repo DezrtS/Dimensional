@@ -1,16 +1,15 @@
 using System;
 using System.Collections.Generic;
+using FMOD.Studio;
 using Interfaces;
+using Managers;
 using Scriptables.Actions;
+using Systems.Audio_Effects;
 using Systems.Visual_Effects;
 using UnityEngine;
 
 namespace Systems.Actions
 {
-    public enum ActionType
-    {
-        
-    }
 
     public enum ActionEventType
     {
@@ -61,7 +60,8 @@ namespace Systems.Actions
 
         private IActivateActions _actionActivator;
         private float _activationTimer;
-        
+
+        private List<ActionAudioEffect> _actionAudioEffects;
         private List<ActionVisualEffect> _actionVisualEffects;
         
         public ActionDatum ActionDatum { get; private set; }
@@ -73,6 +73,12 @@ namespace Systems.Actions
         {
             ActionDatum = actionDatum;
             IsActive = false;
+            
+            _actionAudioEffects = new List<ActionAudioEffect>();
+            foreach (var actionAudioEvent in ActionDatum.ActionAudioEvents)
+            {
+                _actionAudioEffects.Add(new ActionAudioEffect(actionAudioEvent, gameObject));
+            }
 
             _actionVisualEffects = new List<ActionVisualEffect>();
             foreach (var actionVisualEffectDatum in actionDatum.ActionVisualEffectData)
@@ -118,6 +124,7 @@ namespace Systems.Actions
             _actionActivator = context.ActionActivator;
             _activationTimer = ActionDatum.ActivationTime;
             UpdateActionContext(context);
+            PlayActionAudio(ActionEventType.Activated);
             Activated?.Invoke(this, context);
 
             if (_activationTimer == 0) Trigger(context);
@@ -139,6 +146,7 @@ namespace Systems.Actions
             IsTriggering = true;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            PlayActionAudio(ActionEventType.Triggered);
             Triggered?.Invoke(this, context);
         }
 
@@ -165,6 +173,8 @@ namespace Systems.Actions
             IsTriggering = false;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            PlayActionAudio(ActionEventType.Deactivated);
+            StopActionAudio();
             Deactivated?.Invoke(this, context);
         }
 
@@ -185,6 +195,8 @@ namespace Systems.Actions
             IsTriggering = false;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            PlayActionAudio(ActionEventType.Interrupted);
+            StopActionAudio();
             Interrupted?.Invoke(this, context);
         }
 
@@ -205,6 +217,8 @@ namespace Systems.Actions
             IsTriggering = false;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            PlayActionAudio(ActionEventType.Cancelled);
+            StopActionAudio();
             Cancelled?.Invoke(this, context);
         }
 
@@ -220,6 +234,22 @@ namespace Systems.Actions
             PreviousContext = context;
         }
 
+        private void PlayActionAudio(ActionEventType actionEventType)
+        {
+            foreach (var actionAudioEffect in _actionAudioEffects)
+            {
+                actionAudioEffect.Play(actionEventType);
+            }
+        }
+
+        private void StopActionAudio()
+        {
+            foreach (var actionAudioEffect in _actionAudioEffects)
+            {
+                actionAudioEffect.Stop();
+            }
+        }
+
         private bool CheckEntityChanged(ActionContext context)
         {
             if (PreviousContext == null) return true;
@@ -232,6 +262,12 @@ namespace Systems.Actions
 
         public void Destroy()
         {
+            foreach (var actionAudioEffect in _actionAudioEffects)
+            {
+                actionAudioEffect.Destroy();
+            }
+            _actionAudioEffects.Clear();
+            
             for (var i = _actionVisualEffects.Count - 1; i >= 0; i--)
             {
                 var actionVisualEffect = _actionVisualEffects[i];
