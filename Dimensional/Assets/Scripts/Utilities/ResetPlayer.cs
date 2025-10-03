@@ -29,9 +29,9 @@ namespace Utilities
             cameraManager.SetFollow(null);
             cameraManager.SetLookAt(player);
             yield return new WaitForSeconds(delay);
-            UIManager.Instance.Transition(true, transitionDuration);
+            UIManager.Instance.Transition(false, true, transitionDuration);
             yield return new WaitForSeconds(transitionDuration);
-            UIManager.Instance.Transition(false);
+            UIManager.Instance.Transition(true, false);
             cameraManager.SetFollow(playerController.PlayerLook.Root);
             cameraManager.SetLookAt(null);
             player.GetComponent<ForceController>().Teleport(resetPosition);

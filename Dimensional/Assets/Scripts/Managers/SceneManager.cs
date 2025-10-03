@@ -15,7 +15,7 @@ namespace Managers
             _nextScene = nextScene;
             _loadingScene = true;
             UIManager.TransitionFinished += UIManagerOnTransitionFinished;
-            UIManager.Instance.Transition(true);
+            UIManager.Instance.Transition(true, true);
         }
 
         private void UIManagerOnTransitionFinished()

@@ -10,9 +10,8 @@ namespace Interfaces
         
         public bool IsDisabled { get; }
         public InteractableDatum InteractableDatum { get; }
-        //public bool CanInteract(InteractContext interactContext);
         public void Interact(InteractContext interactContext);
-        public void View(bool show);
+        public void View(InteractContext interactContext, bool show);
     }
 
     public struct InteractContext

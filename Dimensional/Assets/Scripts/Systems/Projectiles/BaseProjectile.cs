@@ -1,5 +1,6 @@
 using System;
 using Interfaces;
+using Managers;
 using Scriptables.Projectiles;
 using Systems.Movement;
 using UnityEngine;
@@ -189,7 +190,7 @@ namespace Systems.Projectiles
 
         private void Collide(Collider hitCollider)
         {
-            if ((ProjectileDatum.ProjectileLayerMask.value & (1 << hitCollider.gameObject.layer)) == 0) return;
+            if (!GameManager.CheckLayerMask(ProjectileDatum.ProjectileLayerMask, hitCollider.gameObject)) return;
             if (hitCollider.isTrigger) return;
             OnCollide(hitCollider);
         }

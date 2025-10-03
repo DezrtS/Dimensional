@@ -12,12 +12,14 @@ namespace Scriptables.Visual_Effects
         [SerializeField] private GameObject effectPlayerPrefab;
         [SerializeField] private bool attachPoolToTransform;
         [SerializeField] private ObjectPoolDatum objectPoolDatum;
-        [SerializeField] private ActionEventType actionEventType;
+        [SerializeField] private ActionEventType effectStartEventType;
+        [SerializeField] private bool stopOnActionEnd;
         
         public GameObject EffectPlayerPrefab => effectPlayerPrefab;
         public bool AttachPoolToTransform => attachPoolToTransform;
         public ObjectPoolDatum ObjectPoolDatum => objectPoolDatum;
-        public ActionEventType ActionEventType => actionEventType;
+        public ActionEventType EffectStartEventType => effectStartEventType;
+        public bool StopOnActionEnd => stopOnActionEnd;
     }
     
     [CreateAssetMenu(fileName = "ActionVisualEffectDatum", menuName = "Scriptable Objects/Visual Effects/Actions/ActionVisualEffectDatum")]

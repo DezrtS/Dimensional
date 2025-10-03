@@ -254,7 +254,7 @@ namespace Systems.Movement
         public void StartJumping(bool resetCutJump = true)
         {
             if (resetCutJump) _cutJump = false;
-            if (_jumpMovementAction.IsActive || _doubleJumpMovementAction.IsActive || _wallJumpMovementAction.IsActive || _dashMovementAction.IsActive || _diveMovementAction.IsActive)
+            if (_wallJumpMovementAction.IsActive || _dashMovementAction.IsActive || _diveMovementAction.IsActive)
             {
                 QueueJump();
                 return;
