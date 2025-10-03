@@ -111,20 +111,25 @@ namespace Utilities
             _pool.Enqueue(objectToReturn);
         }
 
+        public void RecallPool()
+        {
+            var activeObjects = new List<T>(_activePool);
+            foreach (var activeObject in activeObjects)
+            {
+                activeObject.ReturnToPool();
+            }
+        }
+
         public void DestroyObjectPool()
         {
-            foreach (var activeObject in _activePool)
-            {
-                ReturnToPool(activeObject);
-            }
-
+            RecallPool();
             while (_pool.Count > 0)
             {
                 var instance = _pool.Dequeue();
                 instance.Returned -= ReturnToPool;
                 Object.Destroy(instance.gameObject);
             }
-            
+
             Object.Destroy(_poolObject);
         }
     }

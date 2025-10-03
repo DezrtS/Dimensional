@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c986daaaa19ba99438925ba2d88c4c66, type: 3}
+  m_Name: JumpWheel
+  m_EditorClassIdentifier: 
+  selectionWheelSettingsDatum: {fileID: 11400000, guid: e070d26ba0f03bf478192b53d3e4a034, type: 2}
+  wheelSectionData:
+  - {fileID: 11400000, guid: 89e67e893f2ca4e43bb92f2e73f926d0, type: 2}
+  - {fileID: 11400000, guid: 865139d598143d24d8092835e776fee6, type: 2}
+  - {fileID: 11400000, guid: 5154b4d48989b9c428a12e0b0cd04cdb, type: 2}

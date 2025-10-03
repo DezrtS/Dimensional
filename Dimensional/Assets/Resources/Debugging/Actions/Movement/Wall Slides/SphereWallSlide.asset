@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: SphereWallSlide
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents: []
   actionVisualEffectData: []
   movementActionType: 10
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: c3cbe19673263bf4e8e2a94121330dd5, type: 2}
   stopMovementOnDisable: 1

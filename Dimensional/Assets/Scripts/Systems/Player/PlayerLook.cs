@@ -8,12 +8,15 @@ namespace Systems.Player
 {
     public class PlayerLook : MonoBehaviour
     {
+        private static readonly int Fade = Shader.PropertyToID("_Fade");
         [SerializeField] private PlayerLookDatum playerLookDatum;
         [SerializeField] private Dimensions lookDimensions;
         [Space] 
+        [SerializeField] private bool isDisabled;
         [SerializeField] private Transform root;
-
+        [Space]
         [SerializeField] private float minDitherDistance = 5f;
+        [SerializeField] private float maxDitherDistance = 10f;
         [SerializeField] private Material playerMaterial;
 
         private Transform _cameraTransform;
@@ -27,7 +30,8 @@ namespace Systems.Player
         private float _xRotation;
         private float _yRotation;
         
-        public bool IsDisabled { get; private set; }
+        public Transform Root => root;
+        private bool IsDisabled => isDisabled;
         public float XRotation => _xRotation;
 
         private void Awake()
@@ -52,13 +56,19 @@ namespace Systems.Player
         private void CameraManagerOnInitialized(CameraManager instance)
         {
             _cameraTransform = instance.Camera.transform;
+            instance.ActiveStateChanged += CameraManagerOnActiveStateChanged;
+        }
+
+        private void CameraManagerOnActiveStateChanged(Camera currentCamera, bool active)
+        {
+            isDisabled = !active;
         }
 
         private void FixedUpdate()
         {
             var distance = Vector3.Distance(_cameraTransform.position, root.position);
-            var ratio = 1f - distance / minDitherDistance;
-            playerMaterial.SetFloat("_dither", Mathf.Clamp01(ratio));
+            var ratio = (distance - minDitherDistance) / maxDitherDistance;
+            playerMaterial.SetFloat(Fade, Mathf.Clamp01(ratio));
         }
 
         public void Initialize(IAim aim)

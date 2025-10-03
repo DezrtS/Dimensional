@@ -16,20 +16,23 @@ namespace User_Interface.Visual_Effects
         [SerializeField] private bool reverseDirection;
         [Space]
         [SerializeField] private Material material;
-        [SerializeField] private float duration;
+        [SerializeField] private float defaultDuration;
         [SerializeField] private float rotation;
         [SerializeField] private AnimationCurve progressCurve;
         [SerializeField] private AnimationCurve transparencyCurve;
         [SerializeField] private AnimationCurve rotationCurve;
-        
+
+        private float _duration;
         private float _timer;
         private bool _reverse;
 
         [ContextMenu("Transition")]
         public void Transition() => Transition(invertTransition, reverseDirection);
-        public void Transition(bool invert, bool reverse)
+
+        public void Transition(bool invert, bool reverse, float duration = -1)
         {
-            _timer = duration;
+            _duration = duration <= 0 ? defaultDuration : duration;
+            _timer = _duration;
             _reverse = reverse;
             material.SetFloat(InvertMask, invert ? 1f : 0f);
         }
@@ -39,7 +42,7 @@ namespace User_Interface.Visual_Effects
             if (_timer <= 0) return;
             
             _timer -= Time.deltaTime;
-            var ratio = _timer / duration;
+            var ratio = _timer / _duration;
             if (!_reverse) ratio = 1f - ratio;
             material.SetFloat(Progress, progressCurve.Evaluate(ratio));
             material.SetFloat(Transparency, transparencyCurve.Evaluate(ratio));

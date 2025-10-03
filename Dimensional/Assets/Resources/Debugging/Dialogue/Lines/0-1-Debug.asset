@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: 0-1-Debug
   m_EditorClassIdentifier: 
   dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
-  text: Hello, this is a message that is about to get slower right now and yeah so
-    now this message is slower.
+  text: <wave>Hello!</wave> My name is Debug

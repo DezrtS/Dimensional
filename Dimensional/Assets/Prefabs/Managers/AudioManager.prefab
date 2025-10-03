@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8811646474742119817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9080774777829957315}
+  - component: {fileID: 6167350620394722424}
+  - component: {fileID: 4656057143729007131}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9080774777829957315
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8811646474742119817}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6167350620394722424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8811646474742119817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b040d080bc4f2f98ffdd5fa77bae20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMusic:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  startMusicOnAwake: 0
+--- !u!114 &4656057143729007131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8811646474742119817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c2be201aaa24c3ea3ea9b1d84a48773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walk:
+    Guid:
+      Data1: -584786035
+      Data2: 1105272355
+      Data3: -2025228150
+      Data4: 441773376
+    Path: event:/Walk
+  wallSlide:
+    Guid:
+      Data1: 210470586
+      Data2: 1265166940
+      Data3: -1017299532
+      Data4: -1491806305
+    Path: event:/WallSlide
+  balloonJump:
+    Guid:
+      Data1: 860121881
+      Data2: 1311407883
+      Data3: 1836634516
+      Data4: -889709099
+    Path: event:/BalloonJump
+  springJump:
+    Guid:
+      Data1: 1839149501
+      Data2: 1176948225
+      Data3: 1231551890
+      Data4: -370594178
+    Path: event:/SpringJump
+  parachuteDeploy:
+    Guid:
+      Data1: 66335378
+      Data2: 1145544333
+      Data3: 2117282986
+      Data4: 505063354
+    Path: event:/ParachuteDeploy
+  parachuteGlide:
+    Guid:
+      Data1: -263076225
+      Data2: 1152228617
+      Data3: -985897329
+      Data4: -2028369071
+    Path: event:/ParachuteGlide

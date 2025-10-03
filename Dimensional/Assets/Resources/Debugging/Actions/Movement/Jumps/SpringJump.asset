@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activationTime: 0
   actionVisualEffectData:
-  - {fileID: 11400000, guid: e45469543114461488d07d349eee8bcf, type: 2}
+  - {fileID: 11400000, guid: 786027cb90f063c4c85fed0e990528de, type: 2}
   movementActionType: 1
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0

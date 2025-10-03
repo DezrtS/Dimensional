@@ -17,4 +17,5 @@ MonoBehaviour:
   - effectPlayerPrefab: {fileID: 461848116723075717, guid: b1a91f5af6737d040bd33ed1f5cf7d19, type: 3}
     attachPoolToTransform: 0
     objectPoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
-    actionEventType: 2
+    effectStartEventType: 2
+    stopOnActionEnd: 0

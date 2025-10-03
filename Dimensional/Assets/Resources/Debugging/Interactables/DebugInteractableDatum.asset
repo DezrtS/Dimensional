@@ -13,3 +13,10 @@ MonoBehaviour:
   m_Name: DebugInteractableDatum
   m_EditorClassIdentifier: 
   interactableTitle: Debug Interactable
+  interactableDistance: 3
+  interactableLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  interactionDelay: 1
+  enterTransitionDuration: 1
+  exitTransitionDuration: 1
