@@ -6,24 +6,42 @@ namespace Systems.Visual_Effects
 {
     public class VisualEffectPlayer : EffectPlayer
     {
-        [SerializeField] private VisualEffect visualEffect;
+        [SerializeField] private VisualEffect[] visualEffects;
 
         private void Awake()
         {
-            if (!visualEffect) visualEffect = GetComponent<VisualEffect>(); 
+            if (visualEffects.Length <= 0) visualEffects = GetComponents<VisualEffect>(); 
+            foreach (var effect in visualEffects)
+            {
+                effect.Reinit();
+            }
         }
 
-        public override void Play(bool returnToPoolOnFinished = false)
+        public override void Play(bool returnToPoolOnFinished)
         {
             base.Play(returnToPoolOnFinished);
-            visualEffect.Reinit();
-            visualEffect.SendEvent("OnPlay");
+            foreach (var effect in visualEffects)
+            {
+                effect.Reinit();
+                effect.SendEvent("OnPlay");   
+            }
+        }
+        
+        public void PlayContinuous()
+        {
+            foreach (var effect in visualEffects)
+            {
+                effect.SendEvent("OnPlay");   
+            }
         }
 
         public override void Stop()
         {
             base.Stop();
-            visualEffect.Stop();
+            foreach (var effect in visualEffects)
+            {
+                effect.Stop();
+            }
         }
     }
 }

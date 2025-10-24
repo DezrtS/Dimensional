@@ -2821,6 +2821,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
+      propertyPath: setCameraLookOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5876258042476745320, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: setCameraFollowOnStart
       value: 0
       objectReference: {fileID: 0}

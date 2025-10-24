@@ -21,8 +21,17 @@ namespace Managers
         private CinemachineBrain _cinemachineBrain;
         private CinemachineCamera _cinemachineCamera;
         private CinemachineThirdPersonFollow _thirdPersonFollow;
+        private CinemachineBasicMultiChannelPerlin _cinemachineBasicMultiChannelPerlin;
         
         private Coroutine _transitionCoroutine;
+        
+        private float _shakeTimer;
+        
+        private float _shakeDuration;
+        private float _shakeAmplitude;
+        private AnimationCurve _shakeAmplitudeCurve;
+        private float _shakeFrequency;
+        private AnimationCurve _shakeFrequencyCurve;
         
         public Camera Camera { get; private set; }
         public CinemachineCamera TargetCinemachineCamera { get; private set; }
@@ -35,6 +44,8 @@ namespace Managers
             TargetCinemachineCamera = _cinemachineCamera;
             _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
             _thirdPersonFollow.Damping = thirdPersonDamping;
+            _cinemachineBasicMultiChannelPerlin = _cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
+            StopScreenShake();
             base.InitializeSingleton();
         }
 
@@ -42,6 +53,17 @@ namespace Managers
         {
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
             if (lockAndHideCursor) LockAndHideCursor();
+        }
+
+        private void FixedUpdate()
+        {
+            if (_shakeTimer <= 0) return;
+            var ratioTime = 1 - _shakeTimer / _shakeDuration;
+            _cinemachineBasicMultiChannelPerlin.AmplitudeGain = _shakeAmplitude * _shakeAmplitudeCurve.Evaluate(ratioTime);
+            _cinemachineBasicMultiChannelPerlin.FrequencyGain = _shakeFrequency * _shakeFrequencyCurve.Evaluate(ratioTime);
+            _shakeTimer -= Time.fixedDeltaTime;
+            if (_shakeTimer > 0) return;
+            StopScreenShake();
         }
 
         public void SetIsActive(bool isActive)
@@ -65,6 +87,23 @@ namespace Managers
         
         public void EnableDamping() => _thirdPersonFollow.Damping = thirdPersonDamping;
         public void DisableDamping() => _thirdPersonFollow.Damping = Vector3.zero;
+
+        public void TriggerScreenShake(float duration, float amplitude, AnimationCurve amplitudeCurve, float frequency, AnimationCurve frequencyCurve)
+        {
+            _shakeTimer = duration;
+            _shakeDuration = duration;
+            _shakeAmplitude = amplitude;
+            _shakeAmplitudeCurve = amplitudeCurve;
+            _shakeFrequency = frequency;
+            _shakeFrequencyCurve = frequencyCurve;
+        }
+
+        public void StopScreenShake()
+        {
+            _shakeTimer = 0;
+            _cinemachineBasicMultiChannelPerlin.AmplitudeGain = 0;
+            _cinemachineBasicMultiChannelPerlin.FrequencyGain = 0;
+        }
 
         public void Transition(CinemachineCamera from, CinemachineCamera to, float duration, CinemachineBlendDefinition.Styles style = CinemachineBlendDefinition.Styles.EaseInOut)
         {

@@ -1,12 +1,17 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
 using Managers;
 using Scriptables.Actions.Movement;
 using Scriptables.Entities;
+using Scriptables.Player;
 using Scriptables.Shapes;
 using Systems.Actions.Movement;
+using Systems.Entities;
+using Systems.Entities.Behaviours;
 using Systems.Movement;
+using Systems.Visual_Effects;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -16,19 +21,31 @@ namespace Systems.Player
     public class PlayerController : Singleton<PlayerController>, IEntity, IMove, IAim
     {
         [SerializeField] private bool setCameraFollowOnStart;
+        [SerializeField] private bool setCameraLookOnStart;
         [Space]
         [SerializeField] private EntityDatum entityDatum;
         [SerializeField] private ShapeDatum[] shapeData;
         [SerializeField] private MovementActionShapesPreset defaultMovementActionShapesPreset;
         [SerializeField] private MovementActionShapesPreset[] movementActionShapesPresets;
+        [Space] 
+        [SerializeField] private ResetPlayerDatum deathResetPlayerDatum;
+        [Space]
+        [SerializeField] private MeshRenderer[] eyeMeshRenderers;
+        [SerializeField] private Material defaultEyeMaterial;
+        [SerializeField] private Material dizzyEyeMaterial;
+        [SerializeField] private EffectPlayer dizzyStars;
         
         private PlayerMovementController _playerMovementController;
+        private Health _health;
+        private StunBehaviourComponent _stunBehaviour;
 
         private InputActionMap _inputActionMap;
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
         
         private IInteractable _interactable;
+
+        private bool _isResetting;
 
         public EntityDatum EntityDatum => entityDatum;
         public GameObject GameObject => gameObject;
@@ -72,6 +89,14 @@ namespace Systems.Player
             if (resetMovementActions) ResetMovementActions();
         }
 
+        protected override void OnEnable()
+        {
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+            SaveManager.Saving += SaveManagerOnSaving;
+            SaveManager.Loaded += SaveManagerOnLoaded;
+            base.OnEnable();
+        }
+
         private void Awake()
         {
             Id = EntityManager.GetNextEntityId();
@@ -85,6 +110,12 @@ namespace Systems.Player
             SetMovementActionShapesPreset(defaultMovementActionShapesPreset, false);
             
             _playerMovementController = GetComponent<PlayerMovementController>();
+            _health = GetComponent<Health>();
+            _health.HealthStateChanged += HealthOnHealthStateChanged;
+            _stunBehaviour = GetComponent<StunBehaviourComponent>();
+            _stunBehaviour.Stunned += StunBehaviourOnStunned;
+            _stunBehaviour.Landed += StunBehaviourOnLanded;
+            _stunBehaviour.Recovered += StunBehaviourOnRecovered;
             
             PlayerLook = GetComponent<PlayerLook>();
             PlayerLook.Initialize(this);
@@ -97,9 +128,8 @@ namespace Systems.Player
             _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
             AssignControls();
             
-            if (!setCameraFollowOnStart) return;
-            CameraManager.Instance.SetFollow(PlayerLook.Root);
-            CameraManager.Instance.SetLookAt(null);
+            if (setCameraFollowOnStart) CameraManager.Instance.SetFollow(PlayerLook.Root);
+            if (setCameraLookOnStart) CameraManager.Instance.SetLookAt(transform);
         }
 
         private void AssignControls()
@@ -181,6 +211,9 @@ namespace Systems.Player
         private void OnDisable()
         {
             UnassignControls();
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+            SaveManager.Saving -= SaveManagerOnSaving;
+            SaveManager.Loaded -= SaveManagerOnLoaded;
         }
 
         Vector3 IMove.GetInput()
@@ -217,6 +250,75 @@ namespace Systems.Player
             interactable.View(InteractContext.Construct(gameObject), false);
             if (_interactable != interactable) return;
             _interactable = null;
+        }
+
+        public void SetDizzyEyes(bool dizzyEyes)
+        {
+            foreach (var eyeMeshRenderer in eyeMeshRenderers)
+            {
+                eyeMeshRenderer.material = dizzyEyes ? dizzyEyeMaterial : defaultEyeMaterial;
+            }
+        }
+        
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        {
+            if (newValue != GameState.Starting) return;
+            
+            var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
+            if (!checkpoint) return;
+            _playerMovementController.ForceController.Teleport(checkpoint.SpawnPosition);
+        }
+        
+        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
+        {
+            if (!dataTypes.Contains(DataType.Player)) return;
+            saveData.playerData.health = _health.CurrentHealth;
+        }
+        
+        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
+        {
+            if (!dataTypes.Contains(DataType.Player)) return;
+            _health.SetHealth(saveData.playerData.health);
+        }
+        
+        private void HealthOnHealthStateChanged(Health health, bool isDead)
+        {
+            if (!isDead) return;
+            _health.Revive();
+            ResetPlayer(deathResetPlayerDatum, Vector3.zero);
+        }
+        
+        private void StunBehaviourOnStunned()
+        {
+            SetDizzyEyes(true);
+            _playerMovementController.CancelAllActions();
+            _playerMovementController.IsDisabled = true;
+            DebugDisable = true;
+        }
+        
+        private void StunBehaviourOnLanded()
+        {
+            dizzyStars.Play(false);
+        }
+        
+        private void StunBehaviourOnRecovered()
+        {
+            SetDizzyEyes(false);
+            _playerMovementController.IsDisabled = false;
+            DebugDisable = false;
+        }
+
+        public void ResetPlayer(ResetPlayerDatum resetPlayerDatum, Vector3 defaultResetPosition)
+        {
+            if (_isResetting) return;
+            StartCoroutine(ResetRoutine(resetPlayerDatum, defaultResetPosition));
+        }
+
+        private void RespawnPlayer(Vector3 defaultRespawnPosition)
+        {
+            var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
+            var spawnPosition = checkpoint ? checkpoint.SpawnPosition : defaultRespawnPosition;
+            _playerMovementController.ForceController.Teleport(spawnPosition);
         }
         
         private void OnJump(InputAction.CallbackContext context)
@@ -286,6 +388,38 @@ namespace Systems.Player
             var index = indexMap[input];
             if (index >= movementActionShapesPresets.Length) return;
             SetMovementActionShapesPreset(movementActionShapesPresets[index]);
+        }
+
+        private IEnumerator ResetRoutine(ResetPlayerDatum resetPlayerDatum, Vector3 defaultResetPosition)
+        {
+            _isResetting = true;
+            
+            var cameraManager = CameraManager.Instance;
+            if (!resetPlayerDatum.FollowPlayer) cameraManager.SetFollow(null);
+            if (resetPlayerDatum.LookAtPlayer) cameraManager.SetLookAt(transform);
+            yield return new WaitForSeconds(resetPlayerDatum.ResetDelay);
+            if (resetPlayerDatum.UseTransition)
+            {
+                UIManager.Instance.Transition(false, true, resetPlayerDatum.TransitionDuration);
+                yield return new WaitForSeconds(resetPlayerDatum.TransitionDuration);
+                UIManager.Instance.Transition(false, false);   
+            }
+            
+            switch (resetPlayerDatum.ResetResponseType)
+            {
+                case ResetResponseType.None:
+                    break;
+                case ResetResponseType.Kill:
+                    _health.Die();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            cameraManager.SetFollow(PlayerLook.Root);
+            cameraManager.SetLookAt(null);
+            RespawnPlayer(defaultResetPosition);
+            _isResetting = false;
         }
     }
 }

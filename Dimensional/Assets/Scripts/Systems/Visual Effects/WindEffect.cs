@@ -1,4 +1,6 @@
+using System;
 using Scriptables.Utilities;
+using Systems.Player;
 using UnityEngine;
 using Utilities;
 using Random = UnityEngine.Random;
@@ -30,6 +32,11 @@ namespace Systems.Visual_Effects
             _windPool = new ObjectPool<ParticleEffect>(windObjectPoolDatum, windPrefab, transform);
             _windLoopPool = new ObjectPool<ParticleEffect>(windLoopObjectPoolDatum, windLoopPrefab, transform);
             _windTimer = spawnRate;
+        }
+
+        private void Start()
+        {
+            if (!spawnPoint) spawnPoint = PlayerController.Instance.transform;
         }
 
         private void FixedUpdate()

@@ -21,12 +21,14 @@ MonoBehaviour:
   - movementActionType: 3
     shapeType: 1
   - movementActionType: 4
-    shapeType: 5
+    shapeType: 1
   - movementActionType: 5
-    shapeType: 6
+    shapeType: 5
   - movementActionType: 6
     shapeType: 6
   - movementActionType: 7
+    shapeType: 6
+  - movementActionType: 8
     shapeType: 1
-  - movementActionType: 10
+  - movementActionType: 11
     shapeType: 1

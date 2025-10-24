@@ -13,9 +13,22 @@ MonoBehaviour:
   m_Name: BalloonDoubleJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 860121881
+        Data2: 1311407883
+        Data3: 1836634516
+        Data4: -889709099
+      Path: event:/BalloonJump
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 1
   actionVisualEffectData:
   - {fileID: 11400000, guid: 429cd944064dae74a9821e53fb61be43, type: 2}
   movementActionType: 2
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0

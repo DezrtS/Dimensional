@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,18 +7,23 @@ using Utilities;
 
 namespace Managers
 {
-    public delegate void DimensionsChangedEventHandler(Dimensions oldValue, Dimensions newValue);
+    public enum GameState
+    {
+        None,
+        SettingUp,
+        Loading,
+        Starting,
+        Playing,
+        Ending,
+        Saving,
+        Transitioning,
+        Quitting
+    }
+    
     public enum Dimensions
     {
         Two,
         Three,
-    }
-
-    public enum PowerLevel
-    {
-        Low,
-        Medium,
-        High,
     }
     
     public enum CheckType
@@ -29,22 +35,40 @@ namespace Managers
     
     public class GameManager : Singleton<GameManager>
     {
+        public delegate void GameStateChangedHandler(GameState oldValue, GameState newValue);
+        public static event GameStateChangedHandler GameStateChanged;
+        public delegate void DimensionsChangedEventHandler(Dimensions oldValue, Dimensions newValue);
         public static event DimensionsChangedEventHandler WorldDimensionsChanged;
         
         [SerializeField] private Dimensions defaultWorldDimensions;
         [SerializeField] private InputActionAsset defaultInputActionAsset;
+        [Space]
+        [SerializeField] private bool loadSceneData;
+        [SerializeField] private List<DataType> loadOnLoading;
         
+        public GameState GameState { get; private set; }
         public Dimensions WorldDimensions { get; private set; }
         public InputActionAsset InputActionAsset => defaultInputActionAsset;
 
         private void Start()
         {
             SetWorldDimensions(defaultWorldDimensions);
+            ChangeGameState(GameState.SettingUp);
+            if (loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene });
+            SaveManager.Instance.RequestLoad(loadOnLoading);
+            ChangeGameState(GameState.Loading);
+            ChangeGameState(GameState.Starting);
+            ChangeGameState(GameState.Playing);
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                SceneManager.Instance.ReloadScene();
+            }
+            /*
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 SetWorldDimensions(Dimensions.Two);
             }
@@ -52,6 +76,7 @@ namespace Managers
             {
                 SetWorldDimensions(Dimensions.Three);
             }
+            */
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -70,6 +95,12 @@ namespace Managers
             Time.fixedDeltaTime = 0.02f * clampedTimeScale;
         }
 
+        public void ChangeGameState(GameState newState)
+        {
+            GameStateChanged?.Invoke(GameState, newState);
+            GameState = newState;
+        }
+
         public void SetWorldDimensions(Dimensions worldDimensions)
         {
             if (worldDimensions == WorldDimensions) return;
@@ -83,6 +114,18 @@ namespace Managers
         {
             InputActionAsset.Disable();
             InputActionAsset.FindActionMap(newInputActionMap).Enable();
+        }
+
+        public void TriggerHitStop(float duration)
+        {
+            StartCoroutine(HitStopRoutine(duration));
+        }
+
+        private IEnumerator HitStopRoutine(float duration)
+        {
+            Time.timeScale = 0;
+            yield return new WaitForSecondsRealtime(duration);
+            Time.timeScale = 1;
         }
 
         public static float Derivative(AnimationCurve curve, float time)

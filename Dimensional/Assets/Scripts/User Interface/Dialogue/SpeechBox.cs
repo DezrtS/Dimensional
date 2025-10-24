@@ -16,6 +16,7 @@ namespace User_Interface.Dialogue
         [SerializeField] private TypewriterByCharacter typewriterByCharacter;
         [Space] 
         [SerializeField] private Image iconImage;
+        [SerializeField] private Image armImage;
         [SerializeField] private TextMeshProUGUI nameText;
         
         private DialogueLineDatum _dialogueLineDatum;
@@ -46,6 +47,22 @@ namespace User_Interface.Dialogue
             {
                 ShowSpeechBox();
             }
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            var bubbleScreenPos = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
+            var targetScreenPos = Camera.WorldToScreenPoint(WorldTransform.position);
+            
+            Vector2 direction = targetScreenPos - bubbleScreenPos;
+            var distance = direction.magnitude;
+            direction = direction.normalized;
+
+            var size = distance / 150f;
+            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+            
+            armImage.transform.localScale = new Vector3(1, size, 1);
+            armImage.transform.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
         [ContextMenu("Show")]

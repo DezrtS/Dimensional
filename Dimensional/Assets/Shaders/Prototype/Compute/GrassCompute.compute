@@ -1,0 +1,48 @@
+// GrassCompute.compute
+#pragma kernel CSMain
+#define THREADS 256
+
+StructuredBuffer<float3> _BasePositions;    // world positions
+StructuredBuffer<float> _WindWeights;       // per-instance wind weight (optional)
+RWStructuredBuffer<float4x4> _Matrices;     // output matrices
+
+cbuffer Params
+{
+    uint _NumInstances;
+    float _Time;
+    float _WindStrength;
+    float _WindSpeed;
+    float _RandomSeed;
+};
+
+[numthreads(THREADS, 1, 1)]
+void CSMain(uint id : SV_DispatchThreadID)
+{
+    if (id >= _NumInstances) return;
+
+    //float3 pos = _BasePositions[id];
+    float3 pos = float3(id % 100, 0, id / 100);
+    float windW = 1.0;
+    //if (_WindWeights.Length > 0) windW = _WindWeights[id]; // some APIs may not support .Length; you can guard on CPU side.
+
+    // simple per-instance "wind" using sin + id jitter
+    float seed = id * 12.9898 + _RandomSeed;
+    float phase = frac(sin(seed) * 43758.5453); // cheap pseudo-rand
+    float sway = sin((_Time * _WindSpeed) + phase * 6.2831853) * (_WindStrength * windW);
+
+    // lateral offset along world X (could use wind dir)
+    float3 offset = float3(sway, 0.0, 0.0);
+
+    // build a simple world matrix: translate + small random tilt/scale
+    float tilt = sin(phase * 6.2831853) * 0.15; // small tilt
+    float s = 1.0 + (phase - 0.5) * 0.25;       // small scale variation
+
+    // Create rotation around Z (tilt) then scale then translate (column-major)
+    float4x4 world;
+    world[0] = float4(s, 0, 0, 0);
+    world[1] = float4(0, cos(tilt)*s, -sin(tilt)*s, 0);
+    world[2] = float4(0, sin(tilt)*s, cos(tilt)*s, 0);
+    world[3] = float4(pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, 1);
+
+    _Matrices[id] = world;
+}

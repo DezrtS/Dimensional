@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeType: 6
   shapeMovementActions:
-  - movementActionType: 4
+  - movementActionType: 5
     movementActionDatum: {fileID: 11400000, guid: 066e52a637e848748b683ebdcac8a4b0, type: 2}
     movementSynergies: []
-  - movementActionType: 5
+  - movementActionType: 6
     movementActionDatum: {fileID: 11400000, guid: 011b9113885fcad4c84889a9ecfba861, type: 2}
     movementSynergies: []
-  - movementActionType: 6
+  - movementActionType: 7
     movementActionDatum: {fileID: 11400000, guid: 7ff8568e125ae4747b824c86798f9575, type: 2}
     movementSynergies: []

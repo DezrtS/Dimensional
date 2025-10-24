@@ -65,4 +65,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   canAccelerateWhileDecelerating: 1
   decelerationDotThreshold: 0
-  airborneMultiplier: 0.25
+  airborneAccelerationMultiplier: 0.25
+  airborneMaxSpeedMultiplier: 1

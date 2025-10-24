@@ -42,6 +42,8 @@ namespace Systems.Enemies
         private void FixedUpdate()
         {
             _movementController.Move();
+            
+            if (MovementState == MovementState.Stunned) return;
             var velocity = _movementController.ForceController.GetVelocity();
             velocity.y = 0;
             if (velocity.magnitude > 0.1f) root.forward = velocity;
@@ -139,7 +141,7 @@ namespace Systems.Enemies
                     
                     break;
                 case MovementState.Stunned:
-                    
+                    _movementController.IsDisabled = false;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(oldState), oldState, null);
@@ -167,7 +169,7 @@ namespace Systems.Enemies
                     
                     break;
                 case MovementState.Stunned:
-                    
+                    _movementController.IsDisabled = true;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newState), newState, null);

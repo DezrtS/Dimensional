@@ -137,7 +137,8 @@ GameObject:
   - component: {fileID: 3454105606036979440}
   - component: {fileID: 3875366664236168819}
   - component: {fileID: 8206250400622386603}
-  m_Layer: 0
+  - component: {fileID: 1118730320343877536}
+  m_Layer: 11
   m_Name: Debug Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,9 +302,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84c7a3ded61286e4786034bc08f98b35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableYInput: 1
   upperRangeLimit: 20
   lowerRangeLimit: -1
-  disableYInput: 1
   fleeTarget: 1
 --- !u!114 &8206250400622386603
 MonoBehaviour:
@@ -320,6 +321,19 @@ MonoBehaviour:
   wanderRange: 10
   wanderFrequency: 5
   wanderFrequencyVariation: 2
+--- !u!114 &1118730320343877536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241525979084931229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2726f18d86b8bbc4fa27289afd5b47e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stunBehaviourDatum: {fileID: 11400000, guid: 546edd8b918959e4796b137f60199347, type: 2}
 --- !u!1 &1993735340365798041
 GameObject:
   m_ObjectHideFlags: 0

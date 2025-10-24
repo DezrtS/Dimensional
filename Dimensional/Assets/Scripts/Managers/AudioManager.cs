@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
@@ -44,12 +45,10 @@ namespace Managers
             _eventInstances.Add(eventInstance);
             return eventInstance;
         }
-        
-        public static EventInstance CreateEventInstance(EventReference eventReference, GameObject attachTo)
+
+        public static void AttachInstanceToGameObject(EventInstance eventInstance, GameObject attachTo)
         {
-            var eventInstance = CreateEventInstance(eventReference);
             RuntimeManager.AttachInstanceToGameObject(eventInstance, attachTo);
-            return eventInstance;
         }
 
         public static void RemoveEventInstance(EventInstance eventInstance)
@@ -58,19 +57,19 @@ namespace Managers
             RuntimeManager.DetachInstanceFromGameObject(eventInstance);
         }
 
-        public static void PlayOneShop(EventReference eventReference)
+        public static void PlayOneShot(EventReference eventReference)
         {
             if (eventReference.IsNull) return;
             RuntimeManager.PlayOneShot(eventReference);
         }
         
-        public static void PlayOneShop(EventReference eventReference, Vector3 worldPosition)
+        public static void PlayOneShot(EventReference eventReference, Vector3 worldPosition)
         {
             if (eventReference.IsNull) return;
             RuntimeManager.PlayOneShot(eventReference, worldPosition);
         }
         
-        public static void PlayOneShop(EventReference eventReference, GameObject attachTo)
+        public static void PlayOneShot(EventReference eventReference, GameObject attachTo)
         {
             if (eventReference.IsNull) return;
             RuntimeManager.PlayOneShotAttached(eventReference, attachTo);

@@ -6,20 +6,20 @@ namespace User_Interface
 {
     public abstract class WorldUIAnchor : MonoBehaviour
     {
-        private WorldUIAnchorDatum _worldUIAnchorDatum;
-        private Transform _worldTransform;
+        protected WorldUIAnchorDatum WorldUIAnchorDatum { get; private set; }
 
-        private Camera _camera;
-        private Transform _cameraTransform;
-
+        protected Transform WorldTransform { get; private set; }
         public Transform TargetTransform { get; private set; }
+        protected Transform CameraTransform { get; private set; }
+        
+        protected Camera Camera { get; private set; }
 
         public void Initialize(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform)
         {
-            _worldUIAnchorDatum = worldUIAnchorDatum;
-            _worldTransform = worldTransform;
+            WorldUIAnchorDatum = worldUIAnchorDatum;
+            WorldTransform = worldTransform;
             OnInitialize(worldUIAnchorDatum, worldTransform);
-            transform.localScale = new Vector3(0, 0, 0);
+            transform.localScale = Vector3.zero;
         }
 
         protected abstract void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform);
@@ -34,40 +34,43 @@ namespace User_Interface
 
         private void Start()
         {
-            _camera = CameraManager.Instance.Camera;
-            _cameraTransform = _camera.transform;
+            Camera = CameraManager.Instance.Camera;
+            CameraTransform = Camera.transform;
         }
 
         private void FixedUpdate()
         {
             if (!TargetTransform) return;
 
+            OnFixedUpdate();
             var distanceRatio = GetDistanceRatio();
             var angleRatio = GetAngleRatio();
             //Debug.Log($"Distance: {distanceRatio}, Angle: {angleRatio}");
             var ratio = Mathf.Clamp01(Mathf.Max(distanceRatio, angleRatio));
-            var size = _worldUIAnchorDatum.SizeCurve.Evaluate(ratio);
+            var size = WorldUIAnchorDatum.SizeCurve.Evaluate(ratio);
             transform.localScale = new Vector3(size, size, size);
         }
+        
+        protected virtual void OnFixedUpdate() {}
 
         private void LateUpdate()
         {
-            var screenPosition = _camera.WorldToScreenPoint(_worldTransform.position + _worldUIAnchorDatum.Offset);
+            var screenPosition = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
             transform.position = screenPosition;
         }
 
         private float GetDistanceRatio()
         {
-            var difference =  _worldTransform.position +  _worldUIAnchorDatum.Offset - TargetTransform.position;
+            var difference =  WorldTransform.position +  WorldUIAnchorDatum.Offset - TargetTransform.position;
             var distance = difference.magnitude;
-            return (distance - _worldUIAnchorDatum.MinDistance) / (_worldUIAnchorDatum.MaxDistance - _worldUIAnchorDatum.MinDistance);
+            return (distance - WorldUIAnchorDatum.MinDistance) / (WorldUIAnchorDatum.MaxDistance - WorldUIAnchorDatum.MinDistance);
         }
         
         private float GetAngleRatio()
         {
-            var difference =  _worldTransform.position +  _worldUIAnchorDatum.Offset - _cameraTransform.position;
-            var angle = Vector3.Angle(_cameraTransform.forward, difference.normalized);
-            return (angle - _worldUIAnchorDatum.MinAngle) / (_worldUIAnchorDatum.MaxAngle - _worldUIAnchorDatum.MinAngle);
+            var difference =  WorldTransform.position +  WorldUIAnchorDatum.Offset - CameraTransform.position;
+            var angle = Vector3.Angle(CameraTransform.forward, difference.normalized);
+            return (angle - WorldUIAnchorDatum.MinAngle) / (WorldUIAnchorDatum.MaxAngle - WorldUIAnchorDatum.MinAngle);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using Managers;
+using Systems.Player;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -15,7 +16,9 @@ namespace Systems.Shaders
         [SerializeField] private int renderingLayer = 0; // Layer index (0-31)
         [SerializeField] private uint renderingLayerMask = 1; // Bitmask for rendering layers (1 << layerIndex)
 
-        private float _offset;
+        private Transform _targetTransform;
+        
+        //private float _offset;
         private Camera _camera;
         private Matrix4x4[] _matrices;
         private MaterialPropertyBlock _props;
@@ -38,7 +41,7 @@ namespace Systems.Shaders
                 renderingLayerMask = renderingLayerMask,
                 shadowCastingMode = ShadowCastingMode.Off,
                 receiveShadows = false,
-                worldBounds = new Bounds(Vector3.zero, Vector3.one * 1000f) // Large bounds to always render
+                worldBounds = new Bounds(Vector3.zero, Vector3.one * 2500f) // Large bounds to always render
             };
 
             var instance = CameraManager.Instance;
@@ -50,6 +53,11 @@ namespace Systems.Shaders
             {
                 CameraManager.Initialized += CameraManagerOnInitialized;
             }
+        }
+
+        private void Start()
+        {
+            _targetTransform = PlayerController.Instance.transform;
         }
 
         private void OnDestroy()
@@ -66,10 +74,17 @@ namespace Systems.Shaders
         private void OnValidate()
         {
             // Update layer mask when properties change in editor
-            if (renderingLayer >= 0 && renderingLayer < 32)
-            {
-                renderingLayerMask = (uint)(1 << renderingLayer);
-            }
+            //if (renderingLayer >= 0 && renderingLayer < 32)
+            //{
+            //    renderingLayerMask = (uint)(1 << renderingLayer);
+            //}
+        }
+
+        private void FixedUpdate()
+        {
+            var position = _targetTransform.position;
+            position.y = transform.position.y;
+            transform.position = position;
         }
 
         private void Update()
@@ -93,7 +108,7 @@ namespace Systems.Shaders
             }
 
             // Update material properties
-            _offset = cloudHeight / horizontalStackSize / 2f;
+            //_offset = cloudHeight / horizontalStackSize / 2f;
             _props.SetFloat("_midYValue", transform.position.y);
             _props.SetFloat("_cloudHeight", cloudHeight);
             _props.SetVector("_cameraPosition", _camera.transform.position);

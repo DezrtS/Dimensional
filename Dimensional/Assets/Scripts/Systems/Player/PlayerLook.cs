@@ -27,12 +27,11 @@ namespace Systems.Player
         private float _resetTimer;
         
         // 3D
-        private float _xRotation;
         private float _yRotation;
         
         public Transform Root => root;
         private bool IsDisabled => isDisabled;
-        public float XRotation => _xRotation;
+        public float XRotation { get; private set; }
 
         private void Awake()
         {
@@ -85,7 +84,7 @@ namespace Systems.Player
         {
             if (IsDisabled) input = Vector3.zero;
             OnLook(input);
-            root.SetLocalPositionAndRotation(_lookPosition, Quaternion.Euler(_yRotation, _xRotation, 0));
+            root.SetLocalPositionAndRotation(_lookPosition, Quaternion.Euler(_yRotation, XRotation, 0));
         }
 
         private void OnLook(Vector3 input)
@@ -117,7 +116,7 @@ namespace Systems.Player
                     var rotationInput = new Vector3(scaledInput.x * playerLookDatum.XSensitivity, scaledInput.y * playerLookDatum.YSensitivity, scaledInput.z);
                     if (playerLookDatum.InvertX) rotationInput.x *= -1;
                     if (playerLookDatum.InvertY) rotationInput.y *= -1;
-                    _xRotation += rotationInput.x;
+                    XRotation += rotationInput.x;
                     _yRotation = Mathf.Clamp(_yRotation + rotationInput.y, -playerLookDatum.MaxYAngle, playerLookDatum.MaxYAngle);
                     break;
                 default:
@@ -133,7 +132,7 @@ namespace Systems.Player
                     _lookPosition = Vector3.zero;
                     break;
                 case Dimensions.Three:
-                    _xRotation = 0;
+                    XRotation = 0;
                     _yRotation = 0;
                     break;
                 default:

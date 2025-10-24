@@ -170,6 +170,7 @@ namespace Systems.Movement
         {
             var currentVelocity =  ForceController.GetVelocity();
             var maxSpeed = datum.MaxSpeed;
+            if (!IsGrounded) maxSpeed *= datum.AirborneMaxSpeedMultiplier;
             
             if (disableYInput)
             {
@@ -189,12 +190,12 @@ namespace Systems.Movement
             if (velocityDot > datum.DecelerationDotThreshold || currentVelocity.magnitude == 0 || (datum.CanAccelerateWhileDecelerating && directionDot < datum.DecelerationDotThreshold))
             {
                 accelerationIncrement = datum.Acceleration * datum.AccelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
+                if (!IsGrounded) accelerationIncrement *= datum.AirborneAccelerationMultiplier;
             }
             else
             {
                 accelerationIncrement = datum.Deceleration * datum.DecelerationCurve.Evaluate(currentVelocity.magnitude / maxSpeed) * Time.deltaTime;
             }
-            if (!IsGrounded) accelerationIncrement *= datum.AirborneMultiplier;
 
             if (velocityDifference.magnitude < accelerationIncrement) return velocityDifference;
             return differenceDirection * accelerationIncrement;

@@ -22,10 +22,9 @@ namespace Systems.Movement
             base.Awake();
         }
 
-        private void FixedUpdate()
+        protected override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (IsKinematic) return;
-            var fixedDeltaTime = Time.fixedDeltaTime;
             if (UseGravity)
             {
                 Velocity += Mathf.Min(gravityForce, maxFallSpeed + Velocity.y) * fixedDeltaTime * Vector3.down;

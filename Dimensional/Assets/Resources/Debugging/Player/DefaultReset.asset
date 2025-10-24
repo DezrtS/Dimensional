@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32eb7d4c130cc7741a7200d5b02ecbc2, type: 3}
+  m_Name: DefaultReset
+  m_EditorClassIdentifier: 
+  resetResponseType: 0
+  useTransition: 1
+  followPlayer: 0
+  lookAtPlayer: 1
+  resetDelay: 0.5
+  transitionDuration: 2

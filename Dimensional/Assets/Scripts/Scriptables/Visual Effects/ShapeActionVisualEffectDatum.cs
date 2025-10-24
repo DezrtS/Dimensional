@@ -1,4 +1,5 @@
 using Scriptables.Shapes;
+using Systems.Actions;
 using Systems.Visual_Effects;
 using UnityEngine;
 
@@ -8,8 +9,10 @@ namespace Scriptables.Visual_Effects
     public class ShapeActionVisualEffectDatum : ActionVisualEffectDatum
     {
         [SerializeField] private ShapeType shapeType;
+        [SerializeField] private ActionEventType activationEventType;
         
         public ShapeType ShapeType => shapeType;
+        public ActionEventType ActivationEventType => activationEventType;
 
         public override ActionVisualEffect AttachActionVisualEffect(Transform parent)
         {

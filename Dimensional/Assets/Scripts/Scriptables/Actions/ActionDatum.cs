@@ -8,17 +8,35 @@ using Action = Systems.Actions.Action;
 namespace Scriptables.Actions
 {
     [Serializable]
-    public struct ActionAudioEvent
+    public class ActionAudioEvent
     {
         [SerializeField] private EventReference eventReference;
         [SerializeField] private bool attachToGameObject;
+        [SerializeField] private bool createInstance;
         [SerializeField] private ActionEventType activationEventType;
-        [SerializeField] private ActionEventType deactivationEventType;
         
         public EventReference EventReference => eventReference;
         public bool AttachToGameObject => attachToGameObject;
+        public bool CreateInstance => createInstance;
         public ActionEventType ActivationEventType => activationEventType;
-        public ActionEventType DeactivationEventType => deactivationEventType;
+    }
+
+    [Serializable]
+    public class ActionScreenShakeEvent
+    {
+        [SerializeField] private ActionEventType activationEventType;
+        [SerializeField] private float duration;
+        [SerializeField] private float amplitude;
+        [SerializeField] private AnimationCurve amplitudeCurve;
+        [SerializeField] private float frequency;
+        [SerializeField] private AnimationCurve frequencyCurve;
+        
+        public ActionEventType ActivationEventType => activationEventType;
+        public float Duration => duration;
+        public float Amplitude => amplitude;
+        public AnimationCurve AmplitudeCurve => amplitudeCurve;
+        public float Frequency => frequency;
+        public AnimationCurve FrequencyCurve => frequencyCurve;
     }
     
     [CreateAssetMenu(fileName = "ActionDatum", menuName = "Scriptable Objects/Actions/EmptyActionDatum")]
@@ -26,9 +44,14 @@ namespace Scriptables.Actions
     {
         [SerializeField] private float activationTime;
         [SerializeField] private ActionAudioEvent[] actionAudioEvents;
+        [SerializeField] private bool hasScreenShake;
+        [SerializeField] private ActionScreenShakeEvent actionScreenShakeEvent;
         [SerializeField] private ActionVisualEffectDatum[] actionVisualEffectData;
+        
         public float ActivationTime => activationTime;
         public ActionAudioEvent[] ActionAudioEvents => actionAudioEvents;
+        public bool HasScreenShake => hasScreenShake;
+        public ActionScreenShakeEvent ActionScreenShakeEvent => actionScreenShakeEvent;
         public ActionVisualEffectDatum[] ActionVisualEffectData => actionVisualEffectData;
 
         public virtual Action AttachAction(GameObject actionHolder)

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
 
@@ -7,6 +9,34 @@ namespace Managers
     {
         private string _nextScene;
         private bool _loadingScene;
+
+        private void Awake()
+        {
+            SaveManager.Saving += SaveManagerOnSaving;
+            SaveManager.Loaded += SaveManagerOnLoaded;
+        }
+        
+        private void OnDisable()
+        {
+            SaveManager.Saving -= SaveManagerOnSaving;
+            SaveManager.Loaded -= SaveManagerOnLoaded;
+        }
+
+        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
+        {
+            if (dataTypes.Contains(DataType.Scene))
+            {
+                saveData.sceneData.scene = _loadingScene ? _nextScene : UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            }
+        }
+        
+        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
+        {
+            if (dataTypes.Contains(DataType.Scene))
+            {
+                LoadScene(saveData.sceneData.scene);
+            }
+        }
 
         public void LoadSceneWithTransition(string nextScene)
         {
@@ -24,9 +54,18 @@ namespace Managers
             LoadScene(_nextScene);
         }
 
-        public static void LoadScene(string sceneName)
+        public void LoadScene(string sceneName)
         {
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == sceneName) return;
+            _nextScene = sceneName;
+            _loadingScene = true;
+            SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Scene });
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        }
+
+        public void ReloadScene()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 }

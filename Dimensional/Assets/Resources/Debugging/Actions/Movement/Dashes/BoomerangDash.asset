@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: BoomerangDash
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents: []
   actionVisualEffectData:
-  - {fileID: 11400000, guid: 794fb69ba94c9a24782e8c5bf5bb3185, type: 2}
+  - {fileID: 11400000, guid: 7568a72e279d464479c45aeafc41d7ca, type: 2}
   movementActionType: 4
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0

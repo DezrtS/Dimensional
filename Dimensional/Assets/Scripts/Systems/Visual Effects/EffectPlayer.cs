@@ -33,7 +33,7 @@ namespace Systems.Visual_Effects
             if (_returnToPoolOnFinished) ReturnToPool();
         }
 
-        public virtual void Play(bool returnToPoolOnFinished = false)
+        public virtual void Play(bool returnToPoolOnFinished)
         {
             _returnToPoolOnFinished = returnToPoolOnFinished;
             _timer = duration;

@@ -17,6 +17,9 @@ namespace User_Interface.Interactables
             image.sprite = _interactableIconDatum.KeyboardIcon;
         }
 
-        protected override void OnSetTargetTransform(Transform targetTransform) { }
+        protected override void OnSetTargetTransform(Transform targetTransform)
+        {
+            if (!targetTransform) transform.localScale = Vector3.zero;
+        }
     }
 }
