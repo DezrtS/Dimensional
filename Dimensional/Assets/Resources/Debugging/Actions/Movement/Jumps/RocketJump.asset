@@ -13,9 +13,66 @@ MonoBehaviour:
   m_Name: RocketJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents: []
+  hasScreenShake: 0
+  actionScreenShakeEvent:
+    activationEventType: 2
+    duration: 0.5
+    amplitude: 3
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 1
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: e45469543114461488d07d349eee8bcf, type: 2}
   movementActionType: 1
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0

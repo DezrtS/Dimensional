@@ -5,6 +5,13 @@ using UnityEngine;
 
 namespace Systems.Movement.Components
 {
+    public enum PowerLevel
+    {
+        Low,
+        Medium,
+        High,
+    }
+    
     public class GroundPoundMovementComponent : MovementComponent
     {
         public event Action GroundPounded;

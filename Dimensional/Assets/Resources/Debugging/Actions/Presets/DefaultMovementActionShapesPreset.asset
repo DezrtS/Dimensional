@@ -23,10 +23,12 @@ MonoBehaviour:
   - movementActionType: 4
     shapeType: 1
   - movementActionType: 5
-    shapeType: 7
-  - movementActionType: 6
-    shapeType: 6
-  - movementActionType: 7
     shapeType: 1
-  - movementActionType: 10
+  - movementActionType: 6
+    shapeType: 7
+  - movementActionType: 7
+    shapeType: 6
+  - movementActionType: 8
+    shapeType: 1
+  - movementActionType: 11
     shapeType: 1

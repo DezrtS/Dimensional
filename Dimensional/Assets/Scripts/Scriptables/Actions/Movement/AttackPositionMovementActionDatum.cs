@@ -1,3 +1,4 @@
+using Scriptables.Movement;
 using Scriptables.Projectiles;
 using Scriptables.Utilities;
 using Systems.Actions;
@@ -12,14 +13,19 @@ namespace Scriptables.Actions.Movement
     {
         [Space(10)] 
         [SerializeField] private ActionEventType attackEventType;
+        [SerializeField] private bool endActionOnHit;
         [SerializeField] private int attackDamage;
         [SerializeField] private float attackRadius;
         [SerializeField] private Vector3 attackOffset;
         [SerializeField] private Vector3 attackDirection;
         [SerializeField] private LayerMask attackLayerMask;
+        [Space(10)] 
+        [SerializeField] private bool doScreenShakeOnHit;
+        [SerializeField] private bool hasHitStop;
+        [SerializeField] private float hitStopDuration;
         [Space(10)]
         [SerializeField] private bool hasKnockback;
-        [SerializeField] private float knockbackPower;
+        [SerializeField] private ForceEventDatum forceEventDatum;
         [SerializeField] private KnockbackType knockbackType;
         [Space(10)]
         [SerializeField] private ActionEventType projectileEventType;
@@ -28,14 +34,19 @@ namespace Scriptables.Actions.Movement
         [SerializeField] private Vector3 fireDirection;
 
         public ActionEventType AttackEventType => attackEventType;
+        public bool EndActionOnHit => endActionOnHit;
         public int AttackDamage => attackDamage;
         public float AttackRadius => attackRadius;
         public Vector3 AttackOffset => attackOffset;
         public Vector3 AttackDirection => attackDirection;
         public LayerMask AttackLayerMask => attackLayerMask;
         
+        public bool DoScreenShakeOnHit => doScreenShakeOnHit;
+        public bool HasHitStop => hasHitStop;
+        public float HitStopDuration => hitStopDuration;
+        
         public bool HasKnockback => hasKnockback;
-        public float KnockbackPower => knockbackPower;
+        public ForceEventDatum ForceEventDatum => forceEventDatum;
         public KnockbackType KnockbackType => knockbackType;
         
         public ActionEventType ProjectileEventType => projectileEventType;

@@ -20,3 +20,4 @@ MonoBehaviour:
     effectStartEventType: 3
     stopOnActionEnd: 0
   shapeType: 7
+  activationEventType: 1

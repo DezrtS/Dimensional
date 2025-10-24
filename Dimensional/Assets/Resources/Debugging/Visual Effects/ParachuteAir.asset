@@ -15,3 +15,4 @@ MonoBehaviour:
   actionVisualEffectPrefab: {fileID: 2875019491075706988, guid: bf2a958fc70b68e428bad673d21981a3, type: 3}
   actionParticleEffects: []
   shapeType: 6
+  activationEventType: 2

@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
-using Managers;
-using Systems.Movement;
+using Scriptables.Player;
 using Systems.Player;
 using UnityEngine;
 
@@ -9,33 +6,13 @@ namespace Utilities
 {
     public class ResetPlayer : MonoBehaviour
     {
-        [SerializeField] private Vector3 resetPosition;
-        [SerializeField] private float delay;
-        [SerializeField] private float transitionDuration;
-        
-        private bool _resetting;
+        [SerializeField] private Vector3 defaultResetPosition;
+        [SerializeField] private ResetPlayerDatum resetPlayerDatum;
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_resetting || !other.gameObject.CompareTag("Player")) return;
-            StartCoroutine(ResetRoutine(other.transform));
-        }
-
-        private IEnumerator ResetRoutine(Transform player)
-        {
-            _resetting = true;
-            var cameraManager = CameraManager.Instance;
-            var playerController = player.GetComponent<PlayerController>();
-            cameraManager.SetFollow(null);
-            cameraManager.SetLookAt(player);
-            yield return new WaitForSeconds(delay);
-            UIManager.Instance.Transition(false, true, transitionDuration);
-            yield return new WaitForSeconds(transitionDuration);
-            UIManager.Instance.Transition(true, false);
-            cameraManager.SetFollow(playerController.PlayerLook.Root);
-            cameraManager.SetLookAt(null);
-            player.GetComponent<ForceController>().Teleport(resetPosition);
-            _resetting = false;
+            if (!other.gameObject.CompareTag("Player")) return;
+            PlayerController.Instance.ResetPlayer(resetPlayerDatum, defaultResetPosition);
         }
     }
 }

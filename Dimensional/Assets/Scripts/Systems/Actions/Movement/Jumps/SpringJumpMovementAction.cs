@@ -44,7 +44,7 @@ namespace Systems.Actions.Movement
             {
                 _isCharging = true;
                 _chargeTimer = 0;
-                MovementController.IsDisabled = true;
+                //MovementController.IsDisabled = true;
             }
             else
             {
@@ -65,7 +65,7 @@ namespace Systems.Actions.Movement
         {
             if (IsTriggering) return;
             
-            MovementController.IsDisabled = false;
+            //MovementController.IsDisabled = false;
             _jumpMultiplier = Mathf.Clamp01(_chargeTimer / _springJumpMovementActionDatum.MaxChargeDuration);
 
             if (_chargeTimer <= _springJumpMovementActionDatum.MinChargeDuration || IsTriggering)
@@ -82,7 +82,7 @@ namespace Systems.Actions.Movement
         protected override void OnCancellation(ActionContext context)
         {
             base.OnCancellation(context);
-            MovementController.IsDisabled = false;
+            //MovementController.IsDisabled = false;
         }
 
         private void SetJumpData(ActionContext context)

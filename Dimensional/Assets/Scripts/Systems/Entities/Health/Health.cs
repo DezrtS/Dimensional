@@ -15,14 +15,14 @@ namespace Systems.Entities
         [SerializeField] private HealthDatum healthDatum;
         [SerializeField] private bool destroyOnDeath;
 
-        private int _currentHealth;
         private bool _isDead;
 
         public bool IsInvincible { get; private set; }
+        public int CurrentHealth { get; private set; }
 
         private void Awake()
         {
-            _currentHealth = healthDatum.MaxHealth;
+            CurrentHealth = healthDatum.MaxHealth;
         }
 
         [ContextMenu("Hurt")]
@@ -45,22 +45,22 @@ namespace Systems.Entities
 
         private void AddHealth(int amount)
         {
-            SetHealth(_currentHealth + amount);
+            SetHealth(CurrentHealth + amount);
             if (_isDead)
             {
-                if (_currentHealth > 0) Revive(false);
+                if (CurrentHealth > 0) Revive(false);
             }
             else
             {
-                if (_currentHealth <= 0) Die();
+                if (CurrentHealth <= 0) Die();
             }
         }
 
-        private void SetHealth(int health)
+        public void SetHealth(int health)
         {
             health = Mathf.Clamp(health, 0, healthDatum.MaxHealth);
-            HealthChanged?.Invoke(_currentHealth, health, healthDatum.MaxHealth);
-            _currentHealth = health;
+            HealthChanged?.Invoke(CurrentHealth, health, healthDatum.MaxHealth);
+            CurrentHealth = health;
         }
 
         public void Die()

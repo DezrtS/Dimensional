@@ -15,7 +15,8 @@ namespace Scriptables.Movement
         [Space(10)]
         [SerializeField] private bool canAccelerateWhileDecelerating;
         [SerializeField] private float decelerationDotThreshold;
-        [SerializeField] private float airborneMultiplier;
+        [SerializeField] private float airborneAccelerationMultiplier = 1;
+        [SerializeField] private float airborneMaxSpeedMultiplier = 1;
         
         public float MaxSpeed => maxSpeed;
         public float Acceleration => acceleration;
@@ -24,6 +25,7 @@ namespace Scriptables.Movement
         public AnimationCurve DecelerationCurve => decelerationCurve;
         public bool CanAccelerateWhileDecelerating => canAccelerateWhileDecelerating;
         public float DecelerationDotThreshold => decelerationDotThreshold;
-        public float AirborneMultiplier => airborneMultiplier;
+        public float AirborneAccelerationMultiplier => airborneAccelerationMultiplier;
+        public float AirborneMaxSpeedMultiplier => airborneMaxSpeedMultiplier;
     }
 }

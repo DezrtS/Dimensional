@@ -7,19 +7,27 @@ namespace Systems.Visual_Effects
     public class ShapeActionVisualEffect : ActionVisualEffect
     {
         private static readonly int Sphere = Animator.StringToHash("Sphere");
-        private ShapeActionVisualEffectDatum _actionVisualActionDatum;
+        private ShapeActionVisualEffectDatum _shapeActionVisualActionDatum;
         private Animator _animator;
         
         public override void Initialize(ActionVisualEffectDatum actionVisualActionDatum)
         {
             base.Initialize(actionVisualActionDatum);
-            _actionVisualActionDatum = (ShapeActionVisualEffectDatum)actionVisualActionDatum;
+            _shapeActionVisualActionDatum = (ShapeActionVisualEffectDatum)actionVisualActionDatum;
+        }
+
+        protected override void ActionOnActivated(Action action, ActionContext context)
+        {
+            base.ActionOnActivated(action, context);
+            if (_shapeActionVisualActionDatum.ActivationEventType == ActionEventType.Activated) 
+                _animator.SetTrigger(_shapeActionVisualActionDatum.ShapeType.ToString());
         }
 
         protected override void ActionOnTriggered(Action action, ActionContext context)
         {
             base.ActionOnTriggered(action, context);
-            _animator.SetTrigger(_actionVisualActionDatum.ShapeType.ToString());
+            if (_shapeActionVisualActionDatum.ActivationEventType == ActionEventType.Triggered) 
+                _animator.SetTrigger(_shapeActionVisualActionDatum.ShapeType.ToString());
         }
         
         protected override void ActionOnDeactivated(Action action, ActionContext context)

@@ -24,13 +24,31 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 2
+  hasScreenShake: 0
+  actionScreenShakeEvent:
+    activationEventType: 0
+    duration: 0
+    amplitude: 0
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 0
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 786027cb90f063c4c85fed0e990528de, type: 2}
   movementActionType: 1
   performEventOnGrounded: 0
   groundedActionEventType: 0
-  hasMovementDatum: 0
-  movementControllerDatum: {fileID: 0}
+  hasMovementDatum: 1
+  movementControllerDatum: {fileID: 11400000, guid: 91b6398af6eca114ca8f937dea211c45, type: 2}
   stopMovementOnDisable: 0
   disableDurationLimit: 0
   movementVector: {x: 0, y: 7, z: 0}

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Managers;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
 using Systems.Entities;
-using Systems.Movement;
+using Systems.Entities.Behaviours;
 using Systems.Projectiles;
 using Systems.Projectiles.Behaviours;
 using UnityEngine;
@@ -84,7 +85,7 @@ namespace Systems.Actions.Movement
         {
             var results = new Collider[10];
             var size = Physics.OverlapSphereNonAlloc(
-                transform.position + _attackPositionMovementActionDatum.AttackOffset,
+                transform.position + Quaternion.LookRotation(PreviousContext.TargetDirection) * _attackPositionMovementActionDatum.AttackOffset,
                 _attackPositionMovementActionDatum.AttackRadius, results,
                 _attackPositionMovementActionDatum.AttackLayerMask);
 
@@ -98,25 +99,35 @@ namespace Systems.Actions.Movement
                 {
                     health.Damage(_attackPositionMovementActionDatum.AttackDamage);
                 }
-
+                
                 if (!_attackPositionMovementActionDatum.HasKnockback) continue;
-                if (!hitCollider.TryGetComponent(out ForceController forceController)) continue;
+                if (!hitCollider.TryGetComponent(out StunBehaviourComponent stunBehaviour)) continue;
+                //if (!hitCollider.TryGetComponent(out ForceController forceController)) continue;
 
                 switch (_attackPositionMovementActionDatum.KnockbackType)
                 {
                     case KnockbackType.Directional:
                         var velocity = MovementController.ForceController.GetVelocity();
-                        forceController.ApplyForce(velocity.normalized * _attackPositionMovementActionDatum.KnockbackPower, ForceMode.VelocityChange);
+                        velocity.y = 0;
+                        stunBehaviour.Stun(velocity.normalized);
+                        //forceController.ApplyForceEvent(_attackPositionMovementActionDatum.ForceEventDatum, Quaternion.LookRotation(velocity));
                         break;
                     case KnockbackType.Radial:
-                        var direction = (hitCollider.transform.position - transform.position).normalized;
-                        forceController.ApplyForce(direction * _attackPositionMovementActionDatum.KnockbackPower, ForceMode.VelocityChange);
+                        var direction = (hitCollider.transform.position - transform.position);
+                        direction.y = 0;
+                        stunBehaviour.Stun(direction.normalized);
+                        //forceController.ApplyForceEvent(_attackPositionMovementActionDatum.ForceEventDatum, Quaternion.LookRotation(direction));
                         break;
                     case KnockbackType.None:
                     default:
                         break;
                 }
             }
+
+            if (size <= 0) return;
+            if (_attackPositionMovementActionDatum.DoScreenShakeOnHit) ShakeScreen();
+            if (_attackPositionMovementActionDatum.HasHitStop) GameManager.Instance.TriggerHitStop(_attackPositionMovementActionDatum.HitStopDuration);
+            if (_attackPositionMovementActionDatum.EndActionOnHit) Cancel(PreviousContext);
         }
 
         private void ProjectileAttack()

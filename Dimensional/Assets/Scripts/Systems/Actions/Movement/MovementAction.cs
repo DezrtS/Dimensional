@@ -13,6 +13,7 @@ namespace Systems.Actions.Movement
         JumpAction,
         DoubleJumpAction,
         WallJumpAction,
+        RollJumpAction,
         DashAction,
         DiveAction,
         AirAction,
@@ -110,7 +111,7 @@ namespace Systems.Actions.Movement
         }
     }
     
-    public abstract class MovementAction : Action
+    public class MovementAction : Action
     {
         private MovementActionDatum _movementActionDatum;
         

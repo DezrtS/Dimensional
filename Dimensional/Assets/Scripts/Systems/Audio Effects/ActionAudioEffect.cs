@@ -1,4 +1,6 @@
+using FMOD;
 using FMOD.Studio;
+using FMODUnity;
 using Managers;
 using Scriptables.Actions;
 using Systems.Actions;
@@ -18,7 +20,9 @@ namespace Systems.Audio_Effects
             _actionAudioEvent = actionAudioEvent;
             _gameObject = gameObject;
 
-            if (_actionAudioEvent.CreateInstance) _eventInstance = AudioManager.CreateEventInstance(_actionAudioEvent.EventReference);
+            if (!_actionAudioEvent.CreateInstance) return;
+            _eventInstance = AudioManager.CreateEventInstance(_actionAudioEvent.EventReference);
+            _eventInstance.set3DAttributes(gameObject.To3DAttributes());
         }
 
         public void Play(ActionEventType actionEventType)

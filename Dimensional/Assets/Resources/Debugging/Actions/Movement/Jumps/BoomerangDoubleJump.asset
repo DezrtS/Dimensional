@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: BoomerangDoubleJump
   m_EditorClassIdentifier: 
   activationTime: 0
-  actionVisualEffectData: []
+  actionAudioEvents: []
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: fb96b8fb486c1c848af0acf43530039d, type: 2}
   movementActionType: 2
   performEventOnGrounded: 1
   groundedActionEventType: 5

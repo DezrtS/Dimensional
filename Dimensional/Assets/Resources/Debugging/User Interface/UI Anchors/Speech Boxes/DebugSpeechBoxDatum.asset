@@ -17,7 +17,7 @@ MonoBehaviour:
   minDistance: 5
   maxDistance: 100
   minAngle: 30
-  maxAngle: 90
+  maxAngle: 80
   sizeCurve:
     serializedVersion: 2
     m_Curve:

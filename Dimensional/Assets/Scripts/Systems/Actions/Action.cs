@@ -125,6 +125,7 @@ namespace Systems.Actions
             _activationTimer = ActionDatum.ActivationTime;
             UpdateActionContext(context);
             PlayActionAudio(ActionEventType.Activated);
+            ShakeScreen(ActionEventType.Activated);
             Activated?.Invoke(this, context);
 
             if (_activationTimer == 0) Trigger(context);
@@ -147,6 +148,7 @@ namespace Systems.Actions
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
             PlayActionAudio(ActionEventType.Triggered);
+            ShakeScreen(ActionEventType.Triggered);
             Triggered?.Invoke(this, context);
         }
 
@@ -174,6 +176,7 @@ namespace Systems.Actions
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
             PlayActionAudio(ActionEventType.Deactivated);
+            ShakeScreen(ActionEventType.Deactivated);
             StopActionAudio();
             Deactivated?.Invoke(this, context);
         }
@@ -196,6 +199,7 @@ namespace Systems.Actions
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
             PlayActionAudio(ActionEventType.Interrupted);
+            ShakeScreen(ActionEventType.Interrupted);
             StopActionAudio();
             Interrupted?.Invoke(this, context);
         }
@@ -218,6 +222,7 @@ namespace Systems.Actions
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
             PlayActionAudio(ActionEventType.Cancelled);
+            ShakeScreen(ActionEventType.Cancelled);
             StopActionAudio();
             Cancelled?.Invoke(this, context);
         }
@@ -248,6 +253,14 @@ namespace Systems.Actions
             {
                 actionAudioEffect.Stop();
             }
+        }
+
+        protected void ShakeScreen(ActionEventType actionEventType = ActionEventType.None)
+        {
+            if (!ActionDatum.HasScreenShake) return;
+            var actionScreenShakeEvent = ActionDatum.ActionScreenShakeEvent;
+            if (actionScreenShakeEvent.ActivationEventType != actionEventType) return;
+            CameraManager.Instance.TriggerScreenShake(actionScreenShakeEvent.Duration, actionScreenShakeEvent.Amplitude, actionScreenShakeEvent.AmplitudeCurve, actionScreenShakeEvent.Frequency, actionScreenShakeEvent.FrequencyCurve);
         }
 
         private bool CheckEntityChanged(ActionContext context)

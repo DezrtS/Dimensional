@@ -21,8 +21,14 @@ MonoBehaviour:
     movementActionDatum: {fileID: 11400000, guid: f32bc28b2eeceea40ab476af3344dec1, type: 2}
     movementSynergies: []
   - movementActionType: 4
+    movementActionDatum: {fileID: 11400000, guid: fecf7569487381c498b3d254f3a7db81, type: 2}
+    movementSynergies: []
+  - movementActionType: 5
     movementActionDatum: {fileID: 11400000, guid: 334a7d2f25e6b7941880fe6cad4a5443, type: 2}
     movementSynergies: []
-  - movementActionType: 10
+  - movementActionType: 8
+    movementActionDatum: {fileID: 11400000, guid: cb5ba06ce891dd649ad3013582794074, type: 2}
+    movementSynergies: []
+  - movementActionType: 11
     movementActionDatum: {fileID: 11400000, guid: 07b115ad20dd34b43bf7c7816cdf3f99, type: 2}
     movementSynergies: []

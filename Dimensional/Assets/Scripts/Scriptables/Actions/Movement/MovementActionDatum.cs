@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Scriptables.Actions.Movement
 {
-    public abstract class MovementActionDatum : ActionDatum
+    [CreateAssetMenu(fileName = "MovementActionDatum", menuName = "Scriptable Objects/Actions/Movement/MovementActionDatum")]
+    public class MovementActionDatum : ActionDatum
     {
         [SerializeField] private MovementActionType movementActionType;
         [Space(10)] 
@@ -22,5 +23,12 @@ namespace Scriptables.Actions.Movement
         
         public bool HasMovementDatum => hasMovementDatum;
         public MovementControllerDatum MovementControllerDatum => movementControllerDatum;
+
+        public override Action AttachAction(GameObject actionHolder)
+        {
+            var movementAction = actionHolder.AddComponent<MovementAction>();
+            movementAction.Initialize(this);
+            return movementAction;
+        }
     }
 }

@@ -15,12 +15,12 @@ namespace Systems.Movement
             base.Awake();
         }
 
-        private void FixedUpdate()
+        protected override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (IsKinematic || !UseGravity) return;
             var velocity = GetVelocity();
             if (velocity.y >= maxFallSpeed) return;
-            velocity.y = Mathf.Min(velocity.y + overSpeedDeceleration * Time.fixedDeltaTime, maxFallSpeed);
+            velocity.y = Mathf.Min(velocity.y + overSpeedDeceleration * fixedDeltaTime, maxFallSpeed);
             SetVelocity(velocity);
         }
 

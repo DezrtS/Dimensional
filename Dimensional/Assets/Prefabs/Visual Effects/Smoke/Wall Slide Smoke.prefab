@@ -47,7 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasDuration: 0
   duration: 1
-  visualEffect: {fileID: 7621807683592900695}
+  visualEffects:
+  - {fileID: 7621807683592900695}
 --- !u!1001 &8567546760954884497
 PrefabInstance:
   m_ObjectHideFlags: 0

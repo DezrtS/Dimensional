@@ -3,6 +3,7 @@ using Interfaces;
 using Managers;
 using Scriptables.Entities;
 using Systems.Entities;
+using Systems.Entities.Behaviours;
 using UnityEngine;
 
 namespace Systems.Enemies
@@ -31,6 +32,7 @@ namespace Systems.Enemies
     {
         [SerializeField] private EntityDatum entityDatum;
         private Health _health;
+        private StunBehaviourComponent _stunBehaviour;
 
         public EntityDatum EntityDatum => entityDatum;
         public GameObject GameObject => gameObject;
@@ -43,7 +45,21 @@ namespace Systems.Enemies
             Id = EntityManager.GetNextEntityId();
             _health = GetComponent<Health>();
             _health.HealthStateChanged += HealthOnHealthStateChanged;
+            
+            _stunBehaviour = GetComponent<StunBehaviourComponent>();
+            _stunBehaviour.Stunned += StunBehaviourOnStunned;
+            _stunBehaviour.Recovered += StunBehaviourOnRecovered;
             OnAwake();
+        }
+
+        private void StunBehaviourOnStunned()
+        {
+            ChangeMovementState(MovementState.Stunned);
+        }
+
+        private void StunBehaviourOnRecovered()
+        {
+            ChangeMovementState(MovementState.Wandering);
         }
 
         protected virtual void OnAwake() {}

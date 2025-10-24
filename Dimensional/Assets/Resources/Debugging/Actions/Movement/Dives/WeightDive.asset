@@ -13,6 +13,61 @@ MonoBehaviour:
   m_Name: WeightDive
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents: []
+  hasScreenShake: 1
+  actionScreenShakeEvent:
+    activationEventType: 3
+    duration: 0.5
+    amplitude: 3
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 2
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 3b357fedbecad6e4b9eb69c004732b77, type: 2}
   movementActionType: 5
@@ -117,15 +172,18 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   attackEventType: 3
+  endActionOnHit: 0
   attackDamage: 0
   attackRadius: 5
   attackOffset: {x: 0, y: 0, z: 0}
   attackDirection: {x: 0, y: 0, z: 0}
   attackLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 2048
+  hasHitStop: 1
+  hitStopDuration: 0.1
   hasKnockback: 1
-  knockbackPower: 15
+  forceEventDatum: {fileID: 11400000, guid: da793e7e170d47f4690a8c326a09df19, type: 2}
   knockbackType: 2
   projectileEventType: 0
   projectileDatum: {fileID: 0}
