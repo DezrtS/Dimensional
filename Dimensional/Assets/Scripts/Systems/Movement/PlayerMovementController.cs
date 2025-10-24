@@ -1,4 +1,5 @@
 using System;
+using FMODUnity;
 using Interfaces;
 using Managers;
 using Scriptables.Actions;
@@ -27,6 +28,7 @@ namespace Systems.Movement
         [SerializeField] private float dizzyDuration;
         [Space] 
         [SerializeField] private float landEffectSpeedThreshold;
+        [SerializeField] private EventReference landEffectSound;
         [SerializeField] private VisualEffectPlayer landEffect;
         [SerializeField] private float windStreaksVelocityThreshold = 10f;
         [SerializeField] private ParticleSystem windStreaksParticleSystem;
@@ -256,6 +258,7 @@ namespace Systems.Movement
             {
                 if (_diveMovementAction.IsActive || -_previousYVelocity < landEffectSpeedThreshold) return;
                 landEffect.Play(false);
+                AudioManager.PlayOneShot(landEffectSound, transform.position);
             }
             else
             {

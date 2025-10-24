@@ -15,3 +15,17 @@ MonoBehaviour:
   maxHealth: 10
   hitInvincibilityDuration: 1
   reviveInvincibilityDuration: 1
+  hurtSound:
+    Guid:
+      Data1: 882894506
+      Data2: 1117148910
+      Data3: 438591935
+      Data4: -1067624794
+    Path: event:/Hit
+  deathSound:
+    Guid:
+      Data1: 1109877302
+      Data2: 1249367175
+      Data3: -1330374506
+      Data4: 225979570
+    Path: event:/Die

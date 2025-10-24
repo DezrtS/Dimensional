@@ -14,11 +14,16 @@ namespace Managers
         [field: SerializeField] private EventReference parachuteDeploy;
         [field: SerializeField] private EventReference parachuteGlide;
         
+        [field: Header("SFXs")]
+        [field: SerializeField] private EventReference enterLevel;
+        
         public EventReference Walk => walk;
         public EventReference WallSlide => wallSlide;
         public EventReference BalloonJump => balloonJump;
         public EventReference SpringJump => springJump;
         public EventReference ParachuteDeploy => parachuteDeploy;
         public EventReference ParachuteGlide => parachuteGlide;
+        
+        public EventReference EnterLevel => enterLevel;
     }
 }

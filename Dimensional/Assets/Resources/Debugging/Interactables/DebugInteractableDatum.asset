@@ -17,6 +17,13 @@ MonoBehaviour:
   interactableLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  interactSound:
+    Guid:
+      Data1: -1490300847
+      Data2: 1105528260
+      Data3: -365627982
+      Data4: -322804566
+    Path: event:/EnterLevel
   interactionDelay: 1
   enterTransitionDuration: 1
   exitTransitionDuration: 1

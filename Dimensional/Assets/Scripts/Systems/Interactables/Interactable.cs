@@ -56,6 +56,7 @@ namespace Systems.Interactables
             PreviousInteractContext = context;
             _isInteracting = true;
             _interactionTimer = interactableDatum.InteractionDelay;
+            AudioManager.PlayOneShot(interactableDatum.InteractSound, transform.position);
             if (_interactionTimer > 0)
             {
                 if (interactableCamera) CameraManager.Instance.Transition(null, interactableCamera, interactableDatum.EnterTransitionDuration);

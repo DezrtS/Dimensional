@@ -13,6 +13,35 @@ MonoBehaviour:
   m_Name: ParachuteDive
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 66335378
+        Data2: 1145544333
+        Data3: 2117282986
+        Data4: 505063354
+      Path: event:/ParachuteDeploy
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 1
+  hasScreenShake: 0
+  actionScreenShakeEvent:
+    activationEventType: 0
+    duration: 0
+    amplitude: 0
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 0
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 9e96be4ea896f624da87a8b27d0df625, type: 2}
   movementActionType: 5
@@ -81,6 +110,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   attackEventType: 0
+  endActionOnHit: 0
   attackDamage: 0
   attackRadius: 0
   attackOffset: {x: 0, y: 0, z: 0}
@@ -88,6 +118,12 @@ MonoBehaviour:
   attackLayerMask:
     serializedVersion: 2
     m_Bits: 0
+  doScreenShakeOnHit: 0
+  hasHitStop: 0
+  hitStopDuration: 0
+  hasKnockback: 0
+  forceEventDatum: {fileID: 0}
+  knockbackType: 0
   projectileEventType: 3
   projectileDatum: {fileID: 11400000, guid: 660b2527473f9d34a95eeb1a6b7b41da, type: 2}
   projectilePoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
