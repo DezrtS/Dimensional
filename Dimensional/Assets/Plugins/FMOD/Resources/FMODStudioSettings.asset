@@ -332,11 +332,8 @@ MonoBehaviour:
   MasterBanks:
   - Master
   Banks:
-  - Abilities
-  - Combat
-  - Levels
-  - Movement
-  - Quests
+  - Music
+  - SFX
   - UI
   BanksToLoad: []
   LiveUpdatePort: 9264

@@ -1,4 +1,5 @@
 using System.Collections;
+using Managers;
 using Scriptables.Entities;
 using UnityEngine;
 
@@ -37,6 +38,7 @@ namespace Systems.Entities
         {
             if (damage <= 0) return;
             if (!CanDamage()) Debug.LogWarning("Damaging Invincible Entity");
+            AudioManager.PlayOneShot(healthDatum.HurtSound, gameObject);
             AddHealth(-damage);
             if (!_isDead) GiveInvincibility(healthDatum.HitInvincibilityDuration);
         }
@@ -67,6 +69,7 @@ namespace Systems.Entities
         {
             SetHealth(0);
             _isDead = true;
+            AudioManager.PlayOneShot(healthDatum.DeathSound, gameObject);
             HealthStateChanged?.Invoke(this, _isDead);
             if (destroyOnDeath) Destroy(gameObject);
         }

@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 namespace Scriptables.Interactables
@@ -8,6 +9,8 @@ namespace Scriptables.Interactables
         [SerializeField] private string interactableTitle;
         [SerializeField] private float interactableDistance;
         [SerializeField] private LayerMask interactableLayerMask;
+
+        [SerializeField] private EventReference interactSound;
         
         [SerializeField] private float interactionDelay;
         [SerializeField] private float enterTransitionDuration;
@@ -16,6 +19,8 @@ namespace Scriptables.Interactables
         public string InteractableTitle => interactableTitle;
         public float InteractableDistance => interactableDistance;
         public LayerMask InteractableLayerMask => interactableLayerMask;
+        
+        public EventReference InteractSound => interactSound;
         
         public float InteractionDelay => interactionDelay;
         public float EnterTransitionDuration => enterTransitionDuration;

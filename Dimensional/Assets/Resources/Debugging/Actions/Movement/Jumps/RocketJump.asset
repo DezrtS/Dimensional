@@ -13,8 +13,18 @@ MonoBehaviour:
   m_Name: RocketJump
   m_EditorClassIdentifier: 
   activationTime: 0
-  actionAudioEvents: []
-  hasScreenShake: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 553408714
+        Data2: 1319003022
+        Data3: 1567665072
+        Data4: -2034024229
+      Path: event:/RocketJump
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 1
+  hasScreenShake: 1
   actionScreenShakeEvent:
     activationEventType: 2
     duration: 0.5

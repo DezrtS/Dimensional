@@ -13,9 +13,40 @@ MonoBehaviour:
   m_Name: SphereWallJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: -1724408244
+        Data2: 1297021726
+        Data3: 51703458
+        Data4: 876150356
+      Path: event:/SphereJump
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 1
+  hasScreenShake: 0
+  actionScreenShakeEvent:
+    activationEventType: 0
+    duration: 0
+    amplitude: 0
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 0
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 7a6eb3256a3ffaf4da440968f4e7d466, type: 2}
   movementActionType: 3
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0
