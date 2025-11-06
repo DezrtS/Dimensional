@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{8a478275-215b-411d-b2f3-a8d24de2e6c7}">
 		<property name="assetPath">
-			<value>SpringWallJump2.wav</value>
+			<value>SpringWallJump/SpringWallJump2.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
