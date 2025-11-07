@@ -353,8 +353,11 @@ namespace Systems.Movement
         public void StartCrouching()
         {
             _isCrouching = true;
-            StopRolling();
-            //if (_isRolling) StopRolling();
+            if (_rollMovementAction.IsActive)
+            {
+                StopRolling();
+                _isCrouching = false;
+            }
             
             if (IsGrounded || _diveMovementAction.IsActive || _dashMovementAction.IsActive) return;
             
@@ -366,6 +369,7 @@ namespace Systems.Movement
         {
             CancelAir();
             StopRolling();
+            StopWallSliding();
             
             _isCrouching = false;
             _diveMovementAction.Activate(GetActionContext());
@@ -383,6 +387,7 @@ namespace Systems.Movement
         {
             if (_rollMovementAction.IsActive) return;
             var actionContext = GetActionContext();
+            _isCrouching = false;
             _rollMovementAction.Activate(actionContext);
             
             _dizzyTimer = 0;
@@ -403,6 +408,8 @@ namespace Systems.Movement
 
         private void StartWallSliding()
         {
+            CancelAir();
+            
             _wallSlideMovementAction.Activate(GetActionContext());
             IsWallSliding = true;
             SkipGroundPlatformCheck = true;
@@ -549,7 +556,7 @@ namespace Systems.Movement
             velocity.y = 0;
 
             var input = _playerLook.TransformInput(Mover.GetInput());
-            if (input.magnitude < 0.5f) return false;
+            if (input.magnitude < _playerMovementControllerDatum.WallSlideMinEnterMagnitude) return false;
             
             input.y = 0;
             if (MovementDimensions == Dimensions.Two) input.z = 0;
@@ -559,7 +566,7 @@ namespace Systems.Movement
             for (var i = 0; i < _playerMovementControllerDatum.WallSlideCheckIntervals; i++)
             {
                 var direction = Quaternion.Euler(0, i * intervalAngle, 0) * Vector3.forward;
-                if (Vector3.Dot(input, direction) < 0) continue;
+                if (Vector3.Dot(input, direction) < _playerMovementControllerDatum.WallSlideMinDirectionDot) continue;
                 if (!CheckWallSlideDirection(direction)) continue;
                 _wallSlideDirection = direction;
                 

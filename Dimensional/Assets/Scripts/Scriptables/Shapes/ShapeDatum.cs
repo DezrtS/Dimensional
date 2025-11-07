@@ -48,10 +48,14 @@ namespace Scriptables.Shapes
     [CreateAssetMenu(fileName = "ShapeDatum", menuName = "Scriptable Objects/Shapes/ShapeDatum")]
     public class ShapeDatum : ScriptableObject
     {
+        [SerializeField] private string shapeName;
         [SerializeField] private ShapeType shapeType;
+        [SerializeField] private Sprite shapeIcon;
         [SerializeField] private ShapeMovementAction[] shapeMovementActions;
         
+        public string ShapeName => shapeName;
         public ShapeType ShapeType => shapeType;
+        public Sprite ShapeIcon => shapeIcon;
         public ShapeMovementAction[] ShapeMovementActions => shapeMovementActions;
 
         public Dictionary<MovementActionType, MovementActionDatum> DefineMovementActions()

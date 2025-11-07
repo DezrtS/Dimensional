@@ -16,7 +16,10 @@ namespace Scriptables.Selection_Wheels
             var instance = PlayerController.Instance;
             instance.SetMovementActionShape(UIManager.Instance.SelectedMovementActionType, shapeType);
             instance.ResetMovementActions();
-            selectionWheel.DeactivateSelectionWheel();
+            
+            if (HideOnSelect) selectionWheel.Hide();
+            selectionWheel.Deactivate();
+            UIManager.Instance.CloseActionShapeSelection();
         }
     }
 }

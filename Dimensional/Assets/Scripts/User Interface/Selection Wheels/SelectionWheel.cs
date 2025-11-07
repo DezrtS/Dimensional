@@ -1,3 +1,4 @@
+using System;
 using Managers;
 using Scriptables.Selection_Wheels;
 using UnityEngine;
@@ -7,17 +8,17 @@ namespace User_Interface.Selection_Wheels
 {
     public class SelectionWheel : MonoBehaviour
     {
+        public event Action<SelectionWheel> Cancelled;
+        
         private GameObject _selectionWheelHolder;
         private WheelSection[] _wheelSections;
 
         private InputActionMap _inputActionMap;
         private InputAction _directionInputAction;
 
-        private WheelSection _selectedWheelSection;
-
         public SelectionWheelDatum SelectionWheelDatum { get; private set; }
-        private bool IsActive { get; set; }
-        
+        public bool IsActive { get; private set; }
+        public WheelSection SelectedWheelSection { get; private set; }
 
         private Vector2 _smoothedInput;
         private float _lastSwitchTime;
@@ -29,27 +30,51 @@ namespace User_Interface.Selection_Wheels
 
         private void AssignControls()
         {
+            return;
             _directionInputAction = _inputActionMap.FindAction("Direction");
 
-            var selectInputAction = _inputActionMap.FindAction("Select");
-            selectInputAction.performed += OnSelect;
+            if (SelectionWheelDatum.SelectionWheelSettingsDatum.UseOtherMethod)
+            {
+                var selectActionInputAction = _inputActionMap.FindAction("Select Action");
+                selectActionInputAction.performed += OnQuickSelect;
+            
+                var selectShapeInputAction = _inputActionMap.FindAction("Select Shape");
+                selectShapeInputAction.performed += OnQuickSelect;
+            }
+            else
+            {
+                var selectInputAction = _inputActionMap.FindAction("Select");
+                selectInputAction.performed += OnSelect;
 
-            var cancelInputAction = _inputActionMap.FindAction("Cancel");
-            cancelInputAction.performed += OnCancel;
+                var cancelInputAction = _inputActionMap.FindAction("Cancel");
+                cancelInputAction.performed += OnCancel;
+            }
         }
 
         private void UnassignControls()
         {
-            var selectInputAction = _inputActionMap.FindAction("Select");
-            selectInputAction.performed -= OnSelect;
+            return;
+            if (SelectionWheelDatum.SelectionWheelSettingsDatum.UseOtherMethod)
+            {
+                var selectActionInputAction = _inputActionMap.FindAction("Select Action");
+                selectActionInputAction.performed -= OnQuickSelect;
+            
+                var selectShapeInputAction = _inputActionMap.FindAction("Select Shape");
+                selectShapeInputAction.performed -= OnQuickSelect;
+            }
+            else
+            {
+                var selectInputAction = _inputActionMap.FindAction("Select");
+                selectInputAction.performed -= OnSelect;
 
-            var cancelInputAction = _inputActionMap.FindAction("Cancel");
-            cancelInputAction.performed -= OnCancel;
+                var cancelInputAction = _inputActionMap.FindAction("Cancel");
+                cancelInputAction.performed -= OnCancel;
+            }
         }
 
         private void FixedUpdate()
         {
-            if (!IsActive) return;
+            if (!IsActive || SelectionWheelDatum.SelectionWheelSettingsDatum.UseOtherMethod) return;
 
             var rawInput = _directionInputAction.ReadValue<Vector2>();
 
@@ -62,35 +87,59 @@ namespace User_Interface.Selection_Wheels
             _smoothedInput = Vector2.Lerp(_smoothedInput, rawInput, SelectionWheelDatum.SelectionWheelSettingsDatum.Smoothing);
 
             var wheelSection = CheckSelection(_smoothedInput);
-            if (wheelSection == _selectedWheelSection) return;
+            if (wheelSection == SelectedWheelSection) return;
 
             // Debounce: require time gap before switching
             if (Time.time - _lastSwitchTime < SelectionWheelDatum.SelectionWheelSettingsDatum.DebounceTime) return;
 
-            if (_selectedWheelSection) _selectedWheelSection.OnHoverEnd();
-            _selectedWheelSection = wheelSection;
-            _selectedWheelSection.OnHover();
+            if (SelectedWheelSection) SelectedWheelSection.StopHovering();
+            SelectedWheelSection = wheelSection;
+            SelectedWheelSection.Hover();
 
             _lastSwitchTime = Time.time;
+        }
+        
+        private void OnQuickSelect(InputAction.CallbackContext context)
+        {
+            var input = context.ReadValue<Vector2>();
+            QuickSelect(input);
+        }
+        
+        public void QuickSelect(Vector2 input)
+        {
+            if (SelectedWheelSection) SelectedWheelSection.StopHovering();
+            SelectedWheelSection = FindClosest(input);
+            SelectedWheelSection.Hover();
+            Select();
         }
 
         private void OnSelect(InputAction.CallbackContext context)
         {
             if (!IsActive) return;
-            if (_selectedWheelSection) _selectedWheelSection.Select();
+            Select();
+        }
+
+        public void Select()
+        {
+            if (SelectedWheelSection) SelectedWheelSection.Select();
         }
 
         private void OnCancel(InputAction.CallbackContext context)
         {
             if (!IsActive) return;
-            DeactivateSelectionWheel();
+            Cancel();
+        }
+
+        public void Cancel()
+        {
+            Cancelled?.Invoke(this);
         }
 
         private WheelSection CheckSelection(Vector2 direction)
         {
             // If we have a current selection, check if still inside its angular region
-            if (_selectedWheelSection && _selectedWheelSection.IsInside(direction, SelectionWheelDatum.SelectionWheelSettingsDatum.HysteresisAngle))
-                return _selectedWheelSection;
+            if (SelectedWheelSection && SelectedWheelSection.IsInside(direction, SelectionWheelDatum.SelectionWheelSettingsDatum.HysteresisAngle))
+                return SelectedWheelSection;
 
             // Otherwise, find the closest slice
             return FindClosest(direction);
@@ -116,15 +165,19 @@ namespace User_Interface.Selection_Wheels
         public void GenerateSelectionWheel()
         {
             _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Selection Wheel");
-            AssignControls();
 
             if (SelectionWheelDatum) Destroy(_selectionWheelHolder);
             _selectionWheelHolder = new GameObject("SelectionWheel");
             _selectionWheelHolder.transform.SetParent(transform);
             _selectionWheelHolder.transform.localPosition = Vector3.zero;
+            if (SelectionWheelDatum.HasSelectionWheelPrefab) Instantiate(SelectionWheelDatum.SelectionWheelPrefab, _selectionWheelHolder.transform);
             GenerateWheelSections();
             _selectionWheelHolder.transform.localScale = Vector3.one * Mathf.Min(SelectionWheelDatum.SelectionWheelSettingsDatum.Radius, Screen.height);
-            _selectionWheelHolder.SetActive(IsActive);
+            foreach (var wheelSection in _wheelSections)
+            {
+                wheelSection.SetIsDisabled(true);
+            }
+            Hide();
         }
 
         private void GenerateWheelSections()
@@ -138,34 +191,41 @@ namespace User_Interface.Selection_Wheels
                 _wheelSections[i].Format(i, intervalAngle, SelectionWheelDatum.SelectionWheelSettingsDatum.AngleMargin);
             }
         }
+        
+        public void Show() => _selectionWheelHolder.SetActive(true);
+        public void Hide() => _selectionWheelHolder.SetActive(false);
 
         [ContextMenu("Activate Selection Wheel")]
-        private void Activate() => ActivateSelectionWheel();
-
-        public void ActivateSelectionWheel(bool switchActionMap = true)
+        public void Activate()
         {
+            if (IsActive) return;
+            AssignControls();
             IsActive = true;
-            _selectionWheelHolder.SetActive(IsActive);
-            if (switchActionMap) GameManager.Instance.SwitchInputActionMaps("Selection Wheel");
-            GameManager.SetTimeScale(0.25f);
-            UIManager.Instance.EnableFade();
+            foreach (var wheelSection in _wheelSections)
+            {
+                if (wheelSection == SelectedWheelSection) continue;
+                wheelSection.SetIsDisabled(false);
+            }
+            //if (_selectedWheelSection) _selectedWheelSection.Hover();
         }
 
         [ContextMenu("Deactivate Selection Wheel")]
-        private void Deactivate() => DeactivateSelectionWheel();
-
-        public void DeactivateSelectionWheel(bool resetActionMap = true)
+        public void Deactivate()
         {
+            if (!IsActive) return;
             IsActive = false;
-            _selectionWheelHolder.SetActive(IsActive);
-            if (resetActionMap) GameManager.Instance.ResetInputActionMapToDefault();
-            GameManager.SetTimeScale();
-            UIManager.Instance.DisableFade();
+            UnassignControls();
+            //if (_selectedWheelSection) _selectedWheelSection.StopHovering();
+            foreach (var wheelSection in _wheelSections)
+            {
+                if (wheelSection == SelectedWheelSection) continue;
+                wheelSection.SetIsDisabled(true);
+            }
         }
 
         private void OnDestroy()
         {
-            UnassignControls();
+            if (IsActive) UnassignControls();
             if (SelectionWheelDatum) Destroy(_selectionWheelHolder);
         }
     }

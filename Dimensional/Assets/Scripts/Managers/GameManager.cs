@@ -112,7 +112,10 @@ namespace Managers
 
         public void SwitchInputActionMaps(string newInputActionMap)
         {
-            InputActionAsset.Disable();
+            InputActionAsset.FindActionMap("Player").Disable();
+            InputActionAsset.FindActionMap("Selection Wheel").Disable();
+            InputActionAsset.FindActionMap("UI").Disable();
+            InputActionAsset.FindActionMap("Dialogue").Disable();
             InputActionAsset.FindActionMap(newInputActionMap).Enable();
         }
 

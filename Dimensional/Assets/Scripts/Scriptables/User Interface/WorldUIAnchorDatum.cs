@@ -10,16 +10,21 @@ namespace Scriptables.User_Interface
         
         [SerializeField] private Vector3 offset;
 
+        [SerializeField] private bool useDistanceScaling;
         [SerializeField] private float minDistance;
         [SerializeField] private float maxDistance;
+        
+        [SerializeField] private bool useAngleScaling;
         [SerializeField] private float minAngle;
         [SerializeField] private float maxAngle;
         [SerializeField] private AnimationCurve sizeCurve;
         
         protected GameObject Prefab => prefab;
         public Vector3 Offset => offset;
+        public bool UseDistanceScaling => useDistanceScaling;
         public float MinDistance => minDistance;
         public float MaxDistance => maxDistance;
+        public bool UseAngleScaling => useAngleScaling;
         public float MinAngle => minAngle;
         public float MaxAngle => maxAngle;
         public AnimationCurve SizeCurve => sizeCurve;

@@ -17,6 +17,9 @@ namespace Managers
         [SerializeField] private bool lockAndHideCursor;
         [SerializeField] private Vector3 thirdPersonDamping;
         [SerializeField] private float yOffset2D;
+        [Space]
+        [SerializeField] private float defaultFOV;
+        [SerializeField] private float fovInterpolationSpeed;
 
         private CinemachineBrain _cinemachineBrain;
         private CinemachineCamera _cinemachineCamera;
@@ -24,6 +27,9 @@ namespace Managers
         private CinemachineBasicMultiChannelPerlin _cinemachineBasicMultiChannelPerlin;
         
         private Coroutine _transitionCoroutine;
+
+        private float _currentFOV;
+        private float _targetFOV;
         
         private float _shakeTimer;
         
@@ -45,6 +51,7 @@ namespace Managers
             _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
             _thirdPersonFollow.Damping = thirdPersonDamping;
             _cinemachineBasicMultiChannelPerlin = _cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
+            SetFOV(defaultFOV);
             StopScreenShake();
             base.InitializeSingleton();
         }
@@ -57,11 +64,15 @@ namespace Managers
 
         private void FixedUpdate()
         {
+            var fixedDeltaTime = Time.fixedDeltaTime;
+            _currentFOV = Mathf.Lerp(_currentFOV, _targetFOV, fixedDeltaTime * fovInterpolationSpeed);
+            _cinemachineCamera.Lens.FieldOfView = _currentFOV;
+            
             if (_shakeTimer <= 0) return;
             var ratioTime = 1 - _shakeTimer / _shakeDuration;
             _cinemachineBasicMultiChannelPerlin.AmplitudeGain = _shakeAmplitude * _shakeAmplitudeCurve.Evaluate(ratioTime);
             _cinemachineBasicMultiChannelPerlin.FrequencyGain = _shakeFrequency * _shakeFrequencyCurve.Evaluate(ratioTime);
-            _shakeTimer -= Time.fixedDeltaTime;
+            _shakeTimer -= fixedDeltaTime;
             if (_shakeTimer > 0) return;
             StopScreenShake();
         }
@@ -73,6 +84,9 @@ namespace Managers
 
         public void SetFollow(Transform follow) => _cinemachineCamera.Follow = follow;
         public void SetLookAt(Transform lookAt) => _cinemachineCamera.LookAt = lookAt;
+
+        public void SetFOV(float fov) => _currentFOV = fov;
+        public void SetTargetFOV(float fov) => _targetFOV = fov;
         
         [ContextMenu("Lock and Hide Cursor")]
         public void LockAndHideCursor() => SetCursorState(CursorLockMode.Locked, false);

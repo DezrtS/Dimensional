@@ -13,6 +13,7 @@ namespace Systems.Interactables
         private float _timer;
         
         public bool IsDisabled { get; private set; }
+        public GameObject GameObject => gameObject;
         public InteractableDatum InteractableDatum => interactableDatum;
 
         private void FixedUpdate()
@@ -35,6 +36,16 @@ namespace Systems.Interactables
         {
             _timer = rechargeDuration;
             IsDisabled = true;
+        }
+        
+        public void Hover()
+        {
+            
+        }
+
+        public void StopHovering()
+        {
+            
         }
 
         public void View(InteractContext interactContext, bool show)

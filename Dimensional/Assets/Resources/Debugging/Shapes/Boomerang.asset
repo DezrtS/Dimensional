@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f721498b9576e5f4a9326a172f406c8b, type: 3}
   m_Name: Boomerang
   m_EditorClassIdentifier: 
+  shapeName: Boomerang
   shapeType: 8
+  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
   shapeMovementActions:
   - movementActionType: 2
     movementActionDatum: {fileID: 11400000, guid: 87ed808349d3e2f45884150a5fa6609c, type: 2}

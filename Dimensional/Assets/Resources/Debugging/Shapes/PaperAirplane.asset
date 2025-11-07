@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f721498b9576e5f4a9326a172f406c8b, type: 3}
   m_Name: PaperAirplane
   m_EditorClassIdentifier: 
+  shapeName: Airplane
   shapeType: 9
+  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
   shapeMovementActions:
   - movementActionType: 7
     movementActionDatum: {fileID: 11400000, guid: 9e654e92caa839e48befe68f635c96bd, type: 2}

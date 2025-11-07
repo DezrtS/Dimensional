@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f721498b9576e5f4a9326a172f406c8b, type: 3}
   m_Name: Balloon
   m_EditorClassIdentifier: 
+  shapeName: Balloon
   shapeType: 4
+  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
   shapeMovementActions:
   - movementActionType: 2
     movementActionDatum: {fileID: 11400000, guid: 48e2eae3a64e1fe499a3402c80dcde27, type: 2}

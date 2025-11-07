@@ -7,6 +7,9 @@ namespace Scriptables.Selection_Wheels
     {
         [SerializeField] private float radius;
         [SerializeField] private float angleMargin;
+        [SerializeField] private float angleOffset;
+        [SerializeField] private bool rotateText;
+        [SerializeField] private bool useOtherMethod;
         [SerializeField] private float transitionDuration;
         [Space]
         [SerializeField] private float deadZone = 0.2f;
@@ -16,15 +19,21 @@ namespace Scriptables.Selection_Wheels
         [Space]
         [SerializeField] private Color defaultBackgroundColor;
         [SerializeField] private Color activeBackgroundColor;
+        [SerializeField] private Color disabledBackgroundColor;
         [Space]
         [SerializeField] private Color defaultTextColor;
         [SerializeField] private Color activeTextColor;
+        [SerializeField] private Color disabledTextColor;
         [Space]
         [SerializeField] private Color defaultIconColor;
         [SerializeField] private Color activeIconColor;
+        [SerializeField] private Color disabledIconColor;
         
         public float Radius => radius;
         public float AngleMargin => angleMargin;
+        public float AngleOffset => angleOffset;
+        public bool RotateText => rotateText;
+        public bool UseOtherMethod => useOtherMethod;
         public float TransitionDuration => transitionDuration;
         
         public float DeadZone => deadZone;
@@ -34,11 +43,14 @@ namespace Scriptables.Selection_Wheels
         
         public Color DefaultBackgroundColor => defaultBackgroundColor;
         public Color ActiveBackgroundColor => activeBackgroundColor;
+        public Color DisabledBackgroundColor => disabledBackgroundColor;
         
         public Color DefaultTextColor => defaultTextColor;
         public Color ActiveTextColor => activeTextColor;
+        public Color DisabledTextColor => disabledTextColor;
         
         public Color DefaultIconColor => defaultIconColor;
         public Color ActiveIconColor => activeIconColor;
+        public Color DisabledIconColor => disabledIconColor;
     }
 }

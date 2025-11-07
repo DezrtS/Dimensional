@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasDuration: 1
-  duration: 0.5
+  duration: 1.25
   visualEffects:
   - {fileID: 1001282932152182671}
 --- !u!1001 &8591920643324940809
@@ -100,6 +100,26 @@ PrefabInstance:
     - target: {fileID: 8558238956878568721, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852361388906853766, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[0].m_Value
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852361388906853766, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[1].m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852361388906853766, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[2].m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852361388906853766, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Value.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852361388906853766, guid: 8d0ae03d837e3804fa249cad1db06dd5, type: 3}
+      propertyPath: m_PropertySheet.m_Vector2f.m_Array.Array.data[0].m_Value.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

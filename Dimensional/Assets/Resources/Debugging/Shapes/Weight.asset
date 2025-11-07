@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f721498b9576e5f4a9326a172f406c8b, type: 3}
   m_Name: Weight
   m_EditorClassIdentifier: 
+  shapeName: Weight
   shapeType: 7
+  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
   shapeMovementActions:
   - movementActionType: 5
     movementActionDatum: {fileID: 11400000, guid: a0405e8931a856e4f8861d1f8e9fd2f7, type: 2}

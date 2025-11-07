@@ -18,6 +18,7 @@ namespace Systems.NPCs
         private WorldUIAnchor _worldUIAnchor;
         
         public bool IsDisabled => isDisabled;
+        public GameObject GameObject => gameObject;
         public InteractableDatum InteractableDatum => interactableDatum;
 
         private void Start()
@@ -38,6 +39,16 @@ namespace Systems.NPCs
         }
 
         public void Interact(InteractContext interactContext)
+        {
+            
+        }
+        
+        public void Hover()
+        {
+            
+        }
+
+        public void StopHovering()
         {
             
         }

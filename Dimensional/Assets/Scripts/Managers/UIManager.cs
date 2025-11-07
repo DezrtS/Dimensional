@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Debugging;
 using Scriptables.Interactables;
 using Scriptables.Selection_Wheels;
 using Scriptables.User_Interface;
@@ -22,14 +24,17 @@ namespace Managers
         [SerializeField] private Transform interactableIconTransform;
         [Space]
         [SerializeField] private GameObject fade;
-        [SerializeField] private GameObject selectionWheelTransform;
+        [SerializeField] private GameObject actionSelectionWheelTransform;
+        [SerializeField] private GameObject shapeSelectionWheelTransform;
         [SerializeField] private SelectionWheelDatum actionSelectionWheelDatum;
         
         private MaskReveal _maskReveal;
         private SelectionWheel _actionSelectionWheel;
         private SelectionWheel _shapeSelectionWheel;
         
-        public MovementActionType SelectedMovementActionType { get; private set; }
+        private PlayerUIV1 _playerUI;
+        
+        public MovementActionType SelectedMovementActionType { get; set; }
 
         private void Awake()
         {
@@ -37,13 +42,16 @@ namespace Managers
             _maskReveal.Finished += MaskRevealOnFinished;
             
             if (transitionOnAwake) Transition(true, false);
+            
+            //_playerUI = GetComponent<PlayerUIV1>();
         }
 
         private void Start()
         {
-            if (!actionSelectionWheelDatum) return;
-            _actionSelectionWheel = actionSelectionWheelDatum.AttachSelectionWheel(selectionWheelTransform);
-            _actionSelectionWheel.GenerateSelectionWheel();
+            //if (!actionSelectionWheelDatum) return;
+            //_actionSelectionWheel = actionSelectionWheelDatum.AttachSelectionWheel(actionSelectionWheelTransform);
+            //_actionSelectionWheel.GenerateSelectionWheel();
+            //_actionSelectionWheel.Cancelled += SelectionWheelOnCancelled;
         }
 
         private void Update()
@@ -63,19 +71,41 @@ namespace Managers
         {
             _maskReveal.Transition(invert, reverse, duration);
         }
+
+        public GameObject GetShapeSelectionWheelGameObject(bool useOtherMethod)
+        {
+            return useOtherMethod ? _playerUI.ShapeSelectionWheelTransform : shapeSelectionWheelTransform;
+        }
         
         public void EnableFade() => fade.SetActive(true);
         public void DisableFade() => fade.SetActive(false);
 
-        public void ActivateActionSelectionWheel() => _actionSelectionWheel.ActivateSelectionWheel();
-
-        public void ActivateShapeSelectionWheel(MovementActionType movementActionType, SelectionWheelDatum selectionWheelDatum)
+        public void OpenActionShapeSelection()
         {
-            if (_shapeSelectionWheel) Destroy(_shapeSelectionWheel);
-            SelectedMovementActionType = movementActionType;
-            _shapeSelectionWheel = selectionWheelDatum.AttachSelectionWheel(selectionWheelTransform);
-            _shapeSelectionWheel.GenerateSelectionWheel();
-            _shapeSelectionWheel.ActivateSelectionWheel(false);
+            return;
+            _actionSelectionWheel.Show();
+            _actionSelectionWheel.Activate();   
+            
+            GameManager.Instance.SwitchInputActionMaps("Selection Wheel");
+            GameManager.SetTimeScale(0.25f);
+            EnableFade();
+        }
+
+        public void CloseActionShapeSelection()
+        {
+            return;
+            _playerUI.CloseActionShapeSelection();
+            _actionSelectionWheel.Hide();
+            _actionSelectionWheel.Deactivate();   
+            
+            GameManager.Instance.ResetInputActionMapToDefault();
+            GameManager.SetTimeScale();
+            DisableFade();
+        }
+
+        private void SelectionWheelOnCancelled(SelectionWheel selectionWheel)
+        {
+            CloseActionShapeSelection();
         }
 
         private static void MaskRevealOnFinished()

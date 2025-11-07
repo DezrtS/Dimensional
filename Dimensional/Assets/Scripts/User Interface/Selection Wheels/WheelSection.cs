@@ -18,6 +18,7 @@ namespace User_Interface.Selection_Wheels
         [SerializeField] private RectTransform scalePivot;
         [Space]
         [SerializeField] private RectTransform sectionRotationPivot;
+        [SerializeField] private RectTransform marginRotationPivot;
         [SerializeField] private RectTransform textRotationPivot;
         [SerializeField] private RectTransform iconRotationPivot;
         [Space]
@@ -25,7 +26,6 @@ namespace User_Interface.Selection_Wheels
         [SerializeField] private RectTransform iconPivot;
         
         private WheelSectionDatum _wheelSectionDatum;
-        private SelectionWheel _selectionWheel;
         private SelectionWheelSettingsDatum _selectionWheelSettingsDatum;
         private Animator _animator;
         private bool _isActive;
@@ -35,6 +35,7 @@ namespace User_Interface.Selection_Wheels
         private float _transitionValue;
         
         public Vector2 Direction { get; private set; }
+        protected SelectionWheel SelectionWheel { get; private set; }
 
         private void Awake()
         {
@@ -48,11 +49,11 @@ namespace User_Interface.Selection_Wheels
             //_animator.SetFloat(Transition, _transitionValue);
         }
 
-        public void Initialize(WheelSectionDatum wheelSectionDatum, SelectionWheel selectionWheel)
+        public virtual void Initialize(WheelSectionDatum wheelSectionDatum, SelectionWheel selectionWheel)
         {
             _wheelSectionDatum = wheelSectionDatum;
-            _selectionWheel = selectionWheel;
-            _selectionWheelSettingsDatum = _selectionWheel.SelectionWheelDatum.SelectionWheelSettingsDatum;
+            SelectionWheel = selectionWheel;
+            _selectionWheelSettingsDatum = SelectionWheel.SelectionWheelDatum.SelectionWheelSettingsDatum;
             
             sectionBackground.color = _selectionWheelSettingsDatum.DefaultBackgroundColor;
             sectionText.text = _wheelSectionDatum.SectionName;
@@ -71,62 +72,70 @@ namespace User_Interface.Selection_Wheels
 
         public void Format(int index, float intervalAngle, float angleMargin)
         {
-            var angleOffset = intervalAngle * index;
-            _halfAngleSize = (intervalAngle - angleMargin) / 2f;
+            var angleOffset = intervalAngle * index + _selectionWheelSettingsDatum.AngleOffset;
+            _halfAngleSize = intervalAngle / 2f; //(intervalAngle - angleMargin) / 2f;
             var sectionRotation = Quaternion.Euler(0, 0, -(angleOffset - _halfAngleSize));
             sectionRotationPivot.localRotation = sectionRotation;
+
+            var margin = angleMargin / 2f;
+            var marginRotation = Quaternion.Euler(0, 0, -margin);
+            marginRotationPivot.localRotation = marginRotation;
             
             var rotation = Quaternion.Euler(0, 0, -angleOffset);
-            textRotationPivot.localRotation = rotation;
-            iconRotationPivot.localRotation = rotation;
-            
             var inverseRotation = Quaternion.Inverse(rotation);
-            textPivot.localRotation = inverseRotation;
+            
+            iconRotationPivot.localRotation = rotation;
             iconPivot.localRotation = inverseRotation;
 
-            switch (angleOffset)
+            if (_selectionWheelSettingsDatum.RotateText)
             {
-                case 0:
-                    textPivot.pivot = new Vector2(0.5f, 0);
-                    sectionText.alignment = TextAlignmentOptions.Center;
-                    break;
-                case < 90:
-                    textPivot.pivot = new Vector2(0, 0);
-                    sectionText.alignment = TextAlignmentOptions.Left;
-                    break;
-                case 90:
-                    textPivot.pivot = new Vector2(0, 0.5f);
-                    sectionText.alignment = TextAlignmentOptions.Left;
-                    break;
-                case < 180:
-                    textPivot.pivot = new Vector2(0, 1);
-                    sectionText.alignment = TextAlignmentOptions.Left;
-                    break;
-                case 180:
-                    textPivot.pivot = new Vector2(0.5f, 1);
-                    sectionText.alignment = TextAlignmentOptions.Center;
-                    break;
-                case < 270:
-                    textPivot.pivot = new Vector2(1, 1);
-                    sectionText.alignment = TextAlignmentOptions.Right;
-                    break;
-                case 270:
-                    textPivot.pivot = new Vector2(1, 0.5f);
-                    sectionText.alignment = TextAlignmentOptions.Right;
-                    break;
-                case < 360:
-                    textPivot.pivot = new Vector2(1, 0);
-                    sectionText.alignment = TextAlignmentOptions.Right;
-                    break;
-                default:
-                    textPivot.pivot = new Vector2(0.5f, 0.5f);
-                    sectionText.alignment = TextAlignmentOptions.Center;
-                    break;
+                textRotationPivot.localRotation = rotation;
+                textPivot.localRotation = inverseRotation;
+                
+                switch (angleOffset)
+                {
+                    case 0:
+                        textPivot.pivot = new Vector2(0.5f, 0);
+                        sectionText.alignment = TextAlignmentOptions.Center;
+                        break;
+                    case < 90:
+                        textPivot.pivot = new Vector2(0, 0);
+                        sectionText.alignment = TextAlignmentOptions.Left;
+                        break;
+                    case 90:
+                        textPivot.pivot = new Vector2(0, 0.5f);
+                        sectionText.alignment = TextAlignmentOptions.Left;
+                        break;
+                    case < 180:
+                        textPivot.pivot = new Vector2(0, 1);
+                        sectionText.alignment = TextAlignmentOptions.Left;
+                        break;
+                    case 180:
+                        textPivot.pivot = new Vector2(0.5f, 1);
+                        sectionText.alignment = TextAlignmentOptions.Center;
+                        break;
+                    case < 270:
+                        textPivot.pivot = new Vector2(1, 1);
+                        sectionText.alignment = TextAlignmentOptions.Right;
+                        break;
+                    case 270:
+                        textPivot.pivot = new Vector2(1, 0.5f);
+                        sectionText.alignment = TextAlignmentOptions.Right;
+                        break;
+                    case < 360:
+                        textPivot.pivot = new Vector2(1, 0);
+                        sectionText.alignment = TextAlignmentOptions.Right;
+                        break;
+                    default:
+                        textPivot.pivot = new Vector2(0.5f, 0.5f);
+                        sectionText.alignment = TextAlignmentOptions.Center;
+                        break;
+                }
+                
+                var position = textRotationPivot.localPosition;
+                position.x = 0;
+                textRotationPivot.localPosition = position;
             }
-
-            var position = textRotationPivot.localPosition;
-            position.x = 0;
-            textRotationPivot.localPosition = position;
             
             Direction = new Vector2(
                 Mathf.Sin(angleOffset * Mathf.Deg2Rad),
@@ -140,26 +149,40 @@ namespace User_Interface.Selection_Wheels
         }
 
         [ContextMenu("Hover")]
-        public void OnHover()
+        public void Hover()
         {
             _isActive = true;
             sectionBackground.color = _selectionWheelSettingsDatum.ActiveBackgroundColor;
             sectionText.color = _selectionWheelSettingsDatum.ActiveTextColor;
             sectionIcon.color = _selectionWheelSettingsDatum.ActiveIconColor;
+            OnHover();
         }
+        
+        protected virtual void OnHover() {}
 
-        [ContextMenu("End Hover")]
-        public void OnHoverEnd()
+        [ContextMenu("Stop Hover")]
+        public void StopHovering()
         {
             _isActive = false;
             sectionBackground.color = _selectionWheelSettingsDatum.DefaultBackgroundColor;
             sectionText.color = _selectionWheelSettingsDatum.DefaultTextColor;
             sectionIcon.color = _selectionWheelSettingsDatum.DefaultIconColor;
+            OnStopHovering();
+        }
+        
+        protected virtual void OnStopHovering() {}
+
+        public virtual void Select()
+        {
+            _wheelSectionDatum.Select(SelectionWheel, this);
+            if (_wheelSectionDatum.CloseOnSelect) SelectionWheel.Deactivate();
         }
 
-        public void Select()
+        public void SetIsDisabled(bool isDisabled)
         {
-            _wheelSectionDatum.Select(_selectionWheel, this);
+            sectionBackground.color = isDisabled ? _selectionWheelSettingsDatum.DisabledBackgroundColor : _selectionWheelSettingsDatum.DefaultBackgroundColor;
+            sectionText.color = isDisabled ? _selectionWheelSettingsDatum.DisabledTextColor : _selectionWheelSettingsDatum.DefaultTextColor;
+            sectionIcon.color = isDisabled ? _selectionWheelSettingsDatum.DisabledIconColor : _selectionWheelSettingsDatum.DefaultIconColor;
         }
     }
 }

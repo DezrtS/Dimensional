@@ -21,15 +21,43 @@ namespace Scriptables.Visual_Effects
         public ActionEventType EffectStartEventType => effectStartEventType;
         public bool StopOnActionEnd => stopOnActionEnd;
     }
+
+    public enum AnimationEventType
+    {
+        Trigger,
+        Bool
+    }
+
+    [Serializable]
+    public struct ActionAnimation
+    {
+        [SerializeField] private string animationName;
+        [SerializeField] private AnimationEventType animationEventType;
+        [SerializeField] private ActionEventType animationStartEventType;
+        
+        public string AnimationName => animationName;
+        public AnimationEventType AnimationEventType => animationEventType;
+        public ActionEventType AnimationStartEventType => animationStartEventType;
+
+        public ActionAnimation(string animationName, AnimationEventType animationEventType,
+            ActionEventType animationStartEventType)
+        {
+            this.animationName = animationName;
+            this.animationEventType = animationEventType;
+            this.animationStartEventType = animationStartEventType;
+        }
+    }
     
     [CreateAssetMenu(fileName = "ActionVisualEffectDatum", menuName = "Scriptable Objects/Visual Effects/Actions/ActionVisualEffectDatum")]
     public class ActionVisualEffectDatum : ScriptableObject
     {
         [SerializeField] private GameObject actionVisualEffectPrefab;
         [SerializeField] private ActionEffectPlayer[] actionParticleEffects;
+        [SerializeField] private ActionAnimation[] actionAnimations;
         
         protected GameObject ActionVisualEffectPrefab => actionVisualEffectPrefab;
         public ActionEffectPlayer[] ActionParticleEffects => actionParticleEffects;
+        public ActionAnimation[] ActionAnimations => actionAnimations;
 
         public virtual ActionVisualEffect AttachActionVisualEffect(Transform parent)
         {

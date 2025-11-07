@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c986daaaa19ba99438925ba2d88c4c66, type: 3}
+  m_Name: DashWheel
+  m_EditorClassIdentifier: 
+  hasSelectionWheelPrefab: 1
+  selectionWheelPrefab: {fileID: 6276590514835411857, guid: 4e6cac0d4317b0c418c23302ec5ea21d, type: 3}
+  selectionWheelSettingsDatum: {fileID: 11400000, guid: a8e2409b8f5d9b649bd982996b8908f2, type: 2}
+  wheelSectionData:
+  - {fileID: 11400000, guid: 73a9b086d09cc9446a7cfad5376686eb, type: 2}
+  - {fileID: 11400000, guid: dd696c9c33309ed48a906febc9da0510, type: 2}
+  - {fileID: 11400000, guid: 8e005e68b2d1d5743b60e04c3a3c1778, type: 2}
+  - {fileID: 11400000, guid: 34ab71c1270d12c4183616e17099c58d, type: 2}

@@ -29,10 +29,5 @@ namespace Systems.Visual_Effects
         {
             
         }
-
-        protected override void ActionOnEntityChanged(Action action, ActionContext context)
-        {
-            
-        }
     }
 }
