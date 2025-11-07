@@ -79,7 +79,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   actionVisualEffectData:
-  - {fileID: 11400000, guid: 429cd944064dae74a9821e53fb61be43, type: 2}
+  - {fileID: 11400000, guid: d8a925a1681c0ca43a806ab6bd591269, type: 2}
   movementActionType: 2
   performEventOnGrounded: 0
   groundedActionEventType: 0

@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383155661398af94c9ac31190fb51a38, type: 3}
   m_Name: Jump
   m_EditorClassIdentifier: 
-  wheelSectionPrefab: {fileID: 1181458309690274975, guid: 3d3611f8ebb277542b72919261cffdb8, type: 3}
+  wheelSectionPrefab: {fileID: 1181458309690274975, guid: 7e92e88c3b7413746ae629ced7f0434b, type: 3}
+  closeOnSelect: 0
+  hideOnSelect: 1
+  hideOnCancel: 1
   sectionName: Jump
-  sectionIcon: {fileID: -1926013054, guid: 0b91b40848e8db2488888ea5ca1b729e, type: 3}
+  sectionIcon: {fileID: -235258640, guid: 2ad360a0948ff1745a4e68502fc80071, type: 3}
+  enableShapeSelectionWheelOnSelect: 1
+  cancelSelectionWheelOnSelect: 0
+  useOtherMethod: 0
   movementActionType: 1
   selectionWheelDatum: {fileID: 11400000, guid: 6d60ec9640c8f9446a6cf91cceed97a2, type: 2}

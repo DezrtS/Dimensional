@@ -12,7 +12,7 @@ Shader "Custom/CelShadedDitherFade"
         // Cel shading controls
         _MinBrightness("Min Brightness", Range(-1,1)) = 0.2
         _MaxBrightness("Max Brightness", Range(0,1)) = 1.0
-        _Shades("Number of Shades", Range(2,8)) = 3
+        _Shades("Number of Shades", Range(2,16)) = 3
     }
 
     SubShader

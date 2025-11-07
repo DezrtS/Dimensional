@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481c75d81418fc945af13cde4a9c8625, type: 3}
   m_Name: Spring
   m_EditorClassIdentifier: 
-  wheelSectionPrefab: {fileID: 1181458309690274975, guid: 3d3611f8ebb277542b72919261cffdb8, type: 3}
+  wheelSectionPrefab: {fileID: 1181458309690274975, guid: 59d06832d64e31d40b98374bccbf6964, type: 3}
+  closeOnSelect: 0
+  hideOnSelect: 1
+  hideOnCancel: 0
   sectionName: Spring
   sectionIcon: {fileID: -1926013054, guid: 0b91b40848e8db2488888ea5ca1b729e, type: 3}
   shapeType: 2

@@ -24,7 +24,26 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 1
     activationEventType: 1
-  actionVisualEffectData: []
+  hasScreenShake: 0
+  actionScreenShakeEvent:
+    activationEventType: 0
+    duration: 0
+    amplitude: 0
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 0
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: ba209abf422e21d4aa5af1bde3b3432c, type: 2}
   movementActionType: 6
   performEventOnGrounded: 1
   groundedActionEventType: 3

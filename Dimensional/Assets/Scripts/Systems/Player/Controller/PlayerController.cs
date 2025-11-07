@@ -20,6 +20,8 @@ namespace Systems.Player
 {
     public class PlayerController : Singleton<PlayerController>, IEntity, IMove, IAim
     {
+        public event Action SwitchedWheel;
+        
         [SerializeField] private bool setCameraFollowOnStart;
         [SerializeField] private bool setCameraLookOnStart;
         [Space]
@@ -29,6 +31,9 @@ namespace Systems.Player
         [SerializeField] private MovementActionShapesPreset[] movementActionShapesPresets;
         [Space] 
         [SerializeField] private ResetPlayerDatum deathResetPlayerDatum;
+        [Space]
+        [SerializeField] private float interactionRadius;
+        [SerializeField] private LayerMask interactionLayerMask;
         [Space]
         [SerializeField] private MeshRenderer[] eyeMeshRenderers;
         [SerializeField] private Material defaultEyeMaterial;
@@ -43,6 +48,7 @@ namespace Systems.Player
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
         
+        private readonly List<IInteractable> _interactables = new List<IInteractable>();
         private IInteractable _interactable;
 
         private bool _isResetting;
@@ -167,8 +173,11 @@ namespace Systems.Player
             var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
             openWheelInputAction.performed += OnOpenWheel;
             
-            var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
-            switchShapesInputAction.performed += OnSwitchShapes;
+            //var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
+            //switchShapesInputAction.performed += OnSwitchShapes;
+            
+            var switchWheelInputAction = _inputActionMap.FindAction("Switch Wheel");
+            switchWheelInputAction.performed += OnSwitchWheel;
             
             _inputActionMap.Enable();
         }
@@ -205,6 +214,12 @@ namespace Systems.Player
             var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
             openWheelInputAction.performed -= OnOpenWheel;
             
+            //var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
+            //switchShapesInputAction.performed -= OnSwitchShapes;
+            
+            var switchWheelInputAction = _inputActionMap.FindAction("Switch Wheel");
+            switchWheelInputAction.performed -= OnSwitchWheel;
+            
             _inputActionMap.Disable();
         }
 
@@ -230,6 +245,7 @@ namespace Systems.Player
         private void FixedUpdate()
         {
             _playerMovementController.Move(Quaternion.Euler(0, PlayerLook.XRotation, 0));
+            if (_interactables.Count > 0) CheckInteractables();
         }
 
         private void LateUpdate()
@@ -240,16 +256,35 @@ namespace Systems.Player
         private void OnTriggerEnter(Collider other)
         {
             if (!other.TryGetComponent(out IInteractable interactable)) return;
-            _interactable = interactable;
-            _interactable.View(InteractContext.Construct(gameObject), true);
+            _interactables.Add(interactable);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (!other.TryGetComponent(out IInteractable interactable)) return;
-            interactable.View(InteractContext.Construct(gameObject), false);
-            if (_interactable != interactable) return;
-            _interactable = null;
+            _interactables.Remove(interactable);
+            interactable.StopHovering();
+        }
+
+        private void CheckInteractables()
+        {
+            if (_interactables.Count == 1)
+            {
+                _interactable = _interactables[0];
+                _interactable.Hover();
+                return;
+            }
+            
+            var closestAngleDifference = _interactable != null ? Vector3.Angle(PlayerLook.Root.forward, _interactable.GameObject.transform.position - transform.position) : float.MaxValue;
+            foreach (var interactable in _interactables)
+            {
+                var angleDifference = Vector3.Angle(PlayerLook.Root.forward, interactable.GameObject.transform.position - transform.position);
+                if (angleDifference > closestAngleDifference) continue;
+                _interactable?.StopHovering();
+                closestAngleDifference = angleDifference;
+                _interactable = interactable;
+                _interactable.Hover();
+            }
         }
 
         public void SetDizzyEyes(bool dizzyEyes)
@@ -371,7 +406,7 @@ namespace Systems.Player
 
         private static void OnOpenWheel(InputAction.CallbackContext context)
         {
-            UIManager.Instance.ActivateActionSelectionWheel();
+            UIManager.Instance.OpenActionShapeSelection();
         }
         
         private void OnSwitchShapes(InputAction.CallbackContext context)
@@ -383,11 +418,16 @@ namespace Systems.Player
                 { Vector2.up, 1 },
                 { Vector2.right, 2 },
                 { Vector2.down, 3 },
-            };
+            };  
 
             var index = indexMap[input];
             if (index >= movementActionShapesPresets.Length) return;
             SetMovementActionShapesPreset(movementActionShapesPresets[index]);
+        }
+        
+        private void OnSwitchWheel(InputAction.CallbackContext context)
+        {
+            SwitchedWheel?.Invoke();
         }
 
         private IEnumerator ResetRoutine(ResetPlayerDatum resetPlayerDatum, Vector3 defaultResetPosition)

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b602cadd07f47df4db389c2e80d17e55, type: 3}
+  m_Name: RocketDive
+  m_EditorClassIdentifier: 
+  actionVisualEffectPrefab: {fileID: 2875019491075706988, guid: bf2a958fc70b68e428bad673d21981a3, type: 3}
+  actionParticleEffects:
+  - effectPlayerPrefab: {fileID: 2019662990553401899, guid: 94f0178a6b58e5342b5d9ede2e3c873d, type: 3}
+    attachPoolToTransform: 0
+    objectPoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
+    effectStartEventType: 2
+    stopOnActionEnd: 0
+  shapeType: 3
+  activationEventType: 1

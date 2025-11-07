@@ -26,6 +26,7 @@ namespace Systems.Interactables
         private WorldUIAnchor _worldUIAnchor;
         
         public bool IsDisabled { get; set; }
+        public GameObject GameObject => gameObject;
         public InteractableDatum InteractableDatum => interactableDatum;
         protected CinemachineCamera InteractableCamera => interactableCamera;
         protected InteractContext PreviousInteractContext { get; private set; }
@@ -91,6 +92,16 @@ namespace Systems.Interactables
             if (_targetTransform != other.transform) return;
             _targetTransform = null;
             _worldUIAnchor.SetTargetTransform(null);
+        }
+
+        public void Hover()
+        {
+            
+        }
+
+        public void StopHovering()
+        {
+            
         }
 
         public void View(InteractContext interactContext, bool show)

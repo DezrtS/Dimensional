@@ -43,9 +43,8 @@ namespace User_Interface
             if (!TargetTransform) return;
 
             OnFixedUpdate();
-            var distanceRatio = GetDistanceRatio();
-            var angleRatio = GetAngleRatio();
-            //Debug.Log($"Distance: {distanceRatio}, Angle: {angleRatio}");
+            var distanceRatio = WorldUIAnchorDatum.UseDistanceScaling ? GetDistanceRatio() : 0;
+            var angleRatio = WorldUIAnchorDatum.UseAngleScaling ? GetAngleRatio() : 0;
             var ratio = Mathf.Clamp01(Mathf.Max(distanceRatio, angleRatio));
             var size = WorldUIAnchorDatum.SizeCurve.Evaluate(ratio);
             transform.localScale = new Vector3(size, size, size);

@@ -7780,7 +7780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultResetPosition: {x: 0, y: 0, z: 0}
-  resetPlayerDatum: {fileID: 0}
+  resetPlayerDatum: {fileID: 11400000, guid: 4b69e622dcac12b4ebedeb26149d180b, type: 2}
 --- !u!65 &1084102250
 BoxCollider:
   m_ObjectHideFlags: 0

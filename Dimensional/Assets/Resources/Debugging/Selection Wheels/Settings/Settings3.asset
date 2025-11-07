@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc6f2226c5afb344983afaa7d76384f, type: 3}
+  m_Name: Settings3
+  m_EditorClassIdentifier: 
+  radius: 300
+  angleMargin: 4
+  angleOffset: 0
+  rotateText: 1
+  useOtherMethod: 1
+  transitionDuration: 2
+  deadZone: 0.7
+  smoothing: 0.5
+  hysteresisAngle: 5
+  debounceTime: 0.01
+  defaultBackgroundColor: {r: 0, g: 0, b: 0, a: 0.5882353}
+  activeBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledBackgroundColor: {r: 0.32704395, g: 0.32704395, b: 0.32704395, a: 0.5882353}
+  defaultTextColor: {r: 1, g: 1, b: 1, a: 0.78431374}
+  activeTextColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledTextColor: {r: 1, g: 1, b: 1, a: 0.78431374}
+  defaultIconColor: {r: 1, g: 1, b: 1, a: 1}
+  activeIconColor: {r: 0, g: 0, b: 0, a: 1}
+  disabledIconColor: {r: 0.74213827, g: 0.74213827, b: 0.74213827, a: 1}

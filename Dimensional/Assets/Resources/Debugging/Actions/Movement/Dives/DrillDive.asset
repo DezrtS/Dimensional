@@ -42,7 +42,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  actionVisualEffectData: []
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: fc8dc435ab7e2834b8772f9557748a60, type: 2}
   movementActionType: 5
   performEventOnGrounded: 1
   groundedActionEventType: 3

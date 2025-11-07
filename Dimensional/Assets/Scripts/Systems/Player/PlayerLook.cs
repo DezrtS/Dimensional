@@ -2,6 +2,7 @@ using System;
 using Interfaces;
 using Managers;
 using Scriptables.Player;
+using Systems.Movement;
 using UnityEngine;
 
 namespace Systems.Player
@@ -21,6 +22,9 @@ namespace Systems.Player
 
         private Transform _cameraTransform;
         private IAim _aim;
+        
+        private CameraManager _cameraManager;
+        private ForceController _forceController;
 
         // 2D
         private Vector3 _lookPosition;
@@ -36,6 +40,7 @@ namespace Systems.Player
         private void Awake()
         {
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
+            _forceController = GetComponent<ForceController>();
             var instance = CameraManager.Instance;
             if (instance)
             {
@@ -55,6 +60,7 @@ namespace Systems.Player
         private void CameraManagerOnInitialized(CameraManager instance)
         {
             _cameraTransform = instance.Camera.transform;
+            _cameraManager = instance;
             instance.ActiveStateChanged += CameraManagerOnActiveStateChanged;
         }
 
@@ -68,6 +74,13 @@ namespace Systems.Player
             var distance = Vector3.Distance(_cameraTransform.position, root.position);
             var ratio = (distance - minDitherDistance) / maxDitherDistance;
             playerMaterial.SetFloat(Fade, Mathf.Clamp01(ratio));
+            
+            var velocity = _forceController.GetVelocity();
+            if (!playerLookDatum.UseYVelocity) velocity.y = 0;
+            var speed = velocity.magnitude;
+            var speedRatio = (speed - playerLookDatum.MinSpeed) / playerLookDatum.MaxSpeed;
+            var fovDifference = playerLookDatum.MaxFOV - playerLookDatum.MinFOV;
+            _cameraManager.SetTargetFOV(playerLookDatum.MinFOV + playerLookDatum.FovCurve.Evaluate(Mathf.Clamp01(speedRatio)) * fovDifference);
         }
 
         public void Initialize(IAim aim)

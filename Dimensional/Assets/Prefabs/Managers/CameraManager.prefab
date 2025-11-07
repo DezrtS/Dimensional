@@ -359,3 +359,5 @@ MonoBehaviour:
   lockAndHideCursor: 0
   thirdPersonDamping: {x: 0, y: 0.5, z: 0}
   yOffset2D: 2
+  defaultFOV: 0
+  fovInterpolationSpeed: 5

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c986daaaa19ba99438925ba2d88c4c66, type: 3}
+  m_Name: Actions1
+  m_EditorClassIdentifier: 
+  hasSelectionWheelPrefab: 1
+  selectionWheelPrefab: {fileID: 6276590514835411857, guid: 72ab84cd1c73c7945801c98b74b24cb9, type: 3}
+  selectionWheelSettingsDatum: {fileID: 11400000, guid: ced87726b008e554297e6a0bceb2a0ab, type: 2}
+  wheelSectionData:
+  - {fileID: 11400000, guid: 6f3331b5a4ba62949b2aa4cd017f7f26, type: 2}
+  - {fileID: 11400000, guid: 7f99e89ae2683954bb63b04267ffcb7e, type: 2}
+  - {fileID: 11400000, guid: b476c23da7e53ac47af77e18c9ae9bb7, type: 2}
+  - {fileID: 11400000, guid: abb72a61131446a4487b362c3a3951e8, type: 2}

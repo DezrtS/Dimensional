@@ -189,6 +189,15 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch Wheel"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc80712e-55ab-425d-80f8-d1f48c091b04"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -609,6 +618,28 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""action"": ""Open Wheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f6f3e4f-392b-4de8-8487-4085c5e51b15"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Switch Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3fe03f20-374b-4fc0-882d-2a48c07bea70"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Switch Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -787,6 +818,24 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select Action"",
+                    ""type"": ""Value"",
+                    ""id"": ""09f5e54a-ed88-4fae-9be1-2c8d341c52d8"",
+                    ""expectedControlType"": ""Dpad"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Select Shape"",
+                    ""type"": ""Value"",
+                    ""id"": ""32ca3bb3-c341-497e-9815-41243e2e438a"",
+                    ""expectedControlType"": ""Dpad"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -888,6 +937,72 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""action"": ""Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be7477ea-c6a9-4331-be76-4739541942cd"",
+                    ""path"": ""<Gamepad>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Select Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""68db9c7f-a072-448f-af59-ebbf90527757"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Shape"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""b72e72f0-ee07-4e0c-b46b-e5462b1b26ae"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select Shape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""9f5783df-7e5f-430e-b3e5-c4b89e121394"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select Shape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""6c01f3e8-e89c-41f9-85ac-a61760830f24"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select Shape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""70dfb11c-7ec2-4af2-894b-f74645196cee"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Select Shape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1406,6 +1521,124 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Wheel Selection"",
+            ""id"": ""8b7eac55-1ec9-4812-b6c7-ea65ae8d70c4"",
+            ""actions"": [
+                {
+                    ""name"": ""Action Wheel"",
+                    ""type"": ""Button"",
+                    ""id"": ""69d32c2d-e66c-4e50-8ca6-23de4dc5fb71"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shape Wheel"",
+                    ""type"": ""Button"",
+                    ""id"": ""b730ab97-839d-418d-95df-70853db39ee7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""116bc959-afc0-465f-84ae-10e9e075c8af"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Action Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""539d1ee1-8a14-489a-a76b-bc08b3e30ba5"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Shape Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Action Selection"",
+            ""id"": ""0e0dd0f2-1ef6-466c-84b6-cd60eafceabb"",
+            ""actions"": [
+                {
+                    ""name"": ""Switch Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce2b5fc7-f25d-447d-bb64-261d905120a6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select Shape"",
+                    ""type"": ""Value"",
+                    ""id"": ""0011680b-1080-4e2a-a49d-a60a669959a7"",
+                    ""expectedControlType"": ""Dpad"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""25fc7f56-abb0-4515-83d5-92333706e683"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Action"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""774b71b5-5368-4ed1-a70c-f9958c9c07e5"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""014ac353-7508-4d07-9376-cfdaf9e13106"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5ae6481-2ed3-47b1-a6c0-62d920fe6a4e"",
+                    ""path"": ""<Gamepad>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Select Shape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1484,6 +1717,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_Player_Air = m_Player.FindAction("Air", throwIfNotFound: true);
         m_Player_SwitchShapes = m_Player.FindAction("Switch Shapes", throwIfNotFound: true);
         m_Player_OpenWheel = m_Player.FindAction("Open Wheel", throwIfNotFound: true);
+        m_Player_SwitchWheel = m_Player.FindAction("Switch Wheel", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Select = m_Dialogue.FindAction("Select", throwIfNotFound: true);
@@ -1494,6 +1728,8 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_SelectionWheel_Direction = m_SelectionWheel.FindAction("Direction", throwIfNotFound: true);
         m_SelectionWheel_Select = m_SelectionWheel.FindAction("Select", throwIfNotFound: true);
         m_SelectionWheel_Cancel = m_SelectionWheel.FindAction("Cancel", throwIfNotFound: true);
+        m_SelectionWheel_SelectAction = m_SelectionWheel.FindAction("Select Action", throwIfNotFound: true);
+        m_SelectionWheel_SelectShape = m_SelectionWheel.FindAction("Select Shape", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1506,6 +1742,14 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // Wheel Selection
+        m_WheelSelection = asset.FindActionMap("Wheel Selection", throwIfNotFound: true);
+        m_WheelSelection_ActionWheel = m_WheelSelection.FindAction("Action Wheel", throwIfNotFound: true);
+        m_WheelSelection_ShapeWheel = m_WheelSelection.FindAction("Shape Wheel", throwIfNotFound: true);
+        // Action Selection
+        m_ActionSelection = asset.FindActionMap("Action Selection", throwIfNotFound: true);
+        m_ActionSelection_SwitchAction = m_ActionSelection.FindAction("Switch Action", throwIfNotFound: true);
+        m_ActionSelection_SelectShape = m_ActionSelection.FindAction("Select Shape", throwIfNotFound: true);
     }
 
     ~@PlayerInputSystem_Actions()
@@ -1514,6 +1758,8 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         UnityEngine.Debug.Assert(!m_Dialogue.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.Dialogue.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_SelectionWheel.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.SelectionWheel.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_WheelSelection.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.WheelSelection.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_ActionSelection.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.ActionSelection.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1600,6 +1846,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     private readonly InputAction m_Player_Air;
     private readonly InputAction m_Player_SwitchShapes;
     private readonly InputAction m_Player_OpenWheel;
+    private readonly InputAction m_Player_SwitchWheel;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1655,6 +1902,10 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// Provides access to the underlying input action "Player/OpenWheel".
         /// </summary>
         public InputAction @OpenWheel => m_Wrapper.m_Player_OpenWheel;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SwitchWheel".
+        /// </summary>
+        public InputAction @SwitchWheel => m_Wrapper.m_Player_SwitchWheel;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1714,6 +1965,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @OpenWheel.started += instance.OnOpenWheel;
             @OpenWheel.performed += instance.OnOpenWheel;
             @OpenWheel.canceled += instance.OnOpenWheel;
+            @SwitchWheel.started += instance.OnSwitchWheel;
+            @SwitchWheel.performed += instance.OnSwitchWheel;
+            @SwitchWheel.canceled += instance.OnSwitchWheel;
         }
 
         /// <summary>
@@ -1758,6 +2012,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @OpenWheel.started -= instance.OnOpenWheel;
             @OpenWheel.performed -= instance.OnOpenWheel;
             @OpenWheel.canceled -= instance.OnOpenWheel;
+            @SwitchWheel.started -= instance.OnSwitchWheel;
+            @SwitchWheel.performed -= instance.OnSwitchWheel;
+            @SwitchWheel.canceled -= instance.OnSwitchWheel;
         }
 
         /// <summary>
@@ -1916,6 +2173,8 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     private readonly InputAction m_SelectionWheel_Direction;
     private readonly InputAction m_SelectionWheel_Select;
     private readonly InputAction m_SelectionWheel_Cancel;
+    private readonly InputAction m_SelectionWheel_SelectAction;
+    private readonly InputAction m_SelectionWheel_SelectShape;
     /// <summary>
     /// Provides access to input actions defined in input action map "Selection Wheel".
     /// </summary>
@@ -1939,6 +2198,14 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// Provides access to the underlying input action "SelectionWheel/Cancel".
         /// </summary>
         public InputAction @Cancel => m_Wrapper.m_SelectionWheel_Cancel;
+        /// <summary>
+        /// Provides access to the underlying input action "SelectionWheel/SelectAction".
+        /// </summary>
+        public InputAction @SelectAction => m_Wrapper.m_SelectionWheel_SelectAction;
+        /// <summary>
+        /// Provides access to the underlying input action "SelectionWheel/SelectShape".
+        /// </summary>
+        public InputAction @SelectShape => m_Wrapper.m_SelectionWheel_SelectShape;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1974,6 +2241,12 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @SelectAction.started += instance.OnSelectAction;
+            @SelectAction.performed += instance.OnSelectAction;
+            @SelectAction.canceled += instance.OnSelectAction;
+            @SelectShape.started += instance.OnSelectShape;
+            @SelectShape.performed += instance.OnSelectShape;
+            @SelectShape.canceled += instance.OnSelectShape;
         }
 
         /// <summary>
@@ -1994,6 +2267,12 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @SelectAction.started -= instance.OnSelectAction;
+            @SelectAction.performed -= instance.OnSelectAction;
+            @SelectAction.canceled -= instance.OnSelectAction;
+            @SelectShape.started -= instance.OnSelectShape;
+            @SelectShape.performed -= instance.OnSelectShape;
+            @SelectShape.canceled -= instance.OnSelectShape;
         }
 
         /// <summary>
@@ -2222,6 +2501,220 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
+
+    // Wheel Selection
+    private readonly InputActionMap m_WheelSelection;
+    private List<IWheelSelectionActions> m_WheelSelectionActionsCallbackInterfaces = new List<IWheelSelectionActions>();
+    private readonly InputAction m_WheelSelection_ActionWheel;
+    private readonly InputAction m_WheelSelection_ShapeWheel;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Wheel Selection".
+    /// </summary>
+    public struct WheelSelectionActions
+    {
+        private @PlayerInputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public WheelSelectionActions(@PlayerInputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "WheelSelection/ActionWheel".
+        /// </summary>
+        public InputAction @ActionWheel => m_Wrapper.m_WheelSelection_ActionWheel;
+        /// <summary>
+        /// Provides access to the underlying input action "WheelSelection/ShapeWheel".
+        /// </summary>
+        public InputAction @ShapeWheel => m_Wrapper.m_WheelSelection_ShapeWheel;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_WheelSelection; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="WheelSelectionActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(WheelSelectionActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="WheelSelectionActions" />
+        public void AddCallbacks(IWheelSelectionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_WheelSelectionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_WheelSelectionActionsCallbackInterfaces.Add(instance);
+            @ActionWheel.started += instance.OnActionWheel;
+            @ActionWheel.performed += instance.OnActionWheel;
+            @ActionWheel.canceled += instance.OnActionWheel;
+            @ShapeWheel.started += instance.OnShapeWheel;
+            @ShapeWheel.performed += instance.OnShapeWheel;
+            @ShapeWheel.canceled += instance.OnShapeWheel;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="WheelSelectionActions" />
+        private void UnregisterCallbacks(IWheelSelectionActions instance)
+        {
+            @ActionWheel.started -= instance.OnActionWheel;
+            @ActionWheel.performed -= instance.OnActionWheel;
+            @ActionWheel.canceled -= instance.OnActionWheel;
+            @ShapeWheel.started -= instance.OnShapeWheel;
+            @ShapeWheel.performed -= instance.OnShapeWheel;
+            @ShapeWheel.canceled -= instance.OnShapeWheel;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="WheelSelectionActions.UnregisterCallbacks(IWheelSelectionActions)" />.
+        /// </summary>
+        /// <seealso cref="WheelSelectionActions.UnregisterCallbacks(IWheelSelectionActions)" />
+        public void RemoveCallbacks(IWheelSelectionActions instance)
+        {
+            if (m_Wrapper.m_WheelSelectionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="WheelSelectionActions.AddCallbacks(IWheelSelectionActions)" />
+        /// <seealso cref="WheelSelectionActions.RemoveCallbacks(IWheelSelectionActions)" />
+        /// <seealso cref="WheelSelectionActions.UnregisterCallbacks(IWheelSelectionActions)" />
+        public void SetCallbacks(IWheelSelectionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_WheelSelectionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_WheelSelectionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="WheelSelectionActions" /> instance referencing this action map.
+    /// </summary>
+    public WheelSelectionActions @WheelSelection => new WheelSelectionActions(this);
+
+    // Action Selection
+    private readonly InputActionMap m_ActionSelection;
+    private List<IActionSelectionActions> m_ActionSelectionActionsCallbackInterfaces = new List<IActionSelectionActions>();
+    private readonly InputAction m_ActionSelection_SwitchAction;
+    private readonly InputAction m_ActionSelection_SelectShape;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Action Selection".
+    /// </summary>
+    public struct ActionSelectionActions
+    {
+        private @PlayerInputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public ActionSelectionActions(@PlayerInputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "ActionSelection/SwitchAction".
+        /// </summary>
+        public InputAction @SwitchAction => m_Wrapper.m_ActionSelection_SwitchAction;
+        /// <summary>
+        /// Provides access to the underlying input action "ActionSelection/SelectShape".
+        /// </summary>
+        public InputAction @SelectShape => m_Wrapper.m_ActionSelection_SelectShape;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_ActionSelection; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="ActionSelectionActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(ActionSelectionActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="ActionSelectionActions" />
+        public void AddCallbacks(IActionSelectionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ActionSelectionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ActionSelectionActionsCallbackInterfaces.Add(instance);
+            @SwitchAction.started += instance.OnSwitchAction;
+            @SwitchAction.performed += instance.OnSwitchAction;
+            @SwitchAction.canceled += instance.OnSwitchAction;
+            @SelectShape.started += instance.OnSelectShape;
+            @SelectShape.performed += instance.OnSelectShape;
+            @SelectShape.canceled += instance.OnSelectShape;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="ActionSelectionActions" />
+        private void UnregisterCallbacks(IActionSelectionActions instance)
+        {
+            @SwitchAction.started -= instance.OnSwitchAction;
+            @SwitchAction.performed -= instance.OnSwitchAction;
+            @SwitchAction.canceled -= instance.OnSwitchAction;
+            @SelectShape.started -= instance.OnSelectShape;
+            @SelectShape.performed -= instance.OnSelectShape;
+            @SelectShape.canceled -= instance.OnSelectShape;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="ActionSelectionActions.UnregisterCallbacks(IActionSelectionActions)" />.
+        /// </summary>
+        /// <seealso cref="ActionSelectionActions.UnregisterCallbacks(IActionSelectionActions)" />
+        public void RemoveCallbacks(IActionSelectionActions instance)
+        {
+            if (m_Wrapper.m_ActionSelectionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="ActionSelectionActions.AddCallbacks(IActionSelectionActions)" />
+        /// <seealso cref="ActionSelectionActions.RemoveCallbacks(IActionSelectionActions)" />
+        /// <seealso cref="ActionSelectionActions.UnregisterCallbacks(IActionSelectionActions)" />
+        public void SetCallbacks(IActionSelectionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ActionSelectionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ActionSelectionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="ActionSelectionActions" /> instance referencing this action map.
+    /// </summary>
+    public ActionSelectionActions @ActionSelection => new ActionSelectionActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -2371,6 +2864,13 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOpenWheel(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Switch Wheel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchWheel(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Dialogue" which allows adding and removing callbacks.
@@ -2429,6 +2929,20 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCancel(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Select Action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectAction(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Select Shape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectShape(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
@@ -2507,5 +3021,49 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Wheel Selection" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="WheelSelectionActions.AddCallbacks(IWheelSelectionActions)" />
+    /// <seealso cref="WheelSelectionActions.RemoveCallbacks(IWheelSelectionActions)" />
+    public interface IWheelSelectionActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Action Wheel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnActionWheel(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Shape Wheel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnShapeWheel(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Action Selection" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="ActionSelectionActions.AddCallbacks(IActionSelectionActions)" />
+    /// <seealso cref="ActionSelectionActions.RemoveCallbacks(IActionSelectionActions)" />
+    public interface IActionSelectionActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Switch Action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchAction(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Select Shape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSelectShape(InputAction.CallbackContext context);
     }
 }

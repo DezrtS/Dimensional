@@ -33,7 +33,7 @@ namespace Systems.Visual_Effects
         private bool CanEmit(float time)
         {
             if (_forceController.GetVelocity().sqrMagnitude < minSpeed) return false;
-            return (time - _timeAtLastPlay >= minDelay); 
+            return time - _timeAtLastPlay >= minDelay; 
         }
 
         public void Play()

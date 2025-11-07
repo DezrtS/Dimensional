@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c986daaaa19ba99438925ba2d88c4c66, type: 3}
   m_Name: MovementActionSelectionWheelDatum
   m_EditorClassIdentifier: 
-  selectionWheelSettingsDatum: {fileID: 11400000, guid: e070d26ba0f03bf478192b53d3e4a034, type: 2}
+  hasSelectionWheelPrefab: 0
+  selectionWheelPrefab: {fileID: 0}
+  selectionWheelSettingsDatum: {fileID: 11400000, guid: 79d1bc510bf69b74fbd5a10f0050b4ec, type: 2}
   wheelSectionData:
   - {fileID: 11400000, guid: fe7f75fe2a3ca7d49a6b77b8354449e3, type: 2}
   - {fileID: 11400000, guid: e48d6f7df9c794b40a2cd656f45c4bb4, type: 2}

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c0f849939492447909f3be6c6c18e1, type: 3}
+  m_Name: Dive
+  m_EditorClassIdentifier: 
+  movementActionName: Dive
+  movementActionType: 6
+  shapeData:
+  - {fileID: 11400000, guid: 790162a82d371074c90e708f63f62a4a, type: 2}
+  - {fileID: 11400000, guid: f80463c9f2b40624080e9cd1ab5903d8, type: 2}
+  - {fileID: 11400000, guid: eb24c54811217a848b850084d311472a, type: 2}

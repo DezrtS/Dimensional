@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c0f849939492447909f3be6c6c18e1, type: 3}
+  m_Name: Wall Jump
+  m_EditorClassIdentifier: 
+  movementActionName: Wall Jump
+  movementActionType: 3
+  shapeData:
+  - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}
+  - {fileID: 11400000, guid: 7ed04a327d17dac41985c7271116c796, type: 2}
+  - {fileID: 11400000, guid: eb24c54811217a848b850084d311472a, type: 2}

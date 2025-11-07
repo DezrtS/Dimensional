@@ -8,9 +8,16 @@ namespace Scriptables.Selection_Wheels
     {
         [SerializeField] private GameObject wheelSectionPrefab;
         [Space]
+        [SerializeField] private bool closeOnSelect;
+        [SerializeField] private bool hideOnSelect = true;
+        [SerializeField] private bool hideOnCancel;
+        [Space]
         [SerializeField] private string sectionName;
         [SerializeField] private Sprite sectionIcon;
         
+        public bool CloseOnSelect => closeOnSelect;
+        public bool HideOnSelect => hideOnSelect;
+        public bool HideOnCancel => hideOnCancel;
         public string SectionName => sectionName;
         public Sprite SectionIcon => sectionIcon;
 

@@ -19,5 +19,18 @@ MonoBehaviour:
     objectPoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
     effectStartEventType: 2
     stopOnActionEnd: 0
+  actionAnimations:
+  - animationName: Compress
+    animationEventType: 0
+    animationStartEventType: 1
+  - animationName: Stretch
+    animationEventType: 0
+    animationStartEventType: 2
+  - animationName: Stretch
+    animationEventType: 0
+    animationStartEventType: 4
+  - animationName: Stretch
+    animationEventType: 0
+    animationStartEventType: 5
   shapeType: 2
   activationEventType: 1
