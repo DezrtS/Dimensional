@@ -46,9 +46,9 @@ namespace Managers
             return eventInstance;
         }
 
-        public static void AttachInstanceToGameObject(EventInstance eventInstance, GameObject attachTo)
+        public static void AttachInstanceToGameObject(EventInstance eventInstance, GameObject attachTo, bool nonRigidbodyVelocity = false)
         {
-            RuntimeManager.AttachInstanceToGameObject(eventInstance, attachTo);
+            RuntimeManager.AttachInstanceToGameObject(eventInstance, attachTo, nonRigidbodyVelocity);
         }
 
         public static void RemoveEventInstance(EventInstance eventInstance)

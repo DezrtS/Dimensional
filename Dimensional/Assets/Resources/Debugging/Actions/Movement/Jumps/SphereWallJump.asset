@@ -16,11 +16,11 @@ MonoBehaviour:
   actionAudioEvents:
   - eventReference:
       Guid:
-        Data1: -1724408244
-        Data2: 1297021726
-        Data3: 51703458
-        Data4: 876150356
-      Path: event:/SphereJump
+        Data1: 1472567933
+        Data2: 1276521555
+        Data3: -1191880815
+        Data4: -1435411489
+      Path: event:/SphereWallJump
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 1

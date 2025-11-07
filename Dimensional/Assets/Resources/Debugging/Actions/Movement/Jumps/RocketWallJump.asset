@@ -16,11 +16,11 @@ MonoBehaviour:
   actionAudioEvents:
   - eventReference:
       Guid:
-        Data1: 553408714
-        Data2: 1319003022
-        Data3: 1567665072
-        Data4: -2034024229
-      Path: event:/RocketJump
+        Data1: 859624445
+        Data2: 1229568344
+        Data3: 847625369
+        Data4: -1200420225
+      Path: event:/RocketWallJump
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 1

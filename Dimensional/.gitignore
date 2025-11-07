@@ -103,6 +103,7 @@ crashlytics-build.properties
 
 **/.cache/**
 
+!/DimensionalFMOD/Dimensional/.cache/buildrecords/Desktop/Master.br
 
 /DimensionalFMOD/Dimensional/.cache/**
 /DimensionalFMOD/Dimensional/.user/**
