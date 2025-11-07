@@ -27,7 +27,7 @@ namespace Systems.Visual_Effects
         private void Start()
         {
             _walkSoundInstance = AudioManager.CreateEventInstance(walkSound);
-            AudioManager.AttachInstanceToGameObject(_walkSoundInstance, gameObject);
+            AudioManager.AttachInstanceToGameObject(_walkSoundInstance, gameObject, true);
         }
 
         private bool CanEmit(float time)
@@ -50,6 +50,7 @@ namespace Systems.Visual_Effects
             if (!CanEmit(time)) return;
             visualEffectPlayer.PlayContinuous();
             _timeAtLastPlay = time;
+            AudioManager.AttachInstanceToGameObject(_walkSoundInstance, gameObject);
             _walkSoundInstance.start();
         }
     }

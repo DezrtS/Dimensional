@@ -5,7 +5,7 @@
 			<value>Walk</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{6678ba0c-56ff-494b-9c05-5d900eaeadea}</destination>
@@ -96,6 +96,7 @@
 	<object class="MixerBusEffectChain" id="{e46bb5f8-762a-4988-b484-5a6716ec58e0}">
 		<relationship name="effects">
 			<destination>{99133207-1557-42b0-bbb1-416d1e6e9e56}</destination>
+			<destination>{8cd129ba-4413-4cf8-9442-318011a48c5d}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6399b39e-8dce-4393-8fb5-35ee39f0c13c}" />
@@ -110,6 +111,7 @@
 	</object>
 	<object class="MixerBusFader" id="{3c3719b1-e083-479d-ae2d-ed8a67b5865a}" />
 	<object class="MixerBusFader" id="{99133207-1557-42b0-bbb1-416d1e6e9e56}" />
+	<object class="SpatialiserEffect" id="{8cd129ba-4413-4cf8-9442-318011a48c5d}" />
 	<object class="SingleSound" id="{d1ae67fa-4131-43e4-9a9a-81d756f7b693}">
 		<relationship name="audioFile">
 			<destination>{a901c0a2-188e-4f8c-acb3-f6f82fb55f65}</destination>

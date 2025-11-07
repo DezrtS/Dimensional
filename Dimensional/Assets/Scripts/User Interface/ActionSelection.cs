@@ -52,6 +52,7 @@ namespace User_Interface
         private void Awake()
         {
             _animator = GetComponent<Animator>();
+            _showTimer = showDuration;
         }
 
         private void Start()
@@ -65,7 +66,6 @@ namespace User_Interface
                 _selectedShapeIndexDictionary.Add(i, 0);
             }
             SwitchAction(0);
-            _showTimer = showDuration;
         }
 
         private void FixedUpdate()

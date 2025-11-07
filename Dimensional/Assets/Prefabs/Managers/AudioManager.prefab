@@ -47,12 +47,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMusic:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  startMusicOnAwake: 0
+      Data1: -2069600642
+      Data2: 1219286658
+      Data3: -1615665533
+      Data4: 404731214
+    Path: event:/ForestTheme
+  startMusicOnAwake: 1
 --- !u!114 &4656057143729007131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,3 +107,10 @@ MonoBehaviour:
       Data3: -985897329
       Data4: -2028369071
     Path: event:/ParachuteGlide
+  enterLevel:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 

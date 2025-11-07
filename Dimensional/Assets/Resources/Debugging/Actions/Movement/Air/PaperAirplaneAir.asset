@@ -16,11 +16,11 @@ MonoBehaviour:
   actionAudioEvents:
   - eventReference:
       Guid:
-        Data1: -263076225
-        Data2: 1152228617
-        Data3: -985897329
-        Data4: -2028369071
-      Path: event:/ParachuteGlide
+        Data1: 775527532
+        Data2: 1281957270
+        Data3: -1780844648
+        Data4: -166075496
+      Path: event:/AirFlyingBy3
     attachToGameObject: 1
     createInstance: 1
     activationEventType: 1

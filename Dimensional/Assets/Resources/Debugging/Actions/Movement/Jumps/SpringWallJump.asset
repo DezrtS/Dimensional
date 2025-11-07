@@ -16,14 +16,32 @@ MonoBehaviour:
   actionAudioEvents:
   - eventReference:
       Guid:
-        Data1: 1839149501
-        Data2: 1176948225
-        Data3: 1231551890
-        Data4: -370594178
-      Path: event:/SpringJump
+        Data1: 1257711907
+        Data2: 1257924514
+        Data3: 133208208
+        Data4: 1255240961
+      Path: event:/SpringWallJump
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 2
+  hasScreenShake: 0
+  actionScreenShakeEvent:
+    activationEventType: 0
+    duration: 0
+    amplitude: 0
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 0
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 8bfae146f4a37e348b82dccb459dcdce, type: 2}
   movementActionType: 3
