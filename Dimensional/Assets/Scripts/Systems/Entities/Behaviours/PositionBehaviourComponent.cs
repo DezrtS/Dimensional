@@ -33,19 +33,19 @@ namespace Systems.Entities.Behaviours
             Deactivate();
         }
         
-        public void SetPositionBehaviourData(IMove mover, Vector3 targetPosition, float upperRangeLimit, float lowerRangeLimit, bool disableYInput, bool fleeTarget)
+        public void SetPositionBehaviourData(IMove mover, float upperRangeLimit, float lowerRangeLimit, bool disableYInput, bool fleeTarget)
         {
             _mover = mover;
-            _targetPosition = targetPosition;
+            _targetPosition = transform.position;
             this.upperRangeLimit = upperRangeLimit;
             this.lowerRangeLimit = lowerRangeLimit;
             this.fleeTarget = fleeTarget;
         }
 
-        public void SetPositionBehaviourData(IMove mover, Vector3 targetPosition)
+        public void SetPositionBehaviourData(IMove mover)
         {
             _mover = mover;
-            _targetPosition = targetPosition;
+            _targetPosition = transform.position;
         }
         
         public void SetTargetPosition(Vector3 position) => _targetPosition = position;

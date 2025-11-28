@@ -11,7 +11,6 @@ namespace Systems.Entities.Behaviours
         [SerializeField] private float wanderFrequencyVariation;
         
         private PositionBehaviourComponent _positionBehaviourComponent;
-        private IMove _mover;
         private float _wanderTimer;
         
         private void FixedUpdate()
@@ -26,10 +25,9 @@ namespace Systems.Entities.Behaviours
             ResetWanderTimer();
         }
         
-        public void SetWanderBehaviourData(PositionBehaviourComponent positionBehaviourComponent, IMove mover)
+        public void SetWanderBehaviourData(PositionBehaviourComponent positionBehaviourComponent)
         {
             _positionBehaviourComponent = positionBehaviourComponent;
-            _mover = mover;
         }
 
         protected override void OnActivate()
@@ -55,8 +53,8 @@ namespace Systems.Entities.Behaviours
             var wanderOffset = direction * UnityEngine.Random.Range(0, wanderRange);
             var targetPosition = transform.position + wanderOffset;
             
-            _positionBehaviourComponent.SetPositionBehaviourData(_mover, targetPosition);
-            _positionBehaviourComponent.Activate();
+            _positionBehaviourComponent.SetTargetPosition(targetPosition);
+            if (!_positionBehaviourComponent.IsActive) _positionBehaviourComponent.Activate();
         }
     }
 }

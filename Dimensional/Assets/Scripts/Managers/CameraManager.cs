@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Utilities;
 
 namespace Managers
@@ -13,6 +14,10 @@ namespace Managers
         public delegate void CameraTransitionEventHandler(CinemachineCamera from, CinemachineCamera to);
         public event CameraTransitionEventHandler TransitionStarted;
         public event CameraTransitionEventHandler TransitionFinished;
+        public delegate void InvokeCameraTransitionEventHandler(int cameraId, float duration, CinemachineBlendDefinition.Styles style);
+        public event InvokeCameraTransitionEventHandler TransitionInvoked;
+        public delegate void InvokeCameraEventHandler(int cameraId);
+        public event InvokeCameraEventHandler CinemachineCameraChanged;
         
         [SerializeField] private bool lockAndHideCursor;
         [SerializeField] private Vector3 thirdPersonDamping;
@@ -82,6 +87,16 @@ namespace Managers
             ActiveStateChanged?.Invoke(Camera, isActive);
         }
 
+        public void SetCinemachineCamera(CinemachineCamera cinemachineCamera)
+        {
+            _cinemachineCamera = cinemachineCamera;
+        }
+
+        public void InvokeSetCinemachineCamera(int cameraId)
+        {
+            CinemachineCameraChanged?.Invoke(cameraId);
+        }
+
         public void SetFollow(Transform follow) => _cinemachineCamera.Follow = follow;
         public void SetLookAt(Transform lookAt) => _cinemachineCamera.LookAt = lookAt;
 
@@ -110,6 +125,7 @@ namespace Managers
             _shakeAmplitudeCurve = amplitudeCurve;
             _shakeFrequency = frequency;
             _shakeFrequencyCurve = frequencyCurve;
+            if (Gamepad.current != null) Gamepad.current.SetMotorSpeeds(0.5f, 0.5f);
         }
 
         public void StopScreenShake()
@@ -117,6 +133,7 @@ namespace Managers
             _shakeTimer = 0;
             _cinemachineBasicMultiChannelPerlin.AmplitudeGain = 0;
             _cinemachineBasicMultiChannelPerlin.FrequencyGain = 0;
+            if (Gamepad.current != null) Gamepad.current.ResetHaptics();
         }
 
         public void Transition(CinemachineCamera from, CinemachineCamera to, float duration, CinemachineBlendDefinition.Styles style = CinemachineBlendDefinition.Styles.EaseInOut)
@@ -128,6 +145,11 @@ namespace Managers
             
             if (_transitionCoroutine != null) StopCoroutine(_transitionCoroutine);
             _transitionCoroutine = StartCoroutine(TransitionRoutine(from, to, duration, style));
+        }
+
+        public void InvokeTransition(int cameraId, float duration, CinemachineBlendDefinition.Styles style)
+        {
+            TransitionInvoked?.Invoke(cameraId, duration, style);
         }
 
         public void TransitionToDefault(bool waitForEndOfFrame, float duration, CinemachineBlendDefinition.Styles style = CinemachineBlendDefinition.Styles.EaseInOut)

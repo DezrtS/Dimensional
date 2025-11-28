@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 405281314265279603, guid: 8dad7b27c9c00c94b95fde8f8d9b0813, type: 3}
   offset: {x: 0, y: 3.5, z: 0}
+  useDistanceScaling: 1
   minDistance: 5
   maxDistance: 10
+  useAngleScaling: 1
   minAngle: 30
   maxAngle: 90
   sizeCurve:

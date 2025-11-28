@@ -90,4 +90,5 @@ MonoBehaviour:
   wallSlideMinEnterMagnitude: 0.5
   wallSlideMinDirectionDot: -1
   wallSlideMinExitAngle: 135
+  wallSlideDelayTime: 0.1
   initialRollSpeed: 5

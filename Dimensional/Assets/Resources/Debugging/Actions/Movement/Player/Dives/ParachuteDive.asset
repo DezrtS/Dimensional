@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c7e01b4552e644aa76b519b3b36993, type: 3}
+  m_Name: ParachuteDive
+  m_EditorClassIdentifier: 
+  activationTime: 0
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 66335378
+        Data2: 1145544333
+        Data3: 2117282986
+        Data4: 505063354
+      Path: event:/ParachuteDeploy
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 1
+  hasScreenShake: 0
+  actionScreenShakeEvent:
+    activationEventType: 0
+    duration: 0
+    amplitude: 0
+    amplitudeCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    frequency: 0
+    frequencyCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: 9e96be4ea896f624da87a8b27d0df625, type: 2}
+  movementActionType: 6
+  performEventOnGrounded: 1
+  groundedActionEventType: 5
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
+  stopMovementOnDisable: 1
+  disableDurationLimit: 0
+  movementVector: {x: 0, y: -20, z: 0}
+  hasRight: 0
+  isXDistance: 0
+  isRightBlend: 0
+  rightDuration: 0
+  rightCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hasUp: 1
+  isYDistance: 0
+  isUpBlend: 0
+  upDuration: 0.5
+  upCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 3.581818
+      outSlope: 3.581818
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11167513
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.25
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hasForward: 0
+  isZDistance: 0
+  isForwardBlend: 0
+  forwardDuration: 0
+  forwardCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attackEventType: 0
+  endActionOnHit: 0
+  attackDamage: 0
+  attackRadius: 0
+  attackOffset: {x: 0, y: 0, z: 0}
+  attackDirection: {x: 0, y: 0, z: 0}
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  doScreenShakeOnHit: 0
+  hasHitStop: 0
+  hitStopDuration: 0
+  hasKnockback: 0
+  forceEventDatum: {fileID: 0}
+  knockbackType: 0
+  projectileEventType: 3
+  projectileDatum: {fileID: 11400000, guid: 660b2527473f9d34a95eeb1a6b7b41da, type: 2}
+  projectilePoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
+  fireDirection: {x: 0, y: -1, z: 0}

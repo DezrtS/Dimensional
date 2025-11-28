@@ -138,6 +138,8 @@ GameObject:
   - component: {fileID: 3875366664236168819}
   - component: {fileID: 8206250400622386603}
   - component: {fileID: 1118730320343877536}
+  - component: {fileID: 5753811679690179671}
+  - component: {fileID: 3073859168536887311}
   m_Layer: 11
   m_Name: Debug Enemy
   m_TagString: Untagged
@@ -305,7 +307,7 @@ MonoBehaviour:
   disableYInput: 1
   upperRangeLimit: 20
   lowerRangeLimit: -1
-  fleeTarget: 1
+  fleeTarget: 0
 --- !u!114 &8206250400622386603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,8 +320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d1c09d66c6238540be557d0e3ef3450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wanderRange: 10
-  wanderFrequency: 5
+  wanderRange: 5
+  wanderFrequency: 10
   wanderFrequencyVariation: 2
 --- !u!114 &1118730320343877536
 MonoBehaviour:
@@ -334,6 +336,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunBehaviourDatum: {fileID: 11400000, guid: 546edd8b918959e4796b137f60199347, type: 2}
+--- !u!114 &5753811679690179671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241525979084931229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e83538ef1d58c4393a0ac658b5753c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPatterns:
+  - {fileID: 11400000, guid: 823952372d035f64fa9bcd75b85d619e, type: 2}
+--- !u!95 &3073859168536887311
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241525979084931229}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3333064246de9594297863737a4c6e45, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1993735340365798041
 GameObject:
   m_ObjectHideFlags: 0

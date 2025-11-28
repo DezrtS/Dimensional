@@ -29,6 +29,7 @@ namespace User_Interface
         private void OnDisable()
         {
             UnassignControls();
+            //GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
         
         private void AssignControls()
@@ -52,7 +53,16 @@ namespace User_Interface
         private void Awake()
         {
             _animator = GetComponent<Animator>();
-            _showTimer = showDuration;
+            _isHidden = true;
+            //_showTimer = showDuration;
+
+            //GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+        }
+
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        {
+            //if (newValue != GameState.Playing) return;
+            //SwitchAction(0);
         }
 
         private void Start()
@@ -65,7 +75,6 @@ namespace User_Interface
             {
                 _selectedShapeIndexDictionary.Add(i, 0);
             }
-            SwitchAction(0);
         }
 
         private void FixedUpdate()
@@ -131,6 +140,13 @@ namespace User_Interface
             actionText.text = movementActionShapesDatum.MovementActionName;
             
             UIManager.Instance.SelectedMovementActionType = movementActionShapesDatum.MovementActionType;
+            SetShapeOptions(movementActionShapesDatum);
+            
+            SelectShape(_selectedShapeIndexDictionary[_currentActionIndex]);
+        }
+
+        private void SetShapeOptions(MovementActionShapesDatum movementActionShapesDatum)
+        {
             for (var i = 0; i < shapeOptions.Length; i++)
             {
                 var shapeOption = shapeOptions[i];
@@ -144,8 +160,6 @@ namespace User_Interface
                 shapeOption.Initialize(movementActionShapesDatum.ShapeData[i]);
                 shapeOption.Enable();
             }
-            
-            SelectShape(_selectedShapeIndexDictionary[_currentActionIndex]);
         }
 
         private void ShowOptions()

@@ -1,6 +1,7 @@
 using System;
 using Interfaces;
 using Managers;
+using Scriptables.Events;
 using Scriptables.Interactables;
 using Scriptables.User_Interface;
 using Unity.Cinemachine;
@@ -17,6 +18,8 @@ namespace Systems.Interactables
         [SerializeField] private InteractableDatum interactableDatum;
         [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
         [SerializeField] private CinemachineCamera interactableCamera;
+        
+        [SerializeField] private EventDatum[] eventData;
 
         private Transform _targetTransform;
         private bool _isInRange;
@@ -29,6 +32,7 @@ namespace Systems.Interactables
         public GameObject GameObject => gameObject;
         public InteractableDatum InteractableDatum => interactableDatum;
         protected CinemachineCamera InteractableCamera => interactableCamera;
+        protected EventDatum[] EventData => eventData;
         protected InteractContext PreviousInteractContext { get; private set; }
 
         private void Start()
@@ -78,6 +82,7 @@ namespace Systems.Interactables
         {
             Interacted?.Invoke(this, context);
             _isInteracting = false;
+            EventManager.SendEvents(eventData);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -94,15 +99,9 @@ namespace Systems.Interactables
             _worldUIAnchor.SetTargetTransform(null);
         }
 
-        public void Hover()
-        {
-            
-        }
+        public virtual void Hover() {}
 
-        public void StopHovering()
-        {
-            
-        }
+        public virtual void StopHovering() {}
 
         public void View(InteractContext interactContext, bool show)
         {

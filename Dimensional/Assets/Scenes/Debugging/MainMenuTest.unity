@@ -183,7 +183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &109773503
 Transform:
   m_ObjectHideFlags: 0
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1196569088, guid: e638f1148a7bf4b42938cba09e1d517f, type: 3}
+  m_Sprite: {fileID: -1609861847, guid: 0e3d656d0328b384c89ad368025b4071, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -978,7 +978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &666386523
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1424,7 +1424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -220
+      value: -260
       objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1861,7 +1861,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -280
+      value: -320
       objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2199,6 +2199,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1216336394}
   m_CullTransparentMesh: 1
+--- !u!1 &1283527862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1283527863}
+  m_Layer: 0
+  m_Name: Scene 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1283527863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283527862}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1420941633
 GameObject:
   m_ObjectHideFlags: 0
@@ -2486,8 +2517,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -50}
-  m_SizeDelta: {x: 650, y: 500}
+  m_AnchoredPosition: {x: 25, y: -75}
+  m_SizeDelta: {x: 1000, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1686432594
 MonoBehaviour:
@@ -2807,7 +2838,7 @@ Camera:
   m_GameObject: {fileID: 1936338224}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -3501,6 +3532,10 @@ PrefabInstance:
       propertyPath: m_text
       value: Continue
       objectReference: {fileID: 0}
+    - target: {fileID: 4987126008556849130, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4289375146
+      objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3567,7 +3602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -160
+      value: -200
       objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3999,3 +4034,4 @@ SceneRoots:
   - {fileID: 109773503}
   - {fileID: 661858255}
   - {fileID: 2110607959}
+  - {fileID: 1283527863}

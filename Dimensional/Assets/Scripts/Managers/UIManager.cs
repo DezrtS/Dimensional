@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using Debugging;
-using Scriptables.Interactables;
 using Scriptables.Selection_Wheels;
 using Scriptables.User_Interface;
 using Systems.Actions.Movement;
@@ -19,6 +17,12 @@ namespace Managers
         public static event Action TransitionFinished;
 
         [SerializeField] private GameObject controls;
+        [Space]
+        [SerializeField] private bool showAreaTitle = true;
+        [SerializeField] private AreaTitle areaTitle;
+        [SerializeField] private string areaName = "Sphero";
+        [SerializeField] private float areaTitleDuration = 5;
+        [Space]
         [SerializeField] private bool transitionOnAwake;
         [Space]
         [SerializeField] private Transform interactableIconTransform;
@@ -48,6 +52,9 @@ namespace Managers
 
         private void Start()
         {
+            if (!showAreaTitle) return;
+            areaTitle.ShowArea(areaName, areaTitleDuration);
+            
             //if (!actionSelectionWheelDatum) return;
             //_actionSelectionWheel = actionSelectionWheelDatum.AttachSelectionWheel(actionSelectionWheelTransform);
             //_actionSelectionWheel.GenerateSelectionWheel();
