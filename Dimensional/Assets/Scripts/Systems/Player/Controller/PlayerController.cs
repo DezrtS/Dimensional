@@ -39,8 +39,7 @@ namespace Systems.Player
         [SerializeField] private Material defaultEyeMaterial;
         [SerializeField] private Material dizzyEyeMaterial;
         [SerializeField] private EffectPlayer dizzyStars;
-        
-        private PlayerMovementController _playerMovementController;
+
         private Health _health;
         private StunBehaviourComponent _stunBehaviour;
 
@@ -58,6 +57,7 @@ namespace Systems.Player
         public uint Id { get; private set; }
         public bool DebugDisable { get; set; }
         public PlayerLook PlayerLook { get; private set; }
+        public PlayerMovementController PlayerMovementController { get; private set; }
 
         public List<MovementActionShape> MovementActionShapes { get; private set; }
         private Dictionary<ShapeType, ShapeDatum> ShapeData { get; set; }
@@ -82,7 +82,7 @@ namespace Systems.Player
             MovementActionShapes.Add(new MovementActionShape(movementActionType, shapeType));
         }
 
-        public void ResetMovementActions() => _playerMovementController.ResetMovementActions();
+        public void ResetMovementActions() => PlayerMovementController.ResetMovementActions();
 
         public void SetMovementActionShapesPreset(MovementActionShapesPreset movementActionShapesPreset, bool resetMovementActions = true)
         {
@@ -115,7 +115,7 @@ namespace Systems.Player
 
             SetMovementActionShapesPreset(defaultMovementActionShapesPreset, false);
             
-            _playerMovementController = GetComponent<PlayerMovementController>();
+            PlayerMovementController = GetComponent<PlayerMovementController>();
             _health = GetComponent<Health>();
             _health.HealthStateChanged += HealthOnHealthStateChanged;
             _stunBehaviour = GetComponent<StunBehaviourComponent>();
@@ -129,7 +129,7 @@ namespace Systems.Player
 
         private void Start()
         {
-            _playerMovementController.Initialize(this);
+            PlayerMovementController.Initialize(this);
             
             _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
             AssignControls();
@@ -244,7 +244,7 @@ namespace Systems.Player
 
         private void FixedUpdate()
         {
-            _playerMovementController.Move(Quaternion.Euler(0, PlayerLook.XRotation, 0));
+            PlayerMovementController.Move(Quaternion.Euler(0, PlayerLook.XRotation, 0));
             if (_interactables.Count > 0) CheckInteractables();
         }
 
@@ -301,7 +301,7 @@ namespace Systems.Player
             
             var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
             if (!checkpoint) return;
-            _playerMovementController.ForceController.Teleport(checkpoint.SpawnPosition);
+            PlayerMovementController.ForceController.Teleport(checkpoint.SpawnPosition);
         }
         
         private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
@@ -326,8 +326,8 @@ namespace Systems.Player
         private void StunBehaviourOnStunned()
         {
             SetDizzyEyes(true);
-            _playerMovementController.CancelAllActions();
-            _playerMovementController.IsDisabled = true;
+            PlayerMovementController.CancelAllActions();
+            PlayerMovementController.IsDisabled = true;
             DebugDisable = true;
         }
         
@@ -339,7 +339,7 @@ namespace Systems.Player
         private void StunBehaviourOnRecovered()
         {
             SetDizzyEyes(false);
-            _playerMovementController.IsDisabled = false;
+            PlayerMovementController.IsDisabled = false;
             DebugDisable = false;
         }
 
@@ -353,49 +353,49 @@ namespace Systems.Player
         {
             var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
             var spawnPosition = checkpoint ? checkpoint.SpawnPosition : defaultRespawnPosition;
-            _playerMovementController.ForceController.Teleport(spawnPosition);
+            PlayerMovementController.ForceController.Teleport(spawnPosition);
         }
         
         private void OnJump(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartJumping();
-            else if (context.canceled) _playerMovementController.StopJumping();
+            if (context.performed) PlayerMovementController.StartJumping();
+            else if (context.canceled) PlayerMovementController.StopJumping();
         }
 
         private void OnDash(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartDashing();
-            else if (context.canceled) _playerMovementController.StopDashing();
+            if (context.performed) PlayerMovementController.StartDashing();
+            else if (context.canceled) PlayerMovementController.StopDashing();
         }
 
         private void OnCrouch(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartCrouching();
-            else if (context.canceled) _playerMovementController.StopCrouching();
+            if (context.performed) PlayerMovementController.StartCrouching();
+            else if (context.canceled) PlayerMovementController.StopCrouching();
         }
 
         private void OnAir(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartAir();
-            else if (context.canceled) _playerMovementController.StopAir();
+            if (context.performed) PlayerMovementController.StartAir();
+            else if (context.canceled) PlayerMovementController.StopAir();
         }
 
         private void OnLeftSpecial(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartLeftSpecial();
-            else if (context.canceled) _playerMovementController.StopLeftSpecial();
+            if (context.performed) PlayerMovementController.StartLeftSpecial();
+            else if (context.canceled) PlayerMovementController.StopLeftSpecial();
         }
 
         private void OnRightSpecial(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (context.performed) _playerMovementController.StartRightSpecial();
-            else if (context.canceled) _playerMovementController.StopRightSpecial();
+            if (context.performed) PlayerMovementController.StartRightSpecial();
+            else if (context.canceled) PlayerMovementController.StopRightSpecial();
         }
         
         private void OnInteract(InputAction.CallbackContext context)

@@ -1,3 +1,5 @@
+using Managers;
+using Scriptables.Events;
 using UnityEngine;
 
 namespace User_Interface
@@ -7,6 +9,8 @@ namespace User_Interface
         [SerializeField] private GameObject mainMenu;
         [SerializeField] private GameObject saveMenu;
         [SerializeField] private GameObject creditsMenu;
+
+        [SerializeField] private EventDatum[] continueEventData;
 
         public void OpenMenu(int menuIndex)
         {
@@ -38,7 +42,8 @@ namespace User_Interface
 
         public void StartNewGame()
         {
-            
+            EventManager.SendEvents(continueEventData);
+            OpenMenu(-1);
         }
 
         public void LoadSave(int saveId)

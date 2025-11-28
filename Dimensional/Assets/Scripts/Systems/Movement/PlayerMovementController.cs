@@ -46,6 +46,7 @@ namespace Systems.Movement
         private float _queueJumpTimer;
         private float _coyoteTimer;
         private float _wallCoyoteTimer;
+        private float _wallSlideDelayTimer;
         private float _dizzyTimer;
 
         private bool _cutJump;
@@ -182,7 +183,7 @@ namespace Systems.Movement
             
             velocity.y = 0;
             _animator.SetFloat("xzVelocity", velocity.magnitude / CurrentMovementControllerDatum.MaxSpeed);
-            if (velocity.magnitude > 0.1f && !IsDisabled) root.forward = velocity;
+            if (velocity.magnitude > 1 && !IsDisabled) root.forward = velocity;
 
             if (_cutJump && (_jumpMovementAction.IsActive || _doubleJumpMovementAction.IsActive || _wallJumpMovementAction.IsActive || _rollJumpMovementAction.IsActive))
             {
@@ -211,6 +212,11 @@ namespace Systems.Movement
             {
                 _wallCoyoteTimer -= deltaTime;
                 if (_wallCoyoteTimer <= 0) CancelActiveJumping();
+            }
+
+            if (_wallSlideDelayTimer > 0)
+            {
+                _wallSlideDelayTimer -= deltaTime;
             }
 
             if (_dizzyTimer > 0)
@@ -243,10 +249,11 @@ namespace Systems.Movement
                 base.OnMove(newInput, datum);
 
                 if (input.magnitude < 0.5f) return;
-                if (Vector3.Angle(_wallSlideDirection, input) <
-                    _playerMovementControllerDatum.WallSlideMinExitAngle) return;
+                var angle = Vector3.Angle(_wallSlideDirection, input);
+                if (angle < _playerMovementControllerDatum.WallSlideMinExitAngle) return;
                 StopWallSliding();
                 _wallCoyoteTimer = _playerMovementControllerDatum.WallJumpCoyoteTime;
+                _wallSlideDelayTimer = _playerMovementControllerDatum.WallSlideDelayTime;
             }
 
             base.OnMove(input, datum);
@@ -377,6 +384,10 @@ namespace Systems.Movement
 
         public void StartAir()
         {
+            if (IsGrounded || _wallSlideMovementAction.IsActive) return;
+            
+            CancelJumping();
+            CancelDashing();
             CancelDiving();
             StopRolling();
             
@@ -527,7 +538,7 @@ namespace Systems.Movement
         private void WallSlide()
         {
             // Potential Problem with _rollJumpMovementAction
-            if (_rollMovementAction.IsActive || _jumpMovementAction.IsActive || 
+            if (_wallSlideDelayTimer > 0 || _rollMovementAction.IsActive || _jumpMovementAction.IsActive || 
                 _doubleJumpMovementAction.IsActive || _wallJumpMovementAction.IsTriggering || 
                 _rollJumpMovementAction.IsActive || _dashMovementAction.IsActive || 
                 _diveMovementAction.IsActive) return;

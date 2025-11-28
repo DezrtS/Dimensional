@@ -24,6 +24,7 @@ namespace Scriptables.Movement
         [SerializeField] private float wallSlideMinEnterMagnitude = 0.5f;
         [SerializeField] private float wallSlideMinDirectionDot;
         [SerializeField] private float wallSlideMinExitAngle;
+        [SerializeField] private float wallSlideDelayTime;
         [Space(15)]
         [Header("Roll Settings")]
         [SerializeField] private float initialRollSpeed;
@@ -39,6 +40,7 @@ namespace Scriptables.Movement
         public float WallSlideMinEnterMagnitude => wallSlideMinEnterMagnitude;
         public float WallSlideMinDirectionDot => wallSlideMinDirectionDot;
         public float WallSlideMinExitAngle => wallSlideMinExitAngle;
+        public float WallSlideDelayTime => wallSlideDelayTime;
         public float InitialRollSpeed => initialRollSpeed;
     }
 }

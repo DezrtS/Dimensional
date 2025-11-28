@@ -1,4 +1,5 @@
 using FMODUnity;
+using Scriptables.Events;
 using UnityEngine;
 
 namespace Scriptables.Interactables
@@ -15,6 +16,8 @@ namespace Scriptables.Interactables
         [SerializeField] private float interactionDelay;
         [SerializeField] private float enterTransitionDuration;
         [SerializeField] private float exitTransitionDuration;
+
+        [SerializeField] private EventDatum[] eventData;
         
         public string InteractableTitle => interactableTitle;
         public float InteractableDistance => interactableDistance;
@@ -25,5 +28,7 @@ namespace Scriptables.Interactables
         public float InteractionDelay => interactionDelay;
         public float EnterTransitionDuration => enterTransitionDuration;
         public float ExitTransitionDuration => exitTransitionDuration;
+        
+        public EventDatum[] EventData => eventData;
     }
 }

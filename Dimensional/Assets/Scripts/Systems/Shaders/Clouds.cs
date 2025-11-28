@@ -57,7 +57,7 @@ namespace Systems.Shaders
 
         private void Start()
         {
-            _targetTransform = PlayerController.Instance.transform;
+            _targetTransform = CameraManager.Instance.Camera.transform;
         }
 
         private void OnDestroy()

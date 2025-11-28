@@ -1,4 +1,5 @@
 using System;
+using Managers;
 using Scriptables.Utilities;
 using Systems.Player;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Systems.Visual_Effects
         [SerializeField] private GameObject windPrefab;
         [SerializeField] private GameObject windLoopPrefab;
         
-        [SerializeField] private Transform spawnPoint;
+        private Transform _spawnPoint;
         
         [Range(0,1)]
         [SerializeField] private float windLoopPercentage = 0.25f;
@@ -36,7 +37,7 @@ namespace Systems.Visual_Effects
 
         private void Start()
         {
-            if (!spawnPoint) spawnPoint = PlayerController.Instance.transform;
+            _spawnPoint = CameraManager.Instance.Camera.transform;
         }
 
         private void FixedUpdate()
@@ -49,7 +50,7 @@ namespace Systems.Visual_Effects
 
         private void SpawnWind()
         {
-            var randomPos = spawnPoint.position + new Vector3(Random.Range(minSpawnRange.x, maxSpawnRange.x), Random.Range(minSpawnRange.y, maxSpawnRange.y), Random.Range(minSpawnRange.z, maxSpawnRange.z));
+            var randomPos = _spawnPoint.position + new Vector3(Random.Range(minSpawnRange.x, maxSpawnRange.x), Random.Range(minSpawnRange.y, maxSpawnRange.y), Random.Range(minSpawnRange.z, maxSpawnRange.z));
 
             var wind = Random.Range(0f, 1f) > windLoopPercentage ? _windPool.GetObject() : _windLoopPool.GetObject();
             if (!wind) return;

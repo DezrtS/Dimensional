@@ -32,9 +32,10 @@ namespace Systems.Player
         
         // 3D
         private float _yRotation;
+
+        private bool _cameraDisabled;
         
         public Transform Root => root;
-        private bool IsDisabled => isDisabled;
         public float XRotation { get; private set; }
 
         private void Awake()
@@ -66,7 +67,7 @@ namespace Systems.Player
 
         private void CameraManagerOnActiveStateChanged(Camera currentCamera, bool active)
         {
-            isDisabled = !active;
+            _cameraDisabled = !active;
         }
 
         private void FixedUpdate()
@@ -95,7 +96,7 @@ namespace Systems.Player
 
         private void Look(Vector3 input)
         {
-            if (IsDisabled) input = Vector3.zero;
+            if (isDisabled || _cameraDisabled) input = Vector3.zero;
             OnLook(input);
             root.SetLocalPositionAndRotation(_lookPosition, Quaternion.Euler(_yRotation, XRotation, 0));
         }

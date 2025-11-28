@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scriptables.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -18,6 +19,16 @@ namespace Managers
         Saving,
         Transitioning,
         Quitting
+    }
+
+    [Serializable]
+    public class GameStateEvents
+    {
+        [SerializeField] private GameState gameState;
+        [SerializeField] private EventDatum[] eventData;
+        
+        public GameState GameState => gameState;
+        public EventDatum[] EventData => eventData;
     }
     
     public enum Dimensions
@@ -43,6 +54,8 @@ namespace Managers
         [SerializeField] private Dimensions defaultWorldDimensions;
         [SerializeField] private InputActionAsset defaultInputActionAsset;
         [Space]
+        [SerializeField] private GameStateEvents[] gameStateEvents;
+        [Space]
         [SerializeField] private bool loadSceneData;
         [SerializeField] private List<DataType> loadOnLoading;
         
@@ -53,11 +66,19 @@ namespace Managers
         private void Start()
         {
             SetWorldDimensions(defaultWorldDimensions);
+            StartCoroutine(GameStateRoutine());
+        }
+
+        private IEnumerator GameStateRoutine()
+        {
             ChangeGameState(GameState.SettingUp);
+            yield return null;
             if (loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene });
             SaveManager.Instance.RequestLoad(loadOnLoading);
             ChangeGameState(GameState.Loading);
+            yield return null;
             ChangeGameState(GameState.Starting);
+            yield return null;
             ChangeGameState(GameState.Playing);
         }
 
@@ -99,6 +120,13 @@ namespace Managers
         {
             GameStateChanged?.Invoke(GameState, newState);
             GameState = newState;
+            foreach (var gameStateEvent in gameStateEvents)
+            {
+                if (gameStateEvent.GameState == newState)
+                {
+                    EventManager.SendEvents(gameStateEvent.EventData);
+                }
+            }
         }
 
         public void SetWorldDimensions(Dimensions worldDimensions)

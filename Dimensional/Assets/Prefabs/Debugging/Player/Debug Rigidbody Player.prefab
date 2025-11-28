@@ -5336,6 +5336,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 730a3ada1a14e9e46977f8f2c629d549, type: 2}
   - {fileID: 11400000, guid: 562c2b86065d81940a376295dbbc5d9a, type: 2}
   deathResetPlayerDatum: {fileID: 11400000, guid: 33864e0462216c344b42746c5e5bee65, type: 2}
+  interactionRadius: 2
+  interactionLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   eyeMeshRenderers:
   - {fileID: 4341374578927003578}
   - {fileID: 8930119049041196500}
@@ -5535,7 +5539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 686a967131eb7824280f1d4897738443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthDatum: {fileID: 11400000, guid: b830fba58db59494387ec1a3bd6489e7, type: 2}
+  healthDatum: {fileID: 11400000, guid: e2fae261522c7fe4a9da60f400c8364b, type: 2}
   destroyOnDeath: 0
 --- !u!114 &5233793326212817352
 MonoBehaviour:
@@ -6304,6 +6308,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 13480b0eb7c2af441984beed0b3654ca, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b3364c2ab062f3e49b967c2d0cff8d46, type: 2}
     - target: {fileID: 919132149155446097, guid: 13480b0eb7c2af441984beed0b3654ca, type: 3}
       propertyPath: m_Name
       value: PaperAirplane

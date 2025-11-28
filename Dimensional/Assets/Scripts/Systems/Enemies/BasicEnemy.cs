@@ -17,6 +17,7 @@ namespace Systems.Enemies
         [SerializeField] private EntityDatum.Type[] chaseTypes;
         
         private MovementController _movementController;
+        private AttackBehaviourComponent _attackBehaviourComponent;
         private WanderBehaviourComponent _wanderBehaviourComponent;
         private PositionBehaviourComponent _positionBehaviourComponent;
         
@@ -26,35 +27,40 @@ namespace Systems.Enemies
         {
             _movementController = GetComponent<MovementController>();
             _movementController.Initialize(this);
-            
+
+            _attackBehaviourComponent = GetComponent<AttackBehaviourComponent>();
             _wanderBehaviourComponent = GetComponent<WanderBehaviourComponent>();
             _positionBehaviourComponent = GetComponent<PositionBehaviourComponent>();
             
-            _wanderBehaviourComponent.SetWanderBehaviourData(_positionBehaviourComponent, this);
+            _attackBehaviourComponent.SetAttackBehaviourData(this, _positionBehaviourComponent);
+            _wanderBehaviourComponent.SetWanderBehaviourData(_positionBehaviourComponent);
+            _positionBehaviourComponent.SetPositionBehaviourData(this);
             _positionBehaviourComponent.RangeLimitPassed += PositionBehaviourComponentOnRangeLimitPassed;
         }
 
         private void Start()
         {
-            ChangeMovementState(MovementState.Wandering);
+            ChangeState(State.Idle);
         }
 
         private void FixedUpdate()
         {
             _movementController.Move();
             
-            if (MovementState == MovementState.Stunned) return;
+            if (State == State.Stun) return;
             var velocity = _movementController.ForceController.GetVelocity();
             velocity.y = 0;
-            if (velocity.magnitude > 0.1f) root.forward = velocity;
-            
+            if (velocity.magnitude > 0.5f) root.forward = velocity;
+
+            if (State != State.Idle) return;
             DetectSurroundings();
-            if (MovementState == MovementState.Chasing) _positionBehaviourComponent.SetTargetPosition(_target.position);
         }
         
         private void PositionBehaviourComponentOnRangeLimitPassed()
         {
-            if (MovementState == MovementState.Chasing) ChangeMovementState(MovementState.Wandering);
+            _target = null;
+            if (State == State.Stun) return;
+            ChangeState(State.Idle);
         }
 
         private void DetectSurroundings()
@@ -68,7 +74,7 @@ namespace Systems.Enemies
                 if (!chaseTypes.Contains(entity.EntityDatum.EntityType)) continue;
                 
                 _target = entity.GameObject.transform;
-                ChangeMovementState(MovementState.Chasing);
+                ChangeState(State.Attack);
                 return;
             }
         }
@@ -78,101 +84,40 @@ namespace Systems.Enemies
             switch (oldState)
             {
                 case State.None:
-                    
                     break;
-                case State.Spawning:
-                    
-                    break;
-                case State.Idling:
-                    
-                    break;
-                case State.Attacking:
-                    
-                    break;
-                case State.Dying:
-                    
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(oldState), oldState, null);
-            }
-
-            switch (newState)
-            {
-                case State.None:
-                    
-                    break;
-                case State.Spawning:
-                    
-                    break;
-                case State.Idling:
-                    
-                    break;
-                case State.Attacking:
-                    
-                    break;
-                case State.Dying:
-                    
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
-            }
-        }
-
-        protected override void OnMovementStateChanged(MovementState oldState, MovementState newState)
-        {
-            switch (oldState)
-            {
-                case MovementState.Idling:
-                    
-                    break;
-                case MovementState.Wandering:
+                case State.Idle:
                     _wanderBehaviourComponent.Deactivate();
                     break;
-                case MovementState.Patrolling:
-                    
+                case State.Attack:
+                    _attackBehaviourComponent.Deactivate();
                     break;
-                case MovementState.Repositioning:
-                    
+                case State.Flee:
                     break;
-                case MovementState.Chasing:
-                    _positionBehaviourComponent.Deactivate();
-                    break;
-                case MovementState.Fleeing:
-                    
-                    break;
-                case MovementState.Stunned:
+                case State.Stun:
                     _movementController.IsDisabled = false;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(oldState), oldState, null);
             }
-
+            
             switch (newState)
             {
-                case MovementState.Idling:
-                    
+                case State.None:
                     break;
-                case MovementState.Wandering:
+                case State.Idle:
                     _wanderBehaviourComponent.Activate();
                     break;
-                case MovementState.Patrolling:
-                    
+                case State.Attack:
+                    _attackBehaviourComponent.SetTarget(_target);
+                    _attackBehaviourComponent.Activate();
                     break;
-                case MovementState.Repositioning:
-                    
+                case State.Flee:
                     break;
-                case MovementState.Chasing:
-                    _positionBehaviourComponent.SetPositionBehaviourData(this, _target.position);
-                    _positionBehaviourComponent.Activate();
-                    break;
-                case MovementState.Fleeing:
-                    
-                    break;
-                case MovementState.Stunned:
+                case State.Stun:
                     _movementController.IsDisabled = true;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+                    throw new ArgumentOutOfRangeException(nameof(oldState), oldState, null);
             }
         }
 
