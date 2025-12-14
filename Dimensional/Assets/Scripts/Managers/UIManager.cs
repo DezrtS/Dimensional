@@ -69,9 +69,9 @@ namespace Managers
             }
         }
 
-        public WorldUIAnchor SpawnWorldUIAnchor(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform)
+        public WorldUIAnchor SpawnWorldUIAnchor(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform)
         {
-            return worldUIAnchorDatum.SpawnWorldUIAnchor(interactableIconTransform, worldTransform);
+            return worldUIAnchorDatum.SpawnWorldUIAnchor(interactableIconTransform, holderGameObject, worldTransform);
         }
 
         public void Transition(bool invert, bool reverse, float duration = -1)

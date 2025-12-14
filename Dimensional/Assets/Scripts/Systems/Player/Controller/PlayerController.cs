@@ -10,6 +10,7 @@ using Scriptables.Shapes;
 using Systems.Actions.Movement;
 using Systems.Entities;
 using Systems.Entities.Behaviours;
+using Systems.Interactables;
 using Systems.Movement;
 using Systems.Visual_Effects;
 using UnityEngine;
@@ -47,8 +48,8 @@ namespace Systems.Player
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
         
-        private readonly List<IInteractable> _interactables = new List<IInteractable>();
-        private IInteractable _interactable;
+        private readonly List<Interactable> _interactables = new List<Interactable>();
+        private Interactable _interactable;
 
         private bool _isResetting;
 
@@ -255,35 +256,37 @@ namespace Systems.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent(out IInteractable interactable)) return;
+            if (!other.TryGetComponent(out Interactable interactable)) return;
             _interactables.Add(interactable);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.TryGetComponent(out IInteractable interactable)) return;
+            if (!other.TryGetComponent(out Interactable interactable)) return;
             _interactables.Remove(interactable);
-            interactable.StopHovering();
+            interactable.UnHover(InteractContext.Construct(gameObject));
+            if (_interactable == interactable) _interactable = null;
         }
 
         private void CheckInteractables()
         {
+            var interactContext = InteractContext.Construct(gameObject);
             if (_interactables.Count == 1)
             {
                 _interactable = _interactables[0];
-                _interactable.Hover();
+                _interactable.Hover(interactContext);
                 return;
             }
             
-            var closestAngleDifference = _interactable != null ? Vector3.Angle(PlayerLook.Root.forward, _interactable.GameObject.transform.position - transform.position) : float.MaxValue;
+            var closestAngleDifference = _interactable ? Vector3.Angle(PlayerLook.Root.forward, _interactable.transform.position - transform.position) : float.MaxValue;
             foreach (var interactable in _interactables)
             {
-                var angleDifference = Vector3.Angle(PlayerLook.Root.forward, interactable.GameObject.transform.position - transform.position);
-                if (angleDifference > closestAngleDifference) continue;
-                _interactable?.StopHovering();
+                var angleDifference = Vector3.Angle(PlayerLook.Root.forward, interactable.transform.position - transform.position);
+                if (angleDifference > closestAngleDifference || interactable.IsHovered) continue;
+                if (_interactable) _interactable.UnHover(interactContext);
                 closestAngleDifference = angleDifference;
                 _interactable = interactable;
-                _interactable.Hover();
+                _interactable.Hover(interactContext);
             }
         }
 
@@ -401,7 +404,7 @@ namespace Systems.Player
         private void OnInteract(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            _interactable?.Interact(InteractContext.Construct(gameObject));
+            if (_interactable) _interactable.Interact(InteractContext.Construct(gameObject));
         }
 
         private static void OnOpenWheel(InputAction.CallbackContext context)

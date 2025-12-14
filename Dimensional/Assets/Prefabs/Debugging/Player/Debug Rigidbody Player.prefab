@@ -5336,10 +5336,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 730a3ada1a14e9e46977f8f2c629d549, type: 2}
   - {fileID: 11400000, guid: 562c2b86065d81940a376295dbbc5d9a, type: 2}
   deathResetPlayerDatum: {fileID: 11400000, guid: 33864e0462216c344b42746c5e5bee65, type: 2}
-  interactionRadius: 2
+  interactionRadius: 4
   interactionLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   eyeMeshRenderers:
   - {fileID: 4341374578927003578}
   - {fileID: 8930119049041196500}

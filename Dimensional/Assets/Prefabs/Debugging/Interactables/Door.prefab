@@ -247,6 +247,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1345717405383201536}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3891657149717574928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4723530580264355695}
+  m_Layer: 7
+  m_Name: Element Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4723530580264355695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3891657149717574928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1345717405383201536}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4808197805577436429
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,9 +322,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1345717405383201536}
-  - component: {fileID: 3548665786762787134}
   - component: {fileID: 5430494591229526391}
-  m_Layer: 0
+  - component: {fileID: 6831392576144213807}
+  - component: {fileID: 8587336553426727135}
+  m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,10 +348,46 @@ Transform:
   - {fileID: 5746958078960241242}
   - {fileID: 298615982539456399}
   - {fileID: 1507621799991820509}
+  - {fileID: 4723530580264355695}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3548665786762787134
-SphereCollider:
+--- !u!114 &5430494591229526391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4943767583605389322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 792219863142fac4fb350d1b70a22db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactableDatum: {fileID: 11400000, guid: b13d58cd494ce394193cf026ee0bf9aa, type: 2}
+  worldUIAnchorDatum: {fileID: 11400000, guid: 3275e4d7ffbd1914f8f26f43e23dc114, type: 2}
+  elementTransform: {fileID: 4723530580264355695}
+  eventData: []
+  spawnTransform: {fileID: 298615982539456399}
+  id: 0
+  destinationIsScene: 0
+  destinationId: 1
+--- !u!114 &6831392576144213807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4943767583605389322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f522a0332dbb84db92b547fa822979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enterDuration: 1
+  exitDuration: 1
+  cinemachineCamera: {fileID: 7238213286689390062}
+--- !u!65 &8587336553426727135
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -337,27 +405,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
-  m_Center: {x: 0, y: 1.5, z: 0}
---- !u!114 &5430494591229526391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4943767583605389322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 792219863142fac4fb350d1b70a22db0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactableDatum: {fileID: 11400000, guid: b13d58cd494ce394193cf026ee0bf9aa, type: 2}
-  worldUIAnchorDatum: {fileID: 11400000, guid: a4dcd1df90c3ab4499b280f9a84f3783, type: 2}
-  interactableCamera: {fileID: 7238213286689390062}
-  spawnTransform: {fileID: 298615982539456399}
-  id: 0
-  destinationIsScene: 0
-  destinationId: 1
+  m_Size: {x: 4, y: 4, z: 4}
+  m_Center: {x: 0, y: 2, z: -2}
 --- !u!1 &7461389637355684645
 GameObject:
   m_ObjectHideFlags: 0

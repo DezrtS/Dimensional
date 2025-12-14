@@ -1,5 +1,6 @@
 using Managers;
 using Scriptables.User_Interface;
+using Systems.Player;
 using UnityEngine;
 
 namespace User_Interface
@@ -8,41 +9,38 @@ namespace User_Interface
     {
         protected WorldUIAnchorDatum WorldUIAnchorDatum { get; private set; }
 
+        protected GameObject HolderGameObject { get; private set; }
         protected Transform WorldTransform { get; private set; }
         public Transform TargetTransform { get; private set; }
         protected Transform CameraTransform { get; private set; }
-        
+
+        private bool _isTargetInRange;
         protected Camera Camera { get; private set; }
 
-        public void Initialize(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform)
+        public void Initialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform)
         {
             WorldUIAnchorDatum = worldUIAnchorDatum;
+            HolderGameObject = holderGameObject;
             WorldTransform = worldTransform;
-            OnInitialize(worldUIAnchorDatum, worldTransform);
+            OnInitialize(worldUIAnchorDatum, holderGameObject, worldTransform);
             transform.localScale = Vector3.zero;
         }
 
-        protected abstract void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform);
-
-        public void SetTargetTransform(Transform targetTransform)
-        {
-            TargetTransform = targetTransform;
-            OnSetTargetTransform(targetTransform);
-        }
-
-        protected abstract void OnSetTargetTransform(Transform targetTransform);
+        protected abstract void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform);
 
         private void Start()
         {
             Camera = CameraManager.Instance.Camera;
             CameraTransform = Camera.transform;
+            TargetTransform = PlayerController.Instance.transform;
         }
 
         private void FixedUpdate()
         {
-            if (!TargetTransform) return;
-
             OnFixedUpdate();
+            var targetDistance = GetTargetDistance();
+            SetIsTargetInRange(targetDistance <= WorldUIAnchorDatum.Range);
+            
             var distanceRatio = WorldUIAnchorDatum.UseDistanceScaling ? GetDistanceRatio() : 0;
             var angleRatio = WorldUIAnchorDatum.UseAngleScaling ? GetAngleRatio() : 0;
             var ratio = Mathf.Clamp01(Mathf.Max(distanceRatio, angleRatio));
@@ -58,10 +56,24 @@ namespace User_Interface
             transform.position = screenPosition;
         }
 
-        private float GetDistanceRatio()
+        private void SetIsTargetInRange(bool isTargetInRange)
+        {
+            if (_isTargetInRange == isTargetInRange) return;
+            _isTargetInRange = isTargetInRange;
+            OnSetIsTargetInRange(isTargetInRange);
+        }
+        
+        protected virtual void OnSetIsTargetInRange(bool isTargetInRange) {}
+
+        private float GetTargetDistance()
         {
             var difference =  WorldTransform.position +  WorldUIAnchorDatum.Offset - TargetTransform.position;
-            var distance = difference.magnitude;
+            return difference.magnitude;
+        }
+
+        private float GetDistanceRatio()
+        {
+            var distance = GetTargetDistance();
             return (distance - WorldUIAnchorDatum.MinDistance) / (WorldUIAnchorDatum.MaxDistance - WorldUIAnchorDatum.MinDistance);
         }
         

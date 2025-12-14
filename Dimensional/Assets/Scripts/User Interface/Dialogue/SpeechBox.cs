@@ -10,25 +10,28 @@ namespace User_Interface.Dialogue
 {
     public class SpeechBox : WorldUIAnchor
     {
-        private static readonly int Show = Animator.StringToHash("Show");
-        private static readonly int Hide = Animator.StringToHash("Hide");
+        private static readonly int IsTargetInRangeHash = Animator.StringToHash("IsTargetInRange");
+        
         [SerializeField] private TextAnimator_TMP textAnimator;
         [SerializeField] private TypewriterByCharacter typewriterByCharacter;
         [Space] 
         [SerializeField] private Image iconImage;
-        [SerializeField] private Image armImage;
         [SerializeField] private TextMeshProUGUI nameText;
         
-        private DialogueLineDatum _dialogueLineDatum;
         private Animator _animator;
+        private DialogueLineDatum _dialogueLineDatum;
+        private UIArm _uiArm;
+
+        private bool _isShown;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
+            _uiArm = GetComponent<UIArm>();
         }
-        
-        protected override void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform) {}
 
+        protected override void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform) {}
+        
         public void SetDialogueLine(DialogueLineDatum dialogueLineDatum)
         {
             _dialogueLineDatum = dialogueLineDatum;
@@ -37,56 +40,35 @@ namespace User_Interface.Dialogue
             textAnimator.SetText(_dialogueLineDatum.Text, true);
         }
 
-        protected override void OnSetTargetTransform(Transform targetTransform)
+        public void ShowDialogue()
         {
-            if (!targetTransform)
-            {
-                HideSpeechBox();
-            }
-            else
-            {
-                ShowSpeechBox();
-            }
+            _animator.SetBool(IsTargetInRangeHash, true);
+            typewriterByCharacter.StartShowingText();
+        }
+
+        public void SkipDialogue()
+        {
+            typewriterByCharacter.SkipTypewriter();
+        }
+        
+        public void HideDialogue()
+        {
+            _animator.SetBool(IsTargetInRangeHash, false);
+            typewriterByCharacter.StartDisappearingText();
         }
 
         protected override void OnFixedUpdate()
         {
-            var bubbleScreenPos = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
+            var elementScreenPos = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
             var targetScreenPos = Camera.WorldToScreenPoint(WorldTransform.position);
-            
-            Vector2 direction = targetScreenPos - bubbleScreenPos;
-            var distance = direction.magnitude;
-            direction = direction.normalized;
-
-            var size = distance / 150f;
-            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            
-            armImage.transform.localScale = new Vector3(1, size, 1);
-            armImage.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            _uiArm.UpdateArm(elementScreenPos, targetScreenPos);
         }
 
-        [ContextMenu("Show")]
-        public void ShowSpeechBox()
+        protected override void OnSetIsTargetInRange(bool isTargetInRange)
         {
-            _animator.SetTrigger(Show);
-            ShowText();
-        }
-        
-        private void ShowText()
-        {
-            typewriterByCharacter.StartShowingText();
-        }
-
-        [ContextMenu("Hide")]
-        public void HideSpeechBox()
-        {
-            HideText();
-            _animator.SetTrigger(Hide);
-        }
-        
-        private void HideText()
-        {
-            typewriterByCharacter.StartDisappearingText();
+            _animator.SetBool(IsTargetInRangeHash, isTargetInRange);
+            if (isTargetInRange) typewriterByCharacter.StartShowingText();
+            else typewriterByCharacter.StartDisappearingText();
         }
     }
 }

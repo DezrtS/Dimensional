@@ -182,6 +182,7 @@ namespace Managers
             to.Priority = 1;
             from.Priority = -1;
             yield return new WaitForSeconds(duration);
+            yield return new WaitForEndOfFrame();
             TransitionFinished?.Invoke(from, to);
             SetIsActive(true);
         }

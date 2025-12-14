@@ -16,9 +16,10 @@ MonoBehaviour:
   isDialogueSkippable: 1
   dialogueLineData:
   - {fileID: 11400000, guid: f44c572d98a152243beadc469624c7aa, type: 2}
+  - {fileID: 11400000, guid: 664dcfbf4b4efef408d41560383d3bad, type: 2}
+  - {fileID: 11400000, guid: 664dcfbf4b4efef408d41560383d3bad, type: 2}
   - {fileID: 11400000, guid: f44c572d98a152243beadc469624c7aa, type: 2}
-  - {fileID: 11400000, guid: f44c572d98a152243beadc469624c7aa, type: 2}
-  - {fileID: 11400000, guid: f44c572d98a152243beadc469624c7aa, type: 2}
+  - {fileID: 11400000, guid: 664dcfbf4b4efef408d41560383d3bad, type: 2}
   dialogueChoices:
   - text: Okay
     dialogueSequenceDatum: {fileID: 0}

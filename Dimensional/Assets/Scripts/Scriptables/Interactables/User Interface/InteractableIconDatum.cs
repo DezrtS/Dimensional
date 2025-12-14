@@ -14,11 +14,11 @@ namespace Scriptables.Interactables
         public Sprite KeyboardIcon => keyboardIcon;
         public Sprite GamepadIcon => gamepadIcon;
 
-        public override WorldUIAnchor SpawnWorldUIAnchor(Transform parent, Transform worldTransform)
+        public override WorldUIAnchor SpawnWorldUIAnchor(Transform parent, GameObject holderGameObject, Transform worldTransform)
         {
             var interactableIconObject = Instantiate(Prefab, parent);
             var interactableIcon = interactableIconObject.GetComponent<InteractableIcon>();
-            interactableIcon.Initialize(this, worldTransform);
+            interactableIcon.Initialize(this, holderGameObject, worldTransform);
             return interactableIcon;
         }
     }

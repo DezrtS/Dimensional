@@ -419,6 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4512262355106749931}
   - component: {fileID: 7082688092339019974}
+  - component: {fileID: 1666981191791508984}
   - component: {fileID: 8281936912734138007}
   m_Layer: 5
   m_Name: Speech Box
@@ -462,8 +463,20 @@ MonoBehaviour:
   textAnimator: {fileID: 1583218791672012065}
   typewriterByCharacter: {fileID: 4376702920806040716}
   iconImage: {fileID: 4260912187248055815}
-  armImage: {fileID: 6053017157235418467}
   nameText: {fileID: 6558594284220586522}
+--- !u!114 &1666981191791508984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5267603328270557316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f912f12b3f9184399c27b724fc5e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armImage: {fileID: 6053017157235418467}
 --- !u!95 &8281936912734138007
 Animator:
   serializedVersion: 7

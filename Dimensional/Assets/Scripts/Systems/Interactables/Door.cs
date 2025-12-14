@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using Interfaces;
 using Managers;
+using Scriptables.Events;
+using Scriptables.User_Interface;
+using Systems.Cameras;
 using Systems.Movement;
 using UnityEngine;
 
@@ -9,23 +12,43 @@ namespace Systems.Interactables
 {
     public class Door : Interactable
     {
-        private static readonly int Show = Animator.StringToHash("Show");
-
         public delegate void DoorEventHandler(InteractContext interactContext, string from, string to);
         public static event DoorEventHandler Opened;
         
+        [Space]
+        [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
+        [SerializeField] private Transform elementTransform;
+        [SerializeField] private EventDatum[] eventData;
+        [Space]
         [SerializeField] private Transform spawnTransform;
         [SerializeField] private string id;
         [Space]
         [SerializeField] private bool destinationIsScene;
         [SerializeField] private string destinationId;
 
-        private Animator _animator;
+        private CameraTransition _cameraTransition;
 
         private void Awake()
         {
             Opened += DoorOnOpened;
-            _animator = GetComponent<Animator>();
+            if (!TryGetComponent(out _cameraTransition)) return;
+            _cameraTransition.TransitionToFinished += CameraTransitionOnTransitionToFinished;
+            _cameraTransition.TransitionFromFinished += CameraTransitionOnTransitionFromFinished;
+        }
+
+        private void Start()
+        {
+            UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, gameObject, elementTransform);
+        }
+
+        private void CameraTransitionOnTransitionToFinished()
+        {
+            HandleInteraction();
+        }
+        
+        private void CameraTransitionOnTransitionFromFinished()
+        {
+            
         }
 
         private void OnDisable()
@@ -36,19 +59,25 @@ namespace Systems.Interactables
         private void DoorOnOpened(InteractContext interactContext, string from, string to)
         {
             if (id != to) return;
-            if (InteractableCamera) CameraManager.Instance.Transition(null, InteractableCamera, 0);
             interactContext.SourceGameObject.GetComponent<ForceController>().Teleport(spawnTransform.position);
-            if (InteractableCamera) CameraManager.Instance.TransitionToDefault(true, InteractableDatum.ExitTransitionDuration);
+            if (_cameraTransition) _cameraTransition.TransitionFrom();
         }
         
-        public bool CanInteract(InteractContext interactContext)
+        public override bool CanInteract(InteractContext interactContext)
         {
-            return !IsDisabled;
+            return true;
         }
 
-        protected override void OnInteraction(InteractContext context)
+        public override void Interact(InteractContext interactContext)
         {
-            HandleInteraction(context);
+            base.Interact(interactContext);
+            if (_cameraTransition) _cameraTransition.TransitionTo();
+            else HandleInteraction();
+        }
+
+        private void HandleInteraction()
+        {
+            EventManager.SendEvents(eventData);
             if (destinationId == string.Empty) return;
             
             if (destinationIsScene)
@@ -57,7 +86,7 @@ namespace Systems.Interactables
             }
             else
             {
-                Opened?.Invoke(context, id, destinationId);   
+                Opened?.Invoke(PreviousInteractContext, id, destinationId);   
             }
         }
     }
