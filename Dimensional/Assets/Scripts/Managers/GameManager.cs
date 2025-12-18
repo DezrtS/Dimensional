@@ -11,14 +11,11 @@ namespace Managers
     public enum GameState
     {
         None,
-        SettingUp,
+        Initializing, 
         Loading,
+        Preparing,
         Starting,
         Playing,
-        Ending,
-        Saving,
-        Transitioning,
-        Quitting
     }
 
     [Serializable]
@@ -55,7 +52,8 @@ namespace Managers
         [SerializeField] private InputActionAsset defaultInputActionAsset;
         [Space]
         [SerializeField] private GameStateEvents[] gameStateEvents;
-        [Space]
+
+        [Space] [SerializeField] private GameObject saveManagerPrefab;
         [SerializeField] private bool loadSceneData;
         [SerializeField] private List<DataType> loadOnLoading;
         
@@ -71,14 +69,19 @@ namespace Managers
 
         private IEnumerator GameStateRoutine()
         {
-            ChangeGameState(GameState.SettingUp);
+            ChangeGameState(GameState.Initializing);
             yield return null;
-            if (loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene });
-            SaveManager.Instance.RequestLoad(loadOnLoading);
+            var isFirstLoad = !SaveManager.Instance;
+            if (isFirstLoad) Instantiate(saveManagerPrefab);
             ChangeGameState(GameState.Loading);
             yield return null;
-            ChangeGameState(GameState.Starting);
+            if (isFirstLoad && loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene, DataType.World });
+            SaveManager.Instance.RequestLoad(loadOnLoading); 
+            ChangeGameState(GameState.Preparing);
             yield return null;
+            ChangeGameState(GameState.Starting);
+            UIManager.Instance.Transition(false, false, 2f);
+            yield return new WaitForSeconds(2f);
             ChangeGameState(GameState.Playing);
         }
 
@@ -86,7 +89,7 @@ namespace Managers
         {
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
-                SceneManager.Instance.ReloadScene();
+                SceneManager.ReloadScene();
             }
             /*
             else if (Input.GetKeyDown(KeyCode.Alpha2))

@@ -24,7 +24,7 @@ namespace Managers
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Playing) return;
+            if (newValue != GameState.Starting) return;
             if (!defaultCutsceneDatum) return;
             PlayCutscene(defaultCutsceneDatum);
         }

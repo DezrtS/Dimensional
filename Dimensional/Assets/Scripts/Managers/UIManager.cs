@@ -23,8 +23,6 @@ namespace Managers
         [SerializeField] private string areaName = "Sphero";
         [SerializeField] private float areaTitleDuration = 5;
         [Space]
-        [SerializeField] private bool transitionOnAwake;
-        [Space]
         [SerializeField] private Transform interactableIconTransform;
         [Space]
         [SerializeField] private GameObject fade;
@@ -45,20 +43,14 @@ namespace Managers
             _maskReveal = GetComponent<MaskReveal>();
             _maskReveal.Finished += MaskRevealOnFinished;
             
-            if (transitionOnAwake) Transition(true, false);
-            
-            //_playerUI = GetComponent<PlayerUIV1>();
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
         }
 
-        private void Start()
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
+            if (newValue != GameState.Playing) return;
             if (!showAreaTitle) return;
             areaTitle.ShowArea(areaName, areaTitleDuration);
-            
-            //if (!actionSelectionWheelDatum) return;
-            //_actionSelectionWheel = actionSelectionWheelDatum.AttachSelectionWheel(actionSelectionWheelTransform);
-            //_actionSelectionWheel.GenerateSelectionWheel();
-            //_actionSelectionWheel.Cancelled += SelectionWheelOnCancelled;
         }
 
         private void Update()
@@ -87,37 +79,14 @@ namespace Managers
         public void EnableFade() => fade.SetActive(true);
         public void DisableFade() => fade.SetActive(false);
 
-        public void OpenActionShapeSelection()
-        {
-            return;
-            _actionSelectionWheel.Show();
-            _actionSelectionWheel.Activate();   
-            
-            GameManager.Instance.SwitchInputActionMaps("Selection Wheel");
-            GameManager.SetTimeScale(0.25f);
-            EnableFade();
-        }
-
-        public void CloseActionShapeSelection()
-        {
-            return;
-            _playerUI.CloseActionShapeSelection();
-            _actionSelectionWheel.Hide();
-            _actionSelectionWheel.Deactivate();   
-            
-            GameManager.Instance.ResetInputActionMapToDefault();
-            GameManager.SetTimeScale();
-            DisableFade();
-        }
-
-        private void SelectionWheelOnCancelled(SelectionWheel selectionWheel)
-        {
-            CloseActionShapeSelection();
-        }
-
         private static void MaskRevealOnFinished()
         {
             TransitionFinished?.Invoke();
+        }
+
+        private void OnDisable()
+        {
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
     }
 }

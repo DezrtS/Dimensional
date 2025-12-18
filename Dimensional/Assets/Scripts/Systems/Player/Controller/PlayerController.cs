@@ -33,9 +33,6 @@ namespace Systems.Player
         [Space] 
         [SerializeField] private ResetPlayerDatum deathResetPlayerDatum;
         [Space]
-        [SerializeField] private float interactionRadius;
-        [SerializeField] private LayerMask interactionLayerMask;
-        [Space]
         [SerializeField] private MeshRenderer[] eyeMeshRenderers;
         [SerializeField] private Material defaultEyeMaterial;
         [SerializeField] private Material dizzyEyeMaterial;
@@ -171,15 +168,6 @@ namespace Systems.Player
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed += OnInteract;
             
-            var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
-            openWheelInputAction.performed += OnOpenWheel;
-            
-            //var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
-            //switchShapesInputAction.performed += OnSwitchShapes;
-            
-            var switchWheelInputAction = _inputActionMap.FindAction("Switch Wheel");
-            switchWheelInputAction.performed += OnSwitchWheel;
-            
             _inputActionMap.Enable();
         }
         
@@ -211,15 +199,6 @@ namespace Systems.Player
             
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed -= OnInteract;
-            
-            var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
-            openWheelInputAction.performed -= OnOpenWheel;
-            
-            //var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
-            //switchShapesInputAction.performed -= OnSwitchShapes;
-            
-            var switchWheelInputAction = _inputActionMap.FindAction("Switch Wheel");
-            switchWheelInputAction.performed -= OnSwitchWheel;
             
             _inputActionMap.Disable();
         }
@@ -279,15 +258,19 @@ namespace Systems.Player
             }
             
             var closestAngleDifference = _interactable ? Vector3.Angle(PlayerLook.Root.forward, _interactable.transform.position - transform.position) : float.MaxValue;
+            var closestInteractable = _interactable;
             foreach (var interactable in _interactables)
             {
                 var angleDifference = Vector3.Angle(PlayerLook.Root.forward, interactable.transform.position - transform.position);
-                if (angleDifference > closestAngleDifference || interactable.IsHovered) continue;
-                if (_interactable) _interactable.UnHover(interactContext);
+                if (angleDifference > closestAngleDifference) continue;
                 closestAngleDifference = angleDifference;
-                _interactable = interactable;
-                _interactable.Hover(interactContext);
+                closestInteractable = interactable;
             }
+            
+            if (_interactable == closestInteractable) return;
+            if (_interactable) _interactable.UnHover(interactContext);
+            _interactable = closestInteractable;
+            _interactable.Hover(interactContext);
         }
 
         public void SetDizzyEyes(bool dizzyEyes)
@@ -300,7 +283,7 @@ namespace Systems.Player
         
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Starting) return;
+            if (newValue != GameState.Preparing) return;
             
             var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
             if (!checkpoint) return;
@@ -406,11 +389,6 @@ namespace Systems.Player
             if (DebugDisable) return;
             if (_interactable) _interactable.Interact(InteractContext.Construct(gameObject));
         }
-
-        private static void OnOpenWheel(InputAction.CallbackContext context)
-        {
-            UIManager.Instance.OpenActionShapeSelection();
-        }
         
         private void OnSwitchShapes(InputAction.CallbackContext context)
         {
@@ -426,11 +404,6 @@ namespace Systems.Player
             var index = indexMap[input];
             if (index >= movementActionShapesPresets.Length) return;
             SetMovementActionShapesPreset(movementActionShapesPresets[index]);
-        }
-        
-        private void OnSwitchWheel(InputAction.CallbackContext context)
-        {
-            SwitchedWheel?.Invoke();
         }
 
         private IEnumerator ResetRoutine(ResetPlayerDatum resetPlayerDatum, Vector3 defaultResetPosition)

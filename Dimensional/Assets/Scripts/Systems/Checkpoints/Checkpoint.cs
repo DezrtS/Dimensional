@@ -26,7 +26,7 @@ namespace Systems.Checkpoints
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue == GameState.SettingUp) CheckpointManager.Instance.AddCheckpoint(this);
+            if (newValue == GameState.Initializing) CheckpointManager.Instance.AddCheckpoint(this);
         }
 
         private void OnTriggerEnter(Collider other)

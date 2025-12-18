@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b6a48ec13eab94fbd8cb40d04f2aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveOnQuit: 0
+  saveOnQuit: 1

@@ -61,12 +61,12 @@ namespace Managers
     [Serializable]
     public class SaveData
     {
-        public PlayerData playerData = new();
-        public ActionData actionData = new();
-        public CollectableData collectableData = new();
-        public QuestData questData = new();
-        public WorldData worldData = new();
-        public SceneData sceneData = new();
+        public PlayerData playerData;
+        public ActionData actionData;
+        public CollectableData collectableData;
+        public QuestData questData;
+        public WorldData worldData;
+        public SceneData sceneData;
     }
     
     public class SaveManager : SingletonPersistent<SaveManager>

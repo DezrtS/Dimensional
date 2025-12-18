@@ -19,7 +19,7 @@ namespace Scriptables.Selection_Wheels
             
             if (HideOnSelect) selectionWheel.Hide();
             selectionWheel.Deactivate();
-            UIManager.Instance.CloseActionShapeSelection();
+            //UIManager.Instance.CloseActionShapeSelection();
         }
     }
 }
