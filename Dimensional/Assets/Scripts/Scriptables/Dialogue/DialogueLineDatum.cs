@@ -1,3 +1,4 @@
+using Systems.Dialogue;
 using UnityEngine;
 
 namespace Scriptables.Dialogue
@@ -5,10 +6,8 @@ namespace Scriptables.Dialogue
     [CreateAssetMenu(fileName = "DialogueLineDatum", menuName = "Scriptable Objects/Dialogue/DialogueLineDatum")]
     public class DialogueLineDatum : ScriptableObject
     {
-        [SerializeField] private DialogueSpeakerDatum dialogueSpeakerDatum;
-        [TextArea(3, 10)] [SerializeField] private string text;
+        [SerializeField] private DialogueLine dialogueLine;
         
-        public DialogueSpeakerDatum DialogueSpeakerDatum => dialogueSpeakerDatum;
-        public string Text => text;
+        public DialogueLine DialogueLine => dialogueLine;
     }
 }

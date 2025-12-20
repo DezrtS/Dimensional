@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13fbe615d3730f84a89e91352c325571, type: 3}
   m_Name: 0-1-Debug
   m_EditorClassIdentifier: 
+  dialogueLine:
+    dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
+    text: <wave>Hello!</wave> My name is Debug
   dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
   text: <wave>Hello!</wave> My name is Debug

@@ -46,7 +46,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultWorldDimensions: 1
   defaultInputActionAsset: {fileID: -944628639613478452, guid: b41af7f0c31d62e499003e8c59a5bc2f, type: 3}
-  gameStateEvents: []
+  gameStateEvents:
+  - gameState: 1
+    eventData:
+    - {fileID: 11400000, guid: 6bff227e1a53161409c4de06d8f39ba0, type: 2}
+  - gameState: 2
+    eventData:
+    - {fileID: 11400000, guid: 7a2e6d7c75492fa47aa78b4958f9fd79, type: 2}
+  - gameState: 3
+    eventData:
+    - {fileID: 11400000, guid: 601ee4f182e6dc6408215cbad544a2bb, type: 2}
+  - gameState: 3
+    eventData:
+    - {fileID: 11400000, guid: e11ad78de92dbb946864230bcf2f00e5, type: 2}
+    - {fileID: 11400000, guid: 75c6946fb5c547b42b68ce1555aa6f79, type: 2}
   saveManagerPrefab: {fileID: 901283025757477412, guid: fee919393b8f54d4bb13079dd5e9620b, type: 3}
   loadSceneData: 1
   loadOnLoading: 00000000010000000200000003000000

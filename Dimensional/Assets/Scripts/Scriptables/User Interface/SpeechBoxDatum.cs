@@ -15,7 +15,7 @@ namespace Scriptables.User_Interface
             var speechBoxObject = Instantiate(Prefab, parent.transform);
             var speechBox = speechBoxObject.GetComponent<SpeechBox>();
             speechBox.Initialize(this, holderGameObject, worldTransform);
-            speechBox.SetDialogueLine(dialogueLineDatum);
+            speechBox.SetDialogueLine(dialogueLineDatum.DialogueLine);
             return speechBox;
         }
     }

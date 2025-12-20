@@ -96,6 +96,7 @@ namespace Managers
 
         public void RequestSave(List<DataType> dataTypes)
         {
+            RequestLoad(dataTypes, false);
             Saving?.Invoke(_saveData, dataTypes);
             foreach (var dataType in dataTypes)
             {
@@ -125,7 +126,7 @@ namespace Managers
             }
         }
         
-        public void RequestLoad(List<DataType> dataTypes)
+        public void RequestLoad(List<DataType> dataTypes, bool invokeLoaded = true)
         {
             var loadedDataTypes = new List<DataType>();
             foreach (var dataType in dataTypes)
@@ -191,7 +192,7 @@ namespace Managers
                 }
                 loadedDataTypes.Add(dataType);
             }
-            Loaded?.Invoke(_saveData, loadedDataTypes);
+            if (invokeLoaded) Loaded?.Invoke(_saveData, loadedDataTypes);
         }
 
         private static T Load<T>(string fileName) where T : class

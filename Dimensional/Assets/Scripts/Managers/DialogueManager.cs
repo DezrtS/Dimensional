@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Scriptables.Dialogue;
+using Systems.Dialogue;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -12,9 +14,8 @@ namespace Managers
         public static event DialogueSequenceEventHandler SequenceStarted;
         public static event DialogueSequenceEventHandler SequenceFinished;
         
-        public delegate void DialogueSpeakerEventHandler(DialogueLineDatum dialogueLineDatum);
+        public delegate void DialogueSpeakerEventHandler(DialogueLine dialogueLine);
         public static event DialogueSpeakerEventHandler DialogueSpoken;
-        public static event Action DialogueSkipped;
         
         [Header("Dialogue Settings")]
         [SerializeField] private bool startDialogueOnStart;
@@ -22,6 +23,8 @@ namespace Managers
 
         private int _currentDialogueLineIndex;
         private bool _isDialogueActive;
+
+        private List<DialogueSpeaker> _activeDialogueSpeakers = new List<DialogueSpeaker>();
         
         private InputActionMap _inputActionMap;
 
@@ -48,9 +51,29 @@ namespace Managers
             var skipInputAction = _inputActionMap.FindAction("Skip");
             skipInputAction.performed -= OnSkip;
         }
+
+        public void AddActiveDialogueSpeaker(DialogueSpeaker dialogueSpeaker)
+        {
+            _activeDialogueSpeakers.Add(dialogueSpeaker);
+        }
+
+        public void RemoveActiveDialogueSpeaker(DialogueSpeaker dialogueSpeaker)
+        {
+            _activeDialogueSpeakers.Remove(dialogueSpeaker);
+        }
         
         private void OnSkip(InputAction.CallbackContext context)
         {
+            if (_activeDialogueSpeakers.Count > 0)
+            {
+                foreach (var dialogueSpeaker in _activeDialogueSpeakers)
+                {
+                    dialogueSpeaker.SkipDialogue();
+                }
+
+                return;
+            }
+            
             AdvanceDialogueSequence();
         }
 
@@ -75,7 +98,7 @@ namespace Managers
             }
             
             _currentDialogueLineIndex++;
-            if (currentDialogueSequenceDatum.DialogueLineData.Length <= _currentDialogueLineIndex)
+            if (currentDialogueSequenceDatum.DialogueLines.Length <= _currentDialogueLineIndex)
             {
                 StopDialogueSequence();
             }
@@ -96,16 +119,11 @@ namespace Managers
             _currentDialogueLineIndex = 0;
         }
 
-        private void DisplayDialogueLine(DialogueSequenceDatum dialogueSequence) => DisplayDialogueLine(dialogueSequence.DialogueLineData[_currentDialogueLineIndex]);
+        private void DisplayDialogueLine(DialogueSequenceDatum dialogueSequence) => DisplayDialogueLine(dialogueSequence.DialogueLines[_currentDialogueLineIndex]);
 
-        private void DisplayDialogueLine(DialogueLineDatum dialogueLineDatum)
+        private void DisplayDialogueLine(DialogueLine dialogueLine)
         {
-            DialogueSpoken?.Invoke(dialogueLineDatum);
-        }
-
-        private void SkipDialogueLine()
-        {
-            DialogueSkipped?.Invoke();
+            DialogueSpoken?.Invoke(dialogueLine);
         }
     }
 }

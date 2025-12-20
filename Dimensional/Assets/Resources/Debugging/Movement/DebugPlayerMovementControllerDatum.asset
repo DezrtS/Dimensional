@@ -81,7 +81,7 @@ MonoBehaviour:
   coyoteTime: 0.1
   wallJumpCoyoteTime: 0.1
   wallSlideCheckIntervals: 8
-  wallSlideCheckDistance: 0.55
+  wallSlideCheckDistance: 0.7
   wallSlideCheckOffset: {x: 0, y: 0, z: 0}
   wallSlideCheckLayerMask:
     serializedVersion: 2

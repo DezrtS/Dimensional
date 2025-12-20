@@ -2,6 +2,7 @@ using System;
 using Febucci.UI;
 using Scriptables.Dialogue;
 using Scriptables.User_Interface;
+using Systems.Dialogue;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,8 @@ namespace User_Interface.Dialogue
 {
     public class SpeechBox : WorldUIAnchor
     {
+        public event Action TypewriterFinished;
+        
         private static readonly int IsTargetInRangeHash = Animator.StringToHash("IsTargetInRange");
         
         [SerializeField] private TextAnimator_TMP textAnimator;
@@ -19,25 +22,31 @@ namespace User_Interface.Dialogue
         [SerializeField] private TextMeshProUGUI nameText;
         
         private Animator _animator;
-        private DialogueLineDatum _dialogueLineDatum;
+        private DialogueLine _dialogueLine;
         private UIArm _uiArm;
-
-        private bool _isShown;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
             _uiArm = GetComponent<UIArm>();
+
+            typewriterByCharacter.onTextShowed.AddListener(OnTextShown);
+        }
+
+        private void OnTextShown()
+        {
+            typewriterByCharacter.SetTypewriterSpeed(1);
+            TypewriterFinished?.Invoke();
         }
 
         protected override void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform) {}
         
-        public void SetDialogueLine(DialogueLineDatum dialogueLineDatum)
+        public void SetDialogueLine(DialogueLine dialogueLine)
         {
-            _dialogueLineDatum = dialogueLineDatum;
-            nameText.text = dialogueLineDatum.DialogueSpeakerDatum.SpeakerName;
-            iconImage.sprite = dialogueLineDatum.DialogueSpeakerDatum.SpeakerIcon;
-            textAnimator.SetText(_dialogueLineDatum.Text, true);
+            _dialogueLine = dialogueLine;
+            nameText.text = dialogueLine.DialogueSpeakerDatum.SpeakerName;
+            iconImage.sprite = dialogueLine.DialogueSpeakerDatum.SpeakerIcon;
+            textAnimator.SetText(_dialogueLine.Text, true);
         }
 
         public void ShowDialogue()
@@ -48,7 +57,8 @@ namespace User_Interface.Dialogue
 
         public void SkipDialogue()
         {
-            typewriterByCharacter.SkipTypewriter();
+            typewriterByCharacter.SetTypewriterSpeed(4);
+            //typewriterByCharacter.SkipTypewriter();
         }
         
         public void HideDialogue()

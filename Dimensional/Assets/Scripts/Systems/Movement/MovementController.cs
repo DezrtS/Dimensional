@@ -34,6 +34,7 @@ namespace Systems.Movement
         [SerializeField] protected LayerMask platformCheckLayerMask;
         
         private Transform _platformTransform;
+        protected Platform ParentPlatform { get; private set; }
         
         protected IMove Mover;
 
@@ -114,11 +115,12 @@ namespace Systems.Movement
             if (IsPlatformed) UnPlatform();
             
             IsPlatformed = true;
-            transform.SetParent(platformTransform);
+            //transform.SetParent(platformTransform);
             _platformTransform = platformTransform;
             
             var platform = platformTransform.GetComponent<Platform>();
-            ForceController.ApplyForce(-platform.Velocity, ForceMode.VelocityChange);
+            ParentPlatform = platform;
+            ForceController.ApplyForce(-ParentPlatform.Velocity, ForceMode.VelocityChange);
         }
 
         protected void UnPlatform()
@@ -128,8 +130,8 @@ namespace Systems.Movement
             IsPlatformed = false;
             transform.SetParent(null);
             
-            var platform = _platformTransform.GetComponent<Platform>();
-            ForceController.ApplyForce(platform.Velocity, ForceMode.VelocityChange);
+            ForceController.ApplyForce(ParentPlatform.Velocity, ForceMode.VelocityChange);
+            ParentPlatform = null;
         }
 
         public void Move()

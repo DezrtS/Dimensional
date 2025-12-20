@@ -159,5 +159,10 @@ namespace Systems.Player
         {
             return root.rotation * input;
         }
+
+        private void OnDisable()
+        {
+            playerMaterial.SetFloat(Fade, 1);
+        }
     }
 }

@@ -27,19 +27,23 @@ namespace Systems.Dialogue
         private void Start()
         {
             _speechBox = (SpeechBox)UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, gameObject, elementPoint);
+            _speechBox.TypewriterFinished += SpeechBoxOnTypewriterFinished;
+        }
+
+        private void SpeechBoxOnTypewriterFinished()
+        {
+            if (_isSpeaking) DialogueManager.Instance.RemoveActiveDialogueSpeaker(this);
         }
 
         private void OnEnable()
         {
             DialogueManager.DialogueSpoken += DialogueManagerOnDialogueSpoken;
-            DialogueManager.DialogueSkipped += DialogueManagerOnDialogueSkipped;
             DialogueManager.SequenceFinished += DialogueManagerOnSequenceFinished;
         }
 
         private void OnDisable()
         {
             DialogueManager.DialogueSpoken -= DialogueManagerOnDialogueSpoken;
-            DialogueManager.DialogueSkipped -= DialogueManagerOnDialogueSkipped;
             DialogueManager.SequenceFinished -= DialogueManagerOnSequenceFinished;
         }
         
@@ -51,9 +55,9 @@ namespace Systems.Dialogue
             if (_cameraTransition) _cameraTransition.TransitionFrom();
         }
 
-        private void DialogueManagerOnDialogueSpoken(DialogueLineDatum dialogueLineDatum)
+        private void DialogueManagerOnDialogueSpoken(DialogueLine dialogueLine)
         {
-            if (dialogueSpeakerDatum != dialogueLineDatum.DialogueSpeakerDatum)
+            if (dialogueSpeakerDatum != dialogueLine.DialogueSpeakerDatum)
             {
                 if (!_isSpeaking) return;
                 _isSpeaking = false;
@@ -62,12 +66,13 @@ namespace Systems.Dialogue
             }
             
             _isSpeaking = true;
-            _speechBox.SetDialogueLine(dialogueLineDatum);
+            DialogueManager.Instance.AddActiveDialogueSpeaker(this);
+            _speechBox.SetDialogueLine(dialogueLine);
             _speechBox.ShowDialogue();
             if (_cameraTransition) _cameraTransition.TransitionTo();
         }
-        
-        private void DialogueManagerOnDialogueSkipped()
+
+        public void SkipDialogue()
         {
             if (!_isSpeaking) return;
             _speechBox.SkipDialogue();

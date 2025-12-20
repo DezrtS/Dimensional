@@ -56,6 +56,8 @@ namespace Managers
         [Space] [SerializeField] private GameObject saveManagerPrefab;
         [SerializeField] private bool loadSceneData;
         [SerializeField] private List<DataType> loadOnLoading;
+
+        private bool _isFirstLoad;
         
         public GameState GameState { get; private set; }
         public Dimensions WorldDimensions { get; private set; }
@@ -64,7 +66,8 @@ namespace Managers
         private void Start()
         {
             SetWorldDimensions(defaultWorldDimensions);
-            StartCoroutine(GameStateRoutine());
+            ChangeGameState(GameState.Initializing);
+            //StartCoroutine(GameStateRoutine());
         }
 
         private IEnumerator GameStateRoutine()
@@ -123,6 +126,29 @@ namespace Managers
         {
             GameStateChanged?.Invoke(GameState, newState);
             GameState = newState;
+
+            switch (newState)
+            {
+                case GameState.None:
+                    break;
+                case GameState.Initializing:
+                    _isFirstLoad = !SaveManager.Instance;
+                    if (_isFirstLoad) Instantiate(saveManagerPrefab);
+                    break;
+                case GameState.Loading:
+                    if (_isFirstLoad && loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene, DataType.World });
+                    SaveManager.Instance.RequestLoad(loadOnLoading); 
+                    break;
+                case GameState.Preparing:
+                    break;
+                case GameState.Starting:
+                    break;
+                case GameState.Playing:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+            
             foreach (var gameStateEvent in gameStateEvents)
             {
                 if (gameStateEvent.GameState == newState)
