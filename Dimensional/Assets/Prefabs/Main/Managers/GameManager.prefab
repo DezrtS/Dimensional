@@ -61,5 +61,5 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e11ad78de92dbb946864230bcf2f00e5, type: 2}
     - {fileID: 11400000, guid: 75c6946fb5c547b42b68ce1555aa6f79, type: 2}
   saveManagerPrefab: {fileID: 901283025757477412, guid: fee919393b8f54d4bb13079dd5e9620b, type: 3}
-  loadSceneData: 1
+  loadSceneData: 0
   loadOnLoading: 00000000010000000200000003000000

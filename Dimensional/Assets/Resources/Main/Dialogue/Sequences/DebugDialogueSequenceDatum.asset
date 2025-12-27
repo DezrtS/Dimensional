@@ -12,23 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26033ac2059f0d64f984532c8b32d59c, type: 3}
   m_Name: DebugDialogueSequenceDatum
   m_EditorClassIdentifier: 
-  sequenceKey: debug
+  sequenceKey: Debug.txt
   isDialogueSkippable: 1
+  dialogueSpeakersData:
+  - {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
+  - {fileID: 11400000, guid: c15547fd6d805ac49b30f4cd2435c394, type: 2}
   dialogueLines:
   - dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: Hello Sphere.
+    metaData: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: How are you doing today?
+    metaData: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: c15547fd6d805ac49b30f4cd2435c394, type: 2}
     text: Hey Sphere!
+    metaData: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: Alright, goodbye Sphere.
-  dialogueLineData:
-  - {fileID: 11400000, guid: f44c572d98a152243beadc469624c7aa, type: 2}
-  - {fileID: 11400000, guid: 664dcfbf4b4efef408d41560383d3bad, type: 2}
-  - {fileID: 11400000, guid: 664dcfbf4b4efef408d41560383d3bad, type: 2}
-  - {fileID: 11400000, guid: f44c572d98a152243beadc469624c7aa, type: 2}
-  - {fileID: 11400000, guid: 664dcfbf4b4efef408d41560383d3bad, type: 2}
-  dialogueChoices:
-  - text: Okay
-    dialogueSequenceDatum: {fileID: 0}
+    metaData: 

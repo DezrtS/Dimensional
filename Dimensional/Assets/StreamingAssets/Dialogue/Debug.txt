@@ -1,0 +1,11 @@
+0|emotion=neutral
+Hello Sphere.
+
+0|emotion=curious
+How are you doing today?
+
+1|emotion=excited
+Hey Sphere!
+
+0|emotion=neutral
+Alright, goodbye Sphere.

@@ -10,7 +10,6 @@ using UnityEngine;
 
 namespace Systems.Actions
 {
-
     public enum ActionEventType
     {
         None,

@@ -21,10 +21,12 @@ namespace Managers
         [SerializeField] private bool startDialogueOnStart;
         [SerializeField] private DialogueSequenceDatum currentDialogueSequenceDatum;
 
+        private DialogueLine[] _dialogueLines;
+        
         private int _currentDialogueLineIndex;
         private bool _isDialogueActive;
 
-        private List<DialogueSpeaker> _activeDialogueSpeakers = new List<DialogueSpeaker>();
+        private readonly List<DialogueSpeaker> _activeDialogueSpeakers = new List<DialogueSpeaker>();
         
         private InputActionMap _inputActionMap;
 
@@ -66,6 +68,7 @@ namespace Managers
         {
             if (_activeDialogueSpeakers.Count > 0)
             {
+                if (!currentDialogueSequenceDatum.IsDialogueSkippable) return;
                 foreach (var dialogueSpeaker in _activeDialogueSpeakers)
                 {
                     dialogueSpeaker.SkipDialogue();
@@ -79,15 +82,32 @@ namespace Managers
 
         public void StartDialogueSequence(DialogueSequenceDatum dialogueSequence)
         {
+            currentDialogueSequenceDatum = dialogueSequence;
+            LoadDialogueFromText(dialogueSequence.FileName, dialogueSequence.DialogueSpeakersData);
+        }
+
+        private void LoadDialogueFromText(string fileName, DialogueSpeakerDatum[] speakers)
+        {
+            StartCoroutine(FileLoader.LoadText(fileName, "Dialogue", (rawText) =>
+            {
+                var lines = DialogueTextParser.Parse(rawText, speakers);
+                _dialogueLines = lines.ToArray();
+                StartDialogueSequence();
+            }));
+
+        }
+
+        private void StartDialogueSequence()
+        {
             GameManager.Instance.SwitchInputActionMaps("Dialogue");
             AssignControls();
             
-            SequenceStarted?.Invoke(dialogueSequence);
-            currentDialogueSequenceDatum = dialogueSequence;
+            SequenceStarted?.Invoke(currentDialogueSequenceDatum);
             _isDialogueActive = true;
             _currentDialogueLineIndex = 0;
-            DisplayDialogueLine(dialogueSequence);
+            DisplayDialogueLine(_dialogueLines[_currentDialogueLineIndex]);
         }
+
 
         public void AdvanceDialogueSequence()
         {
@@ -98,13 +118,13 @@ namespace Managers
             }
             
             _currentDialogueLineIndex++;
-            if (currentDialogueSequenceDatum.DialogueLines.Length <= _currentDialogueLineIndex)
+            if (_dialogueLines.Length <= _currentDialogueLineIndex)
             {
                 StopDialogueSequence();
             }
             else
             {
-                DisplayDialogueLine(currentDialogueSequenceDatum);
+                DisplayDialogueLine(_dialogueLines[_currentDialogueLineIndex]);
             }
         }
 
@@ -115,12 +135,11 @@ namespace Managers
             
             SequenceFinished?.Invoke(currentDialogueSequenceDatum);
             currentDialogueSequenceDatum = null;
+            _dialogueLines = null;
             _isDialogueActive = false;
             _currentDialogueLineIndex = 0;
         }
-
-        private void DisplayDialogueLine(DialogueSequenceDatum dialogueSequence) => DisplayDialogueLine(dialogueSequence.DialogueLines[_currentDialogueLineIndex]);
-
+        
         private void DisplayDialogueLine(DialogueLine dialogueLine)
         {
             DialogueSpoken?.Invoke(dialogueLine);

@@ -148,7 +148,6 @@ namespace Systems.Entities.Behaviours
             SwapAttack();
         }
 
-
         public ActionContext GetActionContext()
         {
             var displacement = _targetPosition - transform.position;

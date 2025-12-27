@@ -127,8 +127,6 @@ namespace Systems.Player
 
         private void Start()
         {
-            PlayerMovementController.Initialize(this);
-            
             _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
             AssignControls();
             
@@ -283,11 +281,17 @@ namespace Systems.Player
         
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Preparing) return;
-            
-            var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
-            if (!checkpoint) return;
-            PlayerMovementController.ForceController.Teleport(checkpoint.SpawnPosition);
+            switch (newValue)
+            {
+                case GameState.Initializing:
+                    PlayerMovementController.Initialize(this);
+                    break;
+                case GameState.Preparing:
+                    var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
+                    if (!checkpoint) return;
+                    PlayerMovementController.ForceController.Teleport(checkpoint.SpawnPosition);
+                    break;
+            }
         }
         
         private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)

@@ -15,5 +15,12 @@ MonoBehaviour:
   dialogueLine:
     dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: <wave>Hello!</wave> My name is Debug
-  dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
-  text: <wave>Hello!</wave> My name is Debug
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
