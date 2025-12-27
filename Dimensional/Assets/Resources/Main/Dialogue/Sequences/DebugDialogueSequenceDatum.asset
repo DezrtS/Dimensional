@@ -12,21 +12,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26033ac2059f0d64f984532c8b32d59c, type: 3}
   m_Name: DebugDialogueSequenceDatum
   m_EditorClassIdentifier: 
-  sequenceKey: Debug.txt
   isDialogueSkippable: 1
-  dialogueSpeakersData:
-  - {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
-  - {fileID: 11400000, guid: c15547fd6d805ac49b30f4cd2435c394, type: 2}
+  eventData: []
   dialogueLines:
   - dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: Hello Sphere.
-    metaData: 
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: How are you doing today?
-    metaData: 
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: c15547fd6d805ac49b30f4cd2435c394, type: 2}
-    text: Hey Sphere!
-    metaData: 
+    text: Yeah Sphere, what's goodie my gang.
+    hasVoiceActing: 1
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 958887433
+          Data2: 1122354257
+          Data3: 828844929
+          Data4: -1660349603
+        Path: event:/HeySphereDialogue
   - dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: Alright, goodbye Sphere.
-    metaData: 
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 

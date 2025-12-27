@@ -17,6 +17,6 @@ namespace Systems.Dialogue
         public DialogueSpeakerDatum DialogueSpeakerDatum => dialogueSpeakerDatum;
         public string Text => text;
         public bool HasVoiceActing => hasVoiceActing;
-        public EventReferenceWrapper EventReference => eventReference;
+        public EventReferenceWrapper EventReferenceWrapper => eventReference;
     }
 }

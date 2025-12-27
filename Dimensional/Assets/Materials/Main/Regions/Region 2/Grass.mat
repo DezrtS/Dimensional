@@ -143,7 +143,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Base_Tiling: {r: 1, g: 1, b: 0, a: 0}
-    - _Color: {r: 0.7169812, g: 0.29423285, b: 0.52396894, a: 1}
+    - _Color: {r: 0.735849, g: 0.1148263, b: 0.06594872, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Noise_Tiling: {r: 0.05, g: 0.05, b: 0, a: 0}
     - _Remap_Range: {r: 0.8, g: 1, b: 0, a: 0}

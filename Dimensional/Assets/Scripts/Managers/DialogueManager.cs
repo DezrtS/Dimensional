@@ -20,8 +20,6 @@ namespace Managers
         [Header("Dialogue Settings")]
         [SerializeField] private bool startDialogueOnStart;
         [SerializeField] private DialogueSequenceDatum currentDialogueSequenceDatum;
-
-        private DialogueLine[] _dialogueLines;
         
         private int _currentDialogueLineIndex;
         private bool _isDialogueActive;
@@ -83,29 +81,13 @@ namespace Managers
         public void StartDialogueSequence(DialogueSequenceDatum dialogueSequence)
         {
             currentDialogueSequenceDatum = dialogueSequence;
-            LoadDialogueFromText(dialogueSequence.FileName, dialogueSequence.DialogueSpeakersData);
-        }
-
-        private void LoadDialogueFromText(string fileName, DialogueSpeakerDatum[] speakers)
-        {
-            StartCoroutine(FileLoader.LoadText(fileName, "Dialogue", (rawText) =>
-            {
-                var lines = DialogueTextParser.Parse(rawText, speakers);
-                _dialogueLines = lines.ToArray();
-                StartDialogueSequence();
-            }));
-
-        }
-
-        private void StartDialogueSequence()
-        {
             GameManager.Instance.SwitchInputActionMaps("Dialogue");
             AssignControls();
             
             SequenceStarted?.Invoke(currentDialogueSequenceDatum);
             _isDialogueActive = true;
             _currentDialogueLineIndex = 0;
-            DisplayDialogueLine(_dialogueLines[_currentDialogueLineIndex]);
+            DisplayDialogueLine();
         }
 
 
@@ -118,13 +100,13 @@ namespace Managers
             }
             
             _currentDialogueLineIndex++;
-            if (_dialogueLines.Length <= _currentDialogueLineIndex)
+            if (currentDialogueSequenceDatum.DialogueLines.Length <= _currentDialogueLineIndex)
             {
                 StopDialogueSequence();
             }
             else
             {
-                DisplayDialogueLine(_dialogueLines[_currentDialogueLineIndex]);
+                DisplayDialogueLine();
             }
         }
 
@@ -134,11 +116,13 @@ namespace Managers
             GameManager.Instance.ResetInputActionMapToDefault();
             
             SequenceFinished?.Invoke(currentDialogueSequenceDatum);
+            EventManager.SendEvents(currentDialogueSequenceDatum.EventData);
             currentDialogueSequenceDatum = null;
-            _dialogueLines = null;
             _isDialogueActive = false;
             _currentDialogueLineIndex = 0;
         }
+        
+        private void DisplayDialogueLine() => DisplayDialogueLine(currentDialogueSequenceDatum.DialogueLines[_currentDialogueLineIndex]);
         
         private void DisplayDialogueLine(DialogueLine dialogueLine)
         {

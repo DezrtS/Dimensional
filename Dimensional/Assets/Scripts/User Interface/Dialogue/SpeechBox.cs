@@ -1,5 +1,7 @@
 using System;
 using Febucci.UI;
+using FMOD.Studio;
+using Managers;
 using Scriptables.Dialogue;
 using Scriptables.User_Interface;
 using Systems.Dialogue;
@@ -24,6 +26,8 @@ namespace User_Interface.Dialogue
         private Animator _animator;
         private DialogueLine _dialogueLine;
         private UIArm _uiArm;
+        
+        private EventInstance _eventInstance;
 
         private void Awake()
         {
@@ -47,12 +51,21 @@ namespace User_Interface.Dialogue
             nameText.text = dialogueLine.DialogueSpeakerDatum.SpeakerName;
             iconImage.sprite = dialogueLine.DialogueSpeakerDatum.SpeakerIcon;
             textAnimator.SetText(_dialogueLine.Text, true);
+
+            if (_eventInstance.isValid()) _eventInstance.stop(STOP_MODE.IMMEDIATE);
+            
+            if (!dialogueLine.HasVoiceActing) return;
+            _eventInstance = AudioManager.CreateEventInstance(dialogueLine.EventReferenceWrapper.eventRef);
+            AudioManager.AttachInstanceToGameObject(_eventInstance, WorldTransform.gameObject);
         }
 
         public void ShowDialogue()
         {
             _animator.SetBool(IsTargetInRangeHash, true);
             typewriterByCharacter.StartShowingText();
+            
+            if (!_dialogueLine.HasVoiceActing) return;
+            _eventInstance.start();
         }
 
         public void SkipDialogue()
@@ -65,6 +78,9 @@ namespace User_Interface.Dialogue
         {
             _animator.SetBool(IsTargetInRangeHash, false);
             typewriterByCharacter.StartDisappearingText();
+            
+            if (!_dialogueLine.HasVoiceActing) return;
+            _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
 
         protected override void OnFixedUpdate()

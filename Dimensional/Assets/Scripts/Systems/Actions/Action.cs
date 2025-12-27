@@ -29,6 +29,7 @@ namespace Systems.Actions
         public ScriptableObject SourceData;
 
         public Vector3 TargetDirection;
+        public IEntity TargetEntity;
 
         public static ActionContext Construct(IActivateActions actionActivator, IEntity sourceEntity, GameObject sourceGameObject, ScriptableObject sourceData, Vector3 targetDirection)
         {
