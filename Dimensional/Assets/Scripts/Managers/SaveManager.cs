@@ -32,9 +32,10 @@ namespace Managers
     public class CollectableData
     {
         public int collectables;
-        public List<string> keys;
-        public List<string> tickets;
-        public List<string> shapes;
+        public List<string> collectedCollectables;
+        public List<string> collectedKeys;
+        public List<string> collectedTickets;
+        public List<string> collectedShapes;
     }
 
     [Serializable]
@@ -49,7 +50,7 @@ namespace Managers
     {
         public int regionId;
         public int levelId;
-        public int checkpointId;
+        public string checkpointId;
     }
 
     [Serializable]

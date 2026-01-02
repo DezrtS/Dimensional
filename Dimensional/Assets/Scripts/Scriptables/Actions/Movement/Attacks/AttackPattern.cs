@@ -5,7 +5,7 @@ namespace Scriptables.Actions.Movement
     [CreateAssetMenu(fileName = "AttackPattern", menuName = "Scriptable Objects/AttackPattern")]
     public class AttackPattern : ScriptableObject
     {
-        [SerializeField] private AttackPositionMovementActionDatum attackPositionMovementActionDatum;
+        [SerializeField] private ActionDatum actionDatum;
 
         [SerializeField] private float windUpDuration;
         [SerializeField] private float cooldownDuration;
@@ -14,7 +14,7 @@ namespace Scriptables.Actions.Movement
         [SerializeField] private float minRange;
         [SerializeField] private float maxRange;
 
-        public AttackPositionMovementActionDatum AttackPositionMovementActionDatum => attackPositionMovementActionDatum;
+        public ActionDatum ActionDatum => actionDatum;
         
         public float WindUpDuration => windUpDuration;
         public float CooldownDuration => cooldownDuration;

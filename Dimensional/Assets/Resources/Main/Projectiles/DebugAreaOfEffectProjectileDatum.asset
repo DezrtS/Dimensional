@@ -16,11 +16,11 @@ MonoBehaviour:
   lifetimeDuration: 10
   projectileLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 2049
   projectileBehaviourData:
   - {fileID: 11400000, guid: fadd45a315e94ef47b689291bf1ba9bc, type: 2}
   radius: 10
   aoeLayerMask:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 2112
   triggerOnExpire: 1

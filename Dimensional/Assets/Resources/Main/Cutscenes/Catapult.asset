@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a831b802d436d104586fd297431e5ba5, type: 3}
+  m_Name: Catapult
+  m_EditorClassIdentifier: 
+  cutscenePrefab: {fileID: 4958872293779107633, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
+  cutsceneName: Catapult
+  destroyOnStopped: 0
+  onPlayEventData:
+  - {fileID: 11400000, guid: e820a4c537f5d5847b6251d4ed58d317, type: 2}
+  onStopEventData:
+  - {fileID: 11400000, guid: 1f350bfb85ea8d74fa65be94e24b08be, type: 2}
+  - {fileID: 11400000, guid: 768c819986d12f84bacc4c68dc803c3a, type: 2}

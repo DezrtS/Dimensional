@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: ConeTicket
   m_EditorClassIdentifier: 
   isDialogueSkippable: 1
-  eventData: []
+  eventData:
+  - {fileID: 11400000, guid: 73f0e49b0fc7b2f46868da74ad30511b, type: 2}
+  - {fileID: 11400000, guid: e820a4c537f5d5847b6251d4ed58d317, type: 2}
+  - {fileID: 11400000, guid: 9a67637d75eaeed4d805b23b806eb9e5, type: 2}
   dialogueLines:
   - dialogueSpeakerDatum: {fileID: 11400000, guid: 898383444ddfe8447aa8ed4370564c42, type: 2}
     text: Hey Sphere. Ready to go?

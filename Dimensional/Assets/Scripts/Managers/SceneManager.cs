@@ -54,6 +54,11 @@ namespace Managers
             LoadScene(_nextScene);
         }
 
+        public void SetNextScene(string nextScene)
+        {
+            _nextScene = nextScene;
+        }
+
         public void LoadScene(string sceneName, bool saveData = true)
         {
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == sceneName) return;
@@ -62,6 +67,8 @@ namespace Managers
             if (saveData) SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Player, DataType.Action, DataType.Collectable, DataType.Quest, DataType.Scene });
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
         }
+        
+        public void LoadScene(bool saveData = true) => LoadScene(_nextScene, saveData);
 
         public static void ReloadScene()
         {

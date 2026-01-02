@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e9414f4c0c43eb40accb78a3e9d0da6, type: 3}
+  m_Name: Catapult
+  m_EditorClassIdentifier: 
+  interactSound:
+    Guid:
+      Data1: -1882465895
+      Data2: 1160461560
+      Data3: 1530565777
+      Data4: -1300865506
+    Path: event:/PressButton
+  eventData:
+  - {fileID: 11400000, guid: 5ffc002aca1d55d4e9470a3fbebbcfdb, type: 2}
+  - {fileID: 11400000, guid: 768c819986d12f84bacc4c68dc803c3a, type: 2}

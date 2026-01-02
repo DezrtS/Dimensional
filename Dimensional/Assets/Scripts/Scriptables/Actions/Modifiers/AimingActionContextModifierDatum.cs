@@ -14,12 +14,12 @@ namespace Scriptables.Actions.Modifiers
         public override ActionContext Modify(ActionContext actionContext)
         {
             var startPos = actionContext.SourceGameObject.transform.position;
-            var endPos = actionContext.TargetEntity.GameObject.transform.position;
+            var endPos = actionContext.TargetPosition;
 
             Vector3 launchVelocity = ComputeBallisticVelocity(startPos, endPos, height);
 
             actionContext.TargetDirection = launchVelocity.normalized;
-            //actionContext.ProjectileSpeed = launchVelocity.magnitude; // If you store speed separately
+            actionContext.ProjectileSpeed = launchVelocity.magnitude; // If you store speed separately
 
             return actionContext;
         }

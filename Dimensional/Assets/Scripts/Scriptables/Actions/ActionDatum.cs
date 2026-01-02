@@ -1,5 +1,6 @@
 using System;
 using FMODUnity;
+using Scriptables.Actions.Modifiers;
 using Scriptables.Visual_Effects;
 using Systems.Actions;
 using UnityEngine;
@@ -44,12 +45,14 @@ namespace Scriptables.Actions
     {
         [SerializeField] private float activationTime;
         [SerializeField] private ActionAudioEvent[] actionAudioEvents;
+        [SerializeField] private ActionContextModifierDatum[] actionContextModifierData;
         [SerializeField] private bool hasScreenShake;
         [SerializeField] private ActionScreenShakeEvent actionScreenShakeEvent;
         [SerializeField] private ActionVisualEffectDatum[] actionVisualEffectData;
         
         public float ActivationTime => activationTime;
         public ActionAudioEvent[] ActionAudioEvents => actionAudioEvents;
+        public ActionContextModifierDatum[] ActionContextModifierData => actionContextModifierData;
         public bool HasScreenShake => hasScreenShake;
         public ActionScreenShakeEvent ActionScreenShakeEvent => actionScreenShakeEvent;
         public ActionVisualEffectDatum[] ActionVisualEffectData => actionVisualEffectData;

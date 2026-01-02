@@ -127,9 +127,6 @@ namespace Systems.Player
 
         private void Start()
         {
-            _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
-            AssignControls();
-            
             if (setCameraFollowOnStart) CameraManager.Instance.SetFollow(PlayerLook.Root);
             if (setCameraLookOnStart) CameraManager.Instance.SetLookAt(transform);
         }
@@ -285,11 +282,11 @@ namespace Systems.Player
             {
                 case GameState.Initializing:
                     PlayerMovementController.Initialize(this);
+                    _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
+                    AssignControls();
                     break;
                 case GameState.Preparing:
-                    var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
-                    if (!checkpoint) return;
-                    PlayerMovementController.ForceController.Teleport(checkpoint.SpawnPosition);
+                    RespawnPlayer(transform.position);
                     break;
             }
         }
@@ -342,7 +339,12 @@ namespace Systems.Player
         private void RespawnPlayer(Vector3 defaultRespawnPosition)
         {
             var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
-            var spawnPosition = checkpoint ? checkpoint.SpawnPosition : defaultRespawnPosition;
+            var spawnPosition = defaultRespawnPosition;
+            if (checkpoint)
+            {
+                checkpoint.RespawnAt();
+                spawnPosition = checkpoint.SpawnPosition;
+            }
             PlayerMovementController.ForceController.Teleport(spawnPosition);
         }
         

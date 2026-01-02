@@ -31,7 +31,19 @@ namespace Managers
 
         public void PlayCutscene(CutsceneDatum cutsceneDatum)
         {
-            _selectedCutscene = cutsceneDatum.SpawnCutscene(transform);
+            var cutscene = cutsceneDatum.SpawnCutscene(transform);
+            PlayCutscene(cutscene);
+        }
+
+        public void PlayCutscene(Cutscene cutscene, CutsceneDatum cutsceneDatum)
+        {
+            if (cutsceneDatum) cutscene.Initialize(cutsceneDatum);
+            PlayCutscene(cutscene);
+        }
+
+        private void PlayCutscene(Cutscene cutscene)
+        {
+            _selectedCutscene = cutscene;
             _selectedCutscene.Play();
             _selectedCutscene.Stopped += CutsceneOnStopped;
         }

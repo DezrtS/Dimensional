@@ -12,6 +12,14 @@ using Action = System.Action;
 
 namespace Managers
 {
+    public enum UserInterfaceType
+    {
+        None,
+        Pause,
+        Quests,
+        TravelMap,
+    }
+    
     public class UIManager : Singleton<UIManager>
     {
         public static event Action TransitionFinished;
@@ -22,6 +30,8 @@ namespace Managers
         [SerializeField] private AreaTitle areaTitle;
         [SerializeField] private string areaName = "Sphero";
         [SerializeField] private float areaTitleDuration = 5;
+        [Space]
+        [SerializeField] private GameObject travelMap;
         [Space]
         [SerializeField] private Transform interactableIconTransform;
         [Space]
@@ -44,6 +54,11 @@ namespace Managers
             _maskReveal.Finished += MaskRevealOnFinished;
             
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+        }
+
+        private void Start()
+        {
+            DeactivateUI(false);
         }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
@@ -69,6 +84,32 @@ namespace Managers
         public void Transition(bool invert, bool reverse, float duration = -1)
         {
             _maskReveal.Transition(invert, reverse, duration);
+        }
+
+        public void ActivateUI(UserInterfaceType userInterfaceType)
+        {
+            //CameraManager.Instance.UnlockAndShowCursor();
+            GameManager.Instance.SwitchInputActionMaps("UI");
+            switch (userInterfaceType)
+            {
+                case UserInterfaceType.None:
+                    break;
+                case UserInterfaceType.Pause:
+                    break;
+                case UserInterfaceType.Quests:
+                    break;
+                case UserInterfaceType.TravelMap:
+                    travelMap.SetActive(true);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(userInterfaceType), userInterfaceType, null);
+            }
+        }
+
+        public void DeactivateUI(bool resetInput = true)
+        {
+            if (resetInput) GameManager.Instance.ResetInputActionMapToDefault();
+            travelMap.SetActive(false);
         }
 
         public GameObject GetShapeSelectionWheelGameObject(bool useOtherMethod)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1db82be94badc4b8bd19d193c49010, type: 3}
   m_Name: Basic Attack Pattern
   m_EditorClassIdentifier: 
-  attackPositionMovementActionDatum: {fileID: 11400000, guid: 2639e61a68c24fe40bbaf091cff72397, type: 2}
+  actionDatum: {fileID: 11400000, guid: 2639e61a68c24fe40bbaf091cff72397, type: 2}
   windUpDuration: 0.5
   cooldownDuration: 2.25
   canAttackOutsideRange: 0

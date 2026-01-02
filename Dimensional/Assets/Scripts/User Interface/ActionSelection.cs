@@ -62,44 +62,51 @@ namespace User_Interface
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Preparing) return;
-
-            for (var i = 0; i < movementActionShapesData.Length; i++)
+            switch (newValue)
             {
-                var actionType = movementActionShapesData[i].MovementActionType;
-                var shapeType = movementActionShapesData[i].ShapeData[_selectedShapeIndexDictionary[i]].ShapeType;
-                PlayerController.Instance.SetMovementActionShape(actionType, shapeType);
-            }
-            PlayerController.Instance.ResetMovementActions();
-            
-            var datum = movementActionShapesData[_currentActionIndex];
-            for (var i = 0; i < shapeOptions.Length; i++)
-            {
-                var option = shapeOptions[i];
+                case GameState.Initializing:
+                    _selectedShapeIndexDictionary = new Dictionary<int, int>();
+                    for (var i = 0; i < movementActionShapesData.Length; i++)
+                    {
+                        _selectedShapeIndexDictionary[i] = 0;
+                    }
 
-                if (i >= datum.ShapeData.Length)
-                {
-                    option.Initialize();
-                }
-                else
-                {
-                    option.Initialize(datum.ShapeData[i]);
-                }
-            }
+                    break;
+                case GameState.Preparing:
+                    SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Action });
+
+                    for (var i = 0; i < movementActionShapesData.Length; i++)
+                    {
+                        var actionType = movementActionShapesData[i].MovementActionType;
+                        var shapeType = movementActionShapesData[i].ShapeData[_selectedShapeIndexDictionary[i]].ShapeType;
+                        PlayerController.Instance.SetMovementActionShape(actionType, shapeType);
+                    }
+                    PlayerController.Instance.ResetMovementActions();
             
-            UIManager.Instance.SelectedMovementActionType = datum.MovementActionType;
+                    var datum = movementActionShapesData[_currentActionIndex];
+                    for (var i = 0; i < shapeOptions.Length; i++)
+                    {
+                        var option = shapeOptions[i];
+
+                        if (i >= datum.ShapeData.Length)
+                        {
+                            option.Initialize();
+                        }
+                        else
+                        {
+                            option.Initialize(datum.ShapeData[i]);
+                        }
+                    }
+            
+                    UIManager.Instance.SelectedMovementActionType = datum.MovementActionType;
+                    break;
+            }
         }
 
         private void Start()
         {
             _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Action Selection");
             AssignControls();
-
-            _selectedShapeIndexDictionary = new Dictionary<int, int>();
-            for (var i = 0; i < movementActionShapesData.Length; i++)
-            {
-                _selectedShapeIndexDictionary[i] = 0;
-            }
         }
 
         private void OnDisable()

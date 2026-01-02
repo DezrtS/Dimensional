@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3567019345078674503}
   - component: {fileID: 4999832260623717385}
   - component: {fileID: 5944638064015487110}
+  - component: {fileID: 4266943846913736330}
+  - component: {fileID: 1475472364514388914}
   m_Layer: 0
   m_Name: Level 3 Test Cutscene
   m_TagString: Untagged
@@ -61,12 +63,72 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: 6890332033950980199, guid: 7c7df7f6b477a294abb5a0bf937c345a, type: 2}
-    value: {fileID: 7574881299505430750}
   - key: {fileID: 7286496995705889852, guid: 7c7df7f6b477a294abb5a0bf937c345a, type: 2}
     value: {fileID: 4703046346570106204}
+  - key: {fileID: 7869882800888713827, guid: 7c7df7f6b477a294abb5a0bf937c345a, type: 2}
+    value: {fileID: 1475472364514388914}
   m_ExposedReferences:
     m_References: []
+--- !u!114 &4266943846913736330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4958872293779107633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f522a0332dbb84db92b547fa822979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enterDuration: 0
+  exitDuration: 1
+  cinemachineCamera: {fileID: 5935250088734971815}
+--- !u!114 &1475472364514388914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4958872293779107633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: cd83f9cd35c8cc5428fc0c1b7d34e483, type: 2}
+    - {fileID: 11400000, guid: 06cd81e1862ea1e4085ee867b4083273, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4266943846913736330}
+          m_TargetAssemblyTypeName: Systems.Cameras.CameraTransition, Assembly-CSharp
+          m_MethodName: TransitionTo
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4266943846913736330}
+          m_TargetAssemblyTypeName: Systems.Cameras.CameraTransition, Assembly-CSharp
+          m_MethodName: TransitionFrom
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &7574881299505430750
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +215,7 @@ Animator:
   m_GameObject: {fileID: 7574881299505430750}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4784eab3ebad8a44c80317c21e024df5, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
