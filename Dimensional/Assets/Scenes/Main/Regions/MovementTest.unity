@@ -91949,6 +91949,10 @@ PrefabInstance:
       propertyPath: isDefaultCheckpoint
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4920375672895212057, guid: 303fe07c11b6e9e43a79d726c00cfc9f, type: 3}
+      propertyPath: id
+      value: 2865fcf3-68cf-4c0d-a1a6-c4223c78b26f
+      objectReference: {fileID: 0}
     - target: {fileID: 5774514630997156317, guid: 303fe07c11b6e9e43a79d726c00cfc9f, type: 3}
       propertyPath: m_Name
       value: Checkpoint

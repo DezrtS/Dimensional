@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1552557797559208968
+--- !u!114 &-3459560345858449836
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,12 +20,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MaskedReveal
-  m_Shader: {fileID: 4800000, guid: 966e58e0a0ef8784f930494097b1c8cc, type: 3}
+  m_Name: Skybox
+  m_Shader: {fileID: 4800000, guid: e0729ac61e939384aa6946721cffc3ba, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _USEMAINLIGHT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -62,15 +63,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 53370968bcd29ac47a76758053541c96, type: 3}
-        m_Scale: {x: 10, y: 20}
-        m_Offset: {x: 0, y: 0}
-    - _MaskTex:
-        m_Texture: {fileID: 2800000, guid: 9e8f3dbfaeba30248825d54017ddd1e9, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MountainMaskTex:
+        m_Texture: {fileID: 2800000, guid: 416ff8858b68c204c91d2b667b438458, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MountainTex:
+        m_Texture: {fileID: 2800000, guid: 00246f64d2de61546ad1af761acc15a0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -114,34 +119,43 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _Exponent: 1.5
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _InvertMask: 0
+    - _GradientOffset: 0.057
     - _Metallic: 0
+    - _MountainBlend: 0.4
+    - _MountainHeight: 0.5
+    - _MountainMask: 1
+    - _MountainMaskStrength: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Progress: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Rotation: 5
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SoftEdge: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _SunBrightness: 35.49
+    - _SunSize: 0.1
+    - _SunSoftness: 0.1
     - _Surface: 0
-    - _Transparency: 0
+    - _UseMainLight: 1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _BottomColor: {r: 0.33367592, g: 0.25943398, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _MainTexColor: {r: 0.05882353, g: 0.05882353, b: 0.05882353, a: 1}
-    - _ScrollSpeed: {r: 0.3, g: 0.6, b: 0, a: 0}
+    - _ManualSunDirection: {r: 0, g: 0.2, b: 1, a: 0}
+    - _MountainTint: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SunColor: {r: 0.514151, g: 0.5307229, b: 1, a: 1}
+    - _SunDirection: {r: 0.37, g: 1, b: -0.69, a: 0}
+    - _TopColor: {r: 0.5707547, g: 0.7480503, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
