@@ -1,3 +1,4 @@
+using Debugging.New_Movement_System;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
 using UnityEngine;
@@ -89,8 +90,8 @@ namespace Systems.Actions.Movement
 
         private void HandleMovement(float elapsedTime)
         {
-            var velocity = GetVelocity(elapsedTime, MovementController.ForceController.GetVelocity(), Context);
-            MovementController.ForceController.SetVelocity(velocity);
+            var velocity = GetVelocity(elapsedTime, MovementController.ForceController.GetVelocityComponent(VelocityType.Movement), Context);
+            MovementController.ForceController.SetVelocityComponent(VelocityType.Movement, velocity);
             
             if (PositionMovementActionDatum.DisableDurationLimit || !Context.HasUpVelocity || elapsedTime <= PositionMovementActionDatum.UpDuration) return;
             Context.HasUpVelocity = false;

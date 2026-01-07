@@ -8,12 +8,12 @@ namespace Scriptables.Events
     public class CameraTransitionEventDatum : EventDatum
     {
         [SerializeField] private int cameraId;
-        [SerializeField] private float duration;
+        [SerializeField] private float transitionDuration;
         [SerializeField] private CinemachineBlendDefinition.Styles style;
 
         public override void HandleEvent()
         {
-            CameraManager.Instance.InvokeTransition(cameraId, duration, style);
+            CameraManager.Instance.InvokeTransition(cameraId, transitionDuration, style);
         }
     }
 }

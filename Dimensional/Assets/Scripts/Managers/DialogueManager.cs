@@ -1,110 +1,132 @@
 using System;
+using System.Collections.Generic;
 using Scriptables.Dialogue;
 using Systems.Dialogue;
-using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Utilities;
 
 namespace Managers
 {
     public class DialogueManager : Singleton<DialogueManager>
     {
-        public delegate void DialogueSequenceEventHandler(DialogueSequenceDatum dialogueSequence);
+        public delegate void DialogueSequenceEventHandler(DialogueSequenceDatum dialogueSequenceDatum);
         public static event DialogueSequenceEventHandler SequenceStarted;
-        public static event DialogueSequenceEventHandler SequenceInterrupted;
         public static event DialogueSequenceEventHandler SequenceFinished;
         
+        public delegate void DialogueSpeakerEventHandler(DialogueLine dialogueLine);
+        public static event DialogueSpeakerEventHandler DialogueSpoken;
+        
         [Header("Dialogue Settings")]
-        [SerializeField] private bool startDialogueOnAwake;
-        [SerializeField] private DialogueSequenceDatum currentDialogueSequence;
-        [Space(10)]
-        [SerializeField] private TMP_Text dialogueTextComponent;
-
+        [SerializeField] private bool startDialogueOnStart;
+        [SerializeField] private DialogueSequenceDatum currentDialogueSequenceDatum;
+        
         private int _currentDialogueLineIndex;
         private bool _isDialogueActive;
+
+        private readonly List<DialogueSpeaker> _activeDialogueSpeakers = new List<DialogueSpeaker>();
         
-        private DialogueEffectHandler _dialogueEffectHandler;
-        private TypewriterEffect _typewriterEffect;
-        
-        private void Awake()
+        private InputActionMap _inputActionMap;
+
+        private void Start()
         {
-            _dialogueEffectHandler = new DialogueEffectHandler();
+            _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Dialogue");
+            if (!startDialogueOnStart) return;
+            StartDialogueSequence(currentDialogueSequenceDatum);
+        }
+
+        private void OnDisable()
+        {
+            UnassignControls();
+        }
+
+        private void AssignControls()
+        {
+            var skipInputAction = _inputActionMap.FindAction("Skip");
+            skipInputAction.performed += OnSkip;
+        }
+
+        private void UnassignControls()
+        {
+            var skipInputAction = _inputActionMap.FindAction("Skip");
+            skipInputAction.performed -= OnSkip;
+        }
+
+        public void AddActiveDialogueSpeaker(DialogueSpeaker dialogueSpeaker)
+        {
+            _activeDialogueSpeakers.Add(dialogueSpeaker);
+        }
+
+        public void RemoveActiveDialogueSpeaker(DialogueSpeaker dialogueSpeaker)
+        {
+            _activeDialogueSpeakers.Remove(dialogueSpeaker);
+        }
+        
+        private void OnSkip(InputAction.CallbackContext context)
+        {
+            if (_activeDialogueSpeakers.Count > 0)
+            {
+                if (!currentDialogueSequenceDatum.IsDialogueSkippable) return;
+                foreach (var dialogueSpeaker in _activeDialogueSpeakers)
+                {
+                    dialogueSpeaker.SkipDialogue();
+                }
+
+                return;
+            }
             
-            _typewriterEffect = GetComponent<TypewriterEffect>();
-            _typewriterEffect.Initialize(dialogueTextComponent);
-            _typewriterEffect.CharacterRevealed += TypewriterEffectOnCharacterRevealed;
-
-            if (!startDialogueOnAwake) return;
-            StartDialogueSequence(currentDialogueSequence);
-        }
-
-        private void TypewriterEffectOnCharacterRevealed(char character, int index)
-        {
-            _dialogueEffectHandler.OnCharacterRevealed(character, index);
-        }
-
-        public void ChangeTypewriterSpeed(float speed)
-        {
-            _typewriterEffect.SetMultiplier(speed);
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space)) AdvanceDialogueSequence();
+            AdvanceDialogueSequence();
         }
 
         public void StartDialogueSequence(DialogueSequenceDatum dialogueSequence)
         {
-            currentDialogueSequence = dialogueSequence;
+            currentDialogueSequenceDatum = dialogueSequence;
+            GameManager.Instance.SwitchInputActionMaps("Dialogue");
+            AssignControls();
+            
+            SequenceStarted?.Invoke(currentDialogueSequenceDatum);
             _isDialogueActive = true;
             _currentDialogueLineIndex = 0;
-            DisplayDialogueLine(dialogueSequence);
+            DisplayDialogueLine();
         }
+
 
         public void AdvanceDialogueSequence()
         {
             if (!_isDialogueActive)
             {
-                if (currentDialogueSequence) StartDialogueSequence(currentDialogueSequence);
+                if (currentDialogueSequenceDatum) StartDialogueSequence(currentDialogueSequenceDatum);
                 return;
             }
             
             _currentDialogueLineIndex++;
-            if (currentDialogueSequence.DialogueLineData.Length <= _currentDialogueLineIndex)
+            if (currentDialogueSequenceDatum.DialogueLines.Length <= _currentDialogueLineIndex)
             {
                 StopDialogueSequence();
             }
             else
             {
-                DisplayDialogueLine(currentDialogueSequence);
+                DisplayDialogueLine();
             }
         }
 
         public void StopDialogueSequence()
         {
-            currentDialogueSequence = null;
+            UnassignControls();
+            GameManager.Instance.ResetInputActionMapToDefault();
+            
+            SequenceFinished?.Invoke(currentDialogueSequenceDatum);
+            EventManager.SendEvents(currentDialogueSequenceDatum.EventData);
+            currentDialogueSequenceDatum = null;
             _isDialogueActive = false;
             _currentDialogueLineIndex = 0;
-            dialogueTextComponent.text = string.Empty;
         }
-
-        private void DisplayDialogueLine(DialogueSequenceDatum dialogueSequence) => DisplayDialogueLine(dialogueSequence.DialogueLineData[_currentDialogueLineIndex]);
-
-        private void DisplayDialogueLine(DialogueLineDatum dialogueLineDatum)
+        
+        private void DisplayDialogueLine() => DisplayDialogueLine(currentDialogueSequenceDatum.DialogueLines[_currentDialogueLineIndex]);
+        
+        private void DisplayDialogueLine(DialogueLine dialogueLine)
         {
-            var processData = ProcessDialogueLine(dialogueLineDatum);
-            dialogueTextComponent.text = processData.FormattedText;
-            _typewriterEffect.StartTyping(processData.BareText);
-        }
-
-        private void SkipDialogueLine()
-        {
-            
-        }
-
-        private DialogueEffectHandler.ProcessData ProcessDialogueLine(DialogueLineDatum dialogueLineDatum)
-        {
-            return _dialogueEffectHandler.ProcessTags(dialogueLineDatum.Text);
+            DialogueSpoken?.Invoke(dialogueLine);
         }
     }
 }

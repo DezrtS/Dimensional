@@ -24,14 +24,26 @@ namespace Managers
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Playing) return;
+            if (newValue != GameState.Starting) return;
             if (!defaultCutsceneDatum) return;
             PlayCutscene(defaultCutsceneDatum);
         }
 
         public void PlayCutscene(CutsceneDatum cutsceneDatum)
         {
-            _selectedCutscene = cutsceneDatum.SpawnCutscene(transform);
+            var cutscene = cutsceneDatum.SpawnCutscene(transform);
+            PlayCutscene(cutscene);
+        }
+
+        public void PlayCutscene(Cutscene cutscene, CutsceneDatum cutsceneDatum)
+        {
+            if (cutsceneDatum) cutscene.Initialize(cutsceneDatum);
+            PlayCutscene(cutscene);
+        }
+
+        private void PlayCutscene(Cutscene cutscene)
+        {
+            _selectedCutscene = cutscene;
             _selectedCutscene.Play();
             _selectedCutscene.Stopped += CutsceneOnStopped;
         }

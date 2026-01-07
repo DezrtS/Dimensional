@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Debugging.New_Movement_System;
 using Managers;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
@@ -107,7 +108,7 @@ namespace Systems.Actions.Movement
                 switch (_attackPositionMovementActionDatum.KnockbackType)
                 {
                     case KnockbackType.Directional:
-                        var velocity = MovementController.ForceController.GetVelocity();
+                        var velocity = MovementController.ForceController.GetVelocityComponent(VelocityType.Movement);
                         velocity.y = 0;
                         stunBehaviour.Stun(velocity.normalized);
                         //forceController.ApplyForceEvent(_attackPositionMovementActionDatum.ForceEventDatum, Quaternion.LookRotation(velocity));

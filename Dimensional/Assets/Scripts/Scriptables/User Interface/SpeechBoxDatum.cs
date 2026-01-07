@@ -10,12 +10,12 @@ namespace Scriptables.User_Interface
     {
         [SerializeField] private DialogueLineDatum dialogueLineDatum;
 
-        public override WorldUIAnchor SpawnWorldUIAnchor(Transform parent, Transform worldTransform)
+        public override WorldUIAnchor SpawnWorldUIAnchor(Transform parent, GameObject holderGameObject, Transform worldTransform)
         {
             var speechBoxObject = Instantiate(Prefab, parent.transform);
             var speechBox = speechBoxObject.GetComponent<SpeechBox>();
-            speechBox.Initialize(this, worldTransform);
-            speechBox.SetDialogueLine(dialogueLineDatum);
+            speechBox.Initialize(this, holderGameObject, worldTransform);
+            speechBox.SetDialogueLine(dialogueLineDatum.DialogueLine);
             return speechBox;
         }
     }

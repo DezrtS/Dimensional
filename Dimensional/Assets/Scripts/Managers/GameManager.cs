@@ -11,14 +11,11 @@ namespace Managers
     public enum GameState
     {
         None,
-        SettingUp,
+        Initializing, 
         Loading,
+        Preparing,
         Starting,
         Playing,
-        Ending,
-        Saving,
-        Transitioning,
-        Quitting
     }
 
     [Serializable]
@@ -55,9 +52,12 @@ namespace Managers
         [SerializeField] private InputActionAsset defaultInputActionAsset;
         [Space]
         [SerializeField] private GameStateEvents[] gameStateEvents;
-        [Space]
+
+        [Space] [SerializeField] private GameObject saveManagerPrefab;
         [SerializeField] private bool loadSceneData;
         [SerializeField] private List<DataType> loadOnLoading;
+
+        private bool _isFirstLoad;
         
         public GameState GameState { get; private set; }
         public Dimensions WorldDimensions { get; private set; }
@@ -66,19 +66,25 @@ namespace Managers
         private void Start()
         {
             SetWorldDimensions(defaultWorldDimensions);
-            StartCoroutine(GameStateRoutine());
+            ChangeGameState(GameState.Initializing);
+            //StartCoroutine(GameStateRoutine());
         }
 
         private IEnumerator GameStateRoutine()
         {
-            ChangeGameState(GameState.SettingUp);
+            ChangeGameState(GameState.Initializing);
             yield return null;
-            if (loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene });
-            SaveManager.Instance.RequestLoad(loadOnLoading);
+            var isFirstLoad = !SaveManager.Instance;
+            if (isFirstLoad) Instantiate(saveManagerPrefab);
             ChangeGameState(GameState.Loading);
             yield return null;
-            ChangeGameState(GameState.Starting);
+            if (isFirstLoad && loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene, DataType.World });
+            SaveManager.Instance.RequestLoad(loadOnLoading); 
+            ChangeGameState(GameState.Preparing);
             yield return null;
+            ChangeGameState(GameState.Starting);
+            UIManager.Instance.Transition(false, false, 2f);
+            yield return new WaitForSeconds(2f);
             ChangeGameState(GameState.Playing);
         }
 
@@ -86,7 +92,7 @@ namespace Managers
         {
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
-                SceneManager.Instance.ReloadScene();
+                SceneManager.ReloadScene();
             }
             /*
             else if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -120,6 +126,29 @@ namespace Managers
         {
             GameStateChanged?.Invoke(GameState, newState);
             GameState = newState;
+
+            switch (newState)
+            {
+                case GameState.None:
+                    break;
+                case GameState.Initializing:
+                    _isFirstLoad = !SaveManager.Instance;
+                    if (_isFirstLoad) Instantiate(saveManagerPrefab);
+                    break;
+                case GameState.Loading:
+                    if (_isFirstLoad && loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene, DataType.World });
+                    SaveManager.Instance.RequestLoad(loadOnLoading); 
+                    break;
+                case GameState.Preparing:
+                    break;
+                case GameState.Starting:
+                    break;
+                case GameState.Playing:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+            }
+            
             foreach (var gameStateEvent in gameStateEvents)
             {
                 if (gameStateEvent.GameState == newState)

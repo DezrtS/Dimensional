@@ -51,6 +51,7 @@ namespace Managers
         {
             Camera = GetComponentInChildren<Camera>();
             _cinemachineBrain = Camera.GetComponent<CinemachineBrain>();
+            _cinemachineBrain.DefaultBlend.Style = CinemachineBlendDefinition.Styles.Cut;
             _cinemachineCamera = GetComponentInChildren<CinemachineCamera>();
             TargetCinemachineCamera = _cinemachineCamera;
             _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
@@ -63,8 +64,15 @@ namespace Managers
 
         private void Awake()
         {
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
             if (lockAndHideCursor) LockAndHideCursor();
+        }
+
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        {
+            if (newValue != GameState.Playing) return;
+            _cinemachineBrain.DefaultBlend.Style = CinemachineBlendDefinition.Styles.EaseInOut;
         }
 
         private void FixedUpdate()
@@ -182,6 +190,7 @@ namespace Managers
             to.Priority = 1;
             from.Priority = -1;
             yield return new WaitForSeconds(duration);
+            yield return new WaitForEndOfFrame();
             TransitionFinished?.Invoke(from, to);
             SetIsActive(true);
         }
@@ -207,6 +216,7 @@ namespace Managers
 
         private void OnDisable()
         {
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
             GameManager.WorldDimensionsChanged -= GameManagerOnWorldDimensionsChanged;
         }
     }

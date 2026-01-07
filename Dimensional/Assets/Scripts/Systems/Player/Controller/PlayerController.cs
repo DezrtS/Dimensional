@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Debugging.New_Movement_System;
 using Interfaces;
 using Managers;
 using Scriptables.Actions.Movement;
@@ -10,6 +11,7 @@ using Scriptables.Shapes;
 using Systems.Actions.Movement;
 using Systems.Entities;
 using Systems.Entities.Behaviours;
+using Systems.Interactables;
 using Systems.Movement;
 using Systems.Visual_Effects;
 using UnityEngine;
@@ -32,9 +34,6 @@ namespace Systems.Player
         [Space] 
         [SerializeField] private ResetPlayerDatum deathResetPlayerDatum;
         [Space]
-        [SerializeField] private float interactionRadius;
-        [SerializeField] private LayerMask interactionLayerMask;
-        [Space]
         [SerializeField] private MeshRenderer[] eyeMeshRenderers;
         [SerializeField] private Material defaultEyeMaterial;
         [SerializeField] private Material dizzyEyeMaterial;
@@ -47,8 +46,8 @@ namespace Systems.Player
         private InputAction _moveInputAction;
         private InputAction _lookInputAction;
         
-        private readonly List<IInteractable> _interactables = new List<IInteractable>();
-        private IInteractable _interactable;
+        private readonly List<Interactable> _interactables = new List<Interactable>();
+        private Interactable _interactable;
 
         private bool _isResetting;
 
@@ -129,11 +128,6 @@ namespace Systems.Player
 
         private void Start()
         {
-            PlayerMovementController.Initialize(this);
-            
-            _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
-            AssignControls();
-            
             if (setCameraFollowOnStart) CameraManager.Instance.SetFollow(PlayerLook.Root);
             if (setCameraLookOnStart) CameraManager.Instance.SetLookAt(transform);
         }
@@ -170,15 +164,6 @@ namespace Systems.Player
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed += OnInteract;
             
-            var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
-            openWheelInputAction.performed += OnOpenWheel;
-            
-            //var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
-            //switchShapesInputAction.performed += OnSwitchShapes;
-            
-            var switchWheelInputAction = _inputActionMap.FindAction("Switch Wheel");
-            switchWheelInputAction.performed += OnSwitchWheel;
-            
             _inputActionMap.Enable();
         }
         
@@ -210,15 +195,6 @@ namespace Systems.Player
             
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed -= OnInteract;
-            
-            var openWheelInputAction = _inputActionMap.FindAction("Open Wheel");
-            openWheelInputAction.performed -= OnOpenWheel;
-            
-            //var switchShapesInputAction = _inputActionMap.FindAction("Switch Shapes");
-            //switchShapesInputAction.performed -= OnSwitchShapes;
-            
-            var switchWheelInputAction = _inputActionMap.FindAction("Switch Wheel");
-            switchWheelInputAction.performed -= OnSwitchWheel;
             
             _inputActionMap.Disable();
         }
@@ -255,36 +231,42 @@ namespace Systems.Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent(out IInteractable interactable)) return;
+            if (!other.TryGetComponent(out Interactable interactable)) return;
             _interactables.Add(interactable);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.TryGetComponent(out IInteractable interactable)) return;
+            if (!other.TryGetComponent(out Interactable interactable)) return;
             _interactables.Remove(interactable);
-            interactable.StopHovering();
+            interactable.UnHover(InteractContext.Construct(gameObject));
+            if (_interactable == interactable) _interactable = null;
         }
 
         private void CheckInteractables()
         {
+            var interactContext = InteractContext.Construct(gameObject);
             if (_interactables.Count == 1)
             {
                 _interactable = _interactables[0];
-                _interactable.Hover();
+                _interactable.Hover(interactContext);
                 return;
             }
             
-            var closestAngleDifference = _interactable != null ? Vector3.Angle(PlayerLook.Root.forward, _interactable.GameObject.transform.position - transform.position) : float.MaxValue;
+            var closestAngleDifference = _interactable ? Vector3.Angle(PlayerLook.Root.forward, _interactable.transform.position - transform.position) : float.MaxValue;
+            var closestInteractable = _interactable;
             foreach (var interactable in _interactables)
             {
-                var angleDifference = Vector3.Angle(PlayerLook.Root.forward, interactable.GameObject.transform.position - transform.position);
+                var angleDifference = Vector3.Angle(PlayerLook.Root.forward, interactable.transform.position - transform.position);
                 if (angleDifference > closestAngleDifference) continue;
-                _interactable?.StopHovering();
                 closestAngleDifference = angleDifference;
-                _interactable = interactable;
-                _interactable.Hover();
+                closestInteractable = interactable;
             }
+            
+            if (_interactable == closestInteractable) return;
+            if (_interactable) _interactable.UnHover(interactContext);
+            _interactable = closestInteractable;
+            _interactable.Hover(interactContext);
         }
 
         public void SetDizzyEyes(bool dizzyEyes)
@@ -297,11 +279,17 @@ namespace Systems.Player
         
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Starting) return;
-            
-            var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
-            if (!checkpoint) return;
-            PlayerMovementController.ForceController.Teleport(checkpoint.SpawnPosition);
+            switch (newValue)
+            {
+                case GameState.Initializing:
+                    PlayerMovementController.Initialize(this);
+                    _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
+                    AssignControls();
+                    break;
+                case GameState.Preparing:
+                    RespawnPlayer(transform.position);
+                    break;
+            }
         }
         
         private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
@@ -328,6 +316,7 @@ namespace Systems.Player
             SetDizzyEyes(true);
             PlayerMovementController.CancelAllActions();
             PlayerMovementController.IsDisabled = true;
+            //PlayerMovementController.ForceController.ClearVelocityComponent(VelocityType.All);
             DebugDisable = true;
         }
         
@@ -352,7 +341,12 @@ namespace Systems.Player
         private void RespawnPlayer(Vector3 defaultRespawnPosition)
         {
             var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
-            var spawnPosition = checkpoint ? checkpoint.SpawnPosition : defaultRespawnPosition;
+            var spawnPosition = defaultRespawnPosition;
+            if (checkpoint)
+            {
+                checkpoint.RespawnAt();
+                spawnPosition = checkpoint.SpawnPosition;
+            }
             PlayerMovementController.ForceController.Teleport(spawnPosition);
         }
         
@@ -401,12 +395,7 @@ namespace Systems.Player
         private void OnInteract(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            _interactable?.Interact(InteractContext.Construct(gameObject));
-        }
-
-        private static void OnOpenWheel(InputAction.CallbackContext context)
-        {
-            UIManager.Instance.OpenActionShapeSelection();
+            if (_interactable) _interactable.Interact(InteractContext.Construct(gameObject));
         }
         
         private void OnSwitchShapes(InputAction.CallbackContext context)
@@ -423,11 +412,6 @@ namespace Systems.Player
             var index = indexMap[input];
             if (index >= movementActionShapesPresets.Length) return;
             SetMovementActionShapesPreset(movementActionShapesPresets[index]);
-        }
-        
-        private void OnSwitchWheel(InputAction.CallbackContext context)
-        {
-            SwitchedWheel?.Invoke();
         }
 
         private IEnumerator ResetRoutine(ResetPlayerDatum resetPlayerDatum, Vector3 defaultResetPosition)

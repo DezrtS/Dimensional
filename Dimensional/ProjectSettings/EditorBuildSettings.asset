@@ -9,28 +9,28 @@ EditorBuildSettings:
     path: Assets/Scenes/Base.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/Debugging/HomeTest.unity
+    path: Assets/Scenes/Main/Locations/HomeTest.unity
     guid: 0be7c4a6cc8ec9c46b47986c52e1e16a
   - enabled: 1
-    path: Assets/Scenes/Debugging/MovementTest.unity
+    path: Assets/Scenes/Main/Regions/MovementTest.unity
     guid: 0ae4ff59c7258c44692ed9a677e6b793
   - enabled: 1
-    path: Assets/Scenes/Debugging/LevelTest.unity
+    path: Assets/Scenes/Main/Levels/LevelTest.unity
     guid: 041f800589ca37b43ade4e2a8d763258
   - enabled: 1
-    path: Assets/Scenes/Debugging/Level2Test.unity
+    path: Assets/Scenes/Main/Levels/Level2Test.unity
     guid: b02048e4b1b7cb14bbd6d9510ea975e5
   - enabled: 1
-    path: Assets/Scenes/Debugging/Level3Test.unity
+    path: Assets/Scenes/Main/Levels/Level3Test.unity
     guid: f466408f53689fa4691817f8bae50d9c
   - enabled: 1
-    path: Assets/Scenes/Debugging/Level4Test.unity
+    path: Assets/Scenes/Main/Levels/Level4Test.unity
     guid: 0224f356faeb5fa4bb736d0a54b7334e
   - enabled: 1
-    path: Assets/Scenes/Debugging/L1_ConvexVillage.unity
+    path: Assets/Scenes/Main/Levels/L1_ConvexVillage.unity
     guid: da489b0e0542ada4cbd74ecb4980bb41
   - enabled: 1
-    path: Assets/Scenes/Debugging/CombatTest.unity
+    path: Assets/Scenes/Main/Levels/CombatTest.unity
     guid: 27aa168b278ab6c4e999770d709f936f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: b41af7f0c31d62e499003e8c59a5bc2f, type: 3}

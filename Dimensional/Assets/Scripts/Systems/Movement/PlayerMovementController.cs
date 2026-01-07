@@ -1,4 +1,5 @@
 using System;
+using Debugging.New_Movement_System;
 using FMODUnity;
 using Interfaces;
 using Managers;
@@ -170,9 +171,11 @@ namespace Systems.Movement
         private void FixedUpdate()
         {
             _animator.SetBool("IsGrounded", IsGrounded);
+            
+            if (ParentPlatform) ForceController.SetVelocityComponent(VelocityType.Platform, ParentPlatform.Velocity);
 
             var deltaTime = Time.fixedDeltaTime;
-            var velocity = ForceController.GetVelocity();
+            var velocity = ForceController.GetVelocityComponent(VelocityType.Movement);
             root.localScale = Vector3.Lerp(root.localScale,
                 new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), deltaTime * scaleSpeed);
             _animator.SetFloat("yVelocity", velocity.y);
@@ -238,14 +241,14 @@ namespace Systems.Movement
 
         private void LateUpdate()
         {
-            _previousYVelocity = ForceController.GetVelocity().y;
+            _previousYVelocity = ForceController.GetVelocityComponent(VelocityType.Movement).y;
         }
 
         protected override void OnMove(Vector3 input, MovementControllerDatum datum)
         {
             if (IsWallSliding)
             {
-                var newInput = ForceController.GetCancelledVector(input, -_wallSlideDirection);
+                var newInput = Vector3.ProjectOnPlane(input, -_wallSlideDirection);
                 base.OnMove(newInput, datum);
 
                 if (input.magnitude < 0.5f) return;
@@ -404,7 +407,7 @@ namespace Systems.Movement
             _dizzyTimer = 0;
             _playerController.SetDizzyEyes(true);
             _animator.SetBool("IsRolling", true);
-            ForceController.ApplyForce(Quaternion.LookRotation(actionContext.TargetDirection) * Vector3.forward * _playerMovementControllerDatum.InitialRollSpeed, ForceMode.VelocityChange);
+            ForceController.AddVelocityComponent(VelocityType.Movement, Quaternion.LookRotation(actionContext.TargetDirection) * Vector3.forward * _playerMovementControllerDatum.InitialRollSpeed);
         }
 
         public void StartLeftSpecial()
@@ -562,7 +565,7 @@ namespace Systems.Movement
             if (disableWallSlideCheck || IsGrounded) return false;
             if (_wallSlideMovementAction.IsActive) return CheckWallSlideDirection(_wallSlideDirection);
             
-            var velocity = ForceController.GetVelocity();
+            var velocity = ForceController.GetVelocityComponent(VelocityType.Movement);
             if (!(velocity.y < _playerMovementControllerDatum.WallSlideYVelocityThreshold)) return false;
             velocity.y = 0;
 

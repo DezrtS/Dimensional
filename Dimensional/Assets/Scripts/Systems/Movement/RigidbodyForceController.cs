@@ -35,7 +35,17 @@ namespace Systems.Movement
             _rig.useGravity = UseGravity;
         }
 
-        protected override void OnApplyForce(Vector3 force, ForceMode forceMode)
+        public override void SetVelocity(Vector3 velocity)
+        {
+            _rig.linearVelocity = velocity;
+        }
+        
+        public override Vector3 GetVelocity()
+        {
+            return _rig.linearVelocity;
+        }
+
+        public override void ApplyForce(Vector3 force, ForceMode forceMode)
         {
             _rig.AddForce(force, forceMode);
         }
@@ -43,16 +53,6 @@ namespace Systems.Movement
         protected override void OnApplyTorque(Vector3 torque, ForceMode forceMode)
         {
             _rig.AddTorque(torque, forceMode);
-        }
-
-        public override Vector3 GetVelocity()
-        {
-            return _rig.linearVelocity;
-        }
-
-        protected override void OnSetVelocity(Vector3 velocity)
-        {
-            _rig.linearVelocity = velocity;
         }
     }
 }

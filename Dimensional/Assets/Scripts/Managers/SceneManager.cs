@@ -34,7 +34,7 @@ namespace Managers
         {
             if (dataTypes.Contains(DataType.Scene))
             {
-                LoadScene(saveData.sceneData.scene);
+                LoadScene(saveData.sceneData.scene, false);
             }
         }
 
@@ -54,17 +54,25 @@ namespace Managers
             LoadScene(_nextScene);
         }
 
-        public void LoadScene(string sceneName)
+        public void SetNextScene(string nextScene)
+        {
+            _nextScene = nextScene;
+        }
+
+        public void LoadScene(string sceneName, bool saveData = true)
         {
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == sceneName) return;
             _nextScene = sceneName;
             _loadingScene = true;
-            SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Scene });
+            if (saveData) SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Player, DataType.Action, DataType.Collectable, DataType.Quest, DataType.Scene });
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
         }
+        
+        public void LoadScene(bool saveData = true) => LoadScene(_nextScene, saveData);
 
-        public void ReloadScene()
+        public static void ReloadScene()
         {
+            SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Player, DataType.Action, DataType.Collectable, DataType.Quest, DataType.World });
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }

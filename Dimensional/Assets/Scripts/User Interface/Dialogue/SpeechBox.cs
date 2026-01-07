@@ -1,7 +1,10 @@
 using System;
 using Febucci.UI;
+using FMOD.Studio;
+using Managers;
 using Scriptables.Dialogue;
 using Scriptables.User_Interface;
+using Systems.Dialogue;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,83 +13,88 @@ namespace User_Interface.Dialogue
 {
     public class SpeechBox : WorldUIAnchor
     {
-        private static readonly int Show = Animator.StringToHash("Show");
-        private static readonly int Hide = Animator.StringToHash("Hide");
+        public event Action TypewriterFinished;
+        
+        private static readonly int IsTargetInRangeHash = Animator.StringToHash("IsTargetInRange");
+        
         [SerializeField] private TextAnimator_TMP textAnimator;
         [SerializeField] private TypewriterByCharacter typewriterByCharacter;
         [Space] 
         [SerializeField] private Image iconImage;
-        [SerializeField] private Image armImage;
         [SerializeField] private TextMeshProUGUI nameText;
         
-        private DialogueLineDatum _dialogueLineDatum;
         private Animator _animator;
+        private DialogueLine _dialogueLine;
+        private UIArm _uiArm;
+        
+        private EventInstance _eventInstance;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
+            _uiArm = GetComponent<UIArm>();
+
+            typewriterByCharacter.onTextShowed.AddListener(OnTextShown);
+        }
+
+        private void OnTextShown()
+        {
+            typewriterByCharacter.SetTypewriterSpeed(1);
+            TypewriterFinished?.Invoke();
+        }
+
+        protected override void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform) {}
+        
+        public void SetDialogueLine(DialogueLine dialogueLine)
+        {
+            _dialogueLine = dialogueLine;
+            nameText.text = dialogueLine.DialogueSpeakerDatum.SpeakerName;
+            iconImage.sprite = dialogueLine.DialogueSpeakerDatum.SpeakerIcon;
+            textAnimator.SetText(_dialogueLine.Text, true);
+
+            if (_eventInstance.isValid()) _eventInstance.stop(STOP_MODE.IMMEDIATE);
+            
+            if (!dialogueLine.HasVoiceActing) return;
+            _eventInstance = AudioManager.CreateEventInstance(dialogueLine.EventReferenceWrapper.eventRef);
+            AudioManager.AttachInstanceToGameObject(_eventInstance, WorldTransform.gameObject);
+        }
+
+        public void ShowDialogue()
+        {
+            _animator.SetBool(IsTargetInRangeHash, true);
+            typewriterByCharacter.StartShowingText();
+            
+            if (!_dialogueLine.HasVoiceActing) return;
+            _eventInstance.start();
+        }
+
+        public void SkipDialogue()
+        {
+            typewriterByCharacter.SetTypewriterSpeed(4);
+            //typewriterByCharacter.SkipTypewriter();
         }
         
-        protected override void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform) {}
-
-        public void SetDialogueLine(DialogueLineDatum dialogueLineDatum)
+        public void HideDialogue()
         {
-            _dialogueLineDatum = dialogueLineDatum;
-            nameText.text = dialogueLineDatum.DialogueSpeakerDatum.SpeakerName;
-            iconImage.sprite = dialogueLineDatum.DialogueSpeakerDatum.SpeakerIcon;
-            textAnimator.SetText(_dialogueLineDatum.Text, true);
-        }
-
-        protected override void OnSetTargetTransform(Transform targetTransform)
-        {
-            if (!targetTransform)
-            {
-                HideSpeechBox();
-            }
-            else
-            {
-                ShowSpeechBox();
-            }
+            _animator.SetBool(IsTargetInRangeHash, false);
+            typewriterByCharacter.StartDisappearingText();
+            
+            if (!_dialogueLine.HasVoiceActing) return;
+            _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
 
         protected override void OnFixedUpdate()
         {
-            var bubbleScreenPos = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
+            var elementScreenPos = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
             var targetScreenPos = Camera.WorldToScreenPoint(WorldTransform.position);
-            
-            Vector2 direction = targetScreenPos - bubbleScreenPos;
-            var distance = direction.magnitude;
-            direction = direction.normalized;
-
-            var size = distance / 150f;
-            var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            
-            armImage.transform.localScale = new Vector3(1, size, 1);
-            armImage.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            _uiArm.UpdateArm(elementScreenPos, targetScreenPos);
         }
 
-        [ContextMenu("Show")]
-        public void ShowSpeechBox()
+        protected override void OnSetIsTargetInRange(bool isTargetInRange)
         {
-            _animator.SetTrigger(Show);
-            ShowText();
-        }
-        
-        private void ShowText()
-        {
-            typewriterByCharacter.StartShowingText();
-        }
-
-        [ContextMenu("Hide")]
-        public void HideSpeechBox()
-        {
-            HideText();
-            _animator.SetTrigger(Hide);
-        }
-        
-        private void HideText()
-        {
-            typewriterByCharacter.StartDisappearingText();
+            _animator.SetBool(IsTargetInRangeHash, isTargetInRange);
+            if (isTargetInRange) typewriterByCharacter.StartShowingText();
+            else typewriterByCharacter.StartDisappearingText();
         }
     }
 }

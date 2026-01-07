@@ -4,12 +4,15 @@ using User_Interface;
 namespace Scriptables.User_Interface
 {
     [CreateAssetMenu(fileName = "WorldUIAnchorDatum", menuName = "Scriptable Objects/WorldUIAnchorDatum")]
-    public abstract class WorldUIAnchorDatum : ScriptableObject
+    public class WorldUIAnchorDatum : ScriptableObject
     {
         [SerializeField] private GameObject prefab;
-        
         [SerializeField] private Vector3 offset;
+        
+        
+        [SerializeField] private float range;
 
+        [Header("UI Scaling")]
         [SerializeField] private bool useDistanceScaling;
         [SerializeField] private float minDistance;
         [SerializeField] private float maxDistance;
@@ -21,6 +24,7 @@ namespace Scriptables.User_Interface
         
         protected GameObject Prefab => prefab;
         public Vector3 Offset => offset;
+        public float Range => range;
         public bool UseDistanceScaling => useDistanceScaling;
         public float MinDistance => minDistance;
         public float MaxDistance => maxDistance;
@@ -29,6 +33,12 @@ namespace Scriptables.User_Interface
         public float MaxAngle => maxAngle;
         public AnimationCurve SizeCurve => sizeCurve;
 
-        public abstract WorldUIAnchor SpawnWorldUIAnchor(Transform parent, Transform worldTransform);
+        public virtual WorldUIAnchor SpawnWorldUIAnchor(Transform parent, GameObject holderGameObject, Transform worldTransform)
+        {
+            var worldUIAnchorObject = Instantiate(Prefab, parent);
+            var worldUIAnchor = worldUIAnchorObject.GetComponent<WorldUIAnchor>();
+            worldUIAnchor.Initialize(this, holderGameObject, worldTransform);
+            return worldUIAnchor;
+        }
     }
 }

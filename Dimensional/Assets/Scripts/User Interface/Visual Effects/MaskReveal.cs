@@ -12,6 +12,8 @@ namespace User_Interface.Visual_Effects
         
         public event Action Finished;
         
+        [SerializeField] private bool fillProgressOnAwake = true;
+        [Space]
         [SerializeField] private bool invertTransition;
         [SerializeField] private bool reverseDirection;
         [Space]
@@ -25,6 +27,14 @@ namespace User_Interface.Visual_Effects
         private float _duration;
         private float _timer;
         private bool _reverse;
+
+        private void Awake()
+        {
+            if (!fillProgressOnAwake) return;
+            material.SetFloat(Progress, progressCurve.Evaluate(0));
+            material.SetFloat(Transparency, transparencyCurve.Evaluate(0));
+            material.SetFloat(Rotation, rotationCurve.Evaluate(0) * rotation);
+        }
 
         [ContextMenu("Transition")]
         public void Transition() => Transition(invertTransition, reverseDirection);

@@ -10,7 +10,6 @@ using UnityEngine;
 
 namespace Systems.Actions
 {
-
     public enum ActionEventType
     {
         None,
@@ -30,6 +29,8 @@ namespace Systems.Actions
         public ScriptableObject SourceData;
 
         public Vector3 TargetDirection;
+        public Vector3 TargetPosition;
+        public float ProjectileSpeed;
 
         public static ActionContext Construct(IActivateActions actionActivator, IEntity sourceEntity, GameObject sourceGameObject, ScriptableObject sourceData, Vector3 targetDirection)
         {

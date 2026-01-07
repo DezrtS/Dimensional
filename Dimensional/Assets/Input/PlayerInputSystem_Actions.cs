@@ -767,7 +767,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": """",
                     ""id"": ""21767946-ac74-47eb-946c-0256f6db5c34"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",

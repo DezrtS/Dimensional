@@ -12,6 +12,14 @@ using Action = System.Action;
 
 namespace Managers
 {
+    public enum UserInterfaceType
+    {
+        None,
+        Pause,
+        Quests,
+        TravelMap,
+    }
+    
     public class UIManager : Singleton<UIManager>
     {
         public static event Action TransitionFinished;
@@ -23,7 +31,7 @@ namespace Managers
         [SerializeField] private string areaName = "Sphero";
         [SerializeField] private float areaTitleDuration = 5;
         [Space]
-        [SerializeField] private bool transitionOnAwake;
+        [SerializeField] private GameObject travelMap;
         [Space]
         [SerializeField] private Transform interactableIconTransform;
         [Space]
@@ -45,20 +53,19 @@ namespace Managers
             _maskReveal = GetComponent<MaskReveal>();
             _maskReveal.Finished += MaskRevealOnFinished;
             
-            if (transitionOnAwake) Transition(true, false);
-            
-            //_playerUI = GetComponent<PlayerUIV1>();
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
         }
 
         private void Start()
         {
+            DeactivateUI(false);
+        }
+
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        {
+            if (newValue != GameState.Playing) return;
             if (!showAreaTitle) return;
             areaTitle.ShowArea(areaName, areaTitleDuration);
-            
-            //if (!actionSelectionWheelDatum) return;
-            //_actionSelectionWheel = actionSelectionWheelDatum.AttachSelectionWheel(actionSelectionWheelTransform);
-            //_actionSelectionWheel.GenerateSelectionWheel();
-            //_actionSelectionWheel.Cancelled += SelectionWheelOnCancelled;
         }
 
         private void Update()
@@ -69,14 +76,40 @@ namespace Managers
             }
         }
 
-        public WorldUIAnchor SpawnWorldUIAnchor(WorldUIAnchorDatum worldUIAnchorDatum, Transform worldTransform)
+        public WorldUIAnchor SpawnWorldUIAnchor(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform)
         {
-            return worldUIAnchorDatum.SpawnWorldUIAnchor(interactableIconTransform, worldTransform);
+            return worldUIAnchorDatum.SpawnWorldUIAnchor(interactableIconTransform, holderGameObject, worldTransform);
         }
 
         public void Transition(bool invert, bool reverse, float duration = -1)
         {
             _maskReveal.Transition(invert, reverse, duration);
+        }
+
+        public void ActivateUI(UserInterfaceType userInterfaceType)
+        {
+            //CameraManager.Instance.UnlockAndShowCursor();
+            GameManager.Instance.SwitchInputActionMaps("UI");
+            switch (userInterfaceType)
+            {
+                case UserInterfaceType.None:
+                    break;
+                case UserInterfaceType.Pause:
+                    break;
+                case UserInterfaceType.Quests:
+                    break;
+                case UserInterfaceType.TravelMap:
+                    travelMap.SetActive(true);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(userInterfaceType), userInterfaceType, null);
+            }
+        }
+
+        public void DeactivateUI(bool resetInput = true)
+        {
+            if (resetInput) GameManager.Instance.ResetInputActionMapToDefault();
+            travelMap.SetActive(false);
         }
 
         public GameObject GetShapeSelectionWheelGameObject(bool useOtherMethod)
@@ -87,37 +120,14 @@ namespace Managers
         public void EnableFade() => fade.SetActive(true);
         public void DisableFade() => fade.SetActive(false);
 
-        public void OpenActionShapeSelection()
-        {
-            return;
-            _actionSelectionWheel.Show();
-            _actionSelectionWheel.Activate();   
-            
-            GameManager.Instance.SwitchInputActionMaps("Selection Wheel");
-            GameManager.SetTimeScale(0.25f);
-            EnableFade();
-        }
-
-        public void CloseActionShapeSelection()
-        {
-            return;
-            _playerUI.CloseActionShapeSelection();
-            _actionSelectionWheel.Hide();
-            _actionSelectionWheel.Deactivate();   
-            
-            GameManager.Instance.ResetInputActionMapToDefault();
-            GameManager.SetTimeScale();
-            DisableFade();
-        }
-
-        private void SelectionWheelOnCancelled(SelectionWheel selectionWheel)
-        {
-            CloseActionShapeSelection();
-        }
-
         private static void MaskRevealOnFinished()
         {
             TransitionFinished?.Invoke();
+        }
+
+        private void OnDisable()
+        {
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
     }
 }

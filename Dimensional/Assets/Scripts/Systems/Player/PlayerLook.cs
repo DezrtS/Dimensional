@@ -1,7 +1,9 @@
 using System;
+using Debugging.New_Movement_System;
 using Interfaces;
 using Managers;
 using Scriptables.Player;
+using Systems.Forces;
 using Systems.Movement;
 using UnityEngine;
 
@@ -24,7 +26,7 @@ namespace Systems.Player
         private IAim _aim;
         
         private CameraManager _cameraManager;
-        private ForceController _forceController;
+        private ComplexForceController _forceController;
 
         // 2D
         private Vector3 _lookPosition;
@@ -41,7 +43,7 @@ namespace Systems.Player
         private void Awake()
         {
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
-            _forceController = GetComponent<ForceController>();
+            _forceController = GetComponent<ComplexForceController>();
             var instance = CameraManager.Instance;
             if (instance)
             {
@@ -76,7 +78,7 @@ namespace Systems.Player
             var ratio = (distance - minDitherDistance) / maxDitherDistance;
             playerMaterial.SetFloat(Fade, Mathf.Clamp01(ratio));
             
-            var velocity = _forceController.GetVelocity();
+            var velocity = _forceController.GetVelocityComponent(VelocityType.Movement);
             if (!playerLookDatum.UseYVelocity) velocity.y = 0;
             var speed = velocity.magnitude;
             var speedRatio = (speed - playerLookDatum.MinSpeed) / playerLookDatum.MaxSpeed;
@@ -158,6 +160,11 @@ namespace Systems.Player
         public Vector3 TransformInput(Vector3 input)
         {
             return root.rotation * input;
+        }
+
+        private void OnDisable()
+        {
+            playerMaterial.SetFloat(Fade, 1);
         }
     }
 }

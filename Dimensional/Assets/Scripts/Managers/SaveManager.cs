@@ -32,9 +32,10 @@ namespace Managers
     public class CollectableData
     {
         public int collectables;
-        public List<string> keys;
-        public List<string> tickets;
-        public List<string> shapes;
+        public List<string> collectedCollectables;
+        public List<string> collectedKeys;
+        public List<string> collectedTickets;
+        public List<string> collectedShapes;
     }
 
     [Serializable]
@@ -49,7 +50,7 @@ namespace Managers
     {
         public int regionId;
         public int levelId;
-        public int checkpointId;
+        public string checkpointId;
     }
 
     [Serializable]
@@ -61,12 +62,12 @@ namespace Managers
     [Serializable]
     public class SaveData
     {
-        public PlayerData playerData = new();
-        public ActionData actionData = new();
-        public CollectableData collectableData = new();
-        public QuestData questData = new();
-        public WorldData worldData = new();
-        public SceneData sceneData = new();
+        public PlayerData playerData;
+        public ActionData actionData;
+        public CollectableData collectableData;
+        public QuestData questData;
+        public WorldData worldData;
+        public SceneData sceneData;
     }
     
     public class SaveManager : SingletonPersistent<SaveManager>
@@ -96,6 +97,7 @@ namespace Managers
 
         public void RequestSave(List<DataType> dataTypes)
         {
+            RequestLoad(dataTypes, false);
             Saving?.Invoke(_saveData, dataTypes);
             foreach (var dataType in dataTypes)
             {
@@ -125,7 +127,7 @@ namespace Managers
             }
         }
         
-        public void RequestLoad(List<DataType> dataTypes)
+        public void RequestLoad(List<DataType> dataTypes, bool invokeLoaded = true)
         {
             var loadedDataTypes = new List<DataType>();
             foreach (var dataType in dataTypes)
@@ -191,7 +193,7 @@ namespace Managers
                 }
                 loadedDataTypes.Add(dataType);
             }
-            Loaded?.Invoke(_saveData, loadedDataTypes);
+            if (invokeLoaded) Loaded?.Invoke(_saveData, loadedDataTypes);
         }
 
         private static T Load<T>(string fileName) where T : class

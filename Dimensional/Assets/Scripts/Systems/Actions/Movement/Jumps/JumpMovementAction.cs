@@ -1,3 +1,4 @@
+using Debugging.New_Movement_System;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
 using Systems.Movement;
@@ -28,9 +29,9 @@ namespace Systems.Actions.Movement
             if (!Context.HasUpVelocity) return;
             
             Context.HasUpVelocity = false;
-            var velocity = MovementController.ForceController.GetVelocity();
+            var velocity = MovementController.ForceController.GetVelocityComponent(VelocityType.Movement);
             velocity.y *= _jumpMovementActionDatum.CutJumpMultiplier;
-            MovementController.ForceController.SetVelocity(velocity);
+            MovementController.ForceController.SetVelocityComponent(VelocityType.Movement, velocity);
             MovementController.ForceController.UseGravity = true;
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using Debugging.New_Movement_System;
 using UnityEngine;
 
 namespace Systems.Movement
@@ -22,9 +23,9 @@ namespace Systems.Movement
             if (!disableGroundNormalCheck) _groundNormal = CalculateGroundNormal();
 
             var dot = Vector3.Dot(Vector3.up, _groundNormal);
-            if (dot < edgeThreshold && dot > -edgeThreshold) ForceController.ApplyForce(_groundNormal * edgeForce, ForceMode.VelocityChange);
+            if (dot < edgeThreshold && dot > -edgeThreshold) ForceController.SetVelocityComponent(VelocityType.Movement, _groundNormal * edgeForce);
             
-            if (IsGrounded || _groundNormal != Vector3.up) ForceController.CancelVelocityInDirection(-_groundNormal);
+            //if (IsGrounded || _groundNormal != Vector3.up) ForceController.CancelVelocityInDirection(-_groundNormal);
         }
         
         private Vector3 CalculateGroundNormal()

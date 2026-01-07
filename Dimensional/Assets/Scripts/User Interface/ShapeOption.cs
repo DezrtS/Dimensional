@@ -39,7 +39,7 @@ namespace User_Interface
             _shapeType = ShapeType.None;
             shapeText.text = "???";
             shapeImage.sprite = null;
-            Disable();
+            _isDisabled = true;
         }
 
         private void Default() => _animator.SetTrigger("Default");

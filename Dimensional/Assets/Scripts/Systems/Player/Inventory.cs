@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 namespace Systems.Player
@@ -12,6 +15,30 @@ namespace Systems.Player
         
         public int Collectables { get; private set; }
         public int Keys { get; private set; }
+
+        private void OnEnable()
+        {
+            SaveManager.Saving += SaveManagerOnSaving;
+            SaveManager.Loaded += SaveManagerOnLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SaveManager.Saving -= SaveManagerOnSaving;
+            SaveManager.Loaded -= SaveManagerOnLoaded;
+        }
+
+        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
+        {
+            if (!dataTypes.Contains(DataType.Collectable)) return;
+            saveData.collectableData.collectables = Collectables;
+        }
+        
+        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
+        {
+            if (!dataTypes.Contains(DataType.Collectable)) return;
+            AddCollectables(saveData.collectableData.collectables);
+        }
 
         public void AddCollectables(int amount)
         {

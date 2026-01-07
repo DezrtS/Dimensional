@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Interfaces;
 using Scriptables.Actions.Movement;
 using Systems.Actions;
@@ -35,7 +36,7 @@ namespace Systems.Entities.Behaviours
             _actionDictionary = new Dictionary<AttackPattern, Action>();
             foreach (var attackPattern in attackPatterns)
             {
-                var attack = attackPattern.AttackPositionMovementActionDatum.AttachAction(gameObject);
+                var attack = attackPattern.ActionDatum.AttachAction(gameObject);
                 _actionDictionary.Add(attackPattern, attack);
             }
             
@@ -126,7 +127,9 @@ namespace Systems.Entities.Behaviours
         {
             _preparingAttack = false;
             _selectedAction.Activated += SelectedActionOnActivated;
-            _selectedAction.Activate(GetActionContext());
+            var actionContext = GetActionContext();
+            actionContext = _selectedAction.ActionDatum.ActionContextModifierData.Aggregate(actionContext, (current, actionContextModifierDatum) => actionContextModifierDatum.Modify(current));
+            _selectedAction.Activate(actionContext);
             _selectedAction.Activated -= SelectedActionOnActivated;
         }
 
@@ -148,12 +151,13 @@ namespace Systems.Entities.Behaviours
             SwapAttack();
         }
 
-
         public ActionContext GetActionContext()
         {
             var displacement = _targetPosition - transform.position;
             displacement.y = 0;
-            return ActionContext.Construct(this, _sourceEntity, gameObject, null, displacement.normalized);
+            var actionContext = ActionContext.Construct(this, _sourceEntity, gameObject, null, displacement.normalized);
+            actionContext.TargetPosition = _targetPosition;
+            return actionContext;
         }
     }
 }
