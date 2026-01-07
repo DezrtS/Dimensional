@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using Debugging.New_Movement_System;
 using Interfaces;
 using Managers;
 using Scriptables.Movement;
+using Systems.Forces;
 using Systems.Platforms;
 using UnityEngine;
 
@@ -41,7 +43,7 @@ namespace Systems.Movement
         protected MovementControllerDatum MovementControllerDatum => movementControllerDatum;
         public MovementControllerDatum CurrentMovementControllerDatum { get; set; }
         protected Dimensions MovementDimensions => movementDimensions;
-        public ForceController ForceController { get; private set; }
+        public ComplexForceController ForceController { get; private set; }
         public bool IsDisabled { get; set; }
         public bool IsGrounded { get; private set; }
         protected bool IsPlatformed { get; private set; }
@@ -50,7 +52,7 @@ namespace Systems.Movement
         private void Awake()
         {
             CurrentMovementControllerDatum = movementControllerDatum;
-            ForceController = GetComponent<ForceController>();
+            ForceController = GetComponent<ComplexForceController>();
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
             OnAwake();
         }
@@ -111,16 +113,15 @@ namespace Systems.Movement
 
         protected void Platform(Transform platformTransform)
         {
-            if (transform.parent == platformTransform) return;
+            if (_platformTransform == platformTransform) return;
             if (IsPlatformed) UnPlatform();
             
             IsPlatformed = true;
-            //transform.SetParent(platformTransform);
             _platformTransform = platformTransform;
             
             var platform = platformTransform.GetComponent<Platform>();
             ParentPlatform = platform;
-            ForceController.ApplyForce(-ParentPlatform.Velocity, ForceMode.VelocityChange);
+            ForceController.AddVelocityComponent(VelocityType.Movement, -platform.Velocity);
         }
 
         protected void UnPlatform()
@@ -128,9 +129,9 @@ namespace Systems.Movement
             if (!IsPlatformed) return;
             
             IsPlatformed = false;
-            transform.SetParent(null);
+            _platformTransform = null;
             
-            ForceController.ApplyForce(ParentPlatform.Velocity, ForceMode.VelocityChange);
+            ForceController.TransitionVelocityComponent(VelocityType.Platform, VelocityType.Movement, false);
             ParentPlatform = null;
         }
 
@@ -165,12 +166,12 @@ namespace Systems.Movement
         protected virtual void OnMove(Vector3 input, MovementControllerDatum datum)
         {
             var trueInput = ForceController.GetRotation() * input;
-            ForceController.ApplyForce(HandleMovement(trueInput, datum), ForceMode.VelocityChange);
+            ForceController.AddVelocityComponent(VelocityType.Movement, HandleMovement(trueInput, datum));
         }
 
         private Vector3 HandleMovement(Vector3 input, MovementControllerDatum datum)
         {
-            var currentVelocity =  ForceController.GetVelocity();
+            var currentVelocity =  ForceController.GetVelocityComponent(VelocityType.Movement);
             var maxSpeed = datum.MaxSpeed;
             if (!IsGrounded) maxSpeed *= datum.AirborneMaxSpeedMultiplier;
             

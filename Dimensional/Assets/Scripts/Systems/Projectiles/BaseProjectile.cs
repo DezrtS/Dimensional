@@ -1,4 +1,5 @@
 using System;
+using Debugging.New_Movement_System;
 using Interfaces;
 using Managers;
 using Scriptables.Projectiles;
@@ -124,7 +125,7 @@ namespace Systems.Projectiles
         {
             HandleFiring(fireContext);
             ForceController.Teleport(fireContext.FirePosition);
-            ForceController.ApplyForce(fireContext.GetDirection() * fireContext.FireSpeed, ForceMode.Impulse);
+            ForceController.SetVelocity(fireContext.GetDirection() * fireContext.FireSpeed);
         }
 
         private void HandleFiring(FireContext fireContext)

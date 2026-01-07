@@ -1,7 +1,9 @@
 using System;
+using Debugging.New_Movement_System;
 using FMOD.Studio;
 using FMODUnity;
 using Managers;
+using Systems.Forces;
 using Systems.Movement;
 using UnityEngine;
 
@@ -15,13 +17,13 @@ namespace Systems.Visual_Effects
 
         [SerializeField] private EventReference walkSound;
 
-        private ForceController _forceController;
+        private ComplexForceController _forceController;
         private float _timeAtLastPlay;
         private EventInstance _walkSoundInstance;
 
         private void Awake()
         {
-            _forceController = GetComponent<ForceController>();
+            _forceController = GetComponent<ComplexForceController>();
         }
 
         private void Start()
@@ -32,7 +34,7 @@ namespace Systems.Visual_Effects
 
         private bool CanEmit(float time)
         {
-            if (_forceController.GetVelocity().sqrMagnitude < minSpeed) return false;
+            if (_forceController.GetVelocityComponent(VelocityType.Movement).sqrMagnitude < minSpeed) return false;
             return time - _timeAtLastPlay >= minDelay; 
         }
 

@@ -1,3 +1,4 @@
+using Debugging.New_Movement_System;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
 
@@ -31,7 +32,7 @@ namespace Systems.Actions.Movement
 
             if (!_reachedFallThreshold)
             {
-                var velocity = MovementController.ForceController.GetVelocity();
+                var velocity = MovementController.ForceController.GetVelocityComponent(VelocityType.Movement);
                 _reachedFallThreshold = velocity.y <= _glideMovementActionDatum.GlideFallSpeedThreshold;
                 return;
             }

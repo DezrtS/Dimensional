@@ -1,10 +1,11 @@
 using System.Collections;
 using Managers;
+using Systems.Forces;
 using UnityEngine;
 
 namespace Systems.Movement
 {
-    public class PlayerForceController : RigidbodyForceController
+    public class PlayerForceController : ComplexRigidbodyForceController
     {
         protected override void OnTeleport(Vector3 position)
         {

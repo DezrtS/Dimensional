@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 3208761676214832268}
   - component: {fileID: 3796838202504530969}
   - component: {fileID: 1946285826045194021}
-  - component: {fileID: 2369430251214271171}
+  - component: {fileID: -4674448736539880640}
   - component: {fileID: 8428639122452195101}
   - component: {fileID: 3365733255829497199}
   - component: {fileID: 3454105606036979440}
@@ -213,7 +213,7 @@ MonoBehaviour:
   platformCheckLayerMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &2369430251214271171
+--- !u!114 &-4674448736539880640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 241525979084931229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d55db97137e013b4da0f6c39d19fff21, type: 3}
+  m_Script: {fileID: 11500000, guid: ce315941ce92410488e0c59e8820092a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isKinematic: 0
@@ -230,6 +230,7 @@ MonoBehaviour:
   isDisabled: 0
   maxFallSpeed: -25
   overSpeedDeceleration: 50
+  gravityScale: 19.62
 --- !u!54 &8428639122452195101
 Rigidbody:
   m_ObjectHideFlags: 0

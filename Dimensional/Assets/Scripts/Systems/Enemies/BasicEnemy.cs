@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Debugging.New_Movement_System;
 using Interfaces;
 using Scriptables.Entities;
 using Systems.Entities.Behaviours;
@@ -48,7 +49,7 @@ namespace Systems.Enemies
             _movementController.Move();
             
             if (State == State.Stun) return;
-            var velocity = _movementController.ForceController.GetVelocity();
+            var velocity = _movementController.ForceController.GetVelocityComponent(VelocityType.Movement);
             velocity.y = 0;
             if (velocity.magnitude > 0.5f) root.forward = velocity;
 

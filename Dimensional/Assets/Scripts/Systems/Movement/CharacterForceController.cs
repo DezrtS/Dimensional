@@ -37,33 +37,19 @@ namespace Systems.Movement
             if (!IsKinematic) SetVelocity(Vector3.zero);
         }
 
+        public override void SetVelocity(Vector3 velocity)
+        {
+            Velocity = velocity;
+        }
+
         public override Vector3 GetVelocity()
         {
             return Velocity;
         }
 
-        protected override void OnSetVelocity(Vector3 velocity)
+        public override void ApplyForce(Vector3 force, ForceMode forceMode)
         {
-            Velocity = velocity;
-        }
-
-        protected override void OnApplyForce(Vector3 force, ForceMode forceMode)
-        {
-            var fixedDeltaTime = Time.fixedDeltaTime;
-            var deltaV = forceMode switch
-            {
-                ForceMode.Force =>
-                    force * fixedDeltaTime / mass,
-                ForceMode.Acceleration =>
-                    force * fixedDeltaTime,
-                ForceMode.Impulse =>
-                    force / mass,
-                ForceMode.VelocityChange =>
-                    force,
-                _ => throw new System.ArgumentException("Unsupported force mode")
-            };
-
-            Velocity += deltaV;
+            throw new System.NotImplementedException();
         }
 
         protected override void OnApplyTorque(Vector3 torque, ForceMode forceMode)

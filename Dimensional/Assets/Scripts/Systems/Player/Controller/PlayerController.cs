@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Debugging.New_Movement_System;
 using Interfaces;
 using Managers;
 using Scriptables.Actions.Movement;
@@ -315,6 +316,7 @@ namespace Systems.Player
             SetDizzyEyes(true);
             PlayerMovementController.CancelAllActions();
             PlayerMovementController.IsDisabled = true;
+            //PlayerMovementController.ForceController.ClearVelocityComponent(VelocityType.All);
             DebugDisable = true;
         }
         

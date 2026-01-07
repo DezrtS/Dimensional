@@ -1,3 +1,4 @@
+using Debugging.New_Movement_System;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace Systems.Actions.Movement
             base.OnFixedUpdate(fixedDeltaTime);
 
             if (!IsTriggering) return;
-            var velocity = MovementController.ForceController.GetVelocity();
+            var velocity = MovementController.ForceController.GetVelocityComponent(VelocityType.Movement);
             velocity.y = 0;
             var magnitude = velocity.magnitude;
             var ratio = Mathf.Clamp01((magnitude - _flyMovementActionDatum.MinVelocityMagnitude) / (_flyMovementActionDatum.MaxVelocityMagnitude - _flyMovementActionDatum.MinVelocityMagnitude));

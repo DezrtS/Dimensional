@@ -5427,6 +5427,7 @@ MonoBehaviour:
   isDisabled: 0
   maxFallSpeed: -25
   overSpeedDeceleration: 50
+  gravityScale: 19.62
 --- !u!54 &2073613607116406498
 Rigidbody:
   m_ObjectHideFlags: 0

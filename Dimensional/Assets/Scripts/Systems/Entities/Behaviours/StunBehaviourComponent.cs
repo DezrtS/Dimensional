@@ -1,5 +1,7 @@
 using System;
+using Debugging.New_Movement_System;
 using Scriptables.Entities;
+using Systems.Forces;
 using Systems.Movement;
 using UnityEngine;
 
@@ -20,14 +22,14 @@ namespace Systems.Entities.Behaviours
         private float _timer;
         
         private MovementController _movementController;
-        private ForceController _forceController;
+        private ComplexForceController _forceController;
         private Quaternion _rotation;
         private Animator _animator;
 
         private void Awake()
         {
             _movementController = GetComponent<MovementController>();
-            _forceController = GetComponent<ForceController>();
+            _forceController = GetComponent<ComplexForceController>();
             _animator = GetComponent<Animator>();
         }
 
@@ -38,7 +40,7 @@ namespace Systems.Entities.Behaviours
             _isRecovering = false;
             _timer = 0;
             _rotation = Quaternion.LookRotation(direction);
-            _forceController.SetVelocity(new Vector3(0, stunBehaviourDatum.YVelocity, 0));
+            _forceController.SetVelocityComponent(VelocityType.Movement, new Vector3(0, stunBehaviourDatum.YVelocity, 0));
             _movementController.Grounded += MovementControllerOnGrounded;
             Stunned?.Invoke();
             if (_animator) _animator.SetTrigger(StunHash);
@@ -59,10 +61,10 @@ namespace Systems.Entities.Behaviours
             if (_isStunned)
             {
                 _timer += Time.fixedDeltaTime;
-                var currentVelocity = _forceController.GetVelocity();
+                var currentVelocity = _forceController.GetVelocityComponent(VelocityType.Movement);
                 var velocity = _rotation * new Vector3(0, 0, stunBehaviourDatum.ZCurve.Evaluate(_timer / stunBehaviourDatum.ZDuration) * stunBehaviourDatum.ZVelocity);
                 velocity.y = currentVelocity.y;
-                _forceController.SetVelocity(velocity);   
+                _forceController.SetVelocityComponent(VelocityType.Movement, velocity);   
             }
             else if (_isRecovering)
             {
