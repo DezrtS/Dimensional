@@ -1,5 +1,6 @@
 using System;
 using FMODUnity;
+using Managers;
 using Scriptables.Actions.Modifiers;
 using Scriptables.Visual_Effects;
 using Systems.Actions;
@@ -23,37 +24,31 @@ namespace Scriptables.Actions
     }
 
     [Serializable]
-    public class ActionScreenShakeEvent
+    public struct ActionScreenShakeEvent
     {
+        [SerializeField] private bool hasScreenShake;
         [SerializeField] private ActionEventType activationEventType;
-        [SerializeField] private float duration;
-        [SerializeField] private float amplitude;
-        [SerializeField] private AnimationCurve amplitudeCurve;
-        [SerializeField] private float frequency;
-        [SerializeField] private AnimationCurve frequencyCurve;
-        
+        [SerializeField] private ScreenShakeEventData screenShakeEventData;
+
+        public bool HasScreenShake => hasScreenShake;
         public ActionEventType ActivationEventType => activationEventType;
-        public float Duration => duration;
-        public float Amplitude => amplitude;
-        public AnimationCurve AmplitudeCurve => amplitudeCurve;
-        public float Frequency => frequency;
-        public AnimationCurve FrequencyCurve => frequencyCurve;
+        public ScreenShakeEventData ScreenShakeEventData => screenShakeEventData;
     }
     
     [CreateAssetMenu(fileName = "ActionDatum", menuName = "Scriptable Objects/Actions/EmptyActionDatum")]
     public class ActionDatum : ScriptableObject
     {
         [SerializeField] private float activationTime;
+        [SerializeField] private ActionDatum[] subActionData;
         [SerializeField] private ActionAudioEvent[] actionAudioEvents;
         [SerializeField] private ActionContextModifierDatum[] actionContextModifierData;
-        [SerializeField] private bool hasScreenShake;
         [SerializeField] private ActionScreenShakeEvent actionScreenShakeEvent;
         [SerializeField] private ActionVisualEffectDatum[] actionVisualEffectData;
         
         public float ActivationTime => activationTime;
+        public ActionDatum[] SubActionData => subActionData;
         public ActionAudioEvent[] ActionAudioEvents => actionAudioEvents;
         public ActionContextModifierDatum[] ActionContextModifierData => actionContextModifierData;
-        public bool HasScreenShake => hasScreenShake;
         public ActionScreenShakeEvent ActionScreenShakeEvent => actionScreenShakeEvent;
         public ActionVisualEffectDatum[] ActionVisualEffectData => actionVisualEffectData;
 

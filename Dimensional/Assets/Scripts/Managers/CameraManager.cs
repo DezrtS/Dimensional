@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,58 @@ using Utilities;
 
 namespace Managers
 {
+    [Serializable]
+    public class ScreenShakeEvent
+    {
+        private ScreenShakeEventData _screenShakeEventData;
+        private readonly float _startTime;
+        
+        public ScreenShakeEvent(ScreenShakeEventData screenShakeEventData)
+        {
+            _screenShakeEventData = screenShakeEventData;
+            _startTime = Time.time;
+        }
+        
+        public bool IsFinished()
+        {
+            return _screenShakeEventData.HasDuration && _screenShakeEventData.Duration < Time.time - _startTime;
+        }
+
+        private float GetElapsedTimeRatio()
+        {
+            return (Time.time - _startTime) / _screenShakeEventData.Duration;
+        }
+        
+        public float GetAmplitude()
+        {
+            return _screenShakeEventData.Amplitude * _screenShakeEventData.AmplitudeCurve.Evaluate(GetElapsedTimeRatio());
+        }
+
+        public float GetFrequency()
+        {
+            return _screenShakeEventData.Frequency * _screenShakeEventData.FrequencyCurve.Evaluate(GetElapsedTimeRatio());
+        }
+    }
+    
+    [Serializable]
+    public struct ScreenShakeEventData
+    {
+        [SerializeField] private bool hasDuration;
+        [SerializeField] private float duration;
+        
+        [SerializeField] private float amplitude;
+        [SerializeField] private AnimationCurve amplitudeCurve;
+        [SerializeField] private float frequency;
+        [SerializeField] private AnimationCurve frequencyCurve;
+        
+        public bool HasDuration => hasDuration;
+        public float Duration => duration;
+        public float Amplitude => amplitude;
+        public AnimationCurve AmplitudeCurve => amplitudeCurve;
+        public float Frequency => frequency;
+        public AnimationCurve FrequencyCurve => frequencyCurve;
+    }
+    
     public class CameraManager : Singleton<CameraManager>
     {
         public delegate void CameraActiveEventHandler(Camera camera, bool active);
@@ -25,6 +78,8 @@ namespace Managers
         [Space]
         [SerializeField] private float defaultFOV;
         [SerializeField] private float fovInterpolationSpeed;
+        [Space] 
+        [SerializeField] private float maxGamepadMotorAmplitude;
 
         private CinemachineBrain _cinemachineBrain;
         private CinemachineCamera _cinemachineCamera;
@@ -36,13 +91,7 @@ namespace Managers
         private float _currentFOV;
         private float _targetFOV;
         
-        private float _shakeTimer;
-        
-        private float _shakeDuration;
-        private float _shakeAmplitude;
-        private AnimationCurve _shakeAmplitudeCurve;
-        private float _shakeFrequency;
-        private AnimationCurve _shakeFrequencyCurve;
+        private List<ScreenShakeEvent> _screenShakeEvents;
         
         public Camera Camera { get; private set; }
         public CinemachineCamera TargetCinemachineCamera { get; private set; }
@@ -58,7 +107,8 @@ namespace Managers
             _thirdPersonFollow.Damping = thirdPersonDamping;
             _cinemachineBasicMultiChannelPerlin = _cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
             SetFOV(defaultFOV);
-            StopScreenShake();
+            _screenShakeEvents = new List<ScreenShakeEvent>();
+            StopAllScreenShake();
             base.InitializeSingleton();
         }
 
@@ -80,14 +130,8 @@ namespace Managers
             var fixedDeltaTime = Time.fixedDeltaTime;
             _currentFOV = Mathf.Lerp(_currentFOV, _targetFOV, fixedDeltaTime * fovInterpolationSpeed);
             _cinemachineCamera.Lens.FieldOfView = _currentFOV;
-            
-            if (_shakeTimer <= 0) return;
-            var ratioTime = 1 - _shakeTimer / _shakeDuration;
-            _cinemachineBasicMultiChannelPerlin.AmplitudeGain = _shakeAmplitude * _shakeAmplitudeCurve.Evaluate(ratioTime);
-            _cinemachineBasicMultiChannelPerlin.FrequencyGain = _shakeFrequency * _shakeFrequencyCurve.Evaluate(ratioTime);
-            _shakeTimer -= fixedDeltaTime;
-            if (_shakeTimer > 0) return;
-            StopScreenShake();
+
+            HandleScreenShake();
         }
 
         public void SetIsActive(bool isActive)
@@ -125,20 +169,61 @@ namespace Managers
         public void EnableDamping() => _thirdPersonFollow.Damping = thirdPersonDamping;
         public void DisableDamping() => _thirdPersonFollow.Damping = Vector3.zero;
 
-        public void TriggerScreenShake(float duration, float amplitude, AnimationCurve amplitudeCurve, float frequency, AnimationCurve frequencyCurve)
+        private void HandleScreenShake()
         {
-            _shakeTimer = duration;
-            _shakeDuration = duration;
-            _shakeAmplitude = amplitude;
-            _shakeAmplitudeCurve = amplitudeCurve;
-            _shakeFrequency = frequency;
-            _shakeFrequencyCurve = frequencyCurve;
-            if (Gamepad.current != null) Gamepad.current.SetMotorSpeeds(0.5f, 0.5f);
+            if (_screenShakeEvents.Count <= 0) return;
+            ScreenShakeEvent currentScreenShakeEvent = null;
+            for (var i = 0; i < _screenShakeEvents.Count; i++)
+            {
+                if (_screenShakeEvents[i].IsFinished())
+                {
+                    _screenShakeEvents.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+
+                if (currentScreenShakeEvent == null)
+                {
+                    currentScreenShakeEvent = _screenShakeEvents[i];
+                    continue;
+                }
+                
+                if (_screenShakeEvents[i].GetAmplitude() > currentScreenShakeEvent.GetAmplitude()) currentScreenShakeEvent = _screenShakeEvents[i];
+            }
+
+            if (_screenShakeEvents.Count > 0 && currentScreenShakeEvent != null)
+            {
+                var amplitude = currentScreenShakeEvent.GetAmplitude();
+                _cinemachineBasicMultiChannelPerlin.AmplitudeGain = amplitude;
+                _cinemachineBasicMultiChannelPerlin.FrequencyGain = currentScreenShakeEvent.GetFrequency();
+                if (Gamepad.current != null)
+                {
+                    Gamepad.current.SetMotorSpeeds(amplitude / maxGamepadMotorAmplitude, amplitude / maxGamepadMotorAmplitude);
+                }
+            }
+            else
+            {
+                StopAllScreenShake();
+            }
         }
 
-        public void StopScreenShake()
+        public ScreenShakeEvent TriggerScreenShake(ScreenShakeEventData screenShakeEventData)
         {
-            _shakeTimer = 0;
+            var screenShakeEvent = new ScreenShakeEvent(screenShakeEventData);
+            _screenShakeEvents.Add(screenShakeEvent);
+            HandleScreenShake();
+            return screenShakeEvent;
+        }
+
+        public void RemoveScreenShakeEvent(ScreenShakeEvent screenShakeEvent)
+        {
+            _screenShakeEvents.Remove(screenShakeEvent);
+            if (_screenShakeEvents.Count <= 0) StopAllScreenShake();
+        }
+
+        public void StopAllScreenShake()
+        {
+            _screenShakeEvents.Clear();
             _cinemachineBasicMultiChannelPerlin.AmplitudeGain = 0;
             _cinemachineBasicMultiChannelPerlin.FrequencyGain = 0;
             if (Gamepad.current != null) Gamepad.current.ResetHaptics();
@@ -218,6 +303,7 @@ namespace Managers
         {
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
             GameManager.WorldDimensionsChanged -= GameManagerOnWorldDimensionsChanged;
+            StopAllScreenShake();
         }
     }
 }

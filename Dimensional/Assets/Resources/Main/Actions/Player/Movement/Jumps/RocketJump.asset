@@ -1,0 +1,179 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58241db902f8630458b45290b36b480a, type: 3}
+  m_Name: RocketJump
+  m_EditorClassIdentifier: 
+  activationTime: 0
+  subActionData: []
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 553408714
+        Data2: 1319003022
+        Data3: 1567665072
+        Data4: -2034024229
+      Path: event:/RocketJump
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 1
+  actionContextModifierData: []
+  actionScreenShakeEvent:
+    hasScreenShake: 1
+    activationEventType: 2
+    screenShakeEventData:
+      hasDuration: 1
+      duration: 0.5
+      amplitude: 3
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -1
+          outSlope: -1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -1
+          outSlope: -1
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 1
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  actionVisualEffectData:
+  - {fileID: 11400000, guid: ee0e6789872bbf044a6217fed87355f9, type: 2}
+  movementActionType: 1
+  performEventOnGrounded: 0
+  groundedActionEventType: 0
+  hasMovementDatum: 0
+  movementControllerDatum: {fileID: 0}
+  stopMovementOnDisable: 0
+  disableDurationLimit: 0
+  movementVector: {x: 0, y: 4, z: 20}
+  hasRight: 1
+  isXDistance: 0
+  isRightBlend: 0
+  rightDuration: 0.1
+  rightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hasUp: 1
+  isYDistance: 1
+  isUpBlend: 0
+  upDuration: 0.5
+  upCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.71858
+      outSlope: 1.71858
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10352941
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hasForward: 1
+  isZDistance: 0
+  isForwardBlend: 0
+  forwardDuration: 0.25
+  forwardCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  cutJumpMultiplier: 0.75

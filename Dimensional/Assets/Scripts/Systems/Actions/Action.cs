@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FMOD.Studio;
 using Interfaces;
 using Managers;
 using Scriptables.Actions;
@@ -62,8 +61,11 @@ namespace Systems.Actions
         private IActivateActions _actionActivator;
         private float _activationTimer;
 
+        private List<Action> _subActions;
         private List<ActionAudioEffect> _actionAudioEffects;
         private List<ActionVisualEffect> _actionVisualEffects;
+        
+        private ScreenShakeEvent _screenShakeEvent;
         
         public ActionDatum ActionDatum { get; private set; }
         public bool IsActive { get; private set; }
@@ -74,6 +76,12 @@ namespace Systems.Actions
         {
             ActionDatum = actionDatum;
             IsActive = false;
+
+            _subActions = new List<Action>();
+            foreach (var subActionDatum in ActionDatum.SubActionData)
+            {
+                _subActions.Add(subActionDatum.AttachAction(gameObject));
+            }
             
             _actionAudioEffects = new List<ActionAudioEffect>();
             foreach (var actionAudioEvent in ActionDatum.ActionAudioEvents)
@@ -125,6 +133,7 @@ namespace Systems.Actions
             _actionActivator = context.ActionActivator;
             _activationTimer = ActionDatum.ActivationTime;
             UpdateActionContext(context);
+            HandleSubActions(ActionEventType.Activated, context);
             PlayActionAudio(ActionEventType.Activated);
             ShakeScreen(ActionEventType.Activated);
             Activated?.Invoke(this, context);
@@ -148,6 +157,7 @@ namespace Systems.Actions
             IsTriggering = true;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            HandleSubActions(ActionEventType.Triggered, context);
             PlayActionAudio(ActionEventType.Triggered);
             ShakeScreen(ActionEventType.Triggered);
             Triggered?.Invoke(this, context);
@@ -176,6 +186,7 @@ namespace Systems.Actions
             IsTriggering = false;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            HandleSubActions(ActionEventType.Deactivated, context);
             PlayActionAudio(ActionEventType.Deactivated);
             ShakeScreen(ActionEventType.Deactivated);
             StopActionAudio();
@@ -199,6 +210,7 @@ namespace Systems.Actions
             IsTriggering = false;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            HandleSubActions(ActionEventType.Interrupted, context);
             PlayActionAudio(ActionEventType.Interrupted);
             ShakeScreen(ActionEventType.Interrupted);
             StopActionAudio();
@@ -222,6 +234,7 @@ namespace Systems.Actions
             IsTriggering = false;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
+            HandleSubActions(ActionEventType.Cancelled, context);
             PlayActionAudio(ActionEventType.Cancelled);
             ShakeScreen(ActionEventType.Cancelled);
             StopActionAudio();
@@ -238,6 +251,32 @@ namespace Systems.Actions
             }
             
             PreviousContext = context;
+        }
+
+        private void HandleSubActions(ActionEventType actionEventType, ActionContext context)
+        {
+            switch (actionEventType)
+            {
+                case ActionEventType.None:
+                    break;
+                case ActionEventType.Activated:
+                    foreach (var subAction in _subActions) subAction.Activate(context);
+                    break;
+                case ActionEventType.Triggered:
+                    foreach (var subAction in _subActions) subAction.Trigger(context);
+                    break;
+                case ActionEventType.Deactivated:
+                    foreach (var subAction in _subActions) subAction.Deactivate(context);
+                    break;
+                case ActionEventType.Interrupted:
+                    foreach (var subAction in _subActions) subAction.Interrupt(context);
+                    break;
+                case ActionEventType.Cancelled:
+                    foreach (var subAction in _subActions) subAction.Cancel(context);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(actionEventType), actionEventType, null);
+            }
         }
 
         private void PlayActionAudio(ActionEventType actionEventType)
@@ -258,10 +297,20 @@ namespace Systems.Actions
 
         protected void ShakeScreen(ActionEventType actionEventType = ActionEventType.None)
         {
-            if (!ActionDatum.HasScreenShake) return;
+            if (!ActionDatum.ActionScreenShakeEvent.HasScreenShake) return;
             var actionScreenShakeEvent = ActionDatum.ActionScreenShakeEvent;
+            
+            if (_screenShakeEvent != null && !actionScreenShakeEvent.ScreenShakeEventData.HasDuration &&
+                actionEventType is ActionEventType.Deactivated or ActionEventType.Interrupted
+                    or ActionEventType.Cancelled)
+            {
+                CameraManager.Instance.RemoveScreenShakeEvent(_screenShakeEvent);
+                _screenShakeEvent = null;
+                return;
+            }
+            
             if (actionScreenShakeEvent.ActivationEventType != actionEventType) return;
-            CameraManager.Instance.TriggerScreenShake(actionScreenShakeEvent.Duration, actionScreenShakeEvent.Amplitude, actionScreenShakeEvent.AmplitudeCurve, actionScreenShakeEvent.Frequency, actionScreenShakeEvent.FrequencyCurve);
+            _screenShakeEvent = CameraManager.Instance.TriggerScreenShake(actionScreenShakeEvent.ScreenShakeEventData);
         }
 
         private bool CheckEntityChanged(ActionContext context)

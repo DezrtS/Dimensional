@@ -33,6 +33,18 @@ namespace Managers
         Two,
         Three,
     }
+
+    public enum RegionType
+    {
+        None,
+        PeacefulMeadows,
+        ToxicJungle,
+        CrystalCaves,
+        FrozenVoid,
+        FloatingCity,
+        ShiftingPlanes,
+        NegativeZone,
+    }
     
     public enum CheckType
     {

@@ -361,3 +361,4 @@ MonoBehaviour:
   yOffset2D: 2
   defaultFOV: 0
   fovInterpolationSpeed: 5
+  maxGamepadMotorAmplitude: 3

@@ -1,4 +1,3 @@
-using Debugging.New_Movement_System;
 using UnityEngine;
 
 namespace Systems.Forces
@@ -33,14 +32,14 @@ namespace Systems.Forces
 
         protected override void ApplyVelocity(Vector3 velocity)
         {
-            var currentVelocity = GetVelocity();
+            var currentVelocity = _rig.linearVelocity;
             var velocityDelta =  velocity - currentVelocity;
             _rig.AddForce(velocityDelta, ForceMode.VelocityChange);
         }
         
         public override Vector3 GetVelocity()
         {
-            return _rig.linearVelocity;
+            return GetVelocityComponent(VelocityType.Movement);
         }
 
         protected override void OnApplyTorque(Vector3 torque, ForceMode forceMode)

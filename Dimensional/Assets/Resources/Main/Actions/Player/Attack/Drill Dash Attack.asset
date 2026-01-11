@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e37986e0f24373f498600754ed9906be, type: 3}
+  m_Name: Drill Dash Attack
+  m_EditorClassIdentifier: 
+  activationTime: 0
+  subActionData: []
+  actionAudioEvents: []
+  actionContextModifierData: []
+  actionScreenShakeEvent:
+    hasScreenShake: 1
+    activationEventType: 0
+    screenShakeEventData:
+      hasDuration: 1
+      duration: 0.25
+      amplitude: 3
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 136
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 1
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  actionVisualEffectData: []
+  attackEventType: 1
+  endActionOnHit: 1
+  attackDamage: 1
+  attackRadius: 1
+  attackOffset: {x: 0, y: 0, z: 0.75}
+  attackLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  doScreenShakeOnHit: 1
+  hasHitStop: 1
+  hitStopDuration: 0.1
+  hasKnockback: 1
+  forceEventDatum: {fileID: 11400000, guid: da793e7e170d47f4690a8c326a09df19, type: 2}
+  knockbackType: 1
