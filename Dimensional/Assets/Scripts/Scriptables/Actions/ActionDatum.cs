@@ -39,6 +39,7 @@ namespace Scriptables.Actions
     public class ActionDatum : ScriptableObject
     {
         [SerializeField] private float activationTime;
+        [SerializeField] private bool deactivateParentActionsOnDeactivate;
         [SerializeField] private ActionDatum[] subActionData;
         [SerializeField] private ActionAudioEvent[] actionAudioEvents;
         [SerializeField] private ActionContextModifierDatum[] actionContextModifierData;
@@ -46,6 +47,7 @@ namespace Scriptables.Actions
         [SerializeField] private ActionVisualEffectDatum[] actionVisualEffectData;
         
         public float ActivationTime => activationTime;
+        public bool DeactivateParentActionsOnDeactivate => deactivateParentActionsOnDeactivate;
         public ActionDatum[] SubActionData => subActionData;
         public ActionAudioEvent[] ActionAudioEvents => actionAudioEvents;
         public ActionContextModifierDatum[] ActionContextModifierData => actionContextModifierData;

@@ -13,7 +13,7 @@ namespace Systems.Actions
     {
         private AttackActionDatum _attackActionDatum;
         private List<Collider> _colliders;
-        private ForceController _forceController;
+        private ComplexForceController _forceController;
 
         private bool _isAttacking;    
         
@@ -49,18 +49,21 @@ namespace Systems.Actions
         {
             base.OnDeactivation(context);
             if (_attackActionDatum.AttackEventType == ActionEventType.Deactivated) Attack();
+            _isAttacking = false;
         }
 
         protected override void OnInterruption(ActionContext context)
         {
             base.OnInterruption(context);
             if (_attackActionDatum.AttackEventType == ActionEventType.Interrupted) Attack();
+            _isAttacking = false;
         }
 
         protected override void OnCancellation(ActionContext context)
         {
             base.OnCancellation(context);
             if (_attackActionDatum.AttackEventType == ActionEventType.Cancelled) Attack();
+            _isAttacking = false;
         }
         
         private void Attack()
@@ -77,25 +80,26 @@ namespace Systems.Actions
                 var hitCollider = results[i];
                 if (_colliders.Contains(hitCollider)) continue;
                 _colliders.Add(hitCollider);
+                var hitObject = hitCollider.attachedRigidbody ? hitCollider.attachedRigidbody.gameObject : hitCollider.gameObject;
                 hasHit = true;
                 
-                if (hitCollider.TryGetComponent(out Health health))
+                if (hitObject.TryGetComponent(out Health health))
                 {
                     health.Damage(_attackActionDatum.AttackDamage);
                 }
                 
                 if (!_attackActionDatum.HasKnockback) continue;
-                if (!hitCollider.TryGetComponent(out StunBehaviourComponent stunBehaviour)) continue;
+                if (!hitObject.TryGetComponent(out StunBehaviourComponent stunBehaviour)) continue;
 
                 switch (_attackActionDatum.KnockbackType)
                 {
                     case KnockbackType.Directional:
-                        var velocity = _forceController.GetVelocity();
+                        var velocity = _forceController.GetVelocityComponent(VelocityType.Movement);
                         velocity.y = 0;
                         stunBehaviour.Stun(velocity.normalized);
                         break;
                     case KnockbackType.Radial:
-                        var direction = (hitCollider.transform.position - transform.position);
+                        var direction = (hitObject.transform.position - transform.position);
                         direction.y = 0;
                         stunBehaviour.Stun(direction.normalized);
                         break;
@@ -108,12 +112,12 @@ namespace Systems.Actions
             if (size <= 0 || !hasHit) return;
             if (_attackActionDatum.DoScreenShakeOnHit) ShakeScreen();
             if (_attackActionDatum.HasHitStop) GameManager.Instance.TriggerHitStop(_attackActionDatum.HitStopDuration);
-            if (_attackActionDatum.EndActionOnHit) Cancel(PreviousContext);
+            if (_attackActionDatum.EndActionOnHit && _isAttacking) Deactivate(PreviousContext);
         }
         
         protected override void OnEntityChanged(ActionContext context)
         {
-            _forceController = context.SourceGameObject.GetComponent<ForceController>();
+            _forceController = context.SourceGameObject.GetComponent<ComplexForceController>();
         }
     }
 }

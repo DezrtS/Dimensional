@@ -44,7 +44,6 @@ namespace Systems.Actions.Movement
             {
                 _isCharging = true;
                 _chargeTimer = 0;
-                //MovementController.IsDisabled = true;
             }
             else
             {
@@ -77,12 +76,6 @@ namespace Systems.Actions.Movement
             {
                 OnTrigger(context);
             }
-        }
-
-        protected override void OnCancellation(ActionContext context)
-        {
-            base.OnCancellation(context);
-            //MovementController.IsDisabled = false;
         }
 
         private void SetJumpData(ActionContext context)

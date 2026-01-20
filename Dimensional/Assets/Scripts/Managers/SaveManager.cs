@@ -99,7 +99,7 @@ namespace Managers
         public void RequestSave(List<DataType> dataTypes)
         {
             //RequestLoad(dataTypes, false);
-            _saveData = new SaveData();
+            _saveData = new SaveData() { collectableData = _saveData.collectableData };
             Saving?.Invoke(_saveData, dataTypes);
             foreach (var dataType in dataTypes)
             {

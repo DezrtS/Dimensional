@@ -34,6 +34,6 @@ namespace Systems.Projectiles.Behaviours
         protected virtual void ProjectileOnFired(BaseProjectile projectile) {}
         protected virtual void ProjectileOnExpired(BaseProjectile projectile) {}
         protected virtual void ProjectileOnDestroyed(BaseProjectile projectile) {}
-        protected virtual void ProjectileOnCollided(BaseProjectile projectile, Collider hitCollider) {}
+        protected virtual void ProjectileOnCollided(BaseProjectile projectile, GameObject hitObject) {}
     }
 }

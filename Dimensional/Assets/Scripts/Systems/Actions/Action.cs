@@ -28,6 +28,8 @@ namespace Systems.Actions
         public ScriptableObject SourceData;
 
         public Vector3 TargetDirection;
+        
+        public GameObject TargetGameObject;
         public Vector3 TargetPosition;
         public float ProjectileSpeed;
 
@@ -80,7 +82,15 @@ namespace Systems.Actions
             _subActions = new List<Action>();
             foreach (var subActionDatum in ActionDatum.SubActionData)
             {
-                _subActions.Add(subActionDatum.AttachAction(gameObject));
+                if (subActionDatum == actionDatum)
+                {
+                    Debug.LogWarning("Infinite Loop Detected");
+                    continue;
+                }
+
+                var action = subActionDatum.AttachAction(gameObject);
+                if (subActionDatum.DeactivateParentActionsOnDeactivate) action.Deactivated += SubActionOnDeactivated;
+                _subActions.Add(action);
             }
             
             _actionAudioEffects = new List<ActionAudioEffect>();
@@ -96,6 +106,12 @@ namespace Systems.Actions
                 actionVisualEffect.SetAction(this);
                 _actionVisualEffects.Add(actionVisualEffect);
             }
+        }
+
+        private void SubActionOnDeactivated(Action action, ActionContext context)
+        {
+            if (!IsActive) return;
+            Deactivate(context);
         }
 
         private void FixedUpdate()
@@ -133,7 +149,7 @@ namespace Systems.Actions
             _actionActivator = context.ActionActivator;
             _activationTimer = ActionDatum.ActivationTime;
             UpdateActionContext(context);
-            HandleSubActions(ActionEventType.Activated, context);
+            //HandleSubActions(ActionEventType.Activated, context);
             PlayActionAudio(ActionEventType.Activated);
             ShakeScreen(ActionEventType.Activated);
             Activated?.Invoke(this, context);
@@ -157,7 +173,7 @@ namespace Systems.Actions
             IsTriggering = true;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
-            HandleSubActions(ActionEventType.Triggered, context);
+            HandleSubActions(ActionEventType.Activated, context);
             PlayActionAudio(ActionEventType.Triggered);
             ShakeScreen(ActionEventType.Triggered);
             Triggered?.Invoke(this, context);
@@ -210,7 +226,7 @@ namespace Systems.Actions
             IsTriggering = false;
             _actionActivator = context.ActionActivator;
             _activationTimer = 0;
-            HandleSubActions(ActionEventType.Interrupted, context);
+            //HandleSubActions(ActionEventType.Interrupted, context);
             PlayActionAudio(ActionEventType.Interrupted);
             ShakeScreen(ActionEventType.Interrupted);
             StopActionAudio();

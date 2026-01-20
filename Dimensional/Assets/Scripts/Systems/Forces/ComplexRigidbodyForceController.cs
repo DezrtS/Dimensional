@@ -39,7 +39,7 @@ namespace Systems.Forces
         
         public override Vector3 GetVelocity()
         {
-            return GetVelocityComponent(VelocityType.Movement);
+            return GetVelocityComponent(VelocityType.All);
         }
 
         protected override void OnApplyTorque(Vector3 torque, ForceMode forceMode)

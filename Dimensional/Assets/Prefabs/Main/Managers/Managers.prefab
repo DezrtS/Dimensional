@@ -311,6 +311,18 @@ PrefabInstance:
       propertyPath: controls
       value: 
       objectReference: {fileID: 8327140978166572767}
+    - target: {fileID: 2214459070231240439, guid: b6b40d92a484c3a4cbf49654bb727eaf, type: 3}
+      propertyPath: 'loadOnLoading.Array.data[0]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214459070231240439, guid: b6b40d92a484c3a4cbf49654bb727eaf, type: 3}
+      propertyPath: 'loadOnLoading.Array.data[1]'
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2214459070231240439, guid: b6b40d92a484c3a4cbf49654bb727eaf, type: 3}
+      propertyPath: 'loadOnLoading.Array.data[2]'
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4018929399202878136, guid: b6b40d92a484c3a4cbf49654bb727eaf, type: 3}
       propertyPath: m_Name
       value: GameManager

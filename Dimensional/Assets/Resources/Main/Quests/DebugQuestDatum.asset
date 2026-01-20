@@ -19,4 +19,4 @@ MonoBehaviour:
   questName: Debug Quest
   questDescription: This is a quest created for debugging purposes.
   questObjectives:
-  - {fileID: 11400000, guid: 1b438c12a08d4344b8bb6174d8125cae, type: 2}
+  - {fileID: 11400000, guid: 67110ca1f86b31f45a1a00f38f60ab2b, type: 2}

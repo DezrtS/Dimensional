@@ -1,8 +1,7 @@
 using System;
-using Scriptables.Projectiles;
 using Scriptables.Projectiles.Behaviours;
+using Systems.Entities.Behaviours;
 using Systems.Forces;
-using Systems.Movement;
 using UnityEngine;
 
 namespace Systems.Projectiles.Behaviours
@@ -24,21 +23,26 @@ namespace Systems.Projectiles.Behaviours
             _knockbackProjectileBehaviourDatum = (KnockbackProjectileBehaviourDatum)projectileBehaviourDatum;
         }
 
-        protected override void ProjectileOnCollided(BaseProjectile projectile, Collider hitCollider)
+        protected override void ProjectileOnCollided(BaseProjectile projectile, GameObject hitObject)
         {
-            if (!hitCollider.TryGetComponent(out ForceController forceController)) return;
+            if (!hitObject.TryGetComponent(out StunBehaviourComponent stunBehaviour)) return;
+
             switch (_knockbackProjectileBehaviourDatum.KnockbackType)
             {
                 case KnockbackType.Directional:
-                    forceController.ApplyForce(projectile.ForceController.GetVelocity().normalized * _knockbackProjectileBehaviourDatum.KnockbackPower, ForceMode.Impulse);       
+                    var velocity = projectile.ForceController.GetVelocity();
+                    velocity.y = 0;
+                    stunBehaviour.Stun(velocity.normalized);
                     break;
                 case KnockbackType.Radial:
-                    forceController.ApplyForce((hitCollider.transform.position - projectile.transform.position).normalized * _knockbackProjectileBehaviourDatum.KnockbackPower, ForceMode.Impulse);
+                    var direction = (hitObject.transform.position - transform.position);
+                    direction.y = 0;
+                    stunBehaviour.Stun(direction.normalized);
                     break;
                 case KnockbackType.None:
                 default:
                     break;
-            }
+            }            
         }
     }
 }

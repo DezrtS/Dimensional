@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37986e0f24373f498600754ed9906be, type: 3}
   m_Name: Drill Dash Attack
   m_EditorClassIdentifier: 
-  activationTime: 0
+  activationTime: 0.1
+  deactivateParentActionsOnDeactivate: 1
   subActionData: []
   actionAudioEvents: []
   actionContextModifierData: []
@@ -73,7 +74,7 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
   actionVisualEffectData: []
-  attackEventType: 1
+  attackEventType: 2
   endActionOnHit: 1
   attackDamage: 1
   attackRadius: 1

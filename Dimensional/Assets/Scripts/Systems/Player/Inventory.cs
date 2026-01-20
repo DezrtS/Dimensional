@@ -48,7 +48,7 @@ namespace Systems.Player
             var newCollectables = Mathf.Min(Collectables + amount, collectableCapacity);
             CollectablesChanged?.Invoke(Collectables, newCollectables);
             Collectables = newCollectables;
-            QuestEventBus.Fire(new CollectablesChangedEvent() { Collectables = Collectables });
+            EventManager.SendEvent(new CounterEvent { CounterId = "Collectables", CounterValue = Collectables });
         }
 
         public void AddKeys(int amount)

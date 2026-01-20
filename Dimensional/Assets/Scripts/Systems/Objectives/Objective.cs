@@ -8,6 +8,9 @@ namespace Systems.Objectives
     [Serializable]
     public abstract class Objective
     {
+        public delegate void ObjectiveEventHandler(Objective objective, bool isCompleted);
+        public event ObjectiveEventHandler CompletionStateChanged;
+        
         private ObjectiveDatum _objectiveDatum;
         
         public bool IsCompleted;
@@ -21,8 +24,9 @@ namespace Systems.Objectives
         
         public void SetIsCompleted(bool isCompleted)
         {
-            if (!IsCompleted && !_objectiveDatum.CanUndo) return;
+            if (isCompleted == IsCompleted || (!isCompleted && !_objectiveDatum.CanUndo)) return;
             IsCompleted = isCompleted;
+            CompletionStateChanged?.Invoke(this, isCompleted);
         }
 
         public virtual string GetSaveData()

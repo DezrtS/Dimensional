@@ -72,7 +72,7 @@ namespace Systems.Projectiles
     public class BaseProjectile : MonoBehaviour, IObjectPoolable<BaseProjectile>
     {
         public delegate void ProjectileEventHandler(BaseProjectile projectile);
-        public delegate void CollideEventHandler(BaseProjectile projectile, Collider hitCollider);
+        public delegate void CollideEventHandler(BaseProjectile projectile, GameObject hitObject);
         public event ProjectileEventHandler Fired;
         public event ProjectileEventHandler Expired;
         public event ProjectileEventHandler Destroyed;
@@ -191,20 +191,21 @@ namespace Systems.Projectiles
 
         private void Collide(Collider hitCollider)
         {
-            if (!GameManager.CheckLayerMask(ProjectileDatum.ProjectileLayerMask, hitCollider.gameObject)) return;
+            var hitObject = hitCollider.attachedRigidbody ? hitCollider.attachedRigidbody.gameObject : hitCollider.gameObject;
+            if (!GameManager.CheckLayerMask(ProjectileDatum.ProjectileLayerMask, hitObject)) return;
             if (hitCollider.isTrigger) return;
-            OnCollide(hitCollider);
+            OnCollide(hitObject);
         }
 
-        protected virtual void OnCollide(Collider hitCollider)
+        protected virtual void OnCollide(GameObject hitObject)
         {
-            HandleCollision(hitCollider);
+            HandleCollision(hitObject);
             if (_previousFireContext.HitResponseType == HitResponseType.Destroy) Destroy();
         }
 
-        protected void HandleCollision(Collider hitCollider)
+        protected void HandleCollision(GameObject hitObject)
         {
-            Collided?.Invoke(this, hitCollider);
+            Collided?.Invoke(this, hitObject);
         }
 
         public void ReturnToPool()

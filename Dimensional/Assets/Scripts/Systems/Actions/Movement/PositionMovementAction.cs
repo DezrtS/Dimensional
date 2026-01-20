@@ -103,6 +103,7 @@ namespace Systems.Actions.Movement
             IsMoving = false;
             _movementTimer = 0;
             MovementController.ForceController.UseGravity = true;
+            if (PositionMovementActionDatum.ResetMovementOnDisable) MovementController.ForceController.SetVelocityComponent(VelocityType.Movement, Vector3.zero);
         }
     }
 }

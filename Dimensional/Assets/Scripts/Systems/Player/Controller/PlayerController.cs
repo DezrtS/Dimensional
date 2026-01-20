@@ -360,7 +360,7 @@ namespace Systems.Player
         {
             if (DebugDisable) return;
             if (context.performed) PlayerMovementController.StartDashing();
-            else if (context.canceled) PlayerMovementController.StopDashing();
+            //else if (context.canceled) PlayerMovementController.StopDashing();
         }
 
         private void OnCrouch(InputAction.CallbackContext context)

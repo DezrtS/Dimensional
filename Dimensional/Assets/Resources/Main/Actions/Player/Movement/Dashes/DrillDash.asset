@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DrillDash
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
   subActionData:
   - {fileID: 11400000, guid: 5b60eac47f219554d9dacea940128646, type: 2}
   actionAudioEvents:
@@ -27,24 +28,26 @@ MonoBehaviour:
     createInstance: 0
     activationEventType: 1
   actionContextModifierData: []
-  hasScreenShake: 0
   actionScreenShakeEvent:
+    hasScreenShake: 0
     activationEventType: 0
-    duration: 0
-    amplitude: 0
-    amplitudeCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    frequency: 0
-    frequencyCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    screenShakeEventData:
+      hasDuration: 0
+      duration: 0
+      amplitude: 0
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 0
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 889a2c107792a6645908e82ba4fe8b61, type: 2}
   movementActionType: 5
@@ -52,7 +55,7 @@ MonoBehaviour:
   groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
-  stopMovementOnDisable: 0
+  stopMovementOnDisable: 1
   disableDurationLimit: 0
   movementVector: {x: 0, y: 0, z: 5}
   hasRight: 1

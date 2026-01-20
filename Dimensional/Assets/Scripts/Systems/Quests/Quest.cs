@@ -44,10 +44,14 @@ namespace Systems.Quests
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Preparing) return;
-            _objectives ??= _questDatum.QuestObjectives
-                .Select(datum => datum.CreateObjective())
-                .ToList();
+            if (newValue != GameState.Preparing || _objectives == null) return;
+            _objectives = new List<Objective>();
+            foreach (var questObjective in _questDatum.QuestObjectives)
+            {
+                var objective = questObjective.CreateObjective();
+                objective.CompletionStateChanged += ObjectiveOnCompletionStateChanged;
+                _objectives.Add(objective);
+            }
         }
 
         private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
@@ -67,14 +71,18 @@ namespace Systems.Quests
         {
             if (!dataTypes.Contains(DataType.Quest)) return;
             
+            _objectives = new List<Objective>();
             var savedQuest = saveData.questData.quests
                 .FirstOrDefault(q => q.Id == _questDatum.QuestKey);
             
             if (savedQuest == null)
             {
-                _objectives = _questDatum.QuestObjectives
-                    .Select(datum => datum.CreateObjective())
-                    .ToList();
+                foreach (var questObjective in _questDatum.QuestObjectives)
+                {
+                    var objective = questObjective.CreateObjective();
+                    objective.CompletionStateChanged += ObjectiveOnCompletionStateChanged;
+                    _objectives.Add(objective);
+                }
                 return;
             }
             
@@ -89,19 +97,32 @@ namespace Systems.Quests
                 savedLookup[id] = raw;
             }
             
-            _objectives = new List<Objective>();
-
-            foreach (var objectiveDatum in _questDatum.QuestObjectives)
+            foreach (var questObjective in _questDatum.QuestObjectives)
             {
-                _objectives.Add(savedLookup.TryGetValue(objectiveDatum.ObjectiveId, out var rawData)
-                    ? objectiveDatum.CreateObjective(rawData)
-                    : objectiveDatum.CreateObjective());
+                var objective = savedLookup.TryGetValue(questObjective.ObjectiveId, out var rawData)
+                    ? questObjective.CreateObjective(rawData)
+                    : questObjective.CreateObjective();
+                objective.CompletionStateChanged += ObjectiveOnCompletionStateChanged;
+                _objectives.Add(objective);
             }
+        }
+        
+        private void ObjectiveOnCompletionStateChanged(Objective objective, bool isCompleted)
+        {
+            UpdateCompletedState();
         }
 
         
         private void QuestEventBusOnEventFired(GameEvent gameEvent)
         {
+            if (gameEvent is StartQuestEvent startQuestEvent && startQuestEvent.QuestId == _questDatum.QuestKey)
+            {
+                if (_questState == QuestState.Completed && !startQuestEvent.ForceStart) return;
+                _questState = QuestState.Active;
+                return;
+            }
+            
+            if (_objectives == null) return;
             foreach (var objective in _objectives)
             {
                 objective.TryProgress(gameEvent);
@@ -110,8 +131,22 @@ namespace Systems.Quests
 
         private void UpdateCompletedState()
         {
-            if (_objectives.Any(objective => !objective.IsCompleted)) return;
-            _questState = QuestState.Completed;
+            switch (_questState)
+            {
+                case QuestState.Hidden:
+                    break;
+                case QuestState.Active:
+                    if (_objectives.Any(objective => !objective.IsCompleted)) return;
+                    _questState = QuestState.Completed;
+                    Debug.Log($"Quest [{_questDatum.QuestKey}] Completed");
+                    break;
+                case QuestState.Completed:
+                    if (_objectives.All(objective => objective.IsCompleted)) return;
+                    _questState = QuestState.Active;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }
