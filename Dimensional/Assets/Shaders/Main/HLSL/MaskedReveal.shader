@@ -11,103 +11,125 @@ Shader "Custom/MaskedReveal"
         _Transparency ("Transparency", Range(0, 1)) = 0
         _Rotation ("Rotation Angle", Float) = 0
         _InvertMask ("Invert Mask", Float) = 0
+
+        // --- UI Masking ---
+        _Stencil ("Stencil ID", Float) = 0
+        _StencilComp ("Stencil Comparison", Float) = 8
+        _StencilOp ("Stencil Operation", Float) = 0
+        _StencilWriteMask ("Stencil Write Mask", Float) = 255
+        _StencilReadMask ("Stencil Read Mask", Float) = 255
+        _ColorMask ("Color Mask", Float) = 15
     }
 
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
+        Tags
+        {
+            "Queue"="Transparent"
+            "RenderType"="Transparent"
+            "IgnoreProjector"="True"
+            "PreviewType"="Plane"
+            "CanUseSpriteAtlas"="True"
+            "RenderPipeline"="UniversalPipeline"
+        }
+
+        ZWrite Off
+        ZTest [unity_GUIZTestMode]
+        Cull Off
         Blend SrcAlpha OneMinusSrcAlpha
+        ColorMask [_ColorMask]
 
         Pass
         {
-            CGPROGRAM
+            Stencil
+            {
+                Ref [_Stencil]
+                Comp [_StencilComp]
+                Pass [_StencilOp]
+                ReadMask [_StencilReadMask]
+                WriteMask [_StencilWriteMask]
+            }
+
+            HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #include "UnityCG.cginc"
 
-            struct appdata
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            struct Attributes
             {
-                float4 vertex : POSITION;
+                float4 positionOS : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
+            struct Varyings
             {
+                float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
                 float2 screenUV : TEXCOORD1;
             };
 
-            float4 _Color;
-            sampler2D _MainTex;
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
             float4 _MainTex_ST;
+
+            TEXTURE2D(_MaskTex);
+            SAMPLER(sampler_MaskTex);
+
+            float4 _Color;
             float4 _MainTexColor;
-            sampler2D _MaskTex;
             float2 _ScrollSpeed;
             float _Progress;
             float _Transparency;
             float _Rotation;
             float _InvertMask;
 
-            v2f vert (appdata v)
+            Varyings vert (Attributes v)
             {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                Varyings o;
+                o.positionHCS = TransformObjectToHClip(v.positionOS.xyz);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.screenUV = v.uv;
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            half4 frag (Varyings i) : SV_Target
             {
-                // Calculate aspect ratio correction
                 float aspect = _ScreenParams.x / _ScreenParams.y;
                 float2 center = float2(0.5, 0.5);
                 float2 d = i.screenUV - center;
-                
-                // Apply aspect correction
+
                 d.x *= aspect;
-                
-                // Apply rotation
+
                 float s, c;
                 sincos(_Rotation, s, c);
                 float2 rotated = float2(
                     d.x * c - d.y * s,
                     d.x * s + d.y * c
                 );
-                
-                // Scale to maintain square ratio
+
                 float scale = min(aspect, 1.0);
                 rotated /= scale * 2.0;
-                
-                // Create final UV for mask
+
                 float2 maskUV = rotated + center;
-                
-                // Sample mask texture
-                float mask = tex2D(_MaskTex, maskUV).r;
-                
-                // Apply inversion toggle
-                if (_InvertMask) mask = 1.0 - mask;
-                
-                // Calculate reveal factor (1 = visible, 0 = hidden)
+
+                float mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, maskUV).r;
+                if (_InvertMask > 0.5) mask = 1.0 - mask;
+
                 float reveal = step(mask, _Progress);
-                
-                // Scroll background texture
+
                 float2 scrollUV = i.uv + _Time.y * _ScrollSpeed;
-                fixed4 texColor = tex2D(_MainTex, scrollUV) * _MainTexColor;
-                
-                // Layer background color behind texture
-                fixed4 bgColor = _Color;
-                fixed4 finalColor;
-                finalColor.rgb = texColor.rgb * texColor.a + bgColor.rgb * (1 - texColor.a);
-                finalColor.a = texColor.a + bgColor.a * (1 - texColor.a);
-                
-                // Apply reveal effect to alpha
+                half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, scrollUV) * _MainTexColor;
+
+                half4 bgColor = _Color;
+                half4 finalColor;
+                finalColor.rgb = lerp(bgColor.rgb, texColor.rgb, texColor.a);
+                finalColor.a = lerp(bgColor.a, texColor.a, texColor.a);
+
                 finalColor.a *= reveal * _Transparency;
-                
                 return finalColor;
             }
-            ENDCG
+            ENDHLSL
         }
     }
 }

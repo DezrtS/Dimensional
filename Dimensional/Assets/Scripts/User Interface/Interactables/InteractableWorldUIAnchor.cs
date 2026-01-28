@@ -23,12 +23,15 @@ namespace User_Interface.Interactables
         {
             _animator = GetComponent<Animator>();
             _uiArm = GetComponent<UIArm>();
-            
+        }
+
+        protected virtual void OnEnable()
+        {
             DialogueManager.SequenceStarted += DialogueManagerOnSequenceStarted;
             DialogueManager.SequenceFinished += DialogueManagerOnSequenceFinished;
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             DialogueManager.SequenceStarted -= DialogueManagerOnSequenceStarted;
             DialogueManager.SequenceFinished -= DialogueManagerOnSequenceFinished;

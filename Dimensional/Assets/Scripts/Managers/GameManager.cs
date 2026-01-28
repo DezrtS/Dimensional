@@ -22,10 +22,10 @@ namespace Managers
     public class GameStateEvents
     {
         [SerializeField] private GameState gameState;
-        [SerializeField] private EventDatum[] eventData;
+        [SerializeField] private GameEventDatum[] gameEventData;
         
         public GameState GameState => gameState;
-        public EventDatum[] EventData => eventData;
+        public GameEventDatum[] GameEventData => gameEventData;
     }
     
     public enum Dimensions
@@ -79,25 +79,6 @@ namespace Managers
         {
             SetWorldDimensions(defaultWorldDimensions);
             ChangeGameState(GameState.Initializing);
-            //StartCoroutine(GameStateRoutine());
-        }
-
-        private IEnumerator GameStateRoutine()
-        {
-            ChangeGameState(GameState.Initializing);
-            yield return null;
-            var isFirstLoad = !SaveManager.Instance;
-            if (isFirstLoad) Instantiate(saveManagerPrefab);
-            ChangeGameState(GameState.Loading);
-            yield return null;
-            if (isFirstLoad && loadSceneData) SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Scene, DataType.World });
-            SaveManager.Instance.RequestLoad(loadOnLoading); 
-            ChangeGameState(GameState.Preparing);
-            yield return null;
-            ChangeGameState(GameState.Starting);
-            UIManager.Instance.Transition(false, false, 2f);
-            yield return new WaitForSeconds(2f);
-            ChangeGameState(GameState.Playing);
         }
 
         private void Update()
@@ -165,7 +146,7 @@ namespace Managers
             {
                 if (gameStateEvent.GameState == newState)
                 {
-                    EventManager.SendEvents(gameStateEvent.EventData);
+                    EventManager.HandleEvents(gameStateEvent.GameEventData);
                 }
             }
         }

@@ -7,7 +7,7 @@ namespace Managers
 {
     public class SceneManager : Singleton<SceneManager>
     {
-        private string _nextScene;
+        private string _nextScene = "MovementTest";
         private bool _loadingScene;
 
         private void Awake()
@@ -67,8 +67,11 @@ namespace Managers
             if (saveData) SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Player, DataType.Action, DataType.Collectable, DataType.Quest, DataType.Scene });
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
         }
-        
-        public void LoadScene(bool saveData = true) => LoadScene(_nextScene, saveData);
+
+        public void LoadScene(bool saveData = true)
+        {
+            LoadScene(_nextScene, saveData);
+        }
 
         public static void ReloadScene()
         {

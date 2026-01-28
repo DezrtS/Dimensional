@@ -11049,10 +11049,7 @@ MonoBehaviour:
 
     <b>Y or E:</b> Interact
 
-    <b>LB/RB or Z/X:</b> Change Action
-
-    <b>D-Pad
-    or 1-4:</b> Change Shape'
+    <b>D-Pad</b> Change Action/Shape'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -16621,7 +16618,7 @@ MonoBehaviour:
   eventData:
   - {fileID: 11400000, guid: 5ffc002aca1d55d4e9470a3fbebbcfdb, type: 2}
   - {fileID: 11400000, guid: d1db92c50201f344d81a971bbd7e7659, type: 2}
-  - {fileID: 11400000, guid: fb408b00d73546249ba3e408b12e63e0, type: 2}
+  - {fileID: 0}
 --- !u!224 &8744331973811109861 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
@@ -16904,7 +16901,7 @@ MonoBehaviour:
   eventData:
   - {fileID: 11400000, guid: 9abfe09bb239fc14ea02d8ca36b7a652, type: 2}
   - {fileID: 11400000, guid: d1db92c50201f344d81a971bbd7e7659, type: 2}
-  - {fileID: 11400000, guid: fb408b00d73546249ba3e408b12e63e0, type: 2}
+  - {fileID: 0}
 --- !u!224 &7333482712683278215 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}

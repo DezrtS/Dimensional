@@ -1,10 +1,12 @@
 using System;
+using Managers;
+using Systems.Events.Busses;
 
 namespace Systems.Events
 {
     public enum EventBusType
     {
-        Game,
+        Gameplay,
         World,
         Quest,
         UI
@@ -15,5 +17,10 @@ namespace Systems.Events
     {
         public abstract EventBusType BusType { get; }
         public float Duration;
+
+        public virtual void Handle()
+        {
+            EventBus.Fire(this);
+        }
     }
 }

@@ -1,48 +1,58 @@
-// GrassCompute.compute
 #pragma kernel CSMain
-#define THREADS 256
 
-StructuredBuffer<float3> _BasePositions;    // world positions
-StructuredBuffer<float> _WindWeights;       // per-instance wind weight (optional)
-RWStructuredBuffer<float4x4> _Matrices;     // output matrices
-
-cbuffer Params
+struct Triangle
 {
-    uint _NumInstances;
-    float _Time;
-    float _WindStrength;
-    float _WindSpeed;
-    float _RandomSeed;
+    float3 v0;
+    float3 v1;
+    float3 v2;
+    float3 normal;
+    float area;
 };
 
-[numthreads(THREADS, 1, 1)]
+struct GrassBlade
+{
+    float3 position;
+    float3 normal;
+    float height;
+    float rotation;
+};
+
+StructuredBuffer<Triangle> _Triangles;
+AppendStructuredBuffer<GrassBlade> _Blades;
+
+int _TriangleCount;
+int _BladesPerSquareUnit;
+float _BladeHeight;
+
+[numthreads(64, 1, 1)]
 void CSMain(uint id : SV_DispatchThreadID)
 {
-    if (id >= _NumInstances) return;
+    if (id >= _TriangleCount) return;
 
-    //float3 pos = _BasePositions[id];
-    float3 pos = float3(id % 100, 0, id / 100);
-    float windW = 1.0;
-    //if (_WindWeights.Length > 0) windW = _WindWeights[id]; // some APIs may not support .Length; you can guard on CPU side.
+    Triangle tri = _Triangles[id];
 
-    // simple per-instance "wind" using sin + id jitter
-    float seed = id * 12.9898 + _RandomSeed;
-    float phase = frac(sin(seed) * 43758.5453); // cheap pseudo-rand
-    float sway = sin((_Time * _WindSpeed) + phase * 6.2831853) * (_WindStrength * windW);
+    uint bladeCount = tri.area * _BladesPerSquareUnit;
+    for (int i = 0; i < bladeCount; i++)
+    {
+        float2 r = float2(frac(sin(dot(float2(id, i), float2(12.9898,78.233))) * 43758.5453),
+        frac(sin(dot(float2(i, id), float2(39.3467,11.135))) * 96321.517));
 
-    // lateral offset along world X (could use wind dir)
-    float3 offset = float3(sway, 0.0, 0.0);
+        if (r.x + r.y > 1.0)
+            r = 1.0 - r;
 
-    // build a simple world matrix: translate + small random tilt/scale
-    float tilt = sin(phase * 6.2831853) * 0.15; // small tilt
-    float s = 1.0 + (phase - 0.5) * 0.25;       // small scale variation
+        float3 pos =
+            tri.v0 +
+            r.x * (tri.v1 - tri.v0) +
+            r.y * (tri.v2 - tri.v0);
 
-    // Create rotation around Z (tilt) then scale then translate (column-major)
-    float4x4 world;
-    world[0] = float4(s, 0, 0, 0);
-    world[1] = float4(0, cos(tilt)*s, -sin(tilt)*s, 0);
-    world[2] = float4(0, sin(tilt)*s, cos(tilt)*s, 0);
-    world[3] = float4(pos.x + offset.x, pos.y + offset.y, pos.z + offset.z, 1);
+        GrassBlade blade;
+        blade.position = pos;
+        blade.normal = tri.normal;
+        blade.height = _BladeHeight;
 
-    _Matrices[id] = world;
+        float rand = frac(sin(dot(float2(id, i), float2(91.345, 12.678))) * 47453.5453);
+        blade.rotation = rand * 6.28318530718; // 2π
+
+        _Blades.Append(blade);
+    }
 }

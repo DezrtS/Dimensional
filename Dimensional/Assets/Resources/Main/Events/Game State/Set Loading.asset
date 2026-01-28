@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df93dd6c28fb5047aba0b2f744b1cfd, type: 3}
   m_Name: Set Loading
   m_EditorClassIdentifier: 
-  eventType: 1
-  eventName: Change to Loading
-  duration: 0
+  gameStateEvent:
+    Duration: 0
+    GameState: 2
   gameState: 2

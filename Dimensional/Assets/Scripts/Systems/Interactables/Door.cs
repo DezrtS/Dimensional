@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using Interfaces;
 using Managers;
 using Scriptables.Events;
 using Scriptables.User_Interface;
 using Systems.Cameras;
 using Systems.Forces;
-using Systems.Movement;
 using UnityEngine;
 
 namespace Systems.Interactables
@@ -19,13 +16,16 @@ namespace Systems.Interactables
         [Space]
         [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
         [SerializeField] private Transform elementTransform;
-        [SerializeField] private EventDatum[] eventData;
+        [SerializeField] private GameEventDatum[] gameEventData;
         [Space]
         [SerializeField] private Transform spawnTransform;
         [SerializeField] private string id;
         [Space]
         [SerializeField] private bool destinationIsScene;
         [SerializeField] private string destinationId;
+        [Space] 
+        [SerializeField] private bool changeDefaultCamera;
+        [SerializeField] private int cameraId;
 
         private CameraTransition _cameraTransition;
 
@@ -44,6 +44,7 @@ namespace Systems.Interactables
 
         private void CameraTransitionOnTransitionToFinished()
         {
+            if (changeDefaultCamera) CameraManager.Instance.InvokeSetCinemachineCamera(cameraId);
             HandleInteraction();
         }
         
@@ -78,7 +79,7 @@ namespace Systems.Interactables
 
         private void HandleInteraction()
         {
-            EventManager.SendEvents(eventData);
+            EventManager.HandleEvents(gameEventData);
             if (destinationId == string.Empty) return;
             
             if (destinationIsScene)

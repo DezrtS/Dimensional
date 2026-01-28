@@ -46,6 +46,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 35, z: 0}
+--- !u!1 &2717393341830627491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6601066918339543860}
+  - component: {fileID: 7437992364804633545}
+  m_Layer: 0
+  m_Name: Grass System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6601066918339543860
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2717393341830627491}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3617453344453132431}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7437992364804633545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2717393341830627491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 755d8fa1ab52de04c93f7871df8631c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceMeshes: []
+  chunkSize: {x: 25, y: 25, z: 25}
+  grassCompute: {fileID: 7200000, guid: 9033b2d2a8cd0754bad7931f53799af5, type: 3}
+  grassMaterial: {fileID: 2100000, guid: 0e1e2a5f36fe5704c9cc100894a4cad6, type: 2}
+  grassSettings:
+    MaxGrassDistance: 150
+    MinChunkDot: -0.5
+    BladesPerSquareUnit: 16
+    BladeSegments: 2
+    BladeHeight: 0.8
 --- !u!1 &3243020592340182581
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,6 +241,7 @@ Transform:
   - {fileID: 1524615163817154235}
   - {fileID: 6783173293639958928}
   - {fileID: 4448527119036528275}
+  - {fileID: 6601066918339543860}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7687874657021747721

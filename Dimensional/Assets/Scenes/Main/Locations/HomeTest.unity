@@ -2824,14 +2824,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8894153273566007629, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 661399164}
+      addedObject: {fileID: 661399171}
   m_SourcePrefab: {fileID: 100100000, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
 --- !u!1 &661399163 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8894153273566007629, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
   m_PrefabInstance: {fileID: 661399162}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &661399164
+--- !u!114 &661399171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2872,7 +2872,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 6, z: 6}
   m_LocalScale: {x: 13, y: 1, z: 20}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 140850012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3033,7 +3033,7 @@ GameObject:
   - component: {fileID: 876125063}
   - component: {fileID: 876125062}
   - component: {fileID: 876125065}
-  - component: {fileID: 876125064}
+  - component: {fileID: 876125067}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -3099,19 +3099,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 140850012}
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
---- !u!114 &876125064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876125061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0842317ec412f5f479c0572d491b5dbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 1
 --- !u!114 &876125065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3129,6 +3116,19 @@ MonoBehaviour:
   AmplitudeGain: 0
   FrequencyGain: 0
   m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &876125067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876125061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0842317ec412f5f479c0572d491b5dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
 --- !u!1 &889141046
 GameObject:
   m_ObjectHideFlags: 0
@@ -4811,6 +4811,10 @@ PrefabInstance:
       value: Door
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: cameraId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: destinationId
       value: 1
       objectReference: {fileID: 0}
@@ -4819,8 +4823,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: changeDefaultCamera
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: eventData.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: transitionOnFinished
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: 'eventData.Array.data[0]'
@@ -4828,6 +4840,14 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: e8f867841c0e90a43b6e333472bcca4b, type: 2}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: 'eventData.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 54266d4480e0be6499d2fbc7bb48bb03, type: 2}
+    - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: gameEventData.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: 'gameEventData.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 54266d4480e0be6499d2fbc7bb48bb03, type: 2}
     - target: {fileID: 8110129007842379112, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
@@ -5033,7 +5053,7 @@ MonoBehaviour:
   interactableDatum: {fileID: 11400000, guid: b13d58cd494ce394193cf026ee0bf9aa, type: 2}
   elementTransform: {fileID: 1998686607}
   worldUIAnchorDatum: {fileID: 11400000, guid: 3275e4d7ffbd1914f8f26f43e23dc114, type: 2}
-  eventData:
+  gameEventData:
   - {fileID: 11400000, guid: dcf0019f2342e164d812ae3807c043c7, type: 2}
 --- !u!114 &1154686701
 MonoBehaviour:
@@ -5646,8 +5666,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: changeDefaultCamera
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: eventData.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: transitionOnFinished
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: 'eventData.Array.data[0]'
@@ -8486,7 +8514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: destinationId
-      value: MovementTest
+      value: Region1Test
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: destinationIsScene

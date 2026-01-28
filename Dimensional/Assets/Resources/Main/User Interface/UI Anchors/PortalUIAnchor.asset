@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b443801e0ec3de418b96ae2a5cbe544, type: 3}
-  m_Name: DoorUIAnchor
+  m_Name: PortalUIAnchor
   m_EditorClassIdentifier: 
   prefab: {fileID: 405281314265279603, guid: aba823c0e6d23794291b2add21def706, type: 3}
   offset: {x: 0, y: 1, z: 0}

@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main/Levels/CombatTest.unity
     guid: 27aa168b278ab6c4e999770d709f936f
+  - enabled: 1
+    path: Assets/Scenes/Main/Regions/Region1Test.unity
+    guid: aad4f3850b515e74ea98b6e0acf98cee
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: b41af7f0c31d62e499003e8c59a5bc2f, type: 3}
   m_UseUCBPForAssetBundles: 0

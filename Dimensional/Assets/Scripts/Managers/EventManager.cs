@@ -1,35 +1,46 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Scriptables.Events;
 using Systems.Events;
 using Systems.Events.Busses;
 using UnityEngine;
 using Utilities;
-using EventType = Scriptables.Events.EventType;
 
 namespace Managers
 {
-    public struct CustomEventData
-    {
-        public EventType EventType;
-        public string EventName;
-        
-        public Dictionary<string, object> EventParameters;
-    }
-    
     public class EventManager : Singleton<EventManager>
     {
-        public static Action<CustomEventData> CustomEventSent;
+        public static void HandleEvents(IEnumerable<GameEvent> gameEvents)
+        {
+            Instance.StartCoroutine(HandleEventsRoutine(gameEvents));
+        }
+        
+        public static void HandleEvents(IEnumerable<GameEventDatum> gameEventData)
+        {
+            Instance.StartCoroutine(HandleEventsRoutine(ConvertGameEvents(gameEventData)));
+        }
+        
+        public static List<GameEvent> ConvertGameEvents(IEnumerable<GameEventDatum> gameEventData)
+        {
+            return gameEventData.Select(gameEventDatum => gameEventDatum.GameEvent).ToList();
+        }
+        
+        private static IEnumerator HandleEventsRoutine(IEnumerable<GameEvent> gameEvents)
+        {
+            foreach (var gameEvent in gameEvents)
+            {
+                gameEvent.Handle();
+                yield return new WaitForSeconds(gameEvent.Duration);
+            }
+        }
+        
+        
         
         public static void SendEvents(IEnumerable<EventDatum> eventData)
         {
             Instance.StartCoroutine(HandleEventsRoutine(eventData));
-        }
-
-        public static void SendEvents(IEnumerable<GameEvent> gameEvents)
-        {
-            
         }
         
         public static void SendEvent(EventDatum eventDatum)
@@ -42,7 +53,7 @@ namespace Managers
         {
             switch (gameEvent.BusType)
             {
-                case EventBusType.Game:
+                case EventBusType.Gameplay:
                     break;
                 case EventBusType.World:
                     break;
@@ -62,15 +73,6 @@ namespace Managers
             {
                 SendEvent(eventDatum);
                 yield return new WaitForSeconds(eventDatum.Duration);
-            }
-        }
-        
-        private static IEnumerator HandleEventsRoutine(IEnumerable<GameEvent> gameEvents)
-        {
-            foreach (var gameEvent in gameEvents)
-            {
-                SendEvent(gameEvent);
-                yield return new WaitForSeconds(gameEvent.Duration);
             }
         }
     }
