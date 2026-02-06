@@ -5,7 +5,7 @@
 			<value>VillageThemeNormal</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{6678ba0c-56ff-494b-9c05-5d900eaeadea}</destination>
@@ -96,7 +96,6 @@
 	<object class="MixerBusEffectChain" id="{528417d5-232a-422e-bad0-c90478d9b2c1}">
 		<relationship name="effects">
 			<destination>{08adfaa6-2e48-42c3-b921-93b3ba3ff5a9}</destination>
-			<destination>{f465463d-3e4b-461b-b6fd-ddbdda4f7721}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{d063f3c8-5a4c-4637-aeec-97a9aa59a11f}" />
@@ -107,5 +106,4 @@
 	</object>
 	<object class="MixerBusFader" id="{f6c1d427-9f08-4e5c-a50a-559fa77ef142}" />
 	<object class="MixerBusFader" id="{08adfaa6-2e48-42c3-b921-93b3ba3ff5a9}" />
-	<object class="SpatialiserEffect" id="{f465463d-3e4b-461b-b6fd-ddbdda4f7721}" />
 </objects>
