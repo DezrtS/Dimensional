@@ -10,6 +10,7 @@ namespace Scriptables.Actions.Movement
     {
         [Space(10)] 
         [SerializeField] private bool stopMovementOnDisable;
+        [SerializeField] private bool resetMovementOnDisable;
         [SerializeField] private bool disableDurationLimit;
         [Space(10)]
         [SerializeField] private Vector3 movementVector;
@@ -33,6 +34,7 @@ namespace Scriptables.Actions.Movement
         [SerializeField] private AnimationCurve forwardCurve;
         
         public bool StopMovementOnDisable => stopMovementOnDisable;
+        public bool ResetMovementOnDisable => resetMovementOnDisable;
         public bool DisableDurationLimit => disableDurationLimit;
         
         public Vector3 MovementVector => movementVector;

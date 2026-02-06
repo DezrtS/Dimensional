@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7345538116538601054}
-  - component: {fileID: 4699193031825807362}
+  - component: {fileID: -3105685084645534309}
   - component: {fileID: 2269388732083379908}
   - component: {fileID: 588602710651224952}
   m_Layer: 5
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4699193031825807362
+--- !u!114 &-3105685084645534309
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,9 +48,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 405281314265279603}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b91ab023805f5244e8c36ac1d0f71ba9, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ab6afb3fd94091438b00e51b4bfa025, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelTitleText: {fileID: 1374084267375826209}
+  regionText: {fileID: 6470255025125903484}
+  levelTypeText: {fileID: 3523447598800727597}
+  collectablesText: {fileID: 8705038304869946384}
 --- !u!95 &2269388732083379908
 Animator:
   serializedVersion: 7
@@ -407,7 +411,7 @@ GameObject:
   - component: {fileID: 1851698065609775911}
   - component: {fileID: 1374084267375826209}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Level Title Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -618,7 +622,7 @@ GameObject:
   - component: {fileID: 585903760054726000}
   - component: {fileID: 6470255025125903484}
   m_Layer: 5
-  m_Name: Text (TMP) (4)
+  m_Name: Region Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -943,7 +947,7 @@ GameObject:
   - component: {fileID: 474264440907244772}
   - component: {fileID: 1616171103444602576}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Completion State Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1154,7 +1158,7 @@ GameObject:
   - component: {fileID: 1296548131280602235}
   - component: {fileID: 3523447598800727597}
   m_Layer: 5
-  m_Name: Text (TMP) (3)
+  m_Name: Level Type Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1290,7 +1294,7 @@ GameObject:
   - component: {fileID: 4622615101122264816}
   - component: {fileID: 8705038304869946384}
   m_Layer: 5
-  m_Name: Text (TMP) (2)
+  m_Name: Collectables Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

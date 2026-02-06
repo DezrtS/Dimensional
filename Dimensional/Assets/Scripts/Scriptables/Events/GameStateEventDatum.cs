@@ -1,16 +1,13 @@
 using Managers;
+using Systems.Events;
 using UnityEngine;
 
 namespace Scriptables.Events
 {
     [CreateAssetMenu(fileName = "GameStateEventDatum", menuName = "Scriptable Objects/Events/GameStateEventDatum")]
-    public class GameStateEventDatum : EventDatum
+    public class GameStateEventDatum : GameEventDatum
     {
-        [SerializeField] private GameState gameState;    
-    
-        public override void HandleEvent()
-        {
-            GameManager.Instance.ChangeGameState(gameState);
-        }
+        [SerializeField] private GameStateEvent gameStateEvent;
+        public override GameEvent GameEvent => gameStateEvent;
     }
 }

@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactableDatum: {fileID: 11400000, guid: b13d58cd494ce394193cf026ee0bf9aa, type: 2}
-  worldUIAnchorDatum: {fileID: 11400000, guid: 76fcce6e782364147afb06fa0f82a5e6, type: 2}
+  worldUIAnchorDatum: {fileID: 11400000, guid: 3275e4d7ffbd1914f8f26f43e23dc114, type: 2}
   elementTransform: {fileID: 4723530580264355695}
   eventData: []
   spawnTransform: {fileID: 298615982539456399}

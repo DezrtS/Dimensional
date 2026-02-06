@@ -19,8 +19,8 @@ MonoBehaviour:
     m_Bits: 2049
   projectileBehaviourData:
   - {fileID: 11400000, guid: fadd45a315e94ef47b689291bf1ba9bc, type: 2}
-  radius: 10
+  radius: 3
   aoeLayerMask:
     serializedVersion: 2
-    m_Bits: 2112
+    m_Bits: 2048
   triggerOnExpire: 1

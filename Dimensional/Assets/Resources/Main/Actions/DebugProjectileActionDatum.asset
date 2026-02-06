@@ -13,27 +13,31 @@ MonoBehaviour:
   m_Name: DebugProjectileActionDatum
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
+  subActionData: []
   actionAudioEvents: []
   actionContextModifierData:
   - {fileID: 11400000, guid: bc5a0bb3f0c6c504c95ca063c6fa3ef5, type: 2}
-  hasScreenShake: 0
   actionScreenShakeEvent:
+    hasScreenShake: 0
     activationEventType: 0
-    duration: 0
-    amplitude: 0
-    amplitudeCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    frequency: 0
-    frequencyCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    screenShakeEventData:
+      hasDuration: 0
+      duration: 0
+      amplitude: 0
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 0
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
   actionVisualEffectData: []
   projectilePoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
   baseProjectileDatum: {fileID: 11400000, guid: b506753f9b122684f9eaf85d96654068, type: 2}

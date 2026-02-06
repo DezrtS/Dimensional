@@ -12,7 +12,7 @@ namespace Systems.NPCs
     {
         [SerializeField] private Transform elementTransform;
         [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
-        [SerializeField] private EventDatum[] eventData;
+        [SerializeField] private GameEventDatum[] gameEventData;
 
         private void Start()
         {
@@ -27,7 +27,7 @@ namespace Systems.NPCs
         public override void Interact(InteractContext interactContext)
         {
             base.Interact(interactContext);
-            EventManager.SendEvents(eventData);
+            EventManager.HandleEvents(gameEventData);
         }
     }
 }

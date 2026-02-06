@@ -19,10 +19,10 @@ namespace Systems.Projectiles
             base.OnExpire();
         }
 
-        protected override void OnCollide(Collider hitCollider)
+        protected override void OnCollide(GameObject hitObject)
         {
             TriggerAreaOfEffect();
-            base.OnCollide(hitCollider);
+            base.OnCollide(hitObject);
         }
 
         private void TriggerAreaOfEffect()
@@ -33,7 +33,8 @@ namespace Systems.Projectiles
                 _areaOfEffectProjectileDatum.AoeLayerMask);
             for (var i = 0; i < size; i++)
             {
-                HandleCollision(results[i]);
+                var hitObject = results[i].attachedRigidbody ? results[i].attachedRigidbody.gameObject : results[i].gameObject;
+                HandleCollision(hitObject);
             }
         }
     }

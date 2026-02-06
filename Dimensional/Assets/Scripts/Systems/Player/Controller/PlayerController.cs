@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Debugging.New_Movement_System;
 using Interfaces;
 using Managers;
 using Scriptables.Actions.Movement;
@@ -361,7 +360,7 @@ namespace Systems.Player
         {
             if (DebugDisable) return;
             if (context.performed) PlayerMovementController.StartDashing();
-            else if (context.canceled) PlayerMovementController.StopDashing();
+            //else if (context.canceled) PlayerMovementController.StopDashing();
         }
 
         private void OnCrouch(InputAction.CallbackContext context)

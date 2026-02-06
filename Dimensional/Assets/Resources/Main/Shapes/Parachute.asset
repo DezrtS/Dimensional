@@ -17,7 +17,7 @@ MonoBehaviour:
   shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
   shapeMovementActions:
   - movementActionType: 5
-    movementActionDatum: {fileID: 11400000, guid: 066e52a637e848748b683ebdcac8a4b0, type: 2}
+    movementActionDatum: {fileID: 11400000, guid: 65605b94ea7b7764fb8c1729c9b9f56b, type: 2}
     movementSynergies: []
   - movementActionType: 6
     movementActionDatum: {fileID: 11400000, guid: 011b9113885fcad4c84889a9ecfba861, type: 2}

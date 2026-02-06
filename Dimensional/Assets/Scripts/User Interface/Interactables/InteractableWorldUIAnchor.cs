@@ -1,5 +1,7 @@
 using System;
 using Interfaces;
+using Managers;
+using Scriptables.Dialogue;
 using Scriptables.User_Interface;
 using Systems.Interactables;
 using UnityEngine;
@@ -23,6 +25,18 @@ namespace User_Interface.Interactables
             _uiArm = GetComponent<UIArm>();
         }
 
+        protected virtual void OnEnable()
+        {
+            DialogueManager.SequenceStarted += DialogueManagerOnSequenceStarted;
+            DialogueManager.SequenceFinished += DialogueManagerOnSequenceFinished;
+        }
+
+        protected virtual void OnDisable()
+        {
+            DialogueManager.SequenceStarted -= DialogueManagerOnSequenceStarted;
+            DialogueManager.SequenceFinished -= DialogueManagerOnSequenceFinished;
+        }
+
         protected override void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform)
         {
             _interactable = holderGameObject.GetComponent<Interactable>();
@@ -39,17 +53,17 @@ namespace User_Interface.Interactables
             _uiArm.UpdateArm(elementScreenPos, targetScreenPos);
         }
 
-        protected virtual void InteractableOnInteracted(Interactable interactable, InteractContext interactContext)
+        private void InteractableOnInteracted(Interactable interactable, InteractContext interactContext)
         {
             _animator.SetTrigger(InteractedHash);
         }
 
-        protected virtual void InteractableOnHovered(Interactable interactable, InteractContext interactContext)
+        private void InteractableOnHovered(Interactable interactable, InteractContext interactContext)
         {
             _animator.SetTrigger(HoveredHash);
         }
         
-        protected virtual void InteractableOnUnHovered(Interactable interactable, InteractContext interactContext)
+        private void InteractableOnUnHovered(Interactable interactable, InteractContext interactContext)
         {
             _animator.SetTrigger(UnHoveredHash);
         }
@@ -57,6 +71,18 @@ namespace User_Interface.Interactables
         protected override void OnSetIsTargetInRange(bool isTargetInRange)
         {
             _animator.SetBool(IsTargetInRangeHash, isTargetInRange);
+        }
+
+        private void DialogueManagerOnSequenceStarted(DialogueSequenceDatum dialogueSequenceDatum)
+        {
+            DisableScaling = true;
+            transform.localScale = Vector3.zero;
+        }
+        
+        private void DialogueManagerOnSequenceFinished(DialogueSequenceDatum dialogueSequenceDatum)
+        {
+            DisableScaling = false;
+            transform.localScale = Vector3.one;
         }
     }
 }

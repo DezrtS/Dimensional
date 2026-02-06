@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Managers;
+using Systems.Events;
+using Systems.Events.Busses;
 using UnityEngine;
 
 namespace Systems.Player
@@ -46,6 +48,7 @@ namespace Systems.Player
             var newCollectables = Mathf.Min(Collectables + amount, collectableCapacity);
             CollectablesChanged?.Invoke(Collectables, newCollectables);
             Collectables = newCollectables;
+            EventManager.SendEvent(new CounterEvent { CounterId = "Collectables", CounterValue = Collectables });
         }
 
         public void AddKeys(int amount)

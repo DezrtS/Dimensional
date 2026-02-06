@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 485ce976a6a16d1409e7156aee446e43, type: 3}
   m_Name: Basic Stun
   m_EditorClassIdentifier: 
-  recoverDelay: 0.75
+  recoverDelay: 5
   yVelocity: 5
   zDuration: 1
   zVelocity: 10

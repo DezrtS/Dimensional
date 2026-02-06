@@ -119,7 +119,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cloud_Cutoff: 0.154
     - _Cloud_Softness: 0.35
-    - _Cloud_Speed: 0.5
+    - _Cloud_Speed: 3
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1

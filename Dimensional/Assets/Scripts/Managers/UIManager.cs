@@ -3,6 +3,7 @@ using Debugging;
 using Scriptables.Selection_Wheels;
 using Scriptables.User_Interface;
 using Systems.Actions.Movement;
+using TMPro;
 using UnityEngine;
 using User_Interface;
 using User_Interface.Selection_Wheels;
@@ -34,6 +35,8 @@ namespace Managers
         [SerializeField] private GameObject travelMap;
         [Space]
         [SerializeField] private Transform interactableIconTransform;
+        [Space]
+        [SerializeField] private TextMeshProUGUI tutorialText;
         [Space]
         [SerializeField] private GameObject fade;
         [SerializeField] private GameObject actionSelectionWheelTransform;

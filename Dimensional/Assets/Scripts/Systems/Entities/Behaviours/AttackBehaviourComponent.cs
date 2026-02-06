@@ -4,6 +4,7 @@ using System.Linq;
 using Interfaces;
 using Scriptables.Actions.Movement;
 using Systems.Actions;
+using Systems.Forces;
 using UnityEngine;
 using Action = Systems.Actions.Action;
 using Random = UnityEngine.Random;
@@ -120,6 +121,8 @@ namespace Systems.Entities.Behaviours
             _preparingAttack = true;
             _windUpTimer = _selectedAttackPattern.WindUpDuration;
             _targetPosition = _target.position;
+            if (_target.TryGetComponent(out ForceController forceController))
+                _targetPosition += forceController.GetVelocity() * _selectedAttackPattern.WindUpDuration;
             _positionBehaviourComponent.Deactivate();
         }
 
@@ -157,6 +160,7 @@ namespace Systems.Entities.Behaviours
             displacement.y = 0;
             var actionContext = ActionContext.Construct(this, _sourceEntity, gameObject, null, displacement.normalized);
             actionContext.TargetPosition = _targetPosition;
+            actionContext.TargetGameObject = _target.gameObject;
             return actionContext;
         }
     }
