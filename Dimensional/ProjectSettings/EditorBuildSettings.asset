@@ -35,6 +35,27 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main/Regions/Region1Test.unity
     guid: aad4f3850b515e74ea98b6e0acf98cee
+  - enabled: 1
+    path: Assets/Materials/Main/Regions/Region 1/Region 1.unity
+    guid: 9f84811d7a1a6aa419690dfbcf40926b
+  - enabled: 1
+    path: Assets/Materials/Main/Regions/Region 2/Region 2.unity
+    guid: 3613788e1054bcd4088b6c1cabbe9cf8
+  - enabled: 1
+    path: Assets/Materials/Main/Regions/Region 3/Region 3.unity
+    guid: 298968f8f6762404fa8af38166f50a97
+  - enabled: 1
+    path: Assets/Materials/Main/Regions/Region 4/Region 4.unity
+    guid: e6d4055e6366de04c97e61901e22cbfe
+  - enabled: 1
+    path: Assets/Materials/Main/Regions/Region 5/Region 5.unity
+    guid: 98606a4f4d2892840b0c03df6088e332
+  - enabled: 1
+    path: Assets/Materials/Main/Regions/Region 6/Region 6.unity
+    guid: 93651cf172871644ea546f8314aa260b
+  - enabled: 1
+    path: Assets/Scenes/Main/Levels/Level5Test.unity
+    guid: ff4f31f0022994e4ab9f1786d1329fdc
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: b41af7f0c31d62e499003e8c59a5bc2f, type: 3}
   m_UseUCBPForAssetBundles: 0

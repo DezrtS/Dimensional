@@ -1,130 +1,148 @@
 using System.Collections.Generic;
 using Managers;
+using Systems.Player;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Systems.Grass
 {
+    public struct MaskData {
+        public Vector3 position;
+        public Vector3 size;
+        public float rotation;
+    };
+    
     public class GrassChunk : MonoBehaviour
     {
-        private static readonly int TrianglesProperty = Shader.PropertyToID("_Triangles");
-        private static readonly int BladesProperty = Shader.PropertyToID("_Blades");
-        private static readonly int TriangleCountProperty = Shader.PropertyToID("_TriangleCount");
-        private static readonly int BladeHeightProperty = Shader.PropertyToID("_BladeHeight");
-        private static readonly int BladesPerSquareUnitProperty = Shader.PropertyToID("_BladesPerSquareUnit");
-        private static readonly int BladeSegmentsProperty = Shader.PropertyToID("_BladeSegments");
+        private static readonly int MaskCountProperty = Shader.PropertyToID("_MaskCount");
+        private static readonly int MasksProperty = Shader.PropertyToID("_Masks");
 
-        private const int MaxBlades = 250000;
+        private const int MaxGrassMasks = 6;
+
+        private ComputeBuffer _maskBuffer;
         
-        private ComputeBuffer _triangleBuffer;
         private Bounds _chunkBounds;
-        private Material _grassMaterial;
-        
-        private ComputeShader _grassCompute;
-        private ComputeBuffer _bladeBuffer;
-        private ComputeBuffer _argsBuffer;
-        
         private GrassSettings _grassSettings;
-        
-        private MaterialPropertyBlock _materialPropertyBlock;
+
+        private List<MaskData> _grassMasks;
+        private List<Texture2D> _grassMaskTextures;
 
         private Camera _camera;
         private Transform _cameraTransform;
+        private Transform _playerTransform;
+        
+        private List<GrassInstance> _grassInstances;
+        private bool _previousIsChunkVisible;
+        
+        public Bounds ChunkBounds => _chunkBounds;
 
-        public void Initialize(List<TriangleData> triangleData, Bounds chunkBounds, ComputeShader grassCompute, Material grassMaterial, GrassSettings grassSettings)
+        public void Initialize(Bounds chunkBounds, GrassSettings grassSettings)
         {
-            _triangleBuffer = new ComputeBuffer(triangleData.Count, sizeof(float) * 13);
-            _triangleBuffer.SetData(triangleData);
             _chunkBounds = chunkBounds;
-            _grassCompute = grassCompute;
-            _grassMaterial = grassMaterial;
             _grassSettings = grassSettings;
+            _grassInstances = new List<GrassInstance>();
             
-            SetupBuffers();
-            Dispatch();
+            _grassMasks = new List<MaskData>();
+            _grassMaskTextures = new List<Texture2D>();
+            
+            QueryMasks();
+            SetupMaskBuffer();
         }
 
-        public void UpdateGrassSettings(GrassSettings grassSettings)
+        public void AddGrassInstance(GrassInstance grassInstance)
         {
-            _grassSettings = grassSettings;
-            SetupBuffers();
-            Dispatch();
+            _grassInstances.Add(grassInstance);
         }
 
         private void Start()
         {
             _camera = CameraManager.Instance.Camera;;
             _cameraTransform = _camera.transform;
+            _playerTransform = PlayerController.Instance.transform;
         }
 
-        private void SetupBuffers()
+        private void QueryMasks()
         {
-            _bladeBuffer?.Release();
-            _bladeBuffer = new ComputeBuffer(MaxBlades, sizeof(float) * 8, ComputeBufferType.Append);
-            _bladeBuffer.SetCounterValue(0);
-
-            _argsBuffer?.Release();
-            _argsBuffer = new ComputeBuffer(1, 5 * sizeof(uint), ComputeBufferType.IndirectArguments);
-            _argsBuffer.SetData(new uint[] { 0, 1, 0, 0, 0 });
+            var results = new Collider[10];
+            var size = Physics.OverlapBoxNonAlloc(_chunkBounds.center, _chunkBounds.extents, results, Quaternion.identity, _grassSettings.MaskLayer, QueryTriggerInteraction.Collide);
+            size = Mathf.Clamp(size, 0, MaxGrassMasks);
+            for (var i = 0; i < size; i++)
+            {
+                var grassMask = results[i].GetComponent<GrassMask>();
+                AddGrassMask(
+                    new MaskData
+                    {
+                        position = grassMask.transform.position,
+                        size = grassMask.transform.lossyScale * 0.5f,
+                        rotation = grassMask.transform.eulerAngles.y * Mathf.Deg2Rad,
+                    }, 
+                    grassMask.MaskTexture
+                );
+            }
         }
 
-        private void Dispatch()
+        public void AddGrassMask(MaskData maskData, Texture2D texture)
         {
-            var kernel = _grassCompute.FindKernel("CSMain");
-
-            _grassCompute.SetBuffer(kernel, TrianglesProperty, _triangleBuffer);
-            _grassCompute.SetBuffer(kernel, BladesProperty, _bladeBuffer);
-            _grassCompute.SetInt(TriangleCountProperty, _triangleBuffer.count);
-            _grassCompute.SetInt(BladesPerSquareUnitProperty, _grassSettings.BladesPerSquareUnit);
-            _grassCompute.SetFloat(BladeHeightProperty, _grassSettings.BladeHeight);
+            if (_grassMasks.Count >= MaxGrassMasks) return;
+            _grassMasks.Add(maskData);
+            _grassMaskTextures.Add(texture);
             
-            var groups = Mathf.Max(1, Mathf.CeilToInt(_triangleBuffer.count / 64f));
-            _grassCompute.Dispatch(kernel, groups, 1, 1);
-            
-            ComputeBuffer.CopyCount(_bladeBuffer, _argsBuffer, 0);
-
-            var args = new uint[5];
-            _argsBuffer.GetData(args);
-
-            var bladeCount = args[0];
-            args[0] = bladeCount * (_grassSettings.BladeSegments * 6 + 3);
-            args[1] = 1;
-
-            _argsBuffer.SetData(args);
+            _maskBuffer?.SetData(_grassMasks); 
         }
 
+        private void SetupMaskBuffer()
+        {
+            _maskBuffer?.Release();
+            
+            _maskBuffer = new ComputeBuffer(
+                MaxGrassMasks, 
+                7 * sizeof(float),
+                ComputeBufferType.Structured
+            );
+            _maskBuffer.SetData(_grassMasks);   
+        }
 
-        private void Update()
+        public void AssignMaskBuffer(int kernel, ComputeShader grassCompute)
+        {
+            var maskCount = Mathf.Min(_grassMasks.Count, MaxGrassMasks);
+            grassCompute.SetBuffer(kernel, MasksProperty, _maskBuffer);
+            grassCompute.SetInt(MaskCountProperty, maskCount);
+            for (var i = 0; i < MaxGrassMasks; i++)
+            {
+                grassCompute.SetTexture(kernel, $"_MaskTexture{i}", i < maskCount ? _grassMaskTextures[i] : Texture2D.blackTexture);
+            }
+        }
+
+        private bool IsChunkVisible()
         {
             var cameraPosition = _cameraTransform.position;
+            var playerPosition = _playerTransform.position;
             var dist = Vector3.Distance(cameraPosition, _chunkBounds.center);
             if (dist > _grassSettings.MaxGrassDistance)
-                return;
+                return false;
             
-            var closestPoint = _chunkBounds.ClosestPoint(cameraPosition);
+            var closestPoint = _chunkBounds.ClosestPoint(playerPosition);
             var toChunk = (closestPoint - cameraPosition).normalized;
             var dot = Vector3.Dot(_cameraTransform.forward, toChunk);
             if (dot < _grassSettings.MinChunkDot)
-                return;
+                return false;
+            
+            if (dot > _grassSettings.MaxChunkDot)
+                return true;
             
             var planes = GeometryUtility.CalculateFrustumPlanes(_camera);
-            if (!GeometryUtility.TestPlanesAABB(planes, _chunkBounds))
-                return;
-            
-            _materialPropertyBlock ??= new MaterialPropertyBlock();
-            _materialPropertyBlock.SetBuffer(BladesProperty, _bladeBuffer);
-            _materialPropertyBlock.SetInt(BladeSegmentsProperty, (int)_grassSettings.BladeSegments);
+            return GeometryUtility.TestPlanesAABB(planes, _chunkBounds);
+        }
 
-            Graphics.DrawProceduralIndirect(
-                _grassMaterial,
-                _chunkBounds,
-                MeshTopology.Triangles,
-                _argsBuffer,
-                0,
-                null,
-                _materialPropertyBlock,
-                ShadowCastingMode.Off
-            );
+        private void Update()
+        {
+            var isChunkVisible = IsChunkVisible();
+            if (isChunkVisible == _previousIsChunkVisible) return;
+            
+            _previousIsChunkVisible = isChunkVisible;
+            foreach (var grassInstance in _grassInstances)
+            {
+                grassInstance.IsVisible = isChunkVisible;
+            }
         }
 
         private void OnDestroy()
@@ -134,9 +152,7 @@ namespace Systems.Grass
 
         private void ReleaseBuffers()
         {
-            _triangleBuffer?.Release();
-            _bladeBuffer?.Release();
-            _argsBuffer?.Release();
+            _maskBuffer?.Release();
         }
         
         private void OnDrawGizmosSelected()

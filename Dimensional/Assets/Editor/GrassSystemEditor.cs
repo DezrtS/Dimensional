@@ -17,7 +17,7 @@ namespace Editor
 
             if (GUILayout.Button("Refresh Grass Settings"))
             {
-                grassSystem.UpdateChunks();
+                //grassSystem.UpdateChunks();
             }
 
             EditorGUI.EndDisabledGroup();

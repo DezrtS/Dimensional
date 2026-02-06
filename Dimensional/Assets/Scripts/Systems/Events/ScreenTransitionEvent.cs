@@ -2,7 +2,7 @@
 using Managers;
 using UnityEngine;
 
-namespace Systems.Events.Busses
+namespace Systems.Events
 {
     [Serializable]
     public class ScreenTransitionEvent : GameEvent

@@ -90,16 +90,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 755d8fa1ab52de04c93f7871df8631c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sourceMeshes: []
   chunkSize: {x: 25, y: 25, z: 25}
   grassCompute: {fileID: 7200000, guid: 9033b2d2a8cd0754bad7931f53799af5, type: 3}
   grassMaterial: {fileID: 2100000, guid: 0e1e2a5f36fe5704c9cc100894a4cad6, type: 2}
   grassSettings:
     MaxGrassDistance: 150
     MinChunkDot: -0.5
+    MaxChunkDot: 0.8
     BladesPerSquareUnit: 16
-    BladeSegments: 2
+    BladeSegments: 3
     BladeHeight: 0.8
+    BladeWidth: 0.25
+    WidthTaper: 0.3
+    CurveFactor: 1
+    MaskLayer:
+      serializedVersion: 2
+      m_Bits: 4096
 --- !u!1 &3243020592340182581
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,6 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3617453344453132431}
+  - component: {fileID: 3287152319816677089}
   m_Layer: 0
   m_Name: EffectManager
   m_TagString: Untagged
@@ -244,6 +251,18 @@ Transform:
   - {fileID: 6601066918339543860}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3287152319816677089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4474589673022255060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0055fde2b2ee7d7438e6aa6f4e89e65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7687874657021747721
 GameObject:
   m_ObjectHideFlags: 0

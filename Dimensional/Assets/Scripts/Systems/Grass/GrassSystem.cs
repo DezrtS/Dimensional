@@ -10,6 +10,9 @@ namespace Systems.Grass
         public Vector3 v0;
         public Vector3 v1;
         public Vector3 v2;
+        public Vector2 uv0;
+        public Vector2 uv1;
+        public Vector2 uv2;
         public Vector3 normal;
         public float area;
     }
@@ -19,17 +22,20 @@ namespace Systems.Grass
     {
         public float MaxGrassDistance;
         [Range(-1, 1)] public float MinChunkDot;
+        [Range(-1, 1)] public float MaxChunkDot;
         
         public int BladesPerSquareUnit;
-        public uint BladeSegments;
+        public int BladeSegments;
         public float BladeHeight;
+        public float BladeWidth;
+        public float WidthTaper;
+        public float CurveFactor;
+
+        public LayerMask MaskLayer;
     }
     
     public class GrassSystem : MonoBehaviour
     {
-        [Header("Source Meshes")]
-        public List<MeshFilter> sourceMeshes;
-
         [Header("Chunking")]
         public Vector3 chunkSize = new Vector3(20, 20, 20);
 
@@ -38,60 +44,61 @@ namespace Systems.Grass
         public Material grassMaterial;
         public GrassSettings grassSettings;
 
-        private Dictionary<Vector3Int, List<TriangleData>> _chunkMap;
+        private Dictionary<Vector3Int, GrassChunk> _chunkMap;
+        
+        private readonly List<GrassMesh> _grassMeshes = new List<GrassMesh>();
 
-        private void Start()
+        public void AddGrassMesh(GrassMesh grassMesh)
         {
-            GenerateGrass();
+            _grassMeshes.Add(grassMesh);
         }
 
-        private void GenerateGrass()
+        public void GenerateGrass()
         {
             BuildChunks();
-            SpawnChunks();
-        }
-
-        public void UpdateChunks()
-        {
-            var chunks = GetComponentsInChildren<GrassChunk>();
-            foreach (var chunk in chunks)
-            {
-                chunk.UpdateGrassSettings(grassSettings);
-            }
         }
 
         private void BuildChunks()
         {
-            _chunkMap = new Dictionary<Vector3Int, List<TriangleData>>();
-            foreach (var mf in sourceMeshes)
+            _chunkMap = new Dictionary<Vector3Int, GrassChunk>();
+            foreach (var grassMesh in _grassMeshes)
             {
-                if (!mf) continue;
-
-                Mesh mesh = mf.sharedMesh;
+                var mesh = grassMesh.MeshFilter.sharedMesh;
                 if (!mesh.isReadable)
                 {
                     Debug.LogError($"Mesh {mesh.name} is not readable.");
                     continue;
                 }
+                
+                var meshChunkMap = new Dictionary<Vector3Int, List<TriangleData>>();
 
-                var verts = mesh.vertices;
-                var tris = mesh.triangles;
+                var vertices = mesh.vertices;
+                var triangles = mesh.triangles;
+                var uvs = mesh.uv;
 
-                Transform t = mf.transform;
+                var meshTransform = grassMesh.transform;
 
-                for (int i = 0; i < tris.Length; i += 3)
+                for (var i = 0; i < triangles.Length; i += 3)
                 {
-                    Vector3 v0 = t.TransformPoint(verts[tris[i]]);
-                    Vector3 v1 = t.TransformPoint(verts[tris[i + 1]]);
-                    Vector3 v2 = t.TransformPoint(verts[tris[i + 2]]);
-
-                    Vector3 center = (v0 + v1 + v2) / 3f;
-                    Vector3Int chunkID = WorldToChunk(center);
+                    var i0 = triangles[i + 0];
+                    var i1 = triangles[i + 1];
+                    var i2 = triangles[i + 2];
                     
-                    if (!_chunkMap.TryGetValue(chunkID, out var list))
+                    var v0 = meshTransform.TransformPoint(vertices[i0]);
+                    var v1 = meshTransform.TransformPoint(vertices[i1]);
+                    var v2 = meshTransform.TransformPoint(vertices[i2]);
+                    
+                    var uv0 = uvs[i0];
+                    var uv1 = uvs[i1];
+                    var uv2 = uvs[i2];
+
+                    var center = (v0 + v1 + v2) / 3f;
+                    var chunkID = WorldToChunk(center);
+                    
+                    if (!meshChunkMap.TryGetValue(chunkID, out var list))
                     {
                         list = new List<TriangleData>();
-                        _chunkMap.Add(chunkID, list);
+                        meshChunkMap.Add(chunkID, list);
                     }
 
                     var cross = Vector3.Cross(v1 - v0, v2 - v0);
@@ -100,32 +107,34 @@ namespace Systems.Grass
                         v0 = v0,
                         v1 = v1,
                         v2 = v2,
+                        uv0 = uv0,
+                        uv1 = uv1,
+                        uv2 = uv2,
                         normal = cross.normalized,
                         area = cross.magnitude * 0.5f
                     });
                 }
-            }
-        }
 
-        private void SpawnChunks()
-        {
-            foreach (var kvp in _chunkMap)
-            {
-                Vector3 center = ChunkToWorld(kvp.Key);
-                //center.y = 0;
-                Bounds bounds = new Bounds(center, chunkSize);
-
-                GameObject go = new GameObject($"GrassChunk_{kvp.Key}");
-                go.transform.parent = transform;
-
-                var chunk = go.AddComponent<GrassChunk>();
-                chunk.Initialize(
-                    kvp.Value,
-                    bounds,
-                    grassCompute,
-                    grassMaterial,
-                    grassSettings
-                );
+                foreach (var kvp in meshChunkMap)
+                {
+                    if (!_chunkMap.TryGetValue(kvp.Key, out var grassChunk))
+                    {
+                        var center = ChunkToWorld(kvp.Key);
+                        var bounds = new Bounds(center, chunkSize);
+                        var chunkGameObject = new GameObject($"GrassChunk_{kvp.Key}")
+                        {
+                            transform =
+                            {
+                                parent = transform
+                            }
+                        };
+                        grassChunk = chunkGameObject.AddComponent<GrassChunk>();
+                        grassChunk.Initialize(bounds, grassSettings);
+                        _chunkMap.Add(kvp.Key, grassChunk);
+                    }
+                    
+                    grassChunk.AddGrassInstance(grassMesh.CreateGrassInstance(kvp.Value, _chunkMap[kvp.Key], grassCompute, grassMaterial, grassSettings));
+                }
             }
         }
 
