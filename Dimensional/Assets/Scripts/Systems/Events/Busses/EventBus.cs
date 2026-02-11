@@ -19,6 +19,7 @@ namespace Systems.Events.Busses
                     QuestEventBus.Fire(gameEvent);
                     break;
                 case EventBusType.UI:
+                    UIEventBus.Fire(gameEvent);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

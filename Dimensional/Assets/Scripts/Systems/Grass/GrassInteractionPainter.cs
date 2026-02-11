@@ -1,9 +1,32 @@
+using System;
 using UnityEngine;
 
 namespace Systems.Grass
 {
+    [Serializable]
+    public struct GrassEffectData
+    {
+        [SerializeField] private float interactionRadius;
+        [SerializeField] private float interactionStrength;
+        
+        [SerializeField] private LayerMask interactionLayerMask;
+        
+        [SerializeField] private float checkDistance;
+        [SerializeField] private bool scaleDistance;
+        [SerializeField] private Vector2 scaleRange;
+        
+        public float InteractionRadius => interactionRadius;
+        public float InteractionStrength => interactionStrength;
+        public LayerMask InteractionLayerMask => interactionLayerMask;
+        public float CheckDistance => checkDistance;
+        public bool ScaleDistance => scaleDistance;
+        public Vector2 ScaleRange => scaleRange;
+    }
+    
     public class GrassInteractionPainter : MonoBehaviour
     {
+        [SerializeField] private GrassEffectData grassEffectData;
+        
         [SerializeField] private float interactionRadius;
         [SerializeField] private float interactionStrength;
         
@@ -43,7 +66,7 @@ namespace Systems.Grass
             _previousGrassMesh.AddGrassPaintCommand(new GrassPaintCommand {radius = uvRadius, strength = strength, uv = uv});
         }
 
-        private static Vector2 ComputeHitUV(RaycastHit hit, Mesh mesh)
+        public static Vector2 ComputeHitUV(RaycastHit hit, Mesh mesh)
         {
             var triangleIndex = hit.triangleIndex * 3;
             var triangles = mesh.triangles;

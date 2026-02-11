@@ -21,6 +21,7 @@ namespace Systems.Grass
         private static readonly int PaintCountProperty = Shader.PropertyToID("_PaintCount");
         private static readonly int TextureResolutionProperty = Shader.PropertyToID("_TextureResolution");
         private static readonly int PaintCommandBufferProperty = Shader.PropertyToID("_PaintCommands");
+        private static readonly int OffsetProperty = Shader.PropertyToID("_Offset");
 
         [SerializeField] private Texture2D maskTexture;
         [SerializeField] private Material overrideGrassMaterial;
@@ -32,6 +33,8 @@ namespace Systems.Grass
         
         private readonly List<GrassPaintCommand> _grassPaintCommands = new List<GrassPaintCommand>();
         private ComputeBuffer _paintCommandBuffer;
+
+        private Vector3 _startPosition;
         
         [SerializeField] private RenderTexture grassInteractionTexture;
         
@@ -49,6 +52,7 @@ namespace Systems.Grass
 
         private void Awake()
         {
+            _startPosition = transform.position;
             MeshFilter = GetComponent<MeshFilter>();
 
             if (grassInteractionTexture) return;
@@ -99,8 +103,10 @@ namespace Systems.Grass
 
         private void Update()
         {
+            var offset = transform.position - _startPosition;
             foreach (var grassInstance in _grassInstances)
             {
+                grassInstance.MaterialPropertyBlock.SetVector(OffsetProperty, offset);
                 grassInstance.Render();
             }
         }

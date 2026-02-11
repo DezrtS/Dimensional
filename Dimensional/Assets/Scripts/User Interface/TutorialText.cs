@@ -1,45 +1,36 @@
-using System;
 using System.Collections;
 using Febucci.UI;
 using UnityEngine;
 
 namespace User_Interface
 {
-    public class AreaTitle : MonoBehaviour
+    public class TutorialText : MonoBehaviour
     {
         [SerializeField] private TextAnimator_TMP textAnimator;
         [SerializeField] private TypewriterByCharacter typewriterByCharacter;
         
-        private Animator _animator;
         private bool _isShown;
 
-        private void Awake()
-        {
-            _animator = GetComponent<Animator>();
-        }
-
-        public void ShowArea(string areaName, float duration, bool hasDuration = true)
+        public void ShowText(string text, float duration, bool hasDuration = true)
         {
             if (_isShown) return;
             _isShown = true;
-            textAnimator.SetText(areaName, true);
+            textAnimator.SetText(text, true);
             typewriterByCharacter.StartShowingText();
-            _animator.SetTrigger("Show");
             if (hasDuration) StartCoroutine(HideAreaRoutine(duration));
         }
 
-        public void HideArea()
+        public void HideText()
         {
             if (!_isShown) return;
             _isShown = false;
             typewriterByCharacter.StartDisappearingText();
-            _animator.SetTrigger("Hide");
         }
 
         private IEnumerator HideAreaRoutine(float duration)
         {
             yield return new WaitForSeconds(duration);
-            HideArea();
+            HideText();
         }
     }
 }
