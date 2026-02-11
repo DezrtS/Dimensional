@@ -23,14 +23,16 @@ Shader "Custom/ProceduralGrass"
         {
             Cull Off
             ZWrite On
+            
 
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fog
 
-            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
-            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            //#pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -63,6 +65,8 @@ Shader "Custom/ProceduralGrass"
             float _WindSpeed;
             float _WindScale;
 
+            float3 _Offset;
+
             struct Attributes
             {
                 uint vertexID : SV_VertexID;
@@ -94,7 +98,7 @@ Shader "Custom/ProceduralGrass"
                 uint index = _Indices[IN.vertexID];
                 GrassVertex v = _Vertices[index];
 
-                float3 worldPos = v.position;
+                float3 worldPos = v.position + _Offset;
                 float3 worldNormal = normalize(v.normal);
 
                 float4 interaction =
@@ -126,6 +130,8 @@ Shader "Custom/ProceduralGrass"
                 );
 
                 float4 clipPos = TransformWorldToHClip(worldPos);
+                float3 os = TransformWorldToObject(worldPos);
+                VertexPositionInputs posInputs = GetVertexPositionInputs(os);
 
                 o.positionCS = clipPos;
                 o.normalWS   = bentNormal;
@@ -133,7 +139,12 @@ Shader "Custom/ProceduralGrass"
                 o.fogFactor  = ComputeFogFactor(clipPos.z);
 
                 // Needed for shadow sampling
-                o.shadowCoord = TransformWorldToShadowCoord(worldPos);
+                //float3 shadowSamplePos = worldPos + normalize(worldPos) * 0.5;
+                //o.shadowCoord = TransformWorldToShadowCoord(shadowSamplePos);
+
+                o.shadowCoord = GetShadowCoord(posInputs);
+
+                //o.shadowCoord = TransformWorldToShadowCoord(worldPos);
 
                 return o;
             }
@@ -145,9 +156,9 @@ Shader "Custom/ProceduralGrass"
                 float3 baseColor = lerp(_BottomColor.rgb, _TopColor.rgb, h);
 
                 float3 normal = normalize(i.normalWS);
-
+                
                 Light mainLight = GetMainLight(i.shadowCoord);
-                float shadow = lerp(0.35, 1.0, mainLight.shadowAttenuation);
+                float shadow = lerp(0.7, 1.0, mainLight.shadowAttenuation);
                 float NdotL = saturate(dot(normal, mainLight.direction));
                 float3 directLight = baseColor * mainLight.color * NdotL * shadow;
 
@@ -159,6 +170,8 @@ Shader "Custom/ProceduralGrass"
 
                 // Fog
                 color = MixFog(color, i.fogFactor);
+
+                //return shadow;
                 
                 return half4(color, 1);
             }

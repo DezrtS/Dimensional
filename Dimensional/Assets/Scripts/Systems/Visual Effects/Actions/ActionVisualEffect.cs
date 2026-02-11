@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Scriptables.Visual_Effects;
 using Systems.Actions;
+using Systems.Grass;
 using UnityEngine;
 using Utilities;
 using Action = Systems.Actions.Action;
@@ -17,12 +18,15 @@ namespace Systems.Visual_Effects
         private List<ObjectPool<EffectPlayer>> _effectEndEventList;
         private Dictionary<ActionEventType, List<ActionAnimation>> _actionAnimationDictionary;
         private List<string> _animationEndList;
+        
+        private ActionVisualEffectDatum _actionVisualEffectDatum;
 
         protected ActionContext PreviousContext { get; private set; }
         protected Animator Animator { get; private set; }
 
         public virtual void Initialize(ActionVisualEffectDatum actionVisualActionDatum)
         {
+            _actionVisualEffectDatum = actionVisualActionDatum;
             _effectStartEventDictionary = new Dictionary<ActionEventType, List<ObjectPool<EffectPlayer>>>();
             _effectEndEventList = new List<ObjectPool<EffectPlayer>>();
             _actionAnimationDictionary = new Dictionary<ActionEventType, List<ActionAnimation>>();
@@ -77,18 +81,21 @@ namespace Systems.Visual_Effects
         {
             PreviousContext = context;
             PlayParticleEffects(ActionEventType.Activated, context);
+            if (_actionVisualEffectDatum.ActionGrassEffect.GrassEffectStartEventType == ActionEventType.Activated) TriggerGrassEffect();
             TriggerAnimations(ActionEventType.Activated, context);
         }
 
         protected virtual void ActionOnTriggered(Action action, ActionContext context)
         {
             PlayParticleEffects(ActionEventType.Triggered, context);
+            if (_actionVisualEffectDatum.ActionGrassEffect.GrassEffectStartEventType == ActionEventType.Triggered) TriggerGrassEffect();
             TriggerAnimations(ActionEventType.Triggered, context);
         }
 
         protected virtual void ActionOnDeactivated(Action action, ActionContext context)
         {
             PlayParticleEffects(ActionEventType.Deactivated, context);
+            if (_actionVisualEffectDatum.ActionGrassEffect.GrassEffectStartEventType == ActionEventType.Deactivated) TriggerGrassEffect();
             TriggerAnimations(ActionEventType.Deactivated, context);
             EndParticleEffects();
             EndAnimations();
@@ -97,6 +104,7 @@ namespace Systems.Visual_Effects
         protected virtual void ActionOnInterrupted(Action action, ActionContext context)
         {
             PlayParticleEffects(ActionEventType.Interrupted, context);
+            if (_actionVisualEffectDatum.ActionGrassEffect.GrassEffectStartEventType == ActionEventType.Interrupted) TriggerGrassEffect();
             TriggerAnimations(ActionEventType.Interrupted, context);
             EndParticleEffects();
             EndAnimations();
@@ -105,6 +113,7 @@ namespace Systems.Visual_Effects
         protected virtual void ActionOnCancelled(Action action, ActionContext context)
         {
             PlayParticleEffects(ActionEventType.Cancelled, context);
+            if (_actionVisualEffectDatum.ActionGrassEffect.GrassEffectStartEventType == ActionEventType.Cancelled) TriggerGrassEffect();
             TriggerAnimations(ActionEventType.Cancelled, context);
             EndParticleEffects();
             EndAnimations();
@@ -133,6 +142,29 @@ namespace Systems.Visual_Effects
             {
                 effectPlayerObjectPool.RecallPool();
             }
+        }
+
+        private void TriggerGrassEffect()
+        {
+            var grassEffectData = _actionVisualEffectDatum.ActionGrassEffect.GrassEffectData;
+            
+            if (!Physics.Raycast(transform.position, Vector3.down, out var hit, grassEffectData.CheckDistance, grassEffectData.InteractionLayerMask)) return;
+            if (!hit.collider.TryGetComponent(out GrassMesh grassMesh)) return;
+            
+            var meshBounds = grassMesh.MeshFilter.sharedMesh.bounds;
+            var worldToUV = 1f / (Mathf.Max(meshBounds.extents.x, meshBounds.extents.z) * Mathf.Max(grassMesh.transform.lossyScale.x, grassMesh.transform.lossyScale.z));
+            var uvRadius = grassEffectData.InteractionRadius * worldToUV;
+            
+            var strength = grassEffectData.InteractionStrength;
+
+            if (grassEffectData.ScaleDistance)
+            {
+                var distanceRatio = 1 - (hit.distance - grassEffectData.ScaleRange.x) / grassEffectData.ScaleRange.y;
+                strength = Mathf.Clamp01(strength * distanceRatio);
+            }
+            
+            var uv = GrassInteractionPainter.ComputeHitUV(hit, grassMesh.MeshFilter.sharedMesh);
+            grassMesh.AddGrassPaintCommand(new GrassPaintCommand {radius = uvRadius, strength = strength, uv = uv});
         }
 
         protected void AddAnimation(ActionAnimation actionAnimation)
