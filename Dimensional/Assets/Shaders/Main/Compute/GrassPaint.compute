@@ -1,0 +1,38 @@
+#pragma kernel CSMain
+
+struct GrassPaintCommand
+{
+    float2 uv;
+    float radius;
+    float strength;
+};
+
+RWTexture2D<float> _InteractionTex;
+
+StructuredBuffer<GrassPaintCommand> _PaintCommands;
+uint _PaintCount;
+uint _TextureResolution;
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    uint2 pixel = id.xy;
+    if (pixel.x >= _TextureResolution || pixel.y >= _TextureResolution)
+        return;
+    
+    float2 uv = (pixel + 0.5) / _TextureResolution;
+
+    float current = _InteractionTex[pixel] * 0.9995f;
+
+    for (uint i = 0; i < _PaintCount; i++)
+    {
+        GrassPaintCommand cmd = _PaintCommands[i];
+
+        float dist = distance(uv, cmd.uv);
+        float falloff = saturate(1.0 - dist / cmd.radius);
+
+        current = max(current, falloff * cmd.strength);
+    }
+
+    _InteractionTex[pixel] = current;
+}

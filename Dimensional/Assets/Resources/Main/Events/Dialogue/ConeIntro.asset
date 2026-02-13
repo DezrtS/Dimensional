@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4584bf6c4c305814e9e42df2787cba98, type: 3}
   m_Name: ConeIntro
   m_EditorClassIdentifier: 
-  eventType: 2
-  eventName: Debug Dialogue
-  duration: 0
-  dialogueSequenceDatum: {fileID: 11400000, guid: 79fb8fa78c2f83f4a92a96ebdc054ec5, type: 2}
+  dialogueEvent:
+    Duration: 0
+    DialogueSequence: {fileID: 11400000, guid: 79fb8fa78c2f83f4a92a96ebdc054ec5, type: 2}

@@ -18,14 +18,14 @@ namespace User_Interface
             _animator = GetComponent<Animator>();
         }
 
-        public void ShowArea(string areaName, float duration)
+        public void ShowArea(string areaName, float duration, bool hasDuration = true)
         {
             if (_isShown) return;
             _isShown = true;
             textAnimator.SetText(areaName, true);
             typewriterByCharacter.StartShowingText();
             _animator.SetTrigger("Show");
-            StartCoroutine(HideAreaRoutine(duration));
+            if (hasDuration) StartCoroutine(HideAreaRoutine(duration));
         }
 
         public void HideArea()

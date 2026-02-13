@@ -47,11 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMusic:
     Guid:
-      Data1: -2069600642
-      Data2: 1219286658
-      Data3: -1615665533
-      Data4: 404731214
-    Path: event:/ForestTheme
+      Data1: 272748648
+      Data2: 1265269143
+      Data3: 1223472804
+      Data4: -1494709428
+    Path: event:/TutorialTheme
   startMusicOnAwake: 1
 --- !u!114 &4656057143729007131
 MonoBehaviour:

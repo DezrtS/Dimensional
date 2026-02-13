@@ -1,6 +1,7 @@
 using System;
 using Scriptables.Utilities;
 using Systems.Actions;
+using Systems.Grass;
 using Systems.Visual_Effects;
 using UnityEngine;
 
@@ -20,6 +21,16 @@ namespace Scriptables.Visual_Effects
         public ObjectPoolDatum ObjectPoolDatum => objectPoolDatum;
         public ActionEventType EffectStartEventType => effectStartEventType;
         public bool StopOnActionEnd => stopOnActionEnd;
+    }
+
+    [Serializable]
+    public struct ActionGrassEffect
+    {
+        [SerializeField] private ActionEventType grassEffectStartEventType;
+        [SerializeField] private GrassEffectData grassEffectData;
+        
+        public ActionEventType GrassEffectStartEventType => grassEffectStartEventType;
+        public GrassEffectData GrassEffectData => grassEffectData;
     }
 
     public enum AnimationEventType
@@ -54,10 +65,13 @@ namespace Scriptables.Visual_Effects
         [SerializeField] private GameObject actionVisualEffectPrefab;
         [SerializeField] private ActionEffectPlayer[] actionParticleEffects;
         [SerializeField] private ActionAnimation[] actionAnimations;
+        [Space] 
+        [SerializeField] private ActionGrassEffect actionGrassEffect;
         
         protected GameObject ActionVisualEffectPrefab => actionVisualEffectPrefab;
         public ActionEffectPlayer[] ActionParticleEffects => actionParticleEffects;
         public ActionAnimation[] ActionAnimations => actionAnimations;
+        public ActionGrassEffect ActionGrassEffect => actionGrassEffect;
 
         public virtual ActionVisualEffect AttachActionVisualEffect(Transform parent)
         {

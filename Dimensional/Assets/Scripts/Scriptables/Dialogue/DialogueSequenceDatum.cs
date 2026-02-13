@@ -1,5 +1,3 @@
-using System;
-using FMODUnity;
 using Scriptables.Events;
 using Systems.Dialogue;
 using UnityEngine;

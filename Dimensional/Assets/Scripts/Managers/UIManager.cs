@@ -3,6 +3,9 @@ using Debugging;
 using Scriptables.Selection_Wheels;
 using Scriptables.User_Interface;
 using Systems.Actions.Movement;
+using Systems.Events;
+using Systems.Events.Busses;
+using TMPro;
 using UnityEngine;
 using User_Interface;
 using User_Interface.Selection_Wheels;
@@ -35,6 +38,8 @@ namespace Managers
         [Space]
         [SerializeField] private Transform interactableIconTransform;
         [Space]
+        [SerializeField] private TutorialText tutorialText;
+        [Space]
         [SerializeField] private GameObject fade;
         [SerializeField] private GameObject actionSelectionWheelTransform;
         [SerializeField] private GameObject shapeSelectionWheelTransform;
@@ -53,7 +58,43 @@ namespace Managers
             _maskReveal = GetComponent<MaskReveal>();
             _maskReveal.Finished += MaskRevealOnFinished;
             
+            UIEventBus.EventFired += UIEventBusOnEventFired;
+            
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+        }
+
+        private void UIEventBusOnEventFired(GameEvent gameEvent)
+        {
+            switch (gameEvent)
+            {
+                case DisplayTextEvent displayTextEvent:
+                    switch (displayTextEvent.DisplayType)
+                    {
+                        case DisplayType.Tutorial:
+                            tutorialText.ShowText(displayTextEvent.Text, displayTextEvent.DisplayDuration, displayTextEvent.HasDisplayDuration);
+                            break;
+                        case DisplayType.Area:
+                            areaTitle.ShowArea(displayTextEvent.Text, displayTextEvent.DisplayDuration, displayTextEvent.HasDisplayDuration);
+                            break;
+                        case DisplayType.Boss:
+                            break;
+                    }
+                    break;
+                case HideTextEvent hideTextEvent:
+                    switch (hideTextEvent.DisplayType)
+                    {
+                        case DisplayType.Tutorial:
+                            tutorialText.HideText();
+                            break;
+                        case DisplayType.Area:
+                            areaTitle.HideArea();
+                            break;
+                        case DisplayType.Boss:
+                            break;
+                    }
+
+                    break;
+            }
         }
 
         private void Start()
@@ -127,6 +168,7 @@ namespace Managers
 
         private void OnDisable()
         {
+            UIEventBus.EventFired -= UIEventBusOnEventFired;
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
     }

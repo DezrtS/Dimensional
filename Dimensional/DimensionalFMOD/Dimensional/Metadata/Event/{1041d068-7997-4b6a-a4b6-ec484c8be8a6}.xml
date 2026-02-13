@@ -5,7 +5,7 @@
 			<value>TutorialTheme</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{6678ba0c-56ff-494b-9c05-5d900eaeadea}</destination>
@@ -96,7 +96,6 @@
 	<object class="MixerBusEffectChain" id="{b8c9dcfe-b18f-4798-aa4e-25ae8636bf60}">
 		<relationship name="effects">
 			<destination>{96c1a64e-7db5-48bd-8052-328022d9719c}</destination>
-			<destination>{0516ccc0-480d-45d7-a5d7-ea928584d64f}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{7c392427-2aec-4ae5-be73-fe8244427d5c}" />
@@ -107,5 +106,4 @@
 	</object>
 	<object class="MixerBusFader" id="{a1ec7ba1-14e7-41c1-a79c-1496d88b6fd1}" />
 	<object class="MixerBusFader" id="{96c1a64e-7db5-48bd-8052-328022d9719c}" />
-	<object class="SpatialiserEffect" id="{0516ccc0-480d-45d7-a5d7-ea928584d64f}" />
 </objects>

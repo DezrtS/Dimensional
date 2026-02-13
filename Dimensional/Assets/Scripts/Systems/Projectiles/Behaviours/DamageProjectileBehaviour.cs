@@ -15,10 +15,9 @@ namespace Systems.Projectiles.Behaviours
             _damageProjectileBehaviourDatum = (DamageProjectileBehaviourDatum)projectileBehaviourDatum;
         }
 
-        protected override void ProjectileOnCollided(BaseProjectile projectile, Collider hitCollider)
+        protected override void ProjectileOnCollided(BaseProjectile projectile, GameObject hitObject)
         {
-            //if ((_damageProjectileBehaviourDatum.DamageLayerMask.value & (1 << hitCollider.gameObject.layer)) == 0) return;
-            if (hitCollider.TryGetComponent(out Health health))
+            if (hitObject.TryGetComponent(out Health health))
             {
                 health.Damage(_damageProjectileBehaviourDatum.Damage);
             }

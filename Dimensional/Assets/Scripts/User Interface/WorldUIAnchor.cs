@@ -1,4 +1,6 @@
+using System.Collections;
 using Managers;
+using Scriptables.Dialogue;
 using Scriptables.User_Interface;
 using Systems.Player;
 using UnityEngine;
@@ -16,6 +18,7 @@ namespace User_Interface
 
         private bool _isTargetInRange;
         protected Camera Camera { get; private set; }
+        protected bool DisableScaling { get; set; }
 
         public void Initialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform)
         {
@@ -40,6 +43,7 @@ namespace User_Interface
             OnFixedUpdate();
             var targetDistance = GetTargetDistance();
             SetIsTargetInRange(targetDistance <= WorldUIAnchorDatum.Range);
+            if (DisableScaling) return;
             
             var distanceRatio = WorldUIAnchorDatum.UseDistanceScaling ? GetDistanceRatio() : 0;
             var angleRatio = WorldUIAnchorDatum.UseAngleScaling ? GetAngleRatio() : 0;
@@ -83,5 +87,7 @@ namespace User_Interface
             var angle = Vector3.Angle(CameraTransform.forward, difference.normalized);
             return (angle - WorldUIAnchorDatum.MinAngle) / (WorldUIAnchorDatum.MaxAngle - WorldUIAnchorDatum.MinAngle);
         }
+
+        
     }
 }

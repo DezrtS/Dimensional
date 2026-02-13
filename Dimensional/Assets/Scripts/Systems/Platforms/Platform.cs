@@ -1,6 +1,4 @@
 using System;
-using Debugging.New_Movement_System;
-using Systems.Movement;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -21,12 +19,12 @@ namespace Systems.Platforms
         
         public Vector3 Velocity { get; private set; }
 
-        private void Awake()
+        private void Start()
         {
             _rigidbody = GetComponent<Rigidbody>();
 
             if (!splineContainer) return;
-            Vector3 startPosition = splineContainer.EvaluatePosition(durationOffset);
+            Vector3 startPosition = splineContainer.EvaluatePosition(0);
             if (autoOffset) offset = transform.position - startPosition;
             transform.position = startPosition + offset;
         }
@@ -34,11 +32,11 @@ namespace Systems.Platforms
         private void FixedUpdate()
         {
             if (!splineContainer) return;
-            var time = Time.timeSinceLevelLoad / duration;
+            var time = Time.timeSinceLevelLoad / duration + (durationOffset * duration);
             var normalizedTime = Mathf.Clamp01(animationCurve.Evaluate(time));
                 
             var dt = Time.fixedDeltaTime;
-            var nextTime = (Time.timeSinceLevelLoad + dt) / duration;
+            var nextTime = (Time.timeSinceLevelLoad + dt) / duration + (durationOffset * duration);
             var nextNormalizedTime = Mathf.Clamp01(animationCurve.Evaluate(nextTime));
                 
             Vector3 currentTarget = splineContainer.EvaluatePosition(normalizedTime);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Systems.Quests;
 using UnityEngine;
 using Utilities;
 
@@ -25,24 +26,23 @@ namespace Managers
     [Serializable]
     public class ActionData
     {
-        public List<string> actionShapes;
+        public List<string> actionShapes = new();
     }
 
     [Serializable]
     public class CollectableData
     {
         public int collectables;
-        public List<string> collectedCollectables;
-        public List<string> collectedKeys;
-        public List<string> collectedTickets;
-        public List<string> collectedShapes;
+        public List<string> collectedCollectables = new();
+        public List<string> collectedKeys = new();
+        public List<string> collectedTickets = new();
+        public List<string> collectedShapes = new();
     }
 
     [Serializable]
     public class QuestData
     {
-        public List<int> questIds;
-        public List<int> completedQuestIds;
+        public List<QuestInstanceData> quests = new();
     }
 
     [Serializable]
@@ -51,6 +51,7 @@ namespace Managers
         public int regionId;
         public int levelId;
         public string checkpointId;
+        public List<string> completedTutorials = new();
     }
 
     [Serializable]
@@ -62,12 +63,12 @@ namespace Managers
     [Serializable]
     public class SaveData
     {
-        public PlayerData playerData;
-        public ActionData actionData;
-        public CollectableData collectableData;
-        public QuestData questData;
-        public WorldData worldData;
-        public SceneData sceneData;
+        public PlayerData playerData = new();
+        public ActionData actionData = new();
+        public CollectableData collectableData = new();
+        public QuestData questData = new();
+        public WorldData worldData = new();
+        public SceneData sceneData = new();
     }
     
     public class SaveManager : SingletonPersistent<SaveManager>
@@ -77,6 +78,7 @@ namespace Managers
         public static event SaveDataEventHandler Loaded;
 
         [SerializeField] private bool saveOnQuit;
+        [SerializeField] private List<DataType> saveOnQuitTypes;
 
         private const string SaveFolderName = "SpheroSave";
         private const string PlayerSaveFileName = "PlayerSave";
@@ -97,7 +99,8 @@ namespace Managers
 
         public void RequestSave(List<DataType> dataTypes)
         {
-            RequestLoad(dataTypes, false);
+            //RequestLoad(dataTypes, false);
+            _saveData = new SaveData() { collectableData = _saveData.collectableData };
             Saving?.Invoke(_saveData, dataTypes);
             foreach (var dataType in dataTypes)
             {
@@ -202,7 +205,7 @@ namespace Managers
             var filePath = Path.Combine(folderPath, fileName);
             if (!Directory.Exists(folderPath) || !File.Exists(filePath)) return null;
             var json = File.ReadAllText(filePath);
-            return JsonUtility.FromJson<T>(json);
+            return string.IsNullOrEmpty(json) ? null : JsonUtility.FromJson<T>(json);
         }
 
         private static void Save<T>(T data, string fileName)
@@ -218,7 +221,7 @@ namespace Managers
         private void OnApplicationQuit()
         {
             if (!saveOnQuit) return;
-            RequestSave(new List<DataType>() { DataType.Player, DataType.Action, DataType.Collectable, DataType.Quest, DataType.World });
+            RequestSave(saveOnQuitTypes);
         }
     }
 }

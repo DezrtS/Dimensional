@@ -1,4 +1,5 @@
 using Systems.Actions;
+using Systems.Forces;
 using UnityEngine;
 
 namespace Scriptables.Actions.Modifiers
@@ -10,13 +11,18 @@ namespace Scriptables.Actions.Modifiers
     {
         [SerializeField] private float gravity = 9.81f;
         [SerializeField] private float height = 2f;
+        
+        
 
         public override ActionContext Modify(ActionContext actionContext)
         {
             var startPos = actionContext.SourceGameObject.transform.position;
             var endPos = actionContext.TargetPosition;
+            
+            var velocity = Vector3.zero;
+            if (actionContext.TargetGameObject && actionContext.TargetGameObject.TryGetComponent<ForceController>(out var forceController)) velocity = forceController.GetVelocity();
 
-            Vector3 launchVelocity = ComputeBallisticVelocity(startPos, endPos, height);
+            var launchVelocity = ComputeBallisticVelocity(startPos, endPos, height, velocity);
 
             actionContext.TargetDirection = launchVelocity.normalized;
             actionContext.ProjectileSpeed = launchVelocity.magnitude; // If you store speed separately
@@ -24,7 +30,7 @@ namespace Scriptables.Actions.Modifiers
             return actionContext;
         }
         
-        private Vector3 ComputeBallisticVelocity(Vector3 start, Vector3 end, float apexHeight)
+        private Vector3 ComputeBallisticVelocity(Vector3 start, Vector3 end, float apexHeight, Vector3 targetVelocity)
         {
             // --- Vertical motion ---
             float startY = start.y;
@@ -45,6 +51,7 @@ namespace Scriptables.Actions.Modifiers
             float t_down = vy_down / gravity;
 
             float totalTime = t_up + t_down;
+            end += targetVelocity * totalTime;
 
             // --- Horizontal motion ---
             Vector3 horizontalDisplacement = new Vector3(

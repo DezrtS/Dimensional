@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Debugging.New_Movement_System;
 using Interfaces;
 using Managers;
 using Scriptables.Movement;
@@ -105,7 +104,8 @@ namespace Systems.Movement
             
             for (var i = 0; i < length; i++)
             {
-                var platform = results[i].transform;
+                var platformCollider = results[i];
+                var platform = platformCollider.attachedRigidbody ? platformCollider.attachedRigidbody.transform : platformCollider.transform;
                 Platform(platform);
                 break;
             }

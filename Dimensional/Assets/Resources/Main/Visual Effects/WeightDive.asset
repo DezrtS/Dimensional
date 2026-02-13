@@ -19,5 +19,17 @@ MonoBehaviour:
     objectPoolDatum: {fileID: 11400000, guid: 195261e45cecb0242aca0ca865ddf966, type: 2}
     effectStartEventType: 3
     stopOnActionEnd: 0
+  actionAnimations: []
+  actionGrassEffect:
+    grassEffectStartEventType: 3
+    grassEffectData:
+      interactionRadius: 3
+      interactionStrength: 0.75
+      interactionLayerMask:
+        serializedVersion: 2
+        m_Bits: 16384
+      checkDistance: 1
+      scaleDistance: 0
+      scaleRange: {x: 0, y: 0}
   shapeType: 7
   activationEventType: 1

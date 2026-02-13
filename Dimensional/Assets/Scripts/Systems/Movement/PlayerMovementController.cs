@@ -1,5 +1,5 @@
 using System;
-using Debugging.New_Movement_System;
+using Systems.Forces;
 using FMODUnity;
 using Interfaces;
 using Managers;
@@ -69,8 +69,8 @@ namespace Systems.Movement
         private Action _rightSpecialMovementAction;
         
         private Action _wallSlideMovementAction;
-        
-        public bool IsWallSliding { get; private set; }
+
+        private bool IsWallSliding { get; set; }
 
         private Vector3 GetForward()
         {
@@ -325,6 +325,7 @@ namespace Systems.Movement
             }
             else
             {
+                WallSlide(true);
                 if (IsWallSliding || _wallCoyoteTimer > 0)
                 {
                     _wallJumpMovementAction.Activate(GetActionContext());
@@ -536,9 +537,9 @@ namespace Systems.Movement
             _rightSpecialMovementAction.Cancel(actionContext);
             _wallSlideMovementAction.Cancel(actionContext);
         }
-        
 
-        private void WallSlide()
+
+        private void WallSlide(bool skipChecks = false)
         {
             // Potential Problem with _rollJumpMovementAction
             if (_wallSlideDelayTimer > 0 || _rollMovementAction.IsActive || _jumpMovementAction.IsActive || 
@@ -546,7 +547,7 @@ namespace Systems.Movement
                 _rollJumpMovementAction.IsActive || _dashMovementAction.IsActive || 
                 _diveMovementAction.IsActive) return;
 
-            var canWallSlide = CheckWallSlide();
+            var canWallSlide = CheckWallSlide(skipChecks);
             
             switch (canWallSlide)
             {
@@ -560,17 +561,17 @@ namespace Systems.Movement
             }
         }
 
-        private bool CheckWallSlide()
+        private bool CheckWallSlide(bool skipChecks = false)
         {
             if (disableWallSlideCheck || IsGrounded) return false;
             if (_wallSlideMovementAction.IsActive) return CheckWallSlideDirection(_wallSlideDirection);
             
             var velocity = ForceController.GetVelocityComponent(VelocityType.Movement);
-            if (!(velocity.y < _playerMovementControllerDatum.WallSlideYVelocityThreshold)) return false;
+            if (!skipChecks && !(velocity.y < _playerMovementControllerDatum.WallSlideYVelocityThreshold)) return false;
             velocity.y = 0;
 
             var input = _playerLook.TransformInput(Mover.GetInput());
-            if (input.magnitude < _playerMovementControllerDatum.WallSlideMinEnterMagnitude) return false;
+            if (!skipChecks && input.magnitude < _playerMovementControllerDatum.WallSlideMinEnterMagnitude) return false;
             
             input.y = 0;
             if (MovementDimensions == Dimensions.Two) input.z = 0;

@@ -1,4 +1,4 @@
-using Debugging.New_Movement_System;
+using Systems.Forces;
 using Scriptables.Actions;
 using Scriptables.Actions.Movement;
 using UnityEngine;
@@ -103,6 +103,7 @@ namespace Systems.Actions.Movement
             IsMoving = false;
             _movementTimer = 0;
             MovementController.ForceController.UseGravity = true;
+            if (PositionMovementActionDatum.ResetMovementOnDisable) MovementController.ForceController.SetVelocityComponent(VelocityType.Movement, Vector3.zero);
         }
     }
 }
