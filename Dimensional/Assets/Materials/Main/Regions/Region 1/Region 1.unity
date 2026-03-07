@@ -314,6 +314,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -10
       objectReference: {fileID: 0}
+    - target: {fileID: 6584684497335371089, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: offset.x
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6584684497335371089, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: offset.y
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6584684497335371089, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: offset.z
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6584684497335371089, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: grassSettings.BladesPerSquareUnit
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6894099196394078812, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -510,8 +526,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5227539573208429235, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 678247837}
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
+--- !u!1 &678247836 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5227539573208429235, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
+  m_PrefabInstance: {fileID: 678247835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &678247837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678247836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maskTexture: {fileID: 0}
+  overrideGrassMaterial: {fileID: 0}
+  renderTextureSize: 64
+  grassPaintCompute: {fileID: 7200000, guid: 6dc1c21ad9c81e441bfd4be85ee67264, type: 3}
+  grassInteractionTexture: {fileID: 0}
 --- !u!1001 &844471179
 PrefabInstance:
   m_ObjectHideFlags: 0

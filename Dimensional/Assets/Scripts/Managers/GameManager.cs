@@ -64,8 +64,8 @@ namespace Managers
         [SerializeField] private InputActionAsset defaultInputActionAsset;
         [Space]
         [SerializeField] private GameStateEvents[] gameStateEvents;
-
-        [Space] [SerializeField] private GameObject saveManagerPrefab;
+        [Space] 
+        [SerializeField] private GameObject saveManagerPrefab;
         [SerializeField] private bool loadSceneData;
         [SerializeField] private List<DataType> loadOnLoading;
 

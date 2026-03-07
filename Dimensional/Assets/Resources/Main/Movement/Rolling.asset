@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rolling
   m_EditorClassIdentifier: 
   maxSpeed: 20
-  acceleration: 20
+  acceleration: 25
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -28,7 +28,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0.1
+      value: 0.25
       inSlope: 0
       outSlope: 0
       tangentMode: 136

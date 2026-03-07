@@ -18,5 +18,4 @@ MonoBehaviour:
   onPlayEventData:
   - {fileID: 11400000, guid: e820a4c537f5d5847b6251d4ed58d317, type: 2}
   onStopEventData:
-  - {fileID: 11400000, guid: 1f350bfb85ea8d74fa65be94e24b08be, type: 2}
-  - {fileID: 11400000, guid: 768c819986d12f84bacc4c68dc803c3a, type: 2}
+  - {fileID: 11400000, guid: 3de2788d4a994604b922b1a25ca2b6fe, type: 2}

@@ -66,6 +66,8 @@ namespace Managers
 
         private void CheckpointOnEntered(Checkpoint checkpoint)
         {
+            var lastCheckpoint = GetLastCheckpoint();
+            if (lastCheckpoint) lastCheckpoint.Disable();
             _lastCheckpointId = checkpoint.Id;
         }
     }

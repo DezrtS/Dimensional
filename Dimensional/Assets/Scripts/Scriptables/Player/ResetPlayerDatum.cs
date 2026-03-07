@@ -17,7 +17,8 @@ namespace Scriptables.Player
         [SerializeField] private bool lookAtPlayer;
 
         [SerializeField] private float resetDelay;
-        [SerializeField] private float transitionDuration;
+        [SerializeField] private float inTransitionDuration;
+        [SerializeField] private float outTransitionDuration;
         
         public ResetResponseType ResetResponseType => resetResponseType;
         public bool UseTransition => useTransition;
@@ -25,6 +26,7 @@ namespace Scriptables.Player
         public bool LookAtPlayer => lookAtPlayer;
         
         public float ResetDelay => resetDelay;
-        public float TransitionDuration => transitionDuration;
+        public float InTransitionDuration => inTransitionDuration;
+        public float OutTransitionDuration => outTransitionDuration;
     }
 }

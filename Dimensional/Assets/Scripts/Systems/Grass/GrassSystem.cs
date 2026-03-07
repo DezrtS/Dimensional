@@ -25,12 +25,6 @@ namespace Systems.Grass
         [Range(-1, 1)] public float MaxChunkDot;
         
         public int BladesPerSquareUnit;
-        public int BladeSegments;
-        public float BladeHeight;
-        public float BladeWidth;
-        public float WidthTaper;
-        public float CurveFactor;
-
         public LayerMask MaskLayer;
     }
     
@@ -38,6 +32,7 @@ namespace Systems.Grass
     {
         [Header("Chunking")]
         public Vector3 chunkSize = new Vector3(20, 20, 20);
+        public Vector3 offset;
 
         [Header("Grass Settings")]
         public ComputeShader grassCompute;
@@ -102,6 +97,7 @@ namespace Systems.Grass
                     }
 
                     var cross = Vector3.Cross(v1 - v0, v2 - v0);
+                    var area = cross.magnitude * 0.5f;
                     list.Add(new TriangleData
                     {
                         v0 = v0,
@@ -111,7 +107,7 @@ namespace Systems.Grass
                         uv1 = uv1,
                         uv2 = uv2,
                         normal = cross.normalized,
-                        area = cross.magnitude * 0.5f
+                        area = area
                     });
                 }
 
@@ -140,10 +136,12 @@ namespace Systems.Grass
 
         private Vector3Int WorldToChunk(Vector3 p)
         {
+            Vector3 adjusted = p - offset;
+
             return new Vector3Int(
-                Mathf.FloorToInt(p.x / chunkSize.x),
-                Mathf.FloorToInt(p.y / chunkSize.y),
-                Mathf.FloorToInt(p.z / chunkSize.z)
+                Mathf.FloorToInt(adjusted.x / chunkSize.x),
+                Mathf.FloorToInt(adjusted.y / chunkSize.y),
+                Mathf.FloorToInt(adjusted.z / chunkSize.z)
             );
         }
 
@@ -153,7 +151,8 @@ namespace Systems.Grass
                 (id.x + 0.5f) * chunkSize.x,
                 (id.y + 0.5f) * chunkSize.y,
                 (id.z + 0.5f) * chunkSize.z
-            );
+            ) + offset;
         }
+
     }
 }

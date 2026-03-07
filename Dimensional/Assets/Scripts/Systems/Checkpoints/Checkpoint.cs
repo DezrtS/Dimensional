@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Managers;
 using UnityEngine;
 using Utilities;
@@ -7,13 +8,22 @@ namespace Systems.Checkpoints
 {
     public class Checkpoint : MonoBehaviour
     {
+        private static readonly int BlendProperty = Shader.PropertyToID("_Blend");
         public event Action<Checkpoint> Entered;
 
         [SerializeField] private bool isDefaultCheckpoint;
         [SerializeField] private Vector3 spawnOffset;
+        [Space] 
+        [SerializeField] private float transitionTime;
+        [SerializeField] private Material defaultMaterial;
+        [SerializeField] private MeshRenderer[] meshRenderers;
+
+        private Material _material;
         
         private Animator _animator;
         private ObjectId _objectId;
+
+        private bool _isActive;
         
         public string Id => _objectId.Id;
         public bool IsDefaultCheckpoint => isDefaultCheckpoint;
@@ -21,6 +31,12 @@ namespace Systems.Checkpoints
 
         private void Awake()
         {
+            _material = Instantiate(defaultMaterial);
+            foreach (var meshRenderer in meshRenderers)
+            {
+                meshRenderer.material = _material;
+            }
+            
             _animator = GetComponent<Animator>();
             _objectId = GetComponent<ObjectId>();
         }
@@ -48,10 +64,46 @@ namespace Systems.Checkpoints
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Player"))
+            if (_isActive) return;
+
+            if (!other.gameObject.CompareTag("Player")) return;
+            Entered?.Invoke(this);
+            _isActive = true;
+            StartCoroutine(EnteredRoutine());
+        }
+
+        public void Disable()
+        {
+            if (!_isActive) return;
+            
+            _isActive = false;
+            StartCoroutine(ExitedRoutine());
+        }
+        
+        private IEnumerator ExitedRoutine()
+        {
+            var timer = 0f;
+            while (timer < transitionTime)
             {
-                Entered?.Invoke(this);
+                yield return null;
+                timer += Time.deltaTime;
+                _material.SetFloat(BlendProperty, 1 - timer / transitionTime);
             }
+            
+            _material.SetFloat(BlendProperty, 0);
+        }
+
+        private IEnumerator EnteredRoutine()
+        {
+            var timer = 0f;
+            while (timer < transitionTime)
+            {
+                yield return null;
+                timer += Time.deltaTime;
+                _material.SetFloat(BlendProperty, timer / transitionTime);
+            }
+            
+            _material.SetFloat(BlendProperty, 1);
         }
     }
 }

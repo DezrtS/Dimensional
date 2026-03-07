@@ -78,7 +78,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ground_Gradient:
-        m_Texture: {fileID: 2800000, guid: a22a9f8d87429c1478fd72205613b9e4, type: 3}
+        m_Texture: {fileID: 2800000, guid: 794772b1b7d6ba043ae8448ca1d32e05, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ground_Texture:

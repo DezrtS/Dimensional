@@ -1120,6 +1120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementTransform: {fileID: 2023409555}
   worldUIAnchorDatum: {fileID: 11400000, guid: 2063363bc3eaf9948958460f63a3a3b4, type: 2}
+  dialogueLineDatum: {fileID: 0}
 --- !u!23 &228250538
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2452,6 +2453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementTransform: {fileID: 2130314656}
   worldUIAnchorDatum: {fileID: 11400000, guid: 2063363bc3eaf9948958460f63a3a3b4, type: 2}
+  dialogueLineDatum: {fileID: 0}
 --- !u!23 &552938463
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2729,6 +2731,10 @@ PrefabInstance:
     - target: {fileID: 4470422332389291845, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_Name
       value: Managers
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: startMusicOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6308891588487779745, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: Target.TrackingTarget
@@ -5743,6 +5749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementTransform: {fileID: 1942585930}
   worldUIAnchorDatum: {fileID: 11400000, guid: 2063363bc3eaf9948958460f63a3a3b4, type: 2}
+  dialogueLineDatum: {fileID: 0}
 --- !u!23 &1436432385
 MeshRenderer:
   m_ObjectHideFlags: 0

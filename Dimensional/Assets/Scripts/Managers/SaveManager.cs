@@ -52,6 +52,7 @@ namespace Managers
         public int levelId;
         public string checkpointId;
         public List<string> completedTutorials = new();
+        public List<string> completedCutscenes = new();
     }
 
     [Serializable]

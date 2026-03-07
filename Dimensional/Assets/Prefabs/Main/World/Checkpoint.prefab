@@ -603,6 +603,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDefaultCheckpoint: 0
   spawnOffset: {x: 0, y: 0.5, z: 0}
+  transitionTime: 1
+  defaultMaterial: {fileID: 2100000, guid: ce307743b0a2fc345a5620435cb1c7db, type: 2}
+  meshRenderers:
+  - {fileID: 2579689726829478135}
+  - {fileID: 3405697666584783664}
+  - {fileID: 9173487945887575356}
+  - {fileID: 901070108792672244}
+  - {fileID: 5760707026334876305}
+  - {fileID: 6525277720078201661}
 --- !u!114 &4920375672895212057
 MonoBehaviour:
   m_ObjectHideFlags: 0

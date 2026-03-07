@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76f84c5e6c8d4674dbc39681a8cd75ae, type: 3}
+  m_Name: Enter Forest
+  m_EditorClassIdentifier: 
+  eventType: 4
+  eventName: Enter Forest Cutscene
+  duration: 0
+  cutsceneDatum: {fileID: 11400000, guid: 13b1ac120459d3b41b039653a92981b2, type: 2}

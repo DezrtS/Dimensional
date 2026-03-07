@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Managers;
+using Scriptables.Shapes;
 using Scriptables.User_Interface;
 using Systems.Player;
 using TMPro;
@@ -16,6 +17,8 @@ namespace User_Interface
         [SerializeField] private TextMeshProUGUI actionText;
         [Space]
         [SerializeField] private float showDuration = 2f;
+        [Space]
+        [SerializeField] private bool loadActions;
 
         private InputActionMap _inputActionMap;
         private Animator _animator;
@@ -73,20 +76,24 @@ namespace User_Interface
 
                     break;
                 case GameState.Preparing:
-                    SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Action });
-
-                    for (var i = 0; i < movementActionShapesData.Length; i++)
+                    if (loadActions)
                     {
-                        var actionType = movementActionShapesData[i].MovementActionType;
-                        var shapeType = movementActionShapesData[i].ShapeData[_selectedShapeIndexDictionary[i]].ShapeType;
-                        PlayerController.Instance.SetMovementActionShape(actionType, shapeType);
+                        SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Action });
+                        
+                        for (var i = 0; i < movementActionShapesData.Length; i++)
+                        {
+                            var actionType = movementActionShapesData[i].MovementActionType;
+                            var shapeType = movementActionShapesData[i].ShapeData[_selectedShapeIndexDictionary[i]].ShapeType;
+                            PlayerController.Instance.SetMovementActionShape(actionType, shapeType);
+                        }
+                        PlayerController.Instance.ResetMovementActions();
                     }
-                    PlayerController.Instance.ResetMovementActions();
             
                     var datum = movementActionShapesData[_currentActionIndex];
-                    for (var i = 0; i < shapeOptions.Length; i++)
+                    var offset = 0;
+                    for (var i = 0; i < shapeOptions.Length - offset; i++)
                     {
-                        var option = shapeOptions[i];
+                        var option = shapeOptions[i + offset];
 
                         if (i >= datum.ShapeData.Length)
                         {
@@ -94,6 +101,11 @@ namespace User_Interface
                         }
                         else
                         {
+                            if (!PlayerController.Instance.UnlockedShapes.Contains(datum.ShapeData[i].ShapeType))
+                            {
+                                offset--;
+                                continue;
+                            }
                             option.Initialize(datum.ShapeData[i]);
                         }
                     }
@@ -231,9 +243,10 @@ namespace User_Interface
 
         private void SetShapeOptions(MovementActionShapesDatum datum)
         {
-            for (int i = 0; i < shapeOptions.Length; i++)
+            var offset = 0;
+            for (int i = 0; i < shapeOptions.Length - offset; i++)
             {
-                var option = shapeOptions[i];
+                var option = shapeOptions[i + offset];
 
                 if (i >= datum.ShapeData.Length)
                 {
@@ -242,6 +255,11 @@ namespace User_Interface
                 }
                 else
                 {
+                    if (!PlayerController.Instance.UnlockedShapes.Contains(datum.ShapeData[i].ShapeType))
+                    {
+                        offset--;
+                        continue;
+                    }
                     option.Initialize(datum.ShapeData[i]);
                     option.Enable();
                 }

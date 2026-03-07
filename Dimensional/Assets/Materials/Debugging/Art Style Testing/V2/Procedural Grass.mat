@@ -113,7 +113,8 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GradientOffset: -0.34
+    - _GradientOffset: 0
+    - _InteractionBendStrength: 1
     - _InvertMask: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -148,14 +149,14 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BottomColor: {r: 0.32156864, g: 0.5019608, b: 0.7372549, a: 1}
+    - _BottomColor: {r: 0.35224074, g: 0.5491277, b: 0.81761, a: 1}
     - _Color: {r: 0.29803923, g: 0.47058827, b: 0.4039216, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MainTexColor: {r: 1, g: 1, b: 1, a: 1}
     - _ScrollSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TipColor: {r: 0.29803923, g: 0.5137255, b: 0.427451, a: 1}
-    - _TopColor: {r: 0.3168979, g: 0.5805866, b: 0.9245283, a: 1}
+    - _TopColor: {r: 0.3164431, g: 0.52198964, b: 0.8050314, a: 1}
     - _WindScroll: {r: 0.5, g: 0, b: 0.5, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

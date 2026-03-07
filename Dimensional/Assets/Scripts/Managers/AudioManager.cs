@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 using Utilities;
+using Object = System.Object;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace Managers
@@ -13,36 +15,60 @@ namespace Managers
     {
         [SerializeField] private EventReference defaultMusic;
         [SerializeField] private bool startMusicOnAwake;
+        [Space]
+        [SerializeField] private float musicChangeDelay;
 
-        private static List<EventInstance> _eventInstances;
-        private static EventInstance _musicInstance;
+        private static List<EventInstance> eventInstances;
+        
+        private EventInstance _musicInstance;
+        private EventReference _nextMusicReference;
+        private bool _musicIsChanging;
 
         private void Awake()
         {
-            _eventInstances = new List<EventInstance>();
+            eventInstances = new List<EventInstance>();
             if (!startMusicOnAwake) return;
-            ChangeMusic(defaultMusic);
+            PlayMusic(defaultMusic);
         }
 
-        public static void ChangeMusic(EventReference newMusic)
+        public void ChangeMusic(EventReference newMusic)
         {
-            if (_eventInstances.Contains(_musicInstance))
-            {
-                _eventInstances.Remove(_musicInstance);
-                _musicInstance.stop(STOP_MODE.ALLOWFADEOUT);
-                _musicInstance.release();
-            }
+            if (_nextMusicReference.Guid == newMusic.Guid) return;
             
-            _musicInstance = CreateEventInstance(newMusic);
+            _nextMusicReference = newMusic;
+            if (!_musicIsChanging)
+            {
+                StartCoroutine(ChangeMusicRoutine());
+            }
+        }
+
+        private IEnumerator ChangeMusicRoutine()
+        {
+            _musicIsChanging = true;
+            StopMusic(STOP_MODE.ALLOWFADEOUT);
+            yield return new WaitForSeconds(musicChangeDelay);
+            while (true)
+            {
+                _musicInstance.getPlaybackState(out var state);
+                if (state != PLAYBACK_STATE.STOPPING) break;
+                yield return null;
+            }
+            PlayMusic(_nextMusicReference);
+            _musicIsChanging = false;
+        }
+
+        public void StopMusic(STOP_MODE stopMode) => _musicInstance.stop(stopMode);
+
+        private void PlayMusic(EventReference musicReference)
+        {
+            _musicInstance = CreateEventInstance(musicReference);
             _musicInstance.start();
         }
-
-        public static void StopMusic(STOP_MODE stopMode) => _musicInstance.stop(stopMode);
 
         public static EventInstance CreateEventInstance(EventReference eventReference)
         {
             var eventInstance = RuntimeManager.CreateInstance(eventReference);
-            _eventInstances.Add(eventInstance);
+            eventInstances.Add(eventInstance);
             return eventInstance;
         }
 
@@ -53,7 +79,7 @@ namespace Managers
 
         public static void RemoveEventInstance(EventInstance eventInstance)
         {
-            _eventInstances.Remove(eventInstance);
+            eventInstances.Remove(eventInstance);
             RuntimeManager.DetachInstanceFromGameObject(eventInstance);
         }
 
@@ -77,13 +103,13 @@ namespace Managers
 
         public void CleanUp()
         {
-            foreach (var eventInstance in _eventInstances)
+            foreach (var eventInstance in eventInstances)
             {
                 eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
                 eventInstance.release();
             }
             
-            _eventInstances.Clear();
+            eventInstances.Clear();
         }
 
         private void OnDestroy()

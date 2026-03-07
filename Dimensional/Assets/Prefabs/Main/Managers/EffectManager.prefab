@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 35, z: 0}
+  rainParticleSystem: {fileID: 5112688676392080629}
 --- !u!1 &2717393341830627491
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0055fde2b2ee7d7438e6aa6f4e89e65f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startRainOnAwake: 0
 --- !u!1 &7687874657021747721
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +466,11 @@ PrefabInstance:
 --- !u!4 &1211103427882636455 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8741097601465329528, guid: ae041beff40c5d64e87c5454c36044c1, type: 3}
+  m_PrefabInstance: {fileID: 7602122154790876127}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5112688676392080629 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3419290471152543530, guid: ae041beff40c5d64e87c5454c36044c1, type: 3}
   m_PrefabInstance: {fileID: 7602122154790876127}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8244963483695434146

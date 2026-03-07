@@ -52,6 +52,7 @@ namespace Managers
         private PlayerUIV1 _playerUI;
         
         public MovementActionType SelectedMovementActionType { get; set; }
+        public AreaTitle AreaTitle => areaTitle;
 
         private void Awake()
         {
