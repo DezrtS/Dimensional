@@ -1,6 +1,4 @@
-using System;
 using Managers;
-using Systems.Player;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -8,50 +6,47 @@ namespace Systems.Shaders
 {
     public class Clouds : MonoBehaviour
     {
+        private static readonly int MidYValueProperty = Shader.PropertyToID("_midYValue");
+        private static readonly int CloudHeightProperty = Shader.PropertyToID("_cloudHeight");
+        private static readonly int CameraPositionProperty = Shader.PropertyToID("_cameraPosition");
+
         [SerializeField] private int horizontalStackSize = 20;
         [SerializeField] private float cloudHeight;
         [SerializeField] private Mesh quadMesh;
         [SerializeField] private Material cloudMaterial;
 
-        [SerializeField] private int renderingLayer = 0; // Layer index (0-31)
-        [SerializeField] private uint renderingLayerMask = 1; // Bitmask for rendering layers (1 << layerIndex)
-
         private Transform _targetTransform;
-        
-        //private float _offset;
         private Camera _camera;
+
         private Matrix4x4[] _matrices;
-        private MaterialPropertyBlock _props;
         private RenderParams _renderParams;
-        private bool _initialized;
-        private Vector3 _lastPosition;
-        private Quaternion _lastRotation;
-        private Vector3 _lastScale;
-        private int _lastStackSize;
+
+        public Material RuntimeClouds { get; private set; }
 
         private void Awake()
         {
-            _props = new MaterialPropertyBlock();
+            // Create runtime material instance
+            RuntimeClouds = Instantiate(cloudMaterial);
+
+            // Preallocate matrices
             _matrices = new Matrix4x4[horizontalStackSize];
-            
+
             // Setup RenderParams
-            _renderParams = new RenderParams(cloudMaterial)
+            _renderParams = new RenderParams(RuntimeClouds)
             {
-                layer = renderingLayer,
-                renderingLayerMask = renderingLayerMask,
                 shadowCastingMode = ShadowCastingMode.Off,
                 receiveShadows = false,
-                worldBounds = new Bounds(Vector3.zero, Vector3.one * 2500f) // Large bounds to always render
+                worldBounds = new Bounds(Vector3.zero, Vector3.one * 2500f)
             };
 
             var instance = CameraManager.Instance;
-            if (instance)
+            if (instance != null)
             {
-                CameraManagerOnInitialized(instance);
+                _camera = instance.Camera;
             }
             else
             {
-                CameraManager.Initialized += CameraManagerOnInitialized;
+                CameraManager.Initialized += cam => _camera = cam.Camera;
             }
         }
 
@@ -60,63 +55,29 @@ namespace Systems.Shaders
             _targetTransform = CameraManager.Instance.Camera.transform;
         }
 
-        private void OnDestroy()
-        {
-            CameraManager.Initialized -= CameraManagerOnInitialized;
-        }
-
-        private void CameraManagerOnInitialized(CameraManager instance)
-        {
-            _camera = instance.Camera;
-            _initialized = true;
-        }
-
-        private void OnValidate()
-        {
-            // Update layer mask when properties change in editor
-            //if (renderingLayer >= 0 && renderingLayer < 32)
-            //{
-            //    renderingLayerMask = (uint)(1 << renderingLayer);
-            //}
-        }
-
         private void FixedUpdate()
         {
-            var position = _targetTransform.position;
-            position.y = transform.position.y;
-            transform.position = position;
+            // Keep clouds centered horizontally on the camera
+            var pos = _targetTransform.position;
+            pos.y = transform.position.y;
+            transform.position = pos;
         }
 
         private void Update()
         {
-            if (!_initialized || _camera == null) return;
-
-            // Update render params if changed
-            if (_renderParams.layer != renderingLayer || 
-                _renderParams.renderingLayerMask != renderingLayerMask)
-            {
-                _renderParams.layer = renderingLayer;
-                _renderParams.renderingLayerMask = renderingLayerMask;
-            }
-
-            // Recalculate matrices if needed
-            if (transform.hasChanged || _lastStackSize != horizontalStackSize)
+            // Rebuild matrices if stack size changed or transform moved
+            if (transform.hasChanged || _matrices.Length != horizontalStackSize)
             {
                 RecalculateMatrices();
                 transform.hasChanged = false;
-                _lastStackSize = horizontalStackSize;
             }
 
-            // Update material properties
-            //_offset = cloudHeight / horizontalStackSize / 2f;
-            _props.SetFloat("_midYValue", transform.position.y);
-            _props.SetFloat("_cloudHeight", cloudHeight);
-            _props.SetVector("_cameraPosition", _camera.transform.position);
+            // Update shader properties directly on the runtime material
+            RuntimeClouds.SetFloat(MidYValueProperty, transform.position.y);
+            RuntimeClouds.SetFloat(CloudHeightProperty, cloudHeight);
+            RuntimeClouds.SetVector(CameraPositionProperty, _camera.transform.position);
 
-            // Assign property block to render params
-            _renderParams.matProps = _props;
-
-            // Render all instances
+            // Draw all cloud layers
             Graphics.RenderMeshInstanced(
                 _renderParams,
                 quadMesh,
@@ -128,22 +89,15 @@ namespace Systems.Shaders
 
         private void RecalculateMatrices()
         {
-            // Resize array if stack size changed
             if (_matrices.Length != horizontalStackSize)
-            {
                 _matrices = new Matrix4x4[horizontalStackSize];
-            }
 
-            Vector3 startPosition = transform.position + Vector3.up * (cloudHeight / 2f);
-            
+            Vector3 start = transform.position + Vector3.up * (cloudHeight / 2f);
+
             for (int i = 0; i < horizontalStackSize; i++)
             {
-                Vector3 position = startPosition - Vector3.up * (cloudHeight * i / horizontalStackSize);
-                _matrices[i] = Matrix4x4.TRS(
-                    position,
-                    transform.rotation,
-                    transform.localScale
-                );
+                Vector3 pos = start - Vector3.up * (cloudHeight * i / horizontalStackSize);
+                _matrices[i] = Matrix4x4.TRS(pos, transform.rotation, transform.localScale);
             }
         }
     }

@@ -17,7 +17,7 @@ MonoBehaviour:
   - movementActionType: 1
     shapeType: 1
   - movementActionType: 2
-    shapeType: 4
+    shapeType: 0
   - movementActionType: 3
     shapeType: 1
   - movementActionType: 4
@@ -25,9 +25,9 @@ MonoBehaviour:
   - movementActionType: 5
     shapeType: 1
   - movementActionType: 6
-    shapeType: 7
+    shapeType: 0
   - movementActionType: 7
-    shapeType: 6
+    shapeType: 0
   - movementActionType: 8
     shapeType: 1
   - movementActionType: 11

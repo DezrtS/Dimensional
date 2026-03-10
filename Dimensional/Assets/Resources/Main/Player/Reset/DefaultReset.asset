@@ -17,4 +17,5 @@ MonoBehaviour:
   followPlayer: 0
   lookAtPlayer: 1
   resetDelay: 0.5
-  transitionDuration: 2
+  inTransitionDuration: 2
+  outTransitionDuration: 1

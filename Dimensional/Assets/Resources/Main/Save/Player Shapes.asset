@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605ab342d062a4f4a9e943ae323537c8, type: 3}
+  m_Name: Player Shapes
+  m_EditorClassIdentifier: 
+  id: player_shapes
+  movementActionShapesData:
+  - {fileID: 11400000, guid: f46f66be09f21e847a179f4fa5211762, type: 2}
+  - {fileID: 11400000, guid: aeaaed924407a90468c1cdb83b2a184f, type: 2}
+  - {fileID: 11400000, guid: 6611473798e76034eaf6d7ff01be197b, type: 2}
+  - {fileID: 11400000, guid: fc7f74cd09fbb1b47a6147895c6497d9, type: 2}
+  - {fileID: 11400000, guid: 54bf3885ca317b54b9083b945180b24b, type: 2}
+  - {fileID: 11400000, guid: 7144eb8f1b5ff314eaf47ab3ef0be7ab, type: 2}
+  - {fileID: 11400000, guid: 8bed3ef6eb3888d4fbcf75af927a0b35, type: 2}
+  shapeData:
+  - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}
+  - {fileID: 11400000, guid: 37a705e5358c5dd4cb35a6591d874538, type: 2}
+  - {fileID: 11400000, guid: 7ed04a327d17dac41985c7271116c796, type: 2}
+  - {fileID: 11400000, guid: 790162a82d371074c90e708f63f62a4a, type: 2}
+  - {fileID: 11400000, guid: 95f61075fca81604eaa1ba873a201843, type: 2}
+  - {fileID: 11400000, guid: f80463c9f2b40624080e9cd1ab5903d8, type: 2}
+  - {fileID: 11400000, guid: 646dbf0ef8be1c04ca3aa2883217c5f4, type: 2}
+  - {fileID: 11400000, guid: e3ebf381034f4c549a2dac7a18b8870c, type: 2}
+  - {fileID: 11400000, guid: eb24c54811217a848b850084d311472a, type: 2}
+  defaultValue:
+    movementActionShapes:
+    - movementActionType: 1
+      shapeType: 1
+    - movementActionType: 2
+      shapeType: 0
+    - movementActionType: 3
+      shapeType: 1
+    - movementActionType: 4
+      shapeType: 1
+    - movementActionType: 5
+      shapeType: 1
+    - movementActionType: 6
+      shapeType: 0
+    - movementActionType: 7
+      shapeType: 0
+    - movementActionType: 8
+      shapeType: 1
+    - movementActionType: 9
+      shapeType: 0
+    - movementActionType: 10
+      shapeType: 0
+    - movementActionType: 11
+      shapeType: 1

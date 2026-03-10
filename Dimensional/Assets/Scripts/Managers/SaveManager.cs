@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Scriptables.Save;
 using Systems.Quests;
 using UnityEngine;
 using Utilities;
@@ -52,6 +54,7 @@ namespace Managers
         public int levelId;
         public string checkpointId;
         public List<string> completedTutorials = new();
+        public List<string> completedCutscenes = new();
     }
 
     [Serializable]
@@ -70,17 +73,34 @@ namespace Managers
         public WorldData worldData = new();
         public SceneData sceneData = new();
     }
+
+    [Serializable]
+    public class SaveEntry
+    {
+        public string id;
+        public string value;
+    }
+
+    [Serializable]
+    public class SaveData2
+    {
+        public List<SaveEntry> entries = new();
+    }
     
     public class SaveManager : SingletonPersistent<SaveManager>
     {
         public delegate void SaveDataEventHandler(SaveData saveData, List<DataType> dataTypes);
         public static event SaveDataEventHandler Saving;
         public static event SaveDataEventHandler Loaded;
-
+        
+        [SerializeField] private List<SaveVariable> dirtyVariables = new List<SaveVariable>();
+        [SerializeField] private bool resetAllOnAwake;
+        
         [SerializeField] private bool saveOnQuit;
         [SerializeField] private List<DataType> saveOnQuitTypes;
 
         private const string SaveFolderName = "SpheroSave";
+        private const string SaveFileName = "Save";
         private const string PlayerSaveFileName = "PlayerSave";
         private const string ActionSaveFileName = "ActionSave";
         private const string CollectableSaveFileName = "CollectableSave";
@@ -88,6 +108,7 @@ namespace Managers
         private const string WorldSaveFileName = "WorldSave";
         private const string SceneSaveFileName = "SceneSave";
         
+        private static readonly List<SaveVariable> SaveVariables = new();
         private SaveData _saveData;
 
         public static int SaveId { get; set; }
@@ -95,6 +116,70 @@ namespace Managers
         private void Awake()
         {
             _saveData = new SaveData();
+            if (resetAllOnAwake)
+            {
+                ResetAll();
+            }
+            else
+            {
+                Load();   
+            }
+        }
+
+        public void SetDirty(SaveVariable saveVariable)
+        {
+            if (!dirtyVariables.Contains(saveVariable)) dirtyVariables.Add(saveVariable);
+        }
+
+        public static void Register(SaveVariable saveVariable)
+        {
+            if (SaveVariables.Contains(saveVariable)) return;
+            SaveVariables.Add(saveVariable);
+        }
+
+        private static void ResetAll()
+        {
+            foreach (var saveVariable in SaveVariables)
+            {
+                saveVariable.Reset();
+            }
+        }
+
+        private static void Load()
+        {
+            var saveData = Load<SaveData2>(SaveFileName);
+            if (saveData == null)
+            {
+                ResetAll();
+                return;
+            }
+            
+            var dictionary = saveData.entries.ToDictionary(x => x.id, x => x);
+            foreach (var saveVariable in SaveVariables)
+            {
+                if (!saveVariable.Load || !dictionary.ContainsKey(saveVariable.Id))
+                {
+                    saveVariable.Reset();
+                    continue;
+                }
+                saveVariable.Restore(dictionary[saveVariable.Id].value);
+            }
+        }
+
+        private void Save()
+        {
+            if (dirtyVariables.Count <= 0) return;
+
+            var saveData = Load<SaveData2>(SaveFileName) ?? new SaveData2();
+            var dictionary = saveData.entries.ToDictionary(x => x.id, x => x);
+            foreach (var dirtyVariable in dirtyVariables)
+            {
+                if (!dirtyVariable.Save) continue;
+                var saveEntry = new SaveEntry { id = dirtyVariable.Id, value = dirtyVariable.Capture() };
+                dictionary[dirtyVariable.Id] = saveEntry;
+            }
+            saveData.entries = dictionary.Values.ToList();
+            Save(saveData, SaveFileName);
         }
 
         public void RequestSave(List<DataType> dataTypes)
@@ -221,6 +306,7 @@ namespace Managers
         private void OnApplicationQuit()
         {
             if (!saveOnQuit) return;
+            Save();
             RequestSave(saveOnQuitTypes);
         }
     }

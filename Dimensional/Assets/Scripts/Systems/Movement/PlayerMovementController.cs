@@ -5,6 +5,7 @@ using Interfaces;
 using Managers;
 using Scriptables.Actions;
 using Scriptables.Movement;
+using Scriptables.Save;
 using Systems.Actions.Movement;
 using Systems.Player;
 using Systems.Visual_Effects;
@@ -24,6 +25,7 @@ namespace Systems.Movement
         [SerializeField] private bool disableWallSlideCheck;
         [SerializeField] private bool disableWallPlatformCheck;
         [Space]
+        [SerializeField] private PlayerShapes playerShapes;
         [SerializeField] private ActionDatum defaultActionDatum;
         [Space] 
         [SerializeField] private float dizzyDuration;
@@ -126,7 +128,7 @@ namespace Systems.Movement
 
         private Action SetMovementAction(MovementActionType movementActionType)
         {
-            var movementActionDatum = _playerController.GetMovementActionDatum(movementActionType);
+            var movementActionDatum = playerShapes.GetMovementActionDatum(movementActionType); //_playerController.GetMovementActionDatum(movementActionType);
             return !movementActionDatum ? defaultActionDatum.AttachAction(gameObject) : movementActionDatum.AttachAction(gameObject);
         }
 
@@ -158,7 +160,7 @@ namespace Systems.Movement
 
         private void VerifyMovementAction(ref Action action, MovementActionType movementActionType)
         {
-            ActionDatum movementActionDatum = _playerController.GetMovementActionDatum(movementActionType);
+            ActionDatum movementActionDatum = playerShapes.GetMovementActionDatum(movementActionType);
             
             if (!movementActionDatum) movementActionDatum = defaultActionDatum;
             if (action.ActionDatum == movementActionDatum) return;

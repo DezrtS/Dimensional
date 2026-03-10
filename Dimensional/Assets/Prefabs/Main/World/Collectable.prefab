@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecea7bef0b66c384f8de0269b9bf8417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collectedCollectablesSaveData: {fileID: 11400000, guid: f6ffb709709f6134ca0c7b234da12d17, type: 2}
   meshRenderer: {fileID: 3736558209866887844}
   defaultMaterial: {fileID: 2100000, guid: a67826659d69ad9418dfb6be4dc8be01, type: 2}
   ghostMaterial: {fileID: 2100000, guid: ba601384bb5b0c64398f9c8170daf31f, type: 2}

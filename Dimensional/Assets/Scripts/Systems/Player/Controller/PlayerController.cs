@@ -10,6 +10,7 @@ using Scriptables.Shapes;
 using Systems.Actions.Movement;
 using Systems.Entities;
 using Systems.Entities.Behaviours;
+using Systems.Events;
 using Systems.Interactables;
 using Systems.Movement;
 using Systems.Visual_Effects;
@@ -30,6 +31,7 @@ namespace Systems.Player
         [SerializeField] private ShapeDatum[] shapeData;
         [SerializeField] private MovementActionShapesPreset defaultMovementActionShapesPreset;
         [SerializeField] private MovementActionShapesPreset[] movementActionShapesPresets;
+        [SerializeField] private List<ShapeType> unlockedShapes;
         [Space] 
         [SerializeField] private ResetPlayerDatum deathResetPlayerDatum;
         [Space]
@@ -58,12 +60,13 @@ namespace Systems.Player
         public PlayerMovementController PlayerMovementController { get; private set; }
 
         public List<MovementActionShape> MovementActionShapes { get; private set; }
+        public List<ShapeType> UnlockedShapes => unlockedShapes;
         private Dictionary<ShapeType, ShapeDatum> ShapeData { get; set; }
 
         public MovementActionDatum GetMovementActionDatum(MovementActionType movementActionType)
         {
             var movementActionShape = Array.Find(MovementActionShapes.ToArray(), x => x.MovementActionType == movementActionType);
-            if (movementActionShape == null) return null;
+            if (movementActionShape == null || movementActionShape.ShapeType == ShapeType.None) return null;
             var movementActionDictionary = ShapeData[movementActionShape.ShapeType].DefineMovementActions();
             return movementActionDictionary[movementActionType];
         }
@@ -96,8 +99,6 @@ namespace Systems.Player
         protected override void OnEnable()
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
             base.OnEnable();
         }
 
@@ -202,8 +203,6 @@ namespace Systems.Player
         {
             UnassignControls();
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
         }
 
         Vector3 IMove.GetInput()
@@ -281,26 +280,15 @@ namespace Systems.Player
             switch (newValue)
             {
                 case GameState.Initializing:
-                    PlayerMovementController.Initialize(this);
                     _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
                     AssignControls();
                     break;
                 case GameState.Preparing:
+                    PlayerMovementController.Initialize(this);
+                    
                     RespawnPlayer(transform.position);
                     break;
             }
-        }
-        
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.Player)) return;
-            saveData.playerData.health = _health.CurrentHealth;
-        }
-        
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.Player)) return;
-            _health.SetHealth(saveData.playerData.health);
         }
         
         private void HealthOnHealthStateChanged(Health health, bool isDead)
@@ -416,16 +404,16 @@ namespace Systems.Player
         private IEnumerator ResetRoutine(ResetPlayerDatum resetPlayerDatum, Vector3 defaultResetPosition)
         {
             _isResetting = true;
-            
             var cameraManager = CameraManager.Instance;
             if (!resetPlayerDatum.FollowPlayer) cameraManager.SetFollow(null);
             if (resetPlayerDatum.LookAtPlayer) cameraManager.SetLookAt(transform);
             yield return new WaitForSeconds(resetPlayerDatum.ResetDelay);
             if (resetPlayerDatum.UseTransition)
             {
-                UIManager.Instance.Transition(false, true, resetPlayerDatum.TransitionDuration);
-                yield return new WaitForSeconds(resetPlayerDatum.TransitionDuration);
-                UIManager.Instance.Transition(false, false);   
+                EventManager.HandleEvent(new SetPlayerIsActiveEvent { IsPlayerActive = false});
+                UIManager.Instance.Transition(false, true, resetPlayerDatum.InTransitionDuration);
+                yield return new WaitForSeconds(resetPlayerDatum.InTransitionDuration);
+                UIManager.Instance.Transition(false, false, resetPlayerDatum.OutTransitionDuration);   
             }
             
             switch (resetPlayerDatum.ResetResponseType)
@@ -442,6 +430,8 @@ namespace Systems.Player
             cameraManager.SetFollow(PlayerLook.Root);
             cameraManager.SetLookAt(null);
             RespawnPlayer(defaultResetPosition);
+            yield return new WaitForSeconds(resetPlayerDatum.OutTransitionDuration + 1);
+            EventManager.HandleEvent(new SetPlayerIsActiveEvent { IsPlayerActive = true});
             _isResetting = false;
         }
     }

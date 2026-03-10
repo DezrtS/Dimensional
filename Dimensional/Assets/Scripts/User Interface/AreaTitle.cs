@@ -9,6 +9,8 @@ namespace User_Interface
     {
         [SerializeField] private TextAnimator_TMP textAnimator;
         [SerializeField] private TypewriterByCharacter typewriterByCharacter;
+
+        private string _previousAreaName;
         
         private Animator _animator;
         private bool _isShown;
@@ -20,8 +22,9 @@ namespace User_Interface
 
         public void ShowArea(string areaName, float duration, bool hasDuration = true)
         {
-            if (_isShown) return;
+            if (_isShown || _previousAreaName == areaName) return;
             _isShown = true;
+            _previousAreaName = areaName;
             textAnimator.SetText(areaName, true);
             typewriterByCharacter.StartShowingText();
             _animator.SetTrigger("Show");

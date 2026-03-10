@@ -15,6 +15,8 @@ namespace Systems.Grass
     {
         private static readonly int MaskCountProperty = Shader.PropertyToID("_MaskCount");
         private static readonly int MasksProperty = Shader.PropertyToID("_Masks");
+        private static readonly int UVMaskTextureProperty = Shader.PropertyToID("_UVMaskTexture");
+        private static readonly int HasUVMaskProperty = Shader.PropertyToID("_HasUVMask");
 
         private const int MaxGrassMasks = 6;
 
@@ -25,6 +27,8 @@ namespace Systems.Grass
 
         private List<MaskData> _grassMasks;
         private List<Texture2D> _grassMaskTextures;
+
+        private Texture2D _uvGrassMaskTexture;
 
         private Camera _camera;
         private Transform _cameraTransform;
@@ -89,6 +93,11 @@ namespace Systems.Grass
             _maskBuffer?.SetData(_grassMasks); 
         }
 
+        public void SetUVGrassMask(Texture2D texture)
+        {
+            _uvGrassMaskTexture = texture;
+        }
+
         private void SetupMaskBuffer()
         {
             _maskBuffer?.Release();
@@ -110,6 +119,13 @@ namespace Systems.Grass
             {
                 grassCompute.SetTexture(kernel, $"_MaskTexture{i}", i < maskCount ? _grassMaskTextures[i] : Texture2D.blackTexture);
             }
+
+            if (_uvGrassMaskTexture)
+            {
+                grassCompute.SetTexture(kernel, UVMaskTextureProperty, _uvGrassMaskTexture);   
+            }
+            
+            grassCompute.SetBool(HasUVMaskProperty, _uvGrassMaskTexture);
         }
 
         private bool IsChunkVisible()

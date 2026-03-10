@@ -45,6 +45,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CloudMask:
+        m_Texture: {fileID: 2800000, guid: fbc0b4e7d3bb19f44aa936e45e62782a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Cloud_Mask:
         m_Texture: {fileID: 2800000, guid: 60b0677ed38d0054d97b3b1d9205326f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -117,6 +121,9 @@ Material:
     - _Camera_Cutoff_Power: -10.8
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _CloudCutoff: 0.154
+    - _CloudSoftness: 0.35
+    - _CloudSpeed: 2
     - _Cloud_Cutoff: 0.154
     - _Cloud_Softness: 0.35
     - _Cloud_Speed: 3
@@ -133,6 +140,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _NoiseScale: 0.002
     - _Noise_Scale: 0.002
     - _OcclusionStrength: 1
     - _Offset_Distance: 0.025
@@ -140,9 +148,12 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: -1
     - _ReceiveShadows: 1
+    - _SSSPower: 56.4
+    - _SSSStrength: 1
     - _SSS_Power: 56.4
     - _SSS_Strength: 1
     - _Scale: 10
+    - _ShadowOffset: 0.1
     - _Shadow_Offset: 0.1
     - _Shadow_Strength: 0
     - _Smoothness: 0.5
@@ -151,6 +162,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _TaperPower: 1
     - _Taper_Power: 1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
@@ -162,6 +174,7 @@ Material:
     - _midYValue: 125
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CloudColor: {r: 0, g: 0, b: 0, a: 1}
     - _Cloud_Color: {r: 1, g: 0.5058824, b: 0.91744095, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

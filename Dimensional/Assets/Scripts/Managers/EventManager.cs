@@ -12,6 +12,11 @@ namespace Managers
 {
     public class EventManager : Singleton<EventManager>
     {
+        public static void HandleEvent(GameEvent gameEvent)
+        {
+            gameEvent.Handle();
+        }
+        
         public static void HandleEvents(IEnumerable<GameEvent> gameEvents)
         {
             Instance.StartCoroutine(HandleEventsRoutine(gameEvents));

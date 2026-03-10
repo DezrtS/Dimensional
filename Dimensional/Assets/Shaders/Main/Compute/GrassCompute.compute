@@ -12,12 +12,13 @@ struct Triangle
     float  area;
 };
 
-struct GrassVertex
+struct GrassBlade
 {
     float3 position;
     float3 normal;
-    float  height01; // 0 = base, 1 = tip
     float2 uv;
+    float height;
+    float rotation;
 };
 
 struct GrassMask
@@ -27,6 +28,8 @@ struct GrassMask
     float rotation;
 };
 
+Texture2D<float> _UVMaskTexture;
+
 Texture2D<float> _MaskTexture0;
 Texture2D<float> _MaskTexture1;
 Texture2D<float> _MaskTexture2;
@@ -35,45 +38,21 @@ Texture2D<float> _MaskTexture4;
 Texture2D<float> _MaskTexture5;
 
 StructuredBuffer<GrassMask> _Masks;
-
 StructuredBuffer<Triangle> _Triangles;
-
-RWStructuredBuffer<GrassVertex> _Vertices;
-RWStructuredBuffer<uint>        _Indices;
-
-RWStructuredBuffer<uint> _VertexCounter;
-RWStructuredBuffer<uint> _IndexCounter;
+AppendStructuredBuffer<GrassBlade> _GrassBlades;
 
 uint   _TriangleCount;
-
-int   _BladesPerSquareUnit;
-int   _BladeSegments;
-float _BladeHeight;
-float _BladeWidth;
-float _WidthTaper;
-float _CurveFactor;
-
-uint _MaskCount;
-
-uint AllocateVertices(uint count)
-{
-    uint old;
-    InterlockedAdd(_VertexCounter[0], count, old);
-    return old;
-}
-
-uint AllocateIndices(uint count)
-{
-    uint old;
-    InterlockedAdd(_IndexCounter[0], count, old);
-    return old;
-}
+uint   _BladesPerSquareUnit;
+uint   _MaskCount;
+bool   _HasUVMask;
 
 float2 RemapToUV(float3 worldPos, GrassMask mask)
 {
-    float3 local = (worldPos - mask.position) / mask.size;
+    // Translate into mask-centered space (still world units)
+    float3 local = worldPos - mask.position;
 
-    float s = sin(-mask.rotation);
+    // Inverse rotation: world -> mask local
+    float s = sin(mask.rotation);
     float c = cos(-mask.rotation);
 
     float2 rotated = float2(
@@ -81,7 +60,29 @@ float2 RemapToUV(float3 worldPos, GrassMask mask)
         local.x * s + local.z * c
     );
 
-    return rotated * 0.5 + 0.5;
+    // Now apply scale per-axis (assuming mask.size is full extents in world units)
+    float2 scaled = float2(
+        rotated.x / mask.size.x,
+        rotated.y / mask.size.z
+    );
+
+    // Map from [-1,1] to [0,1] (so size.x/z represent half-extents)
+    return scaled * 0.5 + 0.5;
+}
+
+uint Hash(uint x)
+{
+    x ^= x >> 16;
+    x *= 0x7feb352d;
+    x ^= x >> 15;
+    x *= 0x846ca68b;
+    x ^= x >> 16;
+    return x;
+}
+
+float RandomFloat(uint seed)
+{
+    return (Hash(seed) & 0x00FFFFFF) / 16777216.0;
 }
 
 #define MAX_MASKS 4
@@ -96,6 +97,11 @@ float SampleMask(uint index, float2 uv)
     if (index == 4) return _MaskTexture4.SampleLevel(sampler_LinearClamp, uv, 0);
     if (index == 5) return _MaskTexture5.SampleLevel(sampler_LinearClamp, uv, 0);
     return 0.0f;
+}
+
+float SampleUVMask(float2 uv)
+{
+    return _UVMaskTexture.SampleLevel(sampler_LinearClamp, uv, 0);
 }
 
 [numthreads(64, 1, 1)]
@@ -125,9 +131,8 @@ void CSMain(uint id : SV_DispatchThreadID)
             r.y * (tri.v2 - tri.v0);
 
         float2 bladeUV = tri.uv0 + r.x * (tri.uv1 - tri.uv0) + r.y * (tri.uv2 - tri.uv0);
-
-        // === Mask
-        bool skip = false;
+        
+        float maskValue = 0;
         for (uint j = 0; j < _MaskCount; j++)
         {
             if (j >= MAX_MASKS) continue;
@@ -136,111 +141,29 @@ void CSMain(uint id : SV_DispatchThreadID)
             
             if (uv.x >= 0 && uv.x <= 1 && uv.y >= 0 && uv.y <= 1)
             {
-                float maskValue = SampleMask(j, uv);
-                if (maskValue > 0.5f)
-                {
-                    skip = true;
-                    break;
-                }
+                maskValue = max(SampleMask(j, uv), maskValue);
+                if (maskValue > 0.5f) break;
             }
         }
 
-        if (skip) continue;
-        float3 up = normalize(tri.normal);
-
-        // === RANDOM ROTATION ===
-        float rand = frac(sin(dot(float2(i, id), float2(91.345, 12.678))) * 47453.5453);
-        float angle = rand * 6.28318530718;
-
-        float3 right = abs(up.y) > 0.99
-            ? float3(1,0,0)
-            : normalize(cross(float3(0,1,0), up));
-
-        float3 forward = normalize(cross(right, up));
-
-        float s = sin(angle);
-        float c = cos(angle);
-
-        float3 rRight   =  right * c + forward * s;
-        float3 rForward = -right * s + forward * c;
-
-        // === SEGMENTS ===
-        float segmentHeight = _BladeHeight / _BladeSegments;
-        
-        float3 currPos = bladePos;
-        
-        // Base
-        uint baseVertexIndex = AllocateVertices(2 + (_BladeSegments - 1) * 2 + 1);
-        uint baseIndicesIndex = AllocateIndices(2 + (_BladeSegments - 1) * 6 + 1);
-        
-        GrassVertex baseV0, baseV1;
-        float width = _BladeWidth * pow(1.0, _WidthTaper);
-        baseV0.position = currPos - rRight * width * 0.5;
-        baseV1.position = currPos + rRight * width * 0.5;
-        baseV0.normal = baseV1.normal = up;
-        baseV0.height01 = baseV1.height01 = 0;
-        baseV0.uv = baseV1.uv = bladeUV;
-
-        _Vertices[baseVertexIndex + 0] = baseV0;
-        _Vertices[baseVertexIndex + 1] = baseV1;
-        
-        _Indices[baseIndicesIndex + 0] = baseVertexIndex + 0;
-        _Indices[baseIndicesIndex + 1] = baseVertexIndex + 1;
-        
-
-        for (int seg = 1; seg < _BladeSegments; seg++)
+        if (_HasUVMask)
         {
-            float t = (float)seg / _BladeSegments;
-            float bend = t * t * _CurveFactor;
-
-            float3 currDir = normalize(
-                up * cos(bend) +
-                rForward * sin(bend)
-            );
-
-            currPos += currDir * segmentHeight;
-            float w0 = _BladeWidth * pow(abs(1.0 - t), _WidthTaper);
-
-            // === VERTICES ===
-            GrassVertex v0, v1;
-            v0.position = currPos - rRight * w0 * 0.5;
-            v1.position = currPos + rRight * w0 * 0.5;
-            v0.normal = v1.normal = up;
-            v0.height01 = v1.height01 = t;
-            v0.uv = v1.uv = bladeUV;
-
-            uint vertexIndex = (seg - 1) * 2 + baseVertexIndex + 2;
-            uint indicesIndex = (seg - 1) * 6 + baseIndicesIndex + 2;
-            
-            _Vertices[vertexIndex + 0] = v0;
-            _Vertices[vertexIndex + 1] = v1;
-            
-            _Indices[indicesIndex + 0] = vertexIndex + 0;
-            _Indices[indicesIndex + 1] = vertexIndex - 1;
-            _Indices[indicesIndex + 2] = vertexIndex + 0;
-            _Indices[indicesIndex + 3] = vertexIndex + 1;
-            _Indices[indicesIndex + 4] = vertexIndex + 0;
-            _Indices[indicesIndex + 5] = vertexIndex + 1;
+            float uvMask = SampleUVMask(bladeUV);
+            maskValue = max(maskValue, uvMask);
         }
-        
-        float3 currDir = normalize(
-            up * cos(_CurveFactor) +
-            rForward * sin(_CurveFactor)
-        );
 
-        currPos += currDir * segmentHeight;
+        if (maskValue > 0.5f) continue;
 
-        // Tip
-        GrassVertex tipV;
-        tipV.position = currPos;
-        tipV.normal = up;
-        tipV.height01 = 1;
-        tipV.uv = bladeUV;
+        float3 normal = normalize(tri.normal);
+        float height = 0.5f + RandomFloat(id * i + i) * 1.5f * (1 - 2 * maskValue);
+        float angle = frac(sin(dot(float2(i, id), float2(91.345, 12.678))) * 47453.5453) * 6.28318530718;
 
-        uint vertexIndex = (_BladeSegments - 1) * 2 + baseVertexIndex + 2;
-        uint indicesIndex = (_BladeSegments - 1) * 6 + baseIndicesIndex + 2;
-
-        _Vertices[vertexIndex + 0] = tipV;
-        _Indices[indicesIndex + 0] = vertexIndex + 0;
+        GrassBlade blade;
+        blade.position = bladePos;
+        blade.normal = normal;
+        blade.uv = bladeUV;
+        blade.height = height;
+        blade.rotation = angle;
+        _GrassBlades.Append(blade);
     }
 }

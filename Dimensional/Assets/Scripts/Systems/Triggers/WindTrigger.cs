@@ -18,7 +18,7 @@ namespace Systems.Triggers
             for (var i = _forceControllers.Count - 1; i >= 0; i--)
             {
                 var controller = _forceControllers[i];
-                controller.ApplyForce(windDirection * windSpeed, ForceMode.Force);
+                controller.ApplyForce(transform.rotation * (windDirection * windSpeed), ForceMode.Force);
             }
         }
 

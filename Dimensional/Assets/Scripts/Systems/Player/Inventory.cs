@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Managers;
+using Scriptables.Save;
 using Systems.Events;
 using Systems.Events.Busses;
 using UnityEngine;
@@ -14,32 +15,27 @@ namespace Systems.Player
         public event InventoryEventHandler KeysChanged;
         
         [SerializeField] private int collectableCapacity;
+        [SerializeField] private IntVariable collectablesSaveData;
         
         public int Collectables { get; private set; }
         public int Keys { get; private set; }
 
         private void OnEnable()
         {
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
         }
 
         private void OnDisable()
         {
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
-        }
-
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.Collectable)) return;
-            saveData.collectableData.collectables = Collectables;
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
         
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (!dataTypes.Contains(DataType.Collectable)) return;
-            AddCollectables(saveData.collectableData.collectables);
+            if (newValue == GameState.Preparing)
+            {
+                AddCollectables(collectablesSaveData.Value);
+            }
         }
 
         public void AddCollectables(int amount)
@@ -48,6 +44,7 @@ namespace Systems.Player
             var newCollectables = Mathf.Min(Collectables + amount, collectableCapacity);
             CollectablesChanged?.Invoke(Collectables, newCollectables);
             Collectables = newCollectables;
+            collectablesSaveData.Value = newCollectables;
             EventManager.SendEvent(new CounterEvent { CounterId = "Collectables", CounterValue = Collectables });
         }
 

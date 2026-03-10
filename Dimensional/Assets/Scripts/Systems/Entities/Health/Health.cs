@@ -1,6 +1,7 @@
 using System.Collections;
 using Managers;
 using Scriptables.Entities;
+using Scriptables.Save;
 using UnityEngine;
 
 namespace Systems.Entities
@@ -14,6 +15,7 @@ namespace Systems.Entities
         public event HealthStateEventHandler HealthStateChanged;
         
         [SerializeField] private HealthDatum healthDatum;
+        [SerializeField] private IntVariable healthSaveData;
         [SerializeField] private bool destroyOnDeath;
 
         private bool _isDead;
@@ -63,6 +65,7 @@ namespace Systems.Entities
             health = Mathf.Clamp(health, 0, healthDatum.MaxHealth);
             HealthChanged?.Invoke(CurrentHealth, health, healthDatum.MaxHealth);
             CurrentHealth = health;
+            if (healthSaveData) healthSaveData.Value = health;
         }
 
         public void Die()

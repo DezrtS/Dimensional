@@ -22,6 +22,8 @@ namespace Systems.Grass
         private static readonly int TextureResolutionProperty = Shader.PropertyToID("_TextureResolution");
         private static readonly int PaintCommandBufferProperty = Shader.PropertyToID("_PaintCommands");
         private static readonly int OffsetProperty = Shader.PropertyToID("_Offset");
+        
+        private const int MaxPaintCommands = 16;
 
         [SerializeField] private Texture2D maskTexture;
         [SerializeField] private Material overrideGrassMaterial;
@@ -35,6 +37,8 @@ namespace Systems.Grass
         private ComputeBuffer _paintCommandBuffer;
 
         private Vector3 _startPosition;
+        private int _kernel;
+        private int _groups;
         
         [SerializeField] private RenderTexture grassInteractionTexture;
         
@@ -54,20 +58,35 @@ namespace Systems.Grass
         {
             _startPosition = transform.position;
             MeshFilter = GetComponent<MeshFilter>();
-
-            if (grassInteractionTexture) return;
-            grassInteractionTexture = new RenderTexture(renderTextureSize, renderTextureSize, 0, RenderTextureFormat.RGFloat)
-            {
-                enableRandomWrite = true,
-                graphicsFormat = GraphicsFormat.R16G16_SFloat,
-                wrapMode = TextureWrapMode.Clamp,
-                filterMode = FilterMode.Bilinear
-            };
-            grassInteractionTexture.Create();
             
-            Graphics.SetRenderTarget(grassInteractionTexture);
-            GL.Clear(false, true, Color.black);
-            Graphics.SetRenderTarget(null);
+            if (!grassInteractionTexture)
+            {
+                grassInteractionTexture = new RenderTexture(renderTextureSize, renderTextureSize, 0, RenderTextureFormat.RGFloat)
+                {
+                    enableRandomWrite = true,
+                    graphicsFormat = GraphicsFormat.R16G16_SFloat,
+                    wrapMode = TextureWrapMode.Clamp,
+                    filterMode = FilterMode.Bilinear
+                };
+                grassInteractionTexture.Create();
+            
+                Graphics.SetRenderTarget(grassInteractionTexture);
+                GL.Clear(false, true, Color.black);
+                Graphics.SetRenderTarget(null);   
+            }
+            else
+            {
+                renderTextureSize = grassInteractionTexture.width;
+            }
+            
+            _kernel = grassPaintCompute.FindKernel("CSMain");
+            _groups = Mathf.CeilToInt(renderTextureSize / 8f);
+
+            _paintCommandBuffer = new ComputeBuffer(MaxPaintCommands, sizeof(float) * 4);
+
+            grassPaintCompute.SetTexture(_kernel, InteractionTextureProperty, grassInteractionTexture);
+            grassPaintCompute.SetBuffer(_kernel, PaintCommandBufferProperty, _paintCommandBuffer);
+            grassPaintCompute.SetInt(TextureResolutionProperty, renderTextureSize);
         }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
@@ -78,18 +97,7 @@ namespace Systems.Grass
         public GrassInstance CreateGrassInstance(List<TriangleData> triangleData, GrassChunk grassChunk, ComputeShader grassCompute, Material grassMaterial, GrassSettings grassSettings)
         {
             if (overrideGrassMaterial) grassMaterial = overrideGrassMaterial;
-            if (maskTexture)
-            {
-                var size = MeshFilter.sharedMesh.bounds.extents;
-                var scale = transform.lossyScale;
-                var grassMask = new MaskData
-                {
-                    position = MeshFilter.sharedMesh.bounds.center + transform.position,
-                    size = new Vector3(size.x * scale.x, size.y * scale.y, size.z * scale.z),
-                    rotation = transform.eulerAngles.y * Mathf.Deg2Rad,
-                };
-                grassChunk.AddGrassMask(grassMask, maskTexture);
-            }
+            if (maskTexture) grassChunk.SetUVGrassMask(maskTexture);
             var grassInstance = new GrassInstance(triangleData, grassChunk, grassCompute, grassMaterial, grassSettings);
             _grassInstances.Add(grassInstance);
             grassInstance.MaterialPropertyBlock.SetTexture(GrassInteractionTextureProperty, grassInteractionTexture);
@@ -111,36 +119,31 @@ namespace Systems.Grass
             }
         }
 
-        private void SetupPaintCommandBuffer()
-        {
-            _paintCommandBuffer?.Release();
-            _paintCommandBuffer = new ComputeBuffer(
-                _grassPaintCommands.Count,
-                sizeof(float) * 4
-            );
-            _paintCommandBuffer.SetData(_grassPaintCommands);
-        }
-
         private void LateUpdate()
         {
-            if (_grassPaintCommands.Count == 0)
-                return;
-            
-            SetupPaintCommandBuffer();
-            var kernel = grassPaintCompute.FindKernel("CSMain");
-            
-            grassPaintCompute.SetTexture(kernel, InteractionTextureProperty, grassInteractionTexture);
-            
             var paintCount = _grassPaintCommands.Count;
-            grassPaintCompute.SetInt(PaintCountProperty, paintCount);
-            grassPaintCompute.SetInt(TextureResolutionProperty, renderTextureSize);
-            
-            grassPaintCompute.SetBuffer(kernel, PaintCommandBufferProperty, _paintCommandBuffer);
+            if (paintCount == 0)
+                return;
 
-            var groups = Mathf.CeilToInt(renderTextureSize / 8f);
+            paintCount = Mathf.Min(paintCount, MaxPaintCommands);
+            if (_grassPaintCommands.Count > MaxPaintCommands) _grassPaintCommands.RemoveRange(MaxPaintCommands, paintCount - MaxPaintCommands);
+
+            grassPaintCompute.SetInt(PaintCountProperty, paintCount);
+            try
+            {
+                _paintCommandBuffer.SetData(_grassPaintCommands);
+            }
+            catch (Exception ex)
+            {
+                _grassPaintCommands.Clear();
+            }
+            grassPaintCompute.SetBuffer(_kernel, PaintCommandBufferProperty, _paintCommandBuffer);
             
-            grassPaintCompute.Dispatch(kernel, groups, groups, 1);
-            
+            grassPaintCompute.SetTexture(_kernel, InteractionTextureProperty, grassInteractionTexture);
+            grassPaintCompute.SetInt(TextureResolutionProperty, renderTextureSize);
+
+            grassPaintCompute.Dispatch(_kernel, _groups, _groups, 1);
+
             _grassPaintCommands.Clear();
         }
 
