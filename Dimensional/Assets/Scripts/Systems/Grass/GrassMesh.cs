@@ -97,20 +97,7 @@ namespace Systems.Grass
         public GrassInstance CreateGrassInstance(List<TriangleData> triangleData, GrassChunk grassChunk, ComputeShader grassCompute, Material grassMaterial, GrassSettings grassSettings)
         {
             if (overrideGrassMaterial) grassMaterial = overrideGrassMaterial;
-            if (maskTexture)
-            {
-                var bounds = MeshFilter.sharedMesh.bounds;
-                var center = transform.TransformPoint(bounds.center);
-                var extents = Vector3.Scale(bounds.extents, transform.lossyScale);
-                
-                var grassMask = new MaskData
-                {
-                    position = center,
-                    size = new Vector3(extents.x, extents.y, extents.z),
-                    rotation = transform.eulerAngles.y * Mathf.Deg2Rad,
-                };
-                grassChunk.AddGrassMask(grassMask, maskTexture);
-            }
+            if (maskTexture) grassChunk.SetUVGrassMask(maskTexture);
             var grassInstance = new GrassInstance(triangleData, grassChunk, grassCompute, grassMaterial, grassSettings);
             _grassInstances.Add(grassInstance);
             grassInstance.MaterialPropertyBlock.SetTexture(GrassInteractionTextureProperty, grassInteractionTexture);

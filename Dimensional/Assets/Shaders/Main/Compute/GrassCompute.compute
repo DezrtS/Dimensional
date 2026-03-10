@@ -28,6 +28,8 @@ struct GrassMask
     float rotation;
 };
 
+Texture2D<float> _UVMaskTexture;
+
 Texture2D<float> _MaskTexture0;
 Texture2D<float> _MaskTexture1;
 Texture2D<float> _MaskTexture2;
@@ -41,7 +43,8 @@ AppendStructuredBuffer<GrassBlade> _GrassBlades;
 
 uint   _TriangleCount;
 uint   _BladesPerSquareUnit;
-uint _MaskCount;
+uint   _MaskCount;
+bool   _HasUVMask;
 
 float2 RemapToUV(float3 worldPos, GrassMask mask)
 {
@@ -96,6 +99,11 @@ float SampleMask(uint index, float2 uv)
     return 0.0f;
 }
 
+float SampleUVMask(float2 uv)
+{
+    return _UVMaskTexture.SampleLevel(sampler_LinearClamp, uv, 0);
+}
+
 [numthreads(64, 1, 1)]
 void CSMain(uint id : SV_DispatchThreadID)
 {
@@ -136,6 +144,12 @@ void CSMain(uint id : SV_DispatchThreadID)
                 maskValue = max(SampleMask(j, uv), maskValue);
                 if (maskValue > 0.5f) break;
             }
+        }
+
+        if (_HasUVMask)
+        {
+            float uvMask = SampleUVMask(bladeUV);
+            maskValue = max(maskValue, uvMask);
         }
 
         if (maskValue > 0.5f) continue;

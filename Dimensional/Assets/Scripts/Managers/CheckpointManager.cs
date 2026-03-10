@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Scriptables.Save;
 using Systems.Checkpoints;
 using UnityEngine;
 using Utilities;
@@ -8,6 +9,8 @@ namespace Managers
 {
     public class CheckpointManager : Singleton<CheckpointManager>
     {
+        [SerializeField] private StringVariable lastCheckpointSaveData;
+        
         private Dictionary<string, Checkpoint> _checkpoints;
         private string _lastCheckpointId = string.Empty;
         
@@ -69,6 +72,7 @@ namespace Managers
             var lastCheckpoint = GetLastCheckpoint();
             if (lastCheckpoint) lastCheckpoint.Disable();
             _lastCheckpointId = checkpoint.Id;
+            lastCheckpointSaveData.Value = checkpoint.Id;
         }
     }
 }

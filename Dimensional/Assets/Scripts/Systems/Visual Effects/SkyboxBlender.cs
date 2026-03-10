@@ -1,4 +1,5 @@
 using System.Collections;
+using Scriptables.Save;
 using Systems.Shaders;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace Systems.Visual_Effects
 {
     public class SkyboxBlender : MonoBehaviour
     {
+        [Header("Save Data")]
+        [SerializeField] private BoolVariable isStormySaveData;
+        
         [Header("Skybox Materials (Presets)")]
         public Material skyA;
         public Material skyB;
@@ -39,6 +43,11 @@ namespace Systems.Visual_Effects
             _runtimeSkybox = Instantiate(skyA);
             _runtimeClouds = clouds.RuntimeClouds;
             RenderSettings.skybox = _runtimeSkybox;
+
+            if (!isStormySaveData.Value) return;
+            BlendSkybox(1f);
+            BlendFog(1f);
+            BlendClouds(1f);
         }
 
         public void StartBlend()

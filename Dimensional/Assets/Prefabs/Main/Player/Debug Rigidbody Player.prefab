@@ -5398,6 +5398,7 @@ MonoBehaviour:
   scaleSpeed: 2
   disableWallSlideCheck: 0
   disableWallPlatformCheck: 0
+  playerShapes: {fileID: 11400000, guid: 30c899766de1c9e4687ee56777203341, type: 2}
   defaultActionDatum: {fileID: 11400000, guid: df3514ee588ea764fbc8bc5db965cd2a, type: 2}
   dizzyDuration: 1
   landEffectSpeedThreshold: 5
@@ -5512,6 +5513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectableCapacity: 999
+  collectablesSaveData: {fileID: 11400000, guid: 993c636a27371164ab048ec92cf9edeb, type: 2}
 --- !u!114 &4701536958715000790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5538,6 +5540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthDatum: {fileID: 11400000, guid: e2fae261522c7fe4a9da60f400c8364b, type: 2}
+  healthSaveData: {fileID: 11400000, guid: 4467bb34112214c48b921ed74c7b990f, type: 2}
   destroyOnDeath: 0
 --- !u!114 &5233793326212817352
 MonoBehaviour:

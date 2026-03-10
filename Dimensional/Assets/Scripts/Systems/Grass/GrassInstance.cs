@@ -9,6 +9,7 @@ namespace Systems.Grass
         private static readonly int GrassBladesProperty  = Shader.PropertyToID("_GrassBlades");
         private static readonly int TriangleCountProperty = Shader.PropertyToID("_TriangleCount");
         private static readonly int BladesPerSquareUnitProperty = Shader.PropertyToID("_BladesPerSquareUnit");
+        private static readonly int BladeSegmentsProperty = Shader.PropertyToID("_BladeSegments");
 
         private const int MaxBlades = 45000;
         
@@ -60,14 +61,20 @@ namespace Systems.Grass
             
             var groups = Mathf.CeilToInt(_triangleBuffer.count / 64f);
             _grassCompute.Dispatch(kernel, groups, 1, 1);
-
-            var bladeSegments = _grassMaterial.GetInt("_BladeSegments");
+            
+            var bladeSegments = _grassMaterial.GetInt(BladeSegmentsProperty);
 
             var trisPerBlade = (uint)(2 * bladeSegments - 1);
             var vertsPerBlade = trisPerBlade * 3;
 
-            uint[] args = { MaxBlades * trisPerBlade, 1, 0, 0};
+            uint[] args = { vertsPerBlade, 1, 0, 0};
             _argsBuffer.SetData(args);
+            
+            ComputeBuffer.CopyCount(
+                _grassBladeBuffer,
+                _argsBuffer,
+                sizeof(uint)
+            );
         }
 
         public void Render()

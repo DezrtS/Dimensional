@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using Managers;
+using Scriptables.Save;
 using Scriptables.Shapes;
 using Scriptables.User_Interface;
 using Systems.Player;
@@ -11,6 +13,7 @@ namespace User_Interface
 {
     public class ShapeOption : MonoBehaviour
     {
+        [SerializeField] private PlayerShapes playerShapes;
         [SerializeField] private TextMeshProUGUI shapeText;
         [SerializeField] private Image shapeImage;
         
@@ -49,7 +52,9 @@ namespace User_Interface
             if (_isSelected || !_canSelect || _isDisabled) return;
             _isSelected = true;
             _animator.SetTrigger("Select");
-            PlayerController.Instance.SetMovementActionShape(UIManager.Instance.SelectedMovementActionType, _shapeType);
+            var actionType = UIManager.Instance.SelectedMovementActionType;
+            playerShapes.SetMovementActionShapesPreset(actionType, _shapeType);
+            //PlayerController.Instance.SetMovementActionShape(UIManager.Instance.SelectedMovementActionType, _shapeType);
             PlayerController.Instance.ResetMovementActions();
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Managers;
+using Scriptables.Save;
 using Scriptables.Shapes;
 using Scriptables.User_Interface;
 using Systems.Player;
@@ -12,6 +13,8 @@ namespace User_Interface
 {
     public class ActionSelection : MonoBehaviour
     {
+        [SerializeField] private PlayerShapes playerShapes;
+        
         [SerializeField] private MovementActionShapesDatum[] movementActionShapesData;
         [SerializeField] private ShapeOption[] shapeOptions;
         [SerializeField] private TextMeshProUGUI actionText;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utilities;
 
 namespace Systems.Checkpoints
@@ -14,13 +15,13 @@ namespace Systems.Checkpoints
         [SerializeField] private bool isDefaultCheckpoint;
         [SerializeField] private Vector3 spawnOffset;
         [Space] 
+        [SerializeField] private Animator animator;
+        [Space] 
         [SerializeField] private float transitionTime;
         [SerializeField] private Material defaultMaterial;
-        [SerializeField] private MeshRenderer[] meshRenderers;
+        [SerializeField] private SkinnedMeshRenderer meshRenderer;
 
         private Material _material;
-        
-        private Animator _animator;
         private ObjectId _objectId;
 
         private bool _isActive;
@@ -32,12 +33,8 @@ namespace Systems.Checkpoints
         private void Awake()
         {
             _material = Instantiate(defaultMaterial);
-            foreach (var meshRenderer in meshRenderers)
-            {
-                meshRenderer.material = _material;
-            }
+            meshRenderer.material = _material;
             
-            _animator = GetComponent<Animator>();
             _objectId = GetComponent<ObjectId>();
         }
 
@@ -58,8 +55,8 @@ namespace Systems.Checkpoints
 
         public void RespawnAt()
         {
-            if (!_animator) return;
-            _animator.SetTrigger("Open");
+            if (!animator) return;
+            animator.SetTrigger("Open");
         }
 
         private void OnTriggerEnter(Collider other)

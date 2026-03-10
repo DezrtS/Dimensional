@@ -454,6 +454,7 @@ GameObject:
   - component: {fileID: 8341709887087363658}
   - component: {fileID: 3713888157220615980}
   - component: {fileID: 8403845203889220327}
+  - component: {fileID: -5005472632189875406}
   m_Layer: 0
   m_Name: Convex NPC
   m_TagString: Untagged
@@ -545,3 +546,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementTransform: {fileID: 5534780811332495645}
   worldUIAnchorDatum: {fileID: 11400000, guid: 2063363bc3eaf9948958460f63a3a3b4, type: 2}
+  dialogueLineDatum: {fileID: 0}
+--- !u!114 &-5005472632189875406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301414188649246487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9748b7bf0e2b484aa5f15717f9c7a23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.5
+  offset: 0.5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 16384

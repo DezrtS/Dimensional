@@ -99,8 +99,6 @@ namespace Systems.Player
         protected override void OnEnable()
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
             base.OnEnable();
         }
 
@@ -205,8 +203,6 @@ namespace Systems.Player
         {
             UnassignControls();
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
         }
 
         Vector3 IMove.GetInput()
@@ -284,26 +280,15 @@ namespace Systems.Player
             switch (newValue)
             {
                 case GameState.Initializing:
-                    PlayerMovementController.Initialize(this);
                     _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
                     AssignControls();
                     break;
                 case GameState.Preparing:
+                    PlayerMovementController.Initialize(this);
+                    
                     RespawnPlayer(transform.position);
                     break;
             }
-        }
-        
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.Player)) return;
-            saveData.playerData.health = _health.CurrentHealth;
-        }
-        
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.Player)) return;
-            _health.SetHealth(saveData.playerData.health);
         }
         
         private void HealthOnHealthStateChanged(Health health, bool isDead)

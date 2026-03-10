@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Managers;
+using Scriptables.Save;
 using Systems.Player;
 using UnityEngine;
 using Utilities;
@@ -10,6 +11,8 @@ namespace Systems.Collectables
     public class Collectable : MonoBehaviour
     {
         private static readonly int IsCollectedHash = Animator.StringToHash("IsCollected");
+
+        [SerializeField] private StringListVariable collectedCollectablesSaveData;
         
         [SerializeField] private MeshRenderer meshRenderer;
         
@@ -32,27 +35,18 @@ namespace Systems.Collectables
 
         private void OnEnable()
         {
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
-        }
-        
-        private void OnDisable()
-        {
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
         }
 
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (!dataTypes.Contains(DataType.Collectable) || _isGhosted || !_isCollected) return;
-            saveData.collectableData.collectedCollectables.Add(_objectId.Id);
+            if (newValue != GameState.Preparing || !collectedCollectablesSaveData) return;
+            if (collectedCollectablesSaveData.Value.list.Contains(_objectId.Id)) Ghost();
         }
-        
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
+
+        private void OnDisable()
         {
-            if (!dataTypes.Contains(DataType.Collectable)) return;
-            if (!saveData.collectableData.collectedCollectables.Contains(_objectId.Id)) return;
-            Ghost();
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
 
         private void Ghost()
@@ -67,6 +61,7 @@ namespace Systems.Collectables
             if (!_isGhosted) other.GetComponent<Inventory>().AddCollectables(1);
             _collider.enabled = false;
             _isCollected = true;
+            collectedCollectablesSaveData.AddValue(_objectId.Id);
             _animator.SetBool(IsCollectedHash, true);
         }
     }

@@ -99,15 +99,14 @@ Shader "Custom/ProceduralGrass"
             }
 
 
-            Varyings vert (uint vertexID : SV_VertexID)
+            Varyings vert (uint vertexID : SV_VertexID, uint instanceID : SV_InstanceID)
             {
                 Varyings o;
 
                 uint trisPerBlade = 2 * _BladeSegments - 1;
-                uint vertsPerBlade = trisPerBlade * 3;
 
-                uint bladeID = vertexID / vertsPerBlade;
-                uint localVertex = vertexID % vertsPerBlade;
+                uint bladeID = instanceID;
+                uint localVertex = vertexID;
 
                 GrassBlade grassBlade = _GrassBlades[bladeID];
 

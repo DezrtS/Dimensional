@@ -13,7 +13,7 @@ namespace Scriptables.Actions.Movement
         [SerializeField] private ShapeType shapeType;
         
         public MovementActionType MovementActionType => movementActionType;
-        public ShapeType ShapeType => shapeType;
+        public ShapeType ShapeType { get => shapeType; set => shapeType = value; }
 
         public MovementActionShape(MovementActionType movementActionType, ShapeType shapeType)
         {
