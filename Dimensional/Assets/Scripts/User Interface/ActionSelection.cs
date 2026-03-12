@@ -14,6 +14,7 @@ namespace User_Interface
     public class ActionSelection : MonoBehaviour
     {
         [SerializeField] private PlayerShapes playerShapes;
+        [SerializeField] private IntListVariable unlockedShapesSaveData;
         
         [SerializeField] private MovementActionShapesDatum[] movementActionShapesData;
         [SerializeField] private ShapeOption[] shapeOptions;
@@ -41,29 +42,6 @@ namespace User_Interface
         {
             _animator = GetComponent<Animator>();
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
-            SaveManager.Loaded += SaveManagerOnLoaded;
-            SaveManager.Saving += SaveManagerOnSaving;
-        }
-
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.Action)) return;
-            foreach (var actionShape in saveData.actionData.actionShapes)
-            {
-                var data = actionShape.Split(":");
-                var action = int.Parse(data[0]);
-                var shape = int.Parse(data[1]);
-                _selectedShapeIndexDictionary[action] = shape;
-            }
-        }
-
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.Action)) return;
-            for (var i = 0; i < movementActionShapesData.Length; i++)
-            {
-                saveData.actionData.actionShapes.Add($"{i}:{_selectedShapeIndexDictionary[i]}");
-            }
         }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
@@ -79,19 +57,6 @@ namespace User_Interface
 
                     break;
                 case GameState.Preparing:
-                    if (loadActions)
-                    {
-                        SaveManager.Instance.RequestLoad(new List<DataType>() { DataType.Action });
-                        
-                        for (var i = 0; i < movementActionShapesData.Length; i++)
-                        {
-                            var actionType = movementActionShapesData[i].MovementActionType;
-                            var shapeType = movementActionShapesData[i].ShapeData[_selectedShapeIndexDictionary[i]].ShapeType;
-                            PlayerController.Instance.SetMovementActionShape(actionType, shapeType);
-                        }
-                        PlayerController.Instance.ResetMovementActions();
-                    }
-            
                     var datum = movementActionShapesData[_currentActionIndex];
                     var offset = 0;
                     for (var i = 0; i < shapeOptions.Length - offset; i++)
@@ -104,7 +69,7 @@ namespace User_Interface
                         }
                         else
                         {
-                            if (!PlayerController.Instance.UnlockedShapes.Contains(datum.ShapeData[i].ShapeType))
+                            if (!unlockedShapesSaveData.Value.list.Contains((int)datum.ShapeData[i].ShapeType))
                             {
                                 offset--;
                                 continue;
@@ -258,7 +223,7 @@ namespace User_Interface
                 }
                 else
                 {
-                    if (!PlayerController.Instance.UnlockedShapes.Contains(datum.ShapeData[i].ShapeType))
+                    if (!unlockedShapesSaveData.Value.list.Contains((int)datum.ShapeData[i].ShapeType))
                     {
                         offset--;
                         continue;

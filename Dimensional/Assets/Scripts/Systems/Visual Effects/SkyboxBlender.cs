@@ -52,6 +52,7 @@ namespace Systems.Visual_Effects
 
         public void StartBlend()
         {
+            isStormySaveData.Value = true;
             StopAllCoroutines();
             StartCoroutine(Blend());
         }

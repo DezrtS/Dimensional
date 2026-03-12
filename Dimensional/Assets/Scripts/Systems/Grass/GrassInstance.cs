@@ -25,6 +25,7 @@ namespace Systems.Grass
         private readonly GrassSettings _grassSettings;
 
         public bool IsVisible { get; set; }
+        public Bounds Bounds { get; set; }
         public MaterialPropertyBlock MaterialPropertyBlock { get; }
 
         public GrassInstance(List<TriangleData> triangleData, GrassChunk grassChunk, ComputeShader grassCompute, Material grassMaterial, GrassSettings grassSettings)
@@ -32,6 +33,7 @@ namespace Systems.Grass
             _triangleBuffer = new ComputeBuffer(triangleData.Count, sizeof(float) * 19);
             _triangleBuffer.SetData(triangleData);
             _grassChunk = grassChunk;
+            Bounds = grassChunk.ChunkBounds;
             _grassCompute = grassCompute;
             _grassMaterial = grassMaterial;
             _grassSettings = grassSettings;
@@ -83,7 +85,7 @@ namespace Systems.Grass
 
             Graphics.DrawProceduralIndirect(
                 _grassMaterial,
-                _grassChunk.ChunkBounds,
+                Bounds,
                 MeshTopology.Triangles,
                 _argsBuffer,
                 0,

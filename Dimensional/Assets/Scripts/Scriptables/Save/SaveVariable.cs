@@ -6,6 +6,8 @@ namespace Scriptables.Save
 {
     public abstract class SaveVariable : ScriptableObject
     {
+        public event Action ValueChanged;
+        
         [SerializeField] private string id;
         [Space]
         [SerializeField] private bool save = true;
@@ -32,6 +34,7 @@ namespace Scriptables.Save
 
         protected void SetIsDirty()
         {
+            ValueChanged?.Invoke();
             if (_isDirty) return;
             _isDirty = true;
             SaveManager.Instance.SetDirty(this);

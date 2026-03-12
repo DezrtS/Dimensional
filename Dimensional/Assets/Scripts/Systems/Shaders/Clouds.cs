@@ -15,6 +15,8 @@ namespace Systems.Shaders
         [SerializeField] private Mesh quadMesh;
         [SerializeField] private Material cloudMaterial;
 
+        [SerializeField] private bool disableRuntimeMaterial;
+
         private Transform _targetTransform;
         private Camera _camera;
 
@@ -26,7 +28,7 @@ namespace Systems.Shaders
         private void Awake()
         {
             // Create runtime material instance
-            RuntimeClouds = Instantiate(cloudMaterial);
+            RuntimeClouds = disableRuntimeMaterial ? cloudMaterial : Instantiate(cloudMaterial);
 
             // Preallocate matrices
             _matrices = new Matrix4x4[horizontalStackSize];

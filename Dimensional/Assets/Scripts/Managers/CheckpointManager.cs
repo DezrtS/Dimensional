@@ -21,27 +21,19 @@ namespace Managers
 
         protected override void OnEnable()
         {
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
             base.OnEnable();
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
         }
 
         private void OnDisable()
         {
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
 
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (!dataTypes.Contains(DataType.World)) return;
-            saveData.worldData.checkpointId = _lastCheckpointId;
-        }
-        
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.World)) return;
-            _lastCheckpointId = saveData.worldData.checkpointId;
+            if (newValue != GameState.Preparing) return;
+            if (lastCheckpointSaveData.Value != string.Empty) _lastCheckpointId = lastCheckpointSaveData.Value;
         }
         
         public void AddCheckpoint(Checkpoint checkpoint)

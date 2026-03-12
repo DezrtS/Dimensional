@@ -19,6 +19,4 @@ MonoBehaviour:
       Data3: 1530565777
       Data4: -1300865506
     Path: event:/PressButton
-  eventData:
-  - {fileID: 11400000, guid: 5ffc002aca1d55d4e9470a3fbebbcfdb, type: 2}
-  - {fileID: 11400000, guid: 768c819986d12f84bacc4c68dc803c3a, type: 2}
+  eventData: []

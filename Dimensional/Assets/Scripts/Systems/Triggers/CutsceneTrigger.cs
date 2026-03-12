@@ -17,18 +17,6 @@ namespace Systems.Triggers
         private bool _isTriggered;
         private bool _isCompleted;
 
-        private void OnEnable()
-        {
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
-        }
-
-        private void OnDisable()
-        {
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
-        }
-
         private void Awake()
         {
             _objectId = GetComponent<ObjectId>();

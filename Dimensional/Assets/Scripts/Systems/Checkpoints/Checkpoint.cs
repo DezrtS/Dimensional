@@ -20,11 +20,16 @@ namespace Systems.Checkpoints
         [SerializeField] private float transitionTime;
         [SerializeField] private Material defaultMaterial;
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
+        [Space] 
+        [SerializeField] private bool isLimitedCheckpoint;
+        [SerializeField] private int limit;
+        [SerializeField] private Texture2D[] damagedTextures;
 
         private Material _material;
         private ObjectId _objectId;
 
         private bool _isActive;
+        private int _respawnCount;
         
         public string Id => _objectId.Id;
         public bool IsDefaultCheckpoint => isDefaultCheckpoint;
@@ -55,6 +60,14 @@ namespace Systems.Checkpoints
 
         public void RespawnAt()
         {
+            if (isLimitedCheckpoint)
+            {
+                var ratio = Mathf.Clamp(_respawnCount / (float)limit * (damagedTextures.Length), 0, damagedTextures.Length - 1);
+                _material.SetTexture("_Mask", damagedTextures[(int)ratio]);
+                _respawnCount++;
+
+                if (_respawnCount >= limit) StartCoroutine(ExitedRoutine());
+            }
             if (!animator) return;
             animator.SetTrigger("Open");
         }

@@ -6,6 +6,7 @@ namespace Systems.Platforms
 {
     public class Platform : MonoBehaviour
     {
+        [SerializeField] private bool canMove = true;
         [SerializeField] private SplineContainer splineContainer;
         [Space]
         [SerializeField] private Vector3 offset;
@@ -16,6 +17,7 @@ namespace Systems.Platforms
         [SerializeField] private AnimationCurve animationCurve = AnimationCurve.Linear(0, 0, 1, 1);
         
         private Rigidbody _rigidbody;
+        private float _timer;
         
         public Vector3 Velocity { get; private set; }
 
@@ -31,21 +33,24 @@ namespace Systems.Platforms
 
         private void FixedUpdate()
         {
-            if (!splineContainer) return;
-            var time = Time.timeSinceLevelLoad / duration + (durationOffset * duration);
+            if (!canMove || !splineContainer) return;
+            var deltaTime = Time.fixedDeltaTime;
+            _timer += deltaTime;
+            var time = _timer / duration + (durationOffset * duration);
             var normalizedTime = Mathf.Clamp01(animationCurve.Evaluate(time));
-                
-            var dt = Time.fixedDeltaTime;
-            var nextTime = (Time.timeSinceLevelLoad + dt) / duration + (durationOffset * duration);
+            
+            var nextTime = (_timer + deltaTime) / duration + (durationOffset * duration);
             var nextNormalizedTime = Mathf.Clamp01(animationCurve.Evaluate(nextTime));
                 
             Vector3 currentTarget = splineContainer.EvaluatePosition(normalizedTime);
             Vector3 nextTarget = splineContainer.EvaluatePosition(nextNormalizedTime);
 
-            Velocity = (nextTarget - currentTarget) / dt;
+            Velocity = (nextTarget - currentTarget) / deltaTime;
                 
             _rigidbody.MovePosition(currentTarget + offset);
         }
+        
+        public void SetCanMove(bool canMove) => this.canMove = canMove;
 
     }
 }

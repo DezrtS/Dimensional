@@ -3,7 +3,6 @@ using Interfaces;
 using Managers;
 using Scriptables.Cutscenes;
 using Scriptables.User_Interface;
-using Systems.Cameras;
 using Systems.Cutscenes;
 using UnityEngine;
 
@@ -13,6 +12,8 @@ namespace Systems.Interactables
     {
         [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
         [SerializeField] private Transform elementPoint;
+
+        [SerializeField] private string nextScene;
         
         [SerializeField] private CutsceneDatum cutsceneDatum;
         [SerializeField] private Cutscene cutscene;
@@ -32,6 +33,11 @@ namespace Systems.Interactables
             base.Interact(interactContext);
             CutsceneManager.Instance.PlayCutscene(cutscene, cutsceneDatum);
             //EventManager.SendEvents(InteractableDatum.EventData);
+        }
+        
+        public void LoadNextScene() 
+        {
+            SceneManager.Instance.LoadSceneWithTransition(nextScene);
         }
     }
 }

@@ -13822,6 +13822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd07cb555a4862441a72517d40d0e529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerShapes: {fileID: 11400000, guid: 30c899766de1c9e4687ee56777203341, type: 2}
+  unlockedShapesSaveData: {fileID: 11400000, guid: 238a1f5d08eaf7347bb241fbe7cad9c1, type: 2}
   movementActionShapesData:
   - {fileID: 11400000, guid: 54bf3885ca317b54b9083b945180b24b, type: 2}
   - {fileID: 11400000, guid: fc7f74cd09fbb1b47a6147895c6497d9, type: 2}
@@ -13838,7 +13840,6 @@ MonoBehaviour:
   actionText: {fileID: 4965047907083260677}
   showDuration: 3
   loadActions: 0
-  unlockedShapes: 010000000200000003000000040000000500000006000000070000000800000009000000
 --- !u!95 &7080154542716854240
 Animator:
   serializedVersion: 7

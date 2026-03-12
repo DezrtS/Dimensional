@@ -55,6 +55,7 @@ namespace Systems.Visual_Effects
             var wind = Random.Range(0f, 1f) > windLoopPercentage ? _windPool.GetObject() : _windLoopPool.GetObject();
             if (!wind) return;
             wind.transform.position = randomPos;
+            wind.transform.rotation = transform.rotation;
             wind.Finished += ParticleEffectOnFinished;
             wind.Play();
         }
