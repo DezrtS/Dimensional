@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5243506532780122588}
   - component: {fileID: 3283998660644902593}
   - component: {fileID: 530088982109475432}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Moving Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5791e79b5717e740b4df588d6200b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMove: 1
   splineContainer: {fileID: 0}
   offset: {x: 0, y: 0, z: 0}
   autoOffset: 0
