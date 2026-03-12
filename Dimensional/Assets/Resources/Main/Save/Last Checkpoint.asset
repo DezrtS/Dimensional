@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Last Checkpoint
   m_EditorClassIdentifier: 
   id: last_checkpoint
+  save: 1
+  load: 1
   defaultValue: 

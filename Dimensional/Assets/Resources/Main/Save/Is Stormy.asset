@@ -15,4 +15,4 @@ MonoBehaviour:
   id: is_stormy
   save: 1
   load: 1
-  defaultValue: 1
+  defaultValue: 0

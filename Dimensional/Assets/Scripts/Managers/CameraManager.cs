@@ -80,6 +80,7 @@ namespace Managers
         [SerializeField] private float fovInterpolationSpeed;
         [Space] 
         [SerializeField] private float maxGamepadMotorAmplitude;
+        [SerializeField] private bool resetScreenShakeOnAwake = true;
 
         private CinemachineBrain _cinemachineBrain;
         private CinemachineCamera _cinemachineCamera;
@@ -107,8 +108,9 @@ namespace Managers
             _thirdPersonFollow.Damping = thirdPersonDamping;
             _cinemachineBasicMultiChannelPerlin = _cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
             SetFOV(defaultFOV);
+            SetTargetFOV(defaultFOV);
             _screenShakeEvents = new List<ScreenShakeEvent>();
-            StopAllScreenShake();
+            if (resetScreenShakeOnAwake) StopAllScreenShake();
             base.InitializeSingleton();
         }
 

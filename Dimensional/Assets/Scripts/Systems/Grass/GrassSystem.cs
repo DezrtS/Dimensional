@@ -128,8 +128,10 @@ namespace Systems.Grass
                         grassChunk.Initialize(bounds, grassSettings);
                         _chunkMap.Add(kvp.Key, grassChunk);
                     }
-                    
-                    grassChunk.AddGrassInstance(grassMesh.CreateGrassInstance(kvp.Value, _chunkMap[kvp.Key], grassCompute, grassMaterial, grassSettings));
+
+                    var grassInstance = grassMesh.CreateGrassInstance(kvp.Value, _chunkMap[kvp.Key], grassCompute, grassMaterial, grassSettings);
+                    if (grassMesh.DisableChunking) continue;
+                    grassChunk.AddGrassInstance(grassInstance);
                 }
             }
         }

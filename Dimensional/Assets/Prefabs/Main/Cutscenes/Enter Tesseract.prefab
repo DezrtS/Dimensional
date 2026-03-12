@@ -68,5 +68,19 @@ PlayableDirector:
     value: {fileID: 0}
   - key: {fileID: -3730390649307852834, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
     value: {fileID: 0}
+  - key: {fileID: -7424359875003221677, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -7656555034688010159, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -5082974765493229726, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -9108846434989814415, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 2691431934792803778, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 2620073095566083351, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 7049316957221036003, guid: 5b09ab6cbb1e0c946813a0a828094841, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []

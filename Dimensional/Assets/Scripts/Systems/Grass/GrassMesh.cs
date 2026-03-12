@@ -25,6 +25,7 @@ namespace Systems.Grass
         
         private const int MaxPaintCommands = 16;
 
+        [SerializeField] private bool disableChunking;
         [SerializeField] private Texture2D maskTexture;
         [SerializeField] private Material overrideGrassMaterial;
         [Space] 
@@ -43,6 +44,7 @@ namespace Systems.Grass
         [SerializeField] private RenderTexture grassInteractionTexture;
         
         public MeshFilter MeshFilter { get; private set; }
+        public bool DisableChunking => disableChunking;
 
         private void OnEnable()
         {
@@ -99,9 +101,18 @@ namespace Systems.Grass
             if (overrideGrassMaterial) grassMaterial = overrideGrassMaterial;
             if (maskTexture) grassChunk.SetUVGrassMask(maskTexture);
             var grassInstance = new GrassInstance(triangleData, grassChunk, grassCompute, grassMaterial, grassSettings);
+            if (disableChunking) grassInstance.Bounds = new Bounds(transform.position, Vector3.one * 100f);
             _grassInstances.Add(grassInstance);
             grassInstance.MaterialPropertyBlock.SetTexture(GrassInteractionTextureProperty, grassInteractionTexture);
             return grassInstance;
+        }
+
+        public void SetGrassInstancesIsVisible(bool isVisible)
+        {
+            foreach (var grassInstance in _grassInstances)
+            {
+                grassInstance.IsVisible = isVisible;
+            }
         }
 
         public void AddGrassPaintCommand(GrassPaintCommand grassPaintCommand)

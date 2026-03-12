@@ -56,6 +56,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main/Levels/Level5Test.unity
     guid: ff4f31f0022994e4ab9f1786d1329fdc
+  - enabled: 1
+    path: Assets/Scenes/Main/Regions/Region 2.unity
+    guid: 547d6c72a51349846b87f23227832ed5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: b41af7f0c31d62e499003e8c59a5bc2f, type: 3}
   m_UseUCBPForAssetBundles: 0

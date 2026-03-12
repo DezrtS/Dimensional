@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc8f6e253ea9c80479568007161207c7, type: 3}
   m_Name: ParachuteAir
   m_EditorClassIdentifier: 
-  activationTime: 0
+  activationTime: 0.2
+  deactivateParentActionsOnDeactivate: 0
   subActionData: []
   actionAudioEvents:
   - eventReference:
@@ -99,7 +100,7 @@ MonoBehaviour:
   groundedActionEventType: 3
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: fc2becaf5be411a4bacbf6d8f161bb80, type: 2}
-  glideFallSpeedThreshold: -3
-  glideFallTimeThreshold: 0.2
+  glideFallSpeedThreshold: 99
+  glideFallTimeThreshold: 0.1
   glideFallSpeed: -3
   glideMass: 1

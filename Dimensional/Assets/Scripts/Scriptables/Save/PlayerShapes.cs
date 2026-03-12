@@ -50,6 +50,7 @@ namespace Scriptables.Save
         {
             base.Restore(data);
             _runtimeValue = JsonUtility.FromJson<MovementActionShapesPreset>(data);
+            SetupShapeActionDictionary();
         }
 
         public override void Reset()
