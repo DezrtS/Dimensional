@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dirtyVariables: []
-  resetAllOnAwake: 1
+  resetAllOnAwake: 0
   saveOnQuit: 1
   saveOnQuitTypes: 0000000001000000020000000300000004000000

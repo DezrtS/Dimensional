@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Player Shapes
   m_EditorClassIdentifier: 
   id: player_shapes
+  save: 1
+  load: 1
   movementActionShapesData:
   - {fileID: 11400000, guid: f46f66be09f21e847a179f4fa5211762, type: 2}
   - {fileID: 11400000, guid: aeaaed924407a90468c1cdb83b2a184f, type: 2}
