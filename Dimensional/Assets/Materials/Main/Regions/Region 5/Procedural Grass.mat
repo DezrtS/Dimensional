@@ -123,6 +123,7 @@ Material:
     - _InteractionBendStrength: 1.1
     - _InvertMask: 0
     - _Metallic: 0
+    - _MinShadowFactor: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Progress: 0

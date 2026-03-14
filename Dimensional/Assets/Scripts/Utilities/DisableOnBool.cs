@@ -24,12 +24,21 @@ namespace Utilities
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue == GameState.Preparing) gameObject.SetActive(disableOnFalse == boolVariable.Value);
+            if (newValue != GameState.Preparing) return; 
+            SetChildren(disableOnFalse == boolVariable.Value);
         }
         
         private void BoolVariableOnValueChanged()
         {
-            gameObject.SetActive(disableOnFalse == boolVariable.Value);
+            SetChildren(disableOnFalse == boolVariable.Value);
+        }
+
+        private void SetChildren(bool isActive)
+        {
+            for (var i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(isActive);
+            }
         }
     }
 }

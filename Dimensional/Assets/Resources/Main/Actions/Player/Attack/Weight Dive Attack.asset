@@ -45,7 +45,7 @@ MonoBehaviour:
   attackOffset: {x: 0, y: 0, z: 0}
   attackLayerMask:
     serializedVersion: 2
-    m_Bits: 2049
+    m_Bits: 2305
   doScreenShakeOnHit: 0
   hasHitStop: 1
   hitStopDuration: 0.1

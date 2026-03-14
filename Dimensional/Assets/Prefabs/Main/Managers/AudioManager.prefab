@@ -53,6 +53,7 @@ MonoBehaviour:
       Data4: -1494709428
     Path: event:/TutorialTheme
   startMusicOnAwake: 1
+  musicChangeDelay: 0
 --- !u!114 &4656057143729007131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +115,10 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  collectCollectable:
+    Guid:
+      Data1: -1882465895
+      Data2: 1160461560
+      Data3: 1530565777
+      Data4: -1300865506
+    Path: event:/PressButton

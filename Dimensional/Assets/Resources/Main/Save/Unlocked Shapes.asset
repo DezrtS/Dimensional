@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: unlocked_shapes
   save: 1
-  load: 0
+  load: 1
   defaultValue:
-    list: 010000000200000003000000040000000500000006000000070000000800000009000000
+    list: 01000000

@@ -283,9 +283,8 @@ namespace Systems.Player
                     _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Player");
                     AssignControls();
                     break;
-                case GameState.Preparing:
+                case GameState.Starting:
                     PlayerMovementController.Initialize(this);
-                    
                     RespawnPlayer(transform.position);
                     break;
             }

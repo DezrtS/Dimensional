@@ -37,16 +37,16 @@ namespace Systems.Collectables
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
         }
+        
+        private void OnDisable()
+        {
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+        }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
             if (newValue != GameState.Preparing || !collectedCollectablesSaveData) return;
             if (collectedCollectablesSaveData.Value.list.Contains(_objectId.Id)) Ghost();
-        }
-
-        private void OnDisable()
-        {
-            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
         }
 
         private void Ghost()
@@ -63,6 +63,7 @@ namespace Systems.Collectables
             _isCollected = true;
             collectedCollectablesSaveData.AddValue(_objectId.Id);
             _animator.SetBool(IsCollectedHash, true);
+            AudioManager.PlayOneShot(FMODReferenceManager.Instance.CollectCollectable, transform.position);
         }
     }
 }

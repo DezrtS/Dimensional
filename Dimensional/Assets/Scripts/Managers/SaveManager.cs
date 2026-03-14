@@ -137,12 +137,13 @@ namespace Managers
             SaveVariables.Add(saveVariable);
         }
 
-        private static void ResetAll()
+        public static void ResetAll()
         {
             foreach (var saveVariable in SaveVariables)
             {
                 saveVariable.Reset();
             }
+            Save(string.Empty, SaveFileName);
         }
 
         private static void Load()
