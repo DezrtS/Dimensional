@@ -60,6 +60,8 @@ MonoBehaviour:
     gameEventData:
     - {fileID: 11400000, guid: bbd2ac34724bb554d89c92e76694fc11, type: 2}
     - {fileID: 11400000, guid: 75c6946fb5c547b42b68ce1555aa6f79, type: 2}
+  currentRegion: 
+  lastRegionSaveData: {fileID: 11400000, guid: 7d7cb8befaedf514cbe6d64d0c26510d, type: 2}
   saveManagerPrefab: {fileID: 901283025757477412, guid: fee919393b8f54d4bb13079dd5e9620b, type: 3}
   loadSceneData: 0
   loadOnLoading: 000000000200000003000000

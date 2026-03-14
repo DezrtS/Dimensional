@@ -1,5 +1,6 @@
 using Managers;
 using Scriptables.Events;
+using Scriptables.Save;
 using UnityEngine;
 
 namespace User_Interface
@@ -10,7 +11,8 @@ namespace User_Interface
         [SerializeField] private GameObject saveMenu;
         [SerializeField] private GameObject creditsMenu;
 
-        [SerializeField] private EventDatum[] continueEventData;
+        [SerializeField] private string startScene;
+        [SerializeField] private StringVariable lastRegionSaveData;
 
         public void OpenMenu(int menuIndex)
         {
@@ -42,13 +44,18 @@ namespace User_Interface
 
         public void StartNewGame()
         {
-            EventManager.SendEvents(continueEventData);
-            OpenMenu(-1);
+            SaveManager.ResetAll();
+            SceneManager.Instance.LoadSceneWithTransition(startScene);
         }
 
         public void LoadSave(int saveId)
         {
-            
+            if (lastRegionSaveData.Value == string.Empty)
+            {
+                StartNewGame();
+                return;
+            }
+            SceneManager.Instance.LoadSceneWithTransition(lastRegionSaveData.Value);
         }
     }
 }

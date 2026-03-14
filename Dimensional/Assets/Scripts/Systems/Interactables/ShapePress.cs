@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Interfaces;
 using Managers;
 using Scriptables.Cutscenes;
+using Scriptables.Events;
 using Scriptables.Save;
 using Scriptables.Shapes;
 using Scriptables.User_Interface;
@@ -15,6 +16,7 @@ namespace Systems.Interactables
     public class ShapePress : Interactable
     {
         [SerializeField] private IntListVariable unlockedShapesSaveData;
+        [SerializeField] private EventDatum[] eventData;
         
         [SerializeField] private List<ShapeType> unlockableShapes = new List<ShapeType>();
         [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
@@ -41,9 +43,8 @@ namespace Systems.Interactables
             {
                 var index = (int)unlockableShape;
                 if (!unlockedShapesSaveData.Value.list.Contains(index)) unlockedShapesSaveData.AddValue(index);
-                //var unlockShapeEvent = new UnlockShapeEvent { ShapeType = unlockableShape };
-                //unlockShapeEvent.Handle();
             }
+            if (eventData is { Length: > 0 })EventManager.SendEvents(eventData);
         }
     }
 }

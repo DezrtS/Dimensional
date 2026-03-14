@@ -11,19 +11,18 @@ namespace Systems
         [SerializeField] private SignalAsset signalAsset;
         [SerializeField] private SignalReceiver[] signalReceivers;
 
-        private Health _health;
+        [SerializeField] private Health health;
+        
         private bool _isActive;
 
-        private void Awake()
+        private void OnEnable()
         {
-            _health = GetComponent<Health>();
-            _health.HealthChanged += HealthOnHealthChanged;
+            health.HealthChanged += HealthOnHealthChanged;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
-            if (_health != null)
-                _health.HealthChanged -= HealthOnHealthChanged;
+            health.HealthChanged -= HealthOnHealthChanged;
         }
 
         private void HealthOnHealthChanged(int oldValue, int newValue, int maxValue)

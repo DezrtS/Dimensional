@@ -106,11 +106,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Path_Gradient:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a22a9f8d87429c1478fd72205613b9e4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Path_Mask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: a457384e91bec4145917c446f0c1629c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Path_Texture:
@@ -156,7 +156,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Grass_Gradient_Noise_Scale: 250
+    - _Grass_Gradient_Noise_Scale: 500
     - _Grass_Gradient_Noise_Scale_1: 25
     - _Ground_Gradient_Noise_Scale: 696.6
     - _Max: 1
@@ -165,7 +165,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Path_Gradient_Noise_Scale: 2000
-    - _Path_Strength: 0.56
+    - _Path_Strength: 0.9
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
