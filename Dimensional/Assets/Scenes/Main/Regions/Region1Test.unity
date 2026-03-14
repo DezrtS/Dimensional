@@ -3797,6 +3797,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1253781001}
+  - {fileID: 1648692635}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &168058171
@@ -8277,7 +8278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: musicChangeDelay
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Path
@@ -8285,7 +8286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: startMusicOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Guid.Data1
@@ -20316,12 +20317,12 @@ GameObject:
   - component: {fileID: 744978497}
   - component: {fileID: 744978499}
   m_Layer: 0
-  m_Name: Music Trigger (1)
+  m_Name: Village Music Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &744978497
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20351,12 +20352,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 744978496}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 49.5, y: 1.6179886, z: 222.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 91.99095, y: 0.94288206, z: 85.97711}
   m_LocalScale: {x: 1000, y: 100, z: 25}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1869518612}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &744978499
 MonoBehaviour:
@@ -39954,6 +39955,79 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5388111963382385607, guid: b8afaace6cb7d774b94870fb74a67dd7, type: 3}
+--- !u!1 &1648692634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1648692635}
+  - component: {fileID: 1648692637}
+  - component: {fileID: 1648692636}
+  m_Layer: 0
+  m_Name: Destroyed Village Music Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1648692635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648692634}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.499996, y: -1.3820114, z: 62.5}
+  m_LocalScale: {x: 1000, y: 100, z: 25}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 164636713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1648692636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648692634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d7bcdfaba8c6546b846cb7fe03c7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicReference:
+    Guid:
+      Data1: -710761866
+      Data2: 1248055192
+      Data3: 1570435207
+      Data4: -1913531291
+    Path: event:/VillageThemeAbandoned
+--- !u!65 &1648692637
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648692634}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1652413018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46366,6 +46440,7 @@ Transform:
   - {fileID: 1930351237}
   - {fileID: 298207200}
   - {fileID: 1000447460}
+  - {fileID: 744978498}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1871556482
@@ -50645,12 +50720,12 @@ GameObject:
   - component: {fileID: 2066410425}
   - component: {fileID: 2066410427}
   m_Layer: 0
-  m_Name: Music Trigger
+  m_Name: Forest Music Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &2066410425
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53875,7 +53950,6 @@ SceneRoots:
   - {fileID: 1190571366}
   - {fileID: 427737866}
   - {fileID: 2066410426}
-  - {fileID: 744978498}
   - {fileID: 1692384180}
   - {fileID: 168058171}
   - {fileID: 2044358635}

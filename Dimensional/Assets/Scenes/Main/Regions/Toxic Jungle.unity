@@ -974,23 +974,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Path
-      value: event:/VillageThemeNormal
+      value: event:/TutorialTheme
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Guid.Data1
-      value: -1862037524
+      value: 272748648
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Guid.Data2
-      value: 1200638855
+      value: 1265269143
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Guid.Data3
-      value: 517508992
+      value: 1223472804
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Guid.Data4
-      value: -494594279
+      value: -1494709428
       objectReference: {fileID: 0}
     - target: {fileID: 6226457475114810643, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: unlockedShapes.Array.size
