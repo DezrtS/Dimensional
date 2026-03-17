@@ -7,7 +7,7 @@ namespace Scriptables.Save
     [Serializable]
     public class IntList
     {
-        public List<int> list;
+        public List<int> list = new();
     }
     
     [CreateAssetMenu(fileName = "IntListVariable", menuName = "Scriptable Objects/Save/IntListVariable")]
@@ -17,18 +17,32 @@ namespace Scriptables.Save
         [SerializeField] private IntList defaultValue = new();
         private IntList _runtimeValue;
         
-        public IntList Value => _runtimeValue;
+        public IntList Value {
+            get
+            {
+                EnsureRuntime();
+                return _runtimeValue;
+            }
+        }
 
         public void SetValue(int index, int value)
         {
+            EnsureRuntime();
             _runtimeValue.list[index] = value;
             SetIsDirty();
         }
 
         public void AddValue(int value)
         {
+            EnsureRuntime();
             _runtimeValue.list.Add(value);
             SetIsDirty();
+        }
+        
+        private void EnsureRuntime()
+        {
+            _runtimeValue ??= new IntList();
+            _runtimeValue.list ??= new List<int>();
         }
 
         public override string Capture()

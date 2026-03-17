@@ -61,7 +61,7 @@ namespace Systems.Grass
         {
             _camera = CameraManager.Instance.Camera;;
             _cameraTransform = _camera.transform;
-            _playerTransform = PlayerController.Instance.transform;
+            _playerTransform = !PlayerController.Instance ? _camera.transform : PlayerController.Instance.transform;
         }
 
         private void QueryMasks()
@@ -119,11 +119,8 @@ namespace Systems.Grass
             {
                 grassCompute.SetTexture(kernel, $"_MaskTexture{i}", i < maskCount ? _grassMaskTextures[i] : Texture2D.blackTexture);
             }
-
-            if (_uvGrassMaskTexture)
-            {
-                grassCompute.SetTexture(kernel, UVMaskTextureProperty, _uvGrassMaskTexture);   
-            }
+            
+            grassCompute.SetTexture(kernel, UVMaskTextureProperty, _uvGrassMaskTexture ? _uvGrassMaskTexture : Texture2D.blackTexture);   
             
             grassCompute.SetBool(HasUVMaskProperty, _uvGrassMaskTexture);
         }

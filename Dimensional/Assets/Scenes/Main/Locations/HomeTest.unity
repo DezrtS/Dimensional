@@ -2713,6 +2713,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3795164899832361039, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: currentRegion
+      value: HomeTest
+      objectReference: {fileID: 0}
+    - target: {fileID: 3795164899832361039, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: gameStateEvents.Array.data[2].eventData.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -5529,9 +5533,8 @@ MonoBehaviour:
   mainMenu: {fileID: 2071028678}
   saveMenu: {fileID: 1690634570}
   creditsMenu: {fileID: 1690634570}
-  continueEventData:
-  - {fileID: 11400000, guid: 3de2788d4a994604b922b1a25ca2b6fe, type: 2}
-  - {fileID: 11400000, guid: 9601d245edf51604cab69548f975d5da, type: 2}
+  startScene: 
+  lastRegionSaveData: {fileID: 0}
 --- !u!1 &1309819806
 GameObject:
   m_ObjectHideFlags: 0

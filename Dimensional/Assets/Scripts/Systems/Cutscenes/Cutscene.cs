@@ -15,12 +15,19 @@ namespace Systems.Cutscenes
         private CutsceneDatum _cutsceneDatum;
         private PlayableDirector _playableDirector;
 
-        private void Awake()
+        private void OnEnable()
         {
-            _playableDirector = GetComponent<PlayableDirector>();
+            if (!_playableDirector) _playableDirector = GetComponent<PlayableDirector>();
             _playableDirector.played += DirectorOnPlayed;
             _playableDirector.paused += DirectorOnPaused;
             _playableDirector.stopped += DirectorOnStopped;
+        }
+
+        private void OnDisable()
+        {
+            _playableDirector.played -= DirectorOnPlayed;
+            _playableDirector.paused -= DirectorOnPaused;
+            _playableDirector.stopped -= DirectorOnStopped;
         }
 
         public void Initialize(CutsceneDatum cutsceneDatum)

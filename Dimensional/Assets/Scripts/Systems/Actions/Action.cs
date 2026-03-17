@@ -80,26 +80,33 @@ namespace Systems.Actions
             IsActive = false;
 
             _subActions = new List<Action>();
-            foreach (var subActionDatum in ActionDatum.SubActionData)
+            if (ActionDatum.SubActionData != null)
             {
-                if (subActionDatum == actionDatum)
+                foreach (var subActionDatum in ActionDatum.SubActionData)
                 {
-                    Debug.LogWarning("Infinite Loop Detected");
-                    continue;
-                }
+                    if (subActionDatum == actionDatum)
+                    {
+                        Debug.LogWarning("Infinite Loop Detected");
+                        continue;
+                    }
 
-                var action = subActionDatum.AttachAction(gameObject);
-                if (subActionDatum.DeactivateParentActionsOnDeactivate) action.Deactivated += SubActionOnDeactivated;
-                _subActions.Add(action);
+                    var action = subActionDatum.AttachAction(gameObject);
+                    if (subActionDatum.DeactivateParentActionsOnDeactivate) action.Deactivated += SubActionOnDeactivated;
+                    _subActions.Add(action);
+                }    
             }
             
             _actionAudioEffects = new List<ActionAudioEffect>();
-            foreach (var actionAudioEvent in ActionDatum.ActionAudioEvents)
+            if (ActionDatum.ActionAudioEvents != null)
             {
-                _actionAudioEffects.Add(new ActionAudioEffect(actionAudioEvent, gameObject));
+                foreach (var actionAudioEvent in ActionDatum.ActionAudioEvents)
+                {
+                    _actionAudioEffects.Add(new ActionAudioEffect(actionAudioEvent, gameObject));
+                }
             }
 
             _actionVisualEffects = new List<ActionVisualEffect>();
+            if (actionDatum.ActionVisualEffectData == null) return;
             foreach (var actionVisualEffectDatum in actionDatum.ActionVisualEffectData)
             {
                 var actionVisualEffect = actionVisualEffectDatum.AttachActionVisualEffect(transform);

@@ -21,6 +21,7 @@ Shader "Unlit/StencilGeometryMasked"
                 Ref [_StencilID]
                 Comp Always
                 Pass Replace
+                Fail Keep
             }
 
             CGPROGRAM

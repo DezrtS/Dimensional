@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scriptables.Events;
+using Scriptables.Save;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities;
@@ -64,6 +65,9 @@ namespace Managers
         [SerializeField] private InputActionAsset defaultInputActionAsset;
         [Space]
         [SerializeField] private GameStateEvents[] gameStateEvents;
+        [Space] 
+        [SerializeField] private string currentRegion;
+        [SerializeField] private StringVariable lastRegionSaveData;
         [Space] 
         [SerializeField] private GameObject saveManagerPrefab;
         [SerializeField] private bool loadSceneData;
@@ -133,6 +137,7 @@ namespace Managers
                     SaveManager.Instance.RequestLoad(loadOnLoading); 
                     break;
                 case GameState.Preparing:
+                    if (currentRegion != String.Empty) lastRegionSaveData.Value = currentRegion;
                     break;
                 case GameState.Starting:
                     break;

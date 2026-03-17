@@ -26,18 +26,12 @@ namespace Systems.Quests
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
             
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
-            
             QuestEventBus.EventFired += QuestEventBusOnEventFired;
         }
 
         private void OnDisable()
         {
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
-            
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
             
             QuestEventBus.EventFired -= QuestEventBusOnEventFired;
         }

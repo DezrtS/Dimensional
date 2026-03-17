@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Base.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/Debugging/Trailer.unity
+    guid: 5899a05809aeffd47a0d4764f2393a99
+  - enabled: 1
+    path: Assets/Scenes/Debugging/MainMenuTest.unity
+    guid: a7a6b1b89ac50bd4db4a4c32e620c708
   - enabled: 1
     path: Assets/Scenes/Main/Locations/HomeTest.unity
     guid: 0be7c4a6cc8ec9c46b47986c52e1e16a

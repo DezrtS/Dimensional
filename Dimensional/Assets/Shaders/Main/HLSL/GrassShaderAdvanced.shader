@@ -6,6 +6,8 @@ Shader "Custom/ProceduralGrass"
         _BottomColor ("Bottom Color", Color) = (0.15, 0.6, 0.25, 1)
         _GradientOffset ("Gradient Offset", Range(-1,1)) = 0
         
+        _MinShadowFactor ("Minimum Shadow Factor", Range(0, 1)) = 0.7
+        
         _BladeHeight ("Blade Height", Float) = 1
         _BladeWidth ("Blade Width", Float) = 1
         _WidthTaper ("Width Taper", Float) = 1
@@ -57,6 +59,8 @@ Shader "Custom/ProceduralGrass"
             float4 _TopColor;
             float4 _BottomColor;
             float  _GradientOffset;
+
+            float _MinShadowFactor;
 
             float _BladeHeight;
             float _BladeWidth;
@@ -225,7 +229,7 @@ Shader "Custom/ProceduralGrass"
                 float3 normal = normalize(i.normal);
                 
                 Light mainLight = GetMainLight(i.shadowCoord);
-                float shadow = lerp(0.7, 1.0, mainLight.shadowAttenuation);
+                float shadow = lerp(_MinShadowFactor, 1.0, mainLight.shadowAttenuation);
                 float NdotL = saturate(dot(normal, mainLight.direction));
                 float3 directLight = baseColor * mainLight.color * NdotL * shadow;
 

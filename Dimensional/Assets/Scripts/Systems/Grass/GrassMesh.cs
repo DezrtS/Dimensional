@@ -101,7 +101,7 @@ namespace Systems.Grass
             if (overrideGrassMaterial) grassMaterial = overrideGrassMaterial;
             if (maskTexture) grassChunk.SetUVGrassMask(maskTexture);
             var grassInstance = new GrassInstance(triangleData, grassChunk, grassCompute, grassMaterial, grassSettings);
-            if (disableChunking) grassInstance.Bounds = new Bounds(transform.position, Vector3.one * 100f);
+            if (disableChunking) grassInstance.Bounds = new Bounds(transform.position, Vector3.one * grassSettings.MaxGrassDistance);
             _grassInstances.Add(grassInstance);
             grassInstance.MaterialPropertyBlock.SetTexture(GrassInteractionTextureProperty, grassInteractionTexture);
             return grassInstance;

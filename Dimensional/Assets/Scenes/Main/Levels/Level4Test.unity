@@ -298,6 +298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -435,6 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -567,6 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -1074,6 +1077,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Debug Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 241525979084931229, guid: 2eed5a862d689f64cac1c21f83fe6a22, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3208761676214832268, guid: 2eed5a862d689f64cac1c21f83fe6a22, type: 3}
       propertyPath: m_LocalPosition.x
       value: -105.5
@@ -1217,6 +1224,10 @@ PrefabInstance:
       propertyPath: cloudMaterial
       value: 
       objectReference: {fileID: 2100000, guid: c9dc378c8c463d64c950dc2428bfcfd3, type: 2}
+    - target: {fileID: 3638845774029735155, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3681933312474199223, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultCutsceneDatum
       value: 
@@ -1228,6 +1239,10 @@ PrefabInstance:
     - target: {fileID: 4470422332389291845, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_Name
       value: Managers
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: startMusicOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6281483632204712833, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1519,7 +1534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8327140978166572767, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1761,7 +1776,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 604786893}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -1875,6 +1890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -2057,7 +2073,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 1061667728}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -2166,6 +2182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -2556,7 +2573,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 542398186}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -2633,7 +2650,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 696423605}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -3072,6 +3089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -3941,6 +3959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -4041,7 +4060,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 1256716060}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -4475,6 +4494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -4722,7 +4742,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 1546186502}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -4939,6 +4959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -5525,6 +5546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -6090,6 +6112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -6184,6 +6207,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 008be7760ac65df4daac82669ccf02df, type: 3}
       propertyPath: m_Name
       value: Sign
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 008be7760ac65df4daac82669ccf02df, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7597,6 +7624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -7937,7 +7965,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 1100104274}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -8177,6 +8205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -8398,7 +8427,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 1980119746}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -8625,6 +8654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -8804,7 +8834,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 970661766}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -9187,6 +9217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -9526,7 +9557,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 228214822}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -9597,6 +9628,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 008be7760ac65df4daac82669ccf02df, type: 3}
       propertyPath: m_Name
       value: Sign (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 008be7760ac65df4daac82669ccf02df, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9757,6 +9792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -11041,7 +11077,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 50763531}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -12172,6 +12208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -12267,7 +12304,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 268149858}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -12569,7 +12606,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 541714770}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5227539573208429235, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -12838,6 +12875,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sign (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 008be7760ac65df4daac82669ccf02df, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -12954,7 +12995,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 48093160}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -13893,7 +13934,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 744320255}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -14091,7 +14132,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 388205484}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -14543,6 +14584,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sign (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 008be7760ac65df4daac82669ccf02df, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -14960,6 +15005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee80ebffe3a1274468365a3dadd18275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  disableChunking: 0
   maskTexture: {fileID: 0}
   overrideGrassMaterial: {fileID: 0}
   renderTextureSize: 32
@@ -15173,7 +15219,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 39614303}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
@@ -15395,7 +15441,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7417607313466042333, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
-      insertIndex: 10
+      insertIndex: -1
       addedObject: {fileID: 1170875728}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ea8fe1c385ca34eb327c66b50ed0e7, type: 3}
