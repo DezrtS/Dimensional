@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeName: Drill
   shapeType: 5
-  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
+  shapeIcon: {fileID: 317961272, guid: f7f187918784afa41a4ac2dbd0611b58, type: 3}
   shapeMovementActions:
   - movementActionType: 5
     movementActionDatum: {fileID: 11400000, guid: 1ad775b1a2880fe48a8fb83d605a8829, type: 2}

@@ -455,6 +455,7 @@ GameObject:
   - component: {fileID: 3713888157220615980}
   - component: {fileID: 8403845203889220327}
   - component: {fileID: -5005472632189875406}
+  - component: {fileID: 5048324241602072228}
   m_Layer: 0
   m_Name: Convex NPC
   m_TagString: Untagged
@@ -510,7 +511,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b3364c2ab062f3e49b967c2d0cff8d46, type: 2}
+  - {fileID: 2100000, guid: a06a4d324df4cb940a92dbdf475f94f4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -564,3 +565,24 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 16384
+--- !u!135 &5048324241602072228
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301414188649246487}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

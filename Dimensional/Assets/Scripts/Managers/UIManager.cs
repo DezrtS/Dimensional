@@ -35,6 +35,7 @@ namespace Managers
         [SerializeField] private float areaTitleDuration = 5;
         [Space]
         [SerializeField] private GameObject travelMap;
+        [SerializeField] private GameObject pauseMenu;
         [Space]
         [SerializeField] private Transform interactableIconTransform;
         [Space]
@@ -50,6 +51,8 @@ namespace Managers
         private SelectionWheel _shapeSelectionWheel;
         
         private PlayerUIV1 _playerUI;
+        private Animator _animator;
+        private bool _isPaused;
         
         public MovementActionType SelectedMovementActionType { get; set; }
         public AreaTitle AreaTitle => areaTitle;
@@ -58,6 +61,8 @@ namespace Managers
         {
             _maskReveal = GetComponent<MaskReveal>();
             _maskReveal.Finished += MaskRevealOnFinished;
+            
+            _animator = GetComponent<Animator>();
             
             UIEventBus.EventFired += UIEventBusOnEventFired;
             
@@ -137,6 +142,7 @@ namespace Managers
                 case UserInterfaceType.None:
                     break;
                 case UserInterfaceType.Pause:
+                    pauseMenu.SetActive(true);
                     break;
                 case UserInterfaceType.Quests:
                     break;
@@ -148,10 +154,36 @@ namespace Managers
             }
         }
 
+        public void Pause()
+        {
+            _isPaused = !_isPaused;
+            if (_isPaused)
+            {
+                ActivateUI(UserInterfaceType.Pause);
+                CameraManager.Instance.UnlockAndShowCursor();
+            }
+            else
+            {
+                CameraManager.Instance.LockAndHideCursor();
+                DeactivateUI();
+            }
+        }
+
+        public void ExitToMainMenu()
+        {
+            SceneManager.Instance.LoadSceneWithTransition("MainMenuTest");
+        }
+
         public void DeactivateUI(bool resetInput = true)
         {
             if (resetInput) GameManager.Instance.ResetInputActionMapToDefault();
             travelMap.SetActive(false);
+            pauseMenu.SetActive(false);
+        }
+
+        public void SetUIHidden(bool isHidden)
+        {
+            _animator.SetBool("Hide", isHidden);
         }
 
         public GameObject GetShapeSelectionWheelGameObject(bool useOtherMethod)

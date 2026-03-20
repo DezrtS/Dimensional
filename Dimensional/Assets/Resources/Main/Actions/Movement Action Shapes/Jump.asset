@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Jump
   m_EditorClassIdentifier: 
   movementActionName: Jump
+  movementActionIcon: {fileID: -235258640, guid: 2ad360a0948ff1745a4e68502fc80071, type: 3}
   movementActionType: 1
   shapeData:
   - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}

@@ -38,6 +38,13 @@ namespace Scriptables.Save
             _runtimeValue.list.Add(value);
             SetIsDirty();
         }
+
+        public void RemoveValue(int value)
+        {
+            EnsureRuntime();
+            _runtimeValue.list.Remove(value);
+            SetIsDirty();
+        }
         
         private void EnsureRuntime()
         {

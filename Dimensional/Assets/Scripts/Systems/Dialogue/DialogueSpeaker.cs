@@ -52,7 +52,7 @@ namespace Systems.Dialogue
             if (!_isSpeaking) return;
             _isSpeaking = false;
             _speechBox.HideDialogue();
-            if (_cameraTransition) _cameraTransition.TransitionFrom();
+            if (_cameraTransition && !CutsceneManager.Instance.IsPlaying) _cameraTransition.TransitionFrom();
         }
 
         private void DialogueManagerOnDialogueSpoken(DialogueLine dialogueLine)

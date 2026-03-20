@@ -366,11 +366,16 @@ MonoBehaviour:
   interactableDatum: {fileID: 11400000, guid: b13d58cd494ce394193cf026ee0bf9aa, type: 2}
   worldUIAnchorDatum: {fileID: 11400000, guid: 3275e4d7ffbd1914f8f26f43e23dc114, type: 2}
   elementTransform: {fileID: 4723530580264355695}
-  eventData: []
+  gameEventData: []
   spawnTransform: {fileID: 298615982539456399}
   id: 0
-  destinationIsScene: 0
   destinationId: 1
+  destinationIsScene: 0
+  reverseDirection: 0
+  sceneTransition: {fileID: 0}
+  lastCheckpointSaveData: {fileID: 11400000, guid: 84a64669df7b9e547b0e31f48f3c280b, type: 2}
+  changeDefaultCamera: 0
+  cameraId: 0
 --- !u!114 &6831392576144213807
 MonoBehaviour:
   m_ObjectHideFlags: 0

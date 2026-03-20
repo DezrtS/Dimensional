@@ -2,9 +2,12 @@ using System;
 using Interfaces;
 using Managers;
 using Scriptables.Cutscenes;
+using Scriptables.Save;
+using Scriptables.Scene_Transitions;
 using Scriptables.User_Interface;
 using Systems.Cutscenes;
 using UnityEngine;
+using User_Interface;
 
 namespace Systems.Interactables
 {
@@ -13,14 +16,24 @@ namespace Systems.Interactables
         [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
         [SerializeField] private Transform elementPoint;
 
-        [SerializeField] private string nextScene;
+        [SerializeField] private StringVariable lastCheckpointSaveData;
+        [SerializeField] private bool reverse;
+        [SerializeField] private SceneTransition sceneTransition;
+        [SerializeField] private string destinationId;
         
         [SerializeField] private CutsceneDatum cutsceneDatum;
         [SerializeField] private Cutscene cutscene;
+        
+        private WorldUIAnchor _worldUIAnchor;
 
         private void Start()
         {
-            UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, gameObject, elementPoint);
+            _worldUIAnchor = UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, gameObject, elementPoint);
+        }
+
+        public void DisableWorldUIAnchor()
+        {
+            if (_worldUIAnchor) _worldUIAnchor.SetIsDisabled(true);
         }
 
         public override bool CanInteract(InteractContext interactContext)
@@ -31,13 +44,13 @@ namespace Systems.Interactables
         public override void Interact(InteractContext interactContext)
         {
             base.Interact(interactContext);
+            lastCheckpointSaveData.Value = destinationId;
             CutsceneManager.Instance.PlayCutscene(cutscene, cutsceneDatum);
-            //EventManager.SendEvents(InteractableDatum.EventData);
         }
         
         public void LoadNextScene() 
         {
-            SceneManager.Instance.LoadSceneWithTransition(nextScene);
+            SceneManager.Instance.LoadSceneWithTransition(reverse ? sceneTransition.SceneName : sceneTransition.DestinationSceneName);
         }
     }
 }

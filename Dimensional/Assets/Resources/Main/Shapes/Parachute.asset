@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeName: Parachute
   shapeType: 6
-  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
+  shapeIcon: {fileID: -310859488, guid: f7f187918784afa41a4ac2dbd0611b58, type: 3}
   shapeMovementActions:
   - movementActionType: 5
     movementActionDatum: {fileID: 11400000, guid: 65605b94ea7b7764fb8c1729c9b9f56b, type: 2}

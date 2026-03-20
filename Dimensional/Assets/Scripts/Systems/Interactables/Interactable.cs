@@ -1,6 +1,7 @@
 using System;
 using Interfaces;
 using Scriptables.Interactables;
+using Scriptables.Save;
 using UnityEngine;
 
 namespace Systems.Interactables

@@ -115,8 +115,8 @@ namespace Managers
             UnassignControls();
             GameManager.Instance.ResetInputActionMapToDefault();
             
-            SequenceFinished?.Invoke(currentDialogueSequenceDatum);
             EventManager.SendEvents(currentDialogueSequenceDatum.EventData);
+            SequenceFinished?.Invoke(currentDialogueSequenceDatum);
             currentDialogueSequenceDatum = null;
             _isDialogueActive = false;
             _currentDialogueLineIndex = 0;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeName: Airplane
   shapeType: 9
-  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
+  shapeIcon: {fileID: -868341752, guid: f7f187918784afa41a4ac2dbd0611b58, type: 3}
   shapeMovementActions:
   - movementActionType: 7
     movementActionDatum: {fileID: 11400000, guid: 9e654e92caa839e48befe68f635c96bd, type: 2}

@@ -113,6 +113,16 @@ namespace Systems.Actions.Movement
     
     public class MovementAction : Action
     {
+        public static readonly MovementActionType[] MovementActionTypesList = {
+            MovementActionType.JumpAction,
+            MovementActionType.DoubleJumpAction,
+            MovementActionType.WallJumpAction,
+            MovementActionType.RollJumpAction,
+            MovementActionType.DashAction,
+            MovementActionType.DiveAction,
+            MovementActionType.AirAction,
+        };
+        
         private MovementActionDatum _movementActionDatum;
         
         protected MovementController MovementController { get; private set; }

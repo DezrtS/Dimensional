@@ -16,6 +16,7 @@ MonoBehaviour:
   eventData:
   - {fileID: 11400000, guid: 2d4c9eb9c99214040bd4265de3a5591a, type: 2}
   - {fileID: 11400000, guid: 203d85c00a03b16418150e4c0f3fbc8f, type: 2}
+  - {fileID: 11400000, guid: 61bc4a37e1b558943a7718640bd9a05e, type: 2}
   dialogueLines:
   - dialogueSpeakerDatum: {fileID: 11400000, guid: bf8f05134ff2eb948b04658607306c38, type: 2}
     text: Its already noon, how long were you planning to sleep?

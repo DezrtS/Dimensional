@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Dash
   m_EditorClassIdentifier: 
   movementActionName: Dash
+  movementActionIcon: {fileID: -710311057, guid: 998b866aa776f7344a88520f60bdbaaf, type: 3}
   movementActionType: 5
   shapeData:
   - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}

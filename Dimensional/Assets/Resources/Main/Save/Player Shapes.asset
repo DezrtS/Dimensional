@@ -24,6 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7144eb8f1b5ff314eaf47ab3ef0be7ab, type: 2}
   - {fileID: 11400000, guid: 8bed3ef6eb3888d4fbcf75af927a0b35, type: 2}
   shapeData:
+  - {fileID: 11400000, guid: ddd84f9b06cae16459e721b5fc888273, type: 2}
   - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}
   - {fileID: 11400000, guid: 37a705e5358c5dd4cb35a6591d874538, type: 2}
   - {fileID: 11400000, guid: 7ed04a327d17dac41985c7271116c796, type: 2}

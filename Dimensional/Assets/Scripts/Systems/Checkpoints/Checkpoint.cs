@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
+using Interfaces;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 
 namespace Systems.Checkpoints
 {
-    public class Checkpoint : MonoBehaviour
+    public class Checkpoint : MonoBehaviour, ISpawnPoint
     {
         private static readonly int BlendProperty = Shader.PropertyToID("_Blend");
-        public event Action<Checkpoint> Entered;
+        
+        public event Action<ISpawnPoint> Entered;
 
         [SerializeField] private bool isDefaultCheckpoint;
         [SerializeField] private Vector3 spawnOffset;
@@ -32,8 +33,9 @@ namespace Systems.Checkpoints
         private int _respawnCount;
         
         public string Id => _objectId.Id;
-        public bool IsDefaultCheckpoint => isDefaultCheckpoint;
-        public Vector3 SpawnPosition => transform.position + spawnOffset;
+        public bool IsDefaultSpawnPoint => isDefaultCheckpoint;
+
+        public Vector3 Position => transform.position + spawnOffset;
 
         private void Awake()
         {
@@ -46,19 +48,28 @@ namespace Systems.Checkpoints
         private void OnEnable()
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+            CheckpointManager.LastSpawnPointChanged += InstanceOnLastSpawnPointChanged;
         }
 
         private void OnDisable()
         {
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+            CheckpointManager.LastSpawnPointChanged -= InstanceOnLastSpawnPointChanged;
         }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue == GameState.Initializing) CheckpointManager.Instance.AddCheckpoint(this);
+            if (newValue != GameState.Initializing) return;
+            CheckpointManager.Instance.AddSpawnPoint(this);
         }
 
-        public void RespawnAt()
+        private void InstanceOnLastSpawnPointChanged(ISpawnPoint spawnPoint)
+        {
+            if (!spawnPoint.Id.Equals(Id)) return;
+            Disable();
+        }
+
+        public void SpawnAt()
         {
             if (isLimitedCheckpoint)
             {
@@ -82,7 +93,7 @@ namespace Systems.Checkpoints
             StartCoroutine(EnteredRoutine());
         }
 
-        public void Disable()
+        private void Disable()
         {
             if (!_isActive) return;
             

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Air
   m_EditorClassIdentifier: 
   movementActionName: Air
+  movementActionIcon: {fileID: -1675243966, guid: 72277048ad5f9b5468da3cecb4d80f13, type: 3}
   movementActionType: 7
   shapeData:
+  - {fileID: 11400000, guid: ddd84f9b06cae16459e721b5fc888273, type: 2}
   - {fileID: 11400000, guid: e3ebf381034f4c549a2dac7a18b8870c, type: 2}
   - {fileID: 11400000, guid: 646dbf0ef8be1c04ca3aa2883217c5f4, type: 2}

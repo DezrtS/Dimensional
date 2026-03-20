@@ -1,6 +1,7 @@
 using System;
 using Managers;
 using Scriptables.Cutscenes;
+using Systems.Player;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -38,6 +39,7 @@ namespace Systems.Cutscenes
         private void DirectorOnPlayed(PlayableDirector playableDirector)
         {
             Played?.Invoke(this);
+            if (_cutsceneDatum.DisablePlayer) PlayerController.Instance.HidePlayer.SetIsHidden(true);
         }
 
         private void DirectorOnPaused(PlayableDirector playableDirector)
@@ -49,6 +51,7 @@ namespace Systems.Cutscenes
         {
             Stopped?.Invoke(this);
             EventManager.SendEvents(_cutsceneDatum.OnStopEventData);
+            if (_cutsceneDatum.DisablePlayer) PlayerController.Instance.HidePlayer.SetIsHidden(false);
             if (_cutsceneDatum.DestroyOnStopped) Destroy(gameObject);
         }
 
