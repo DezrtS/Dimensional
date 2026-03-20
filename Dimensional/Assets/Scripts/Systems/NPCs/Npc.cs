@@ -13,11 +13,25 @@ namespace Systems.NPCs
         [SerializeField] private WorldUIAnchorDatum worldUIAnchorDatum;
         
         [SerializeField] private DialogueLineDatum dialogueLineDatum;
+        
+        private SpeechBox _speechBox;
 
-        private void Start()
+        private void OnEnable()
         {
-            var speechBox = (SpeechBox)UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, gameObject, elementTransform);
-            if (dialogueLineDatum) speechBox.SetDialogueLine(dialogueLineDatum.DialogueLine);
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+        }
+        
+        private void OnDisable()
+        {
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+            if (_speechBox) _speechBox.SetIsDisabled(true);
+        }
+
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        {
+            if (newValue != GameState.Initializing) return;
+            _speechBox = (SpeechBox)UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, gameObject, elementTransform);
+            if (dialogueLineDatum) _speechBox.SetDialogueLine(dialogueLineDatum.DialogueLine);
         }
     }
 }

@@ -82,7 +82,6 @@ namespace User_Interface.Interactables
         private void DialogueManagerOnSequenceFinished(DialogueSequenceDatum dialogueSequenceDatum)
         {
             DisableScaling = false;
-            transform.localScale = Vector3.one;
         }
     }
 }

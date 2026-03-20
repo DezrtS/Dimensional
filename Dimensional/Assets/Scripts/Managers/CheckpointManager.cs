@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Interfaces;
 using Scriptables.Save;
-using Systems.Checkpoints;
 using UnityEngine;
 using Utilities;
 
@@ -9,14 +9,18 @@ namespace Managers
 {
     public class CheckpointManager : Singleton<CheckpointManager>
     {
-        [SerializeField] private StringVariable lastCheckpointSaveData;
+        public static event Action<ISpawnPoint> LastSpawnPointChanged;
         
-        private Dictionary<string, Checkpoint> _checkpoints;
-        private string _lastCheckpointId = string.Empty;
+        [SerializeField] private StringVariable lastSpawnPointSaveData;
+        
+        private Dictionary<string, ISpawnPoint> _spawnPoints;
+        private string _lastSpawnPointId = string.Empty;
+
+        private bool _lastSpawnPointExists;
         
         private void Awake()
         {
-            _checkpoints = new Dictionary<string, Checkpoint>();
+            _spawnPoints = new Dictionary<string, ISpawnPoint>();
         }
 
         protected override void OnEnable()
@@ -33,38 +37,44 @@ namespace Managers
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
             if (newValue != GameState.Preparing) return;
-            if (lastCheckpointSaveData.Value != string.Empty) _lastCheckpointId = lastCheckpointSaveData.Value;
+            if (!lastSpawnPointSaveData) return;
+            if (lastSpawnPointSaveData.Value == string.Empty) return;
+            if (_spawnPoints.ContainsKey(lastSpawnPointSaveData.Value)) _lastSpawnPointId = lastSpawnPointSaveData.Value;
         }
-        
-        public void AddCheckpoint(Checkpoint checkpoint)
+
+        public void AddSpawnPoint(ISpawnPoint spawnPoint)
         {
-            if (checkpoint.Id == string.Empty)
+            if (spawnPoint.Id == string.Empty)
             {
-                Debug.LogError("Checkpoint Id is empty");
+                Debug.LogWarning("Spawn Point Id is Missing");
+                return;
+            }
+            
+            if (!_spawnPoints.TryAdd(spawnPoint.Id, spawnPoint))
+            {
+                Debug.LogWarning("Duplicate Spawn Point Id");
                 return;
             }
 
-            if (checkpoint.IsDefaultCheckpoint) _lastCheckpointId = checkpoint.Id;
-            
-            _checkpoints.Add(checkpoint.Id, checkpoint);
-            checkpoint.Entered += CheckpointOnEntered;
+            if (spawnPoint.IsDefaultSpawnPoint) _lastSpawnPointId = spawnPoint.Id;
+            spawnPoint.Entered += SpawnPointOnEntered;
         }
 
-        private Checkpoint GetCheckpoint(string id)
+        private void SpawnPointOnEntered(ISpawnPoint spawnPoint)
+        {
+            var lastSpawnPoint = GetLastSpawnPoint();
+            if (lastSpawnPoint != null) LastSpawnPointChanged?.Invoke(lastSpawnPoint);
+            _lastSpawnPointId = spawnPoint.Id;
+            lastSpawnPointSaveData.Value = spawnPoint.Id;
+        }
+
+        private ISpawnPoint GetSpawnPoint(string id)
         {
             if (id == string.Empty) return null;
-            _checkpoints.TryGetValue(id, out var checkpoint);
-            return checkpoint;
+            _spawnPoints.TryGetValue(id, out var spawnPoint);
+            return spawnPoint;
         }
-
-        public Checkpoint GetLastCheckpoint() => GetCheckpoint(_lastCheckpointId);
-
-        private void CheckpointOnEntered(Checkpoint checkpoint)
-        {
-            var lastCheckpoint = GetLastCheckpoint();
-            if (lastCheckpoint) lastCheckpoint.Disable();
-            _lastCheckpointId = checkpoint.Id;
-            lastCheckpointSaveData.Value = checkpoint.Id;
-        }
+        
+        public ISpawnPoint GetLastSpawnPoint() => GetSpawnPoint(_lastSpawnPointId);
     }
 }

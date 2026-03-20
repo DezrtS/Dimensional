@@ -28,6 +28,8 @@ namespace Scriptables.Save
         
         private Dictionary<ShapeType, Dictionary<MovementActionType, MovementActionDatum>> _shapeActionDictionary;
         private Dictionary<MovementActionType, MovementActionDatum> _movementActionDictionary;
+        
+        public MovementActionShapesPreset Value => _runtimeValue;
 
         public void SetMovementActionShapesPreset(MovementActionType movementActionType, ShapeType shapeType)
         {

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Dive
   m_EditorClassIdentifier: 
   movementActionName: Dive
+  movementActionIcon: {fileID: -70725021, guid: aa3149c73ba74ce44b51387793e050ce, type: 3}
   movementActionType: 6
   shapeData:
+  - {fileID: 11400000, guid: ddd84f9b06cae16459e721b5fc888273, type: 2}
   - {fileID: 11400000, guid: 790162a82d371074c90e708f63f62a4a, type: 2}
   - {fileID: 11400000, guid: f80463c9f2b40624080e9cd1ab5903d8, type: 2}
   - {fileID: 11400000, guid: eb24c54811217a848b850084d311472a, type: 2}

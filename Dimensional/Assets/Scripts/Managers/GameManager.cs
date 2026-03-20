@@ -17,6 +17,7 @@ namespace Managers
         Preparing,
         Starting,
         Playing,
+        Quitting
     }
 
     [Serializable]
@@ -91,25 +92,6 @@ namespace Managers
             {
                 SceneManager.ReloadScene();
             }
-            /*
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                SetWorldDimensions(Dimensions.Two);
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                SetWorldDimensions(Dimensions.Three);
-            }
-            */
-
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                Time.timeScale = Mathf.Min(Time.timeScale + 0.1f, 1);
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                Time.timeScale = Mathf.Max(Time.timeScale - 0.1f, 0.1f);
-            }
         }
 
         public static void SetTimeScale(float timeScale = 1)
@@ -126,8 +108,6 @@ namespace Managers
 
             switch (newState)
             {
-                case GameState.None:
-                    break;
                 case GameState.Initializing:
                     _isFirstLoad = !SaveManager.Instance;
                     if (_isFirstLoad) Instantiate(saveManagerPrefab);
@@ -139,12 +119,6 @@ namespace Managers
                 case GameState.Preparing:
                     if (currentRegion != String.Empty) lastRegionSaveData.Value = currentRegion;
                     break;
-                case GameState.Starting:
-                    break;
-                case GameState.Playing:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
             }
             
             foreach (var gameStateEvent in gameStateEvents)
@@ -232,6 +206,11 @@ namespace Managers
             }
             
             return hits;
+        }
+
+        private void OnApplicationQuit()
+        {
+            ChangeGameState(GameState.Quitting);
         }
     }
 }

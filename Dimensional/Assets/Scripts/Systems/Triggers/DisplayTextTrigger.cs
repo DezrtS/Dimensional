@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Managers;
+using Scriptables.Text;
 using Systems.Events;
 using UnityEngine;
 using Utilities;
@@ -9,42 +10,17 @@ namespace Systems.Triggers
 {
     public class DisplayTextTrigger : MonoBehaviour
     {
+        [SerializeField] private TextDatum textDatum;
         [SerializeField] private DisplayTextEvent displayTextEvent;
         [SerializeField] private bool showAfterTrigger;
         [SerializeField] private bool hideOnExit;
         
-        private ObjectId _objectId;
         private bool _isTriggered;
         private bool _isCompleted;
 
-        private void OnEnable()
-        {
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
-        }
-
-        private void OnDisable()
-        {
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
-        }
-
         private void Awake()
         {
-            _objectId = GetComponent<ObjectId>();
-        }
-        
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (_isCompleted || !_isTriggered) return;
-            if (!dataTypes.Contains(DataType.World)) return;
-            saveData.worldData.completedTutorials.Add(_objectId.Id);
-        }
-        
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (!dataTypes.Contains(DataType.World)) return;
-            if (saveData.worldData.completedTutorials.Contains(_objectId.Id)) _isCompleted = true;
+            if (textDatum) displayTextEvent.Text = textDatum.Text;
         }
 
         private void OnTriggerEnter(Collider other)

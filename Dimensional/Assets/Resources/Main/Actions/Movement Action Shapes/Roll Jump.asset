@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Roll Jump
   m_EditorClassIdentifier: 
   movementActionName: Roll Jump
+  movementActionIcon: {fileID: 1808488479, guid: 434f8075a07838c46a4d5c9d70bb60a4, type: 3}
   movementActionType: 4
   shapeData:
   - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}

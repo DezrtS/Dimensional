@@ -178,12 +178,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableDatum: {fileID: 11400000, guid: b13d58cd494ce394193cf026ee0bf9aa, type: 2}
   unlockedShapesSaveData: {fileID: 11400000, guid: 238a1f5d08eaf7347bb241fbe7cad9c1, type: 2}
+  newShapesSaveData: {fileID: 11400000, guid: cccbba23a35e2c942a5a8546b8a1a44e, type: 2}
   eventData: []
   unlockableShapes: 03000000
   worldUIAnchorDatum: {fileID: 11400000, guid: 3275e4d7ffbd1914f8f26f43e23dc114, type: 2}
   elementTransform: {fileID: 507529838074996778}
   cutsceneDatum: {fileID: 11400000, guid: 35022289bd9fbc74c87dae5e9f10b983, type: 2}
   cutscene: {fileID: 7499196191692899956}
+  disableOnBoolSaveData: {fileID: 0}
 --- !u!1 &4763289392742503466
 GameObject:
   m_ObjectHideFlags: 0

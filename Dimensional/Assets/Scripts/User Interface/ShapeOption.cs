@@ -13,80 +13,52 @@ namespace User_Interface
 {
     public class ShapeOption : MonoBehaviour
     {
-        [SerializeField] private PlayerShapes playerShapes;
+        [SerializeField] private Image background;
         [SerializeField] private TextMeshProUGUI shapeText;
-        [SerializeField] private Image shapeImage;
+        [SerializeField] private Image shapeIcon;
         
-        private ShapeType _shapeType;
-        private bool _isSelected;
-        private bool _canSelect;
-        private bool _isDisabled;
-        private Animator _animator;
+        private Color _defaultBackgroundColor;
+        private Color _defaultTextColor;
+        private Color _defaultIconColor;
 
         private void Awake()
         {
-            _animator = GetComponent<Animator>();
+            _defaultBackgroundColor = background.color;
+            _defaultTextColor = shapeText.color;
+            _defaultIconColor = shapeIcon.color;
         }
 
         public void Initialize(ShapeDatum shapeData)
         {
-            _canSelect = true;
-            _shapeType = shapeData.ShapeType;
             shapeText.text = shapeData.ShapeName;
-            shapeImage.sprite = shapeData.ShapeIcon;
+            shapeIcon.sprite = shapeData.ShapeIcon;
+            shapeIcon.enabled = true;
+            ResetColors();
         }
-        
+
         public void Initialize()
         {
-            _canSelect = false;
-            _shapeType = ShapeType.None;
             shapeText.text = "???";
-            shapeImage.sprite = null;
-            _isDisabled = true;
+            shapeIcon.enabled = false;
+            ResetColors();
         }
 
-        private void Default() => _animator.SetTrigger("Default");
-
-        public void Select()
+        private void ResetColors()
         {
-            if (_isSelected || !_canSelect || _isDisabled) return;
-            _isSelected = true;
-            _animator.SetTrigger("Select");
-            var actionType = UIManager.Instance.SelectedMovementActionType;
-            playerShapes.SetMovementActionShapesPreset(actionType, _shapeType);
-            //PlayerController.Instance.SetMovementActionShape(UIManager.Instance.SelectedMovementActionType, _shapeType);
-            PlayerController.Instance.ResetMovementActions();
+            background.color = _defaultBackgroundColor;
+            shapeText.color = _defaultTextColor;
+            shapeIcon.color = _defaultIconColor;
         }
 
-        public void Deselect()
+        public void SetIsNew(Color newShapeBackgroundColor, Color newShapeTextColor, Color newShapeIconColor)
         {
-            if (!_isSelected) return;
-            _isSelected = false;
-            if (!_isDisabled) Default();
+            newShapeBackgroundColor.a = _defaultBackgroundColor.a;
+            newShapeTextColor.a = _defaultTextColor.a;
+            newShapeIconColor.a = _defaultIconColor.a;
+            
+            background.color = newShapeBackgroundColor;
+            shapeText.color = newShapeTextColor;
+            shapeIcon.color = newShapeIconColor;
         }
-
-        public void Enable()
-        {
-            if (!_isDisabled) return;
-            _isDisabled = false;
-            if (!_isSelected) Default();
-        }
-
-        public void Disable()
-        {
-            if (_isDisabled) return;
-            _isDisabled = true;
-            _animator.SetTrigger("Disable");
-        }
-
-        public void Hide() => _animator.SetTrigger("Hide");
-
-        public void Show()
-        {
-            if (_isSelected) _animator.SetTrigger("Select");
-            else if (_isDisabled) _animator.SetTrigger("Disable");
-            else Default();
-        }
-        
     }
 }

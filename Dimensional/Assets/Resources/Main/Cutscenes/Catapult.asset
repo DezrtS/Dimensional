@@ -15,6 +15,7 @@ MonoBehaviour:
   cutscenePrefab: {fileID: 4958872293779107633, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
   cutsceneName: Catapult
   destroyOnStopped: 0
+  disablePlayer: 1
   onPlayEventData:
   - {fileID: 11400000, guid: e820a4c537f5d5847b6251d4ed58d317, type: 2}
   onStopEventData:

@@ -1,4 +1,7 @@
 using System;
+using Managers;
+using Scriptables.Cutscenes;
+using Systems.Cutscenes;
 using Systems.Entities;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -8,6 +11,8 @@ namespace Systems
 {
     public class GroundPoundButton : MonoBehaviour
     {
+        [SerializeField] private CutsceneDatum cutsceneDatum;
+        [SerializeField] private Cutscene cutscene;
         [SerializeField] private SignalAsset signalAsset;
         [SerializeField] private SignalReceiver[] signalReceivers;
 
@@ -36,6 +41,8 @@ namespace Systems
             if (_isActive) return;
             _isActive = true;
 
+            if (cutscene && cutsceneDatum) CutsceneManager.Instance.PlayCutscene(cutscene, cutsceneDatum);
+            if (!signalAsset) return; 
             var emitter = ScriptableObject.CreateInstance<SignalEmitter>();
             emitter.asset = signalAsset;
 

@@ -58,6 +58,7 @@ namespace Systems.Player
         public bool DebugDisable { get; set; }
         public PlayerLook PlayerLook { get; private set; }
         public PlayerMovementController PlayerMovementController { get; private set; }
+        public HidePlayer HidePlayer { get; private set; }
 
         public List<MovementActionShape> MovementActionShapes { get; private set; }
         public List<ShapeType> UnlockedShapes => unlockedShapes;
@@ -115,6 +116,7 @@ namespace Systems.Player
             SetMovementActionShapesPreset(defaultMovementActionShapesPreset, false);
             
             PlayerMovementController = GetComponent<PlayerMovementController>();
+            HidePlayer = GetComponent<HidePlayer>();
             _health = GetComponent<Health>();
             _health.HealthStateChanged += HealthOnHealthStateChanged;
             _stunBehaviour = GetComponent<StunBehaviourComponent>();
@@ -164,9 +166,12 @@ namespace Systems.Player
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed += OnInteract;
             
+            var pauseInputAction = _inputActionMap.FindAction("Pause");
+            pauseInputAction.performed += OnPause;
+            
             _inputActionMap.Enable();
         }
-        
+
         private void UnassignControls()
         {
             var jumpInputAction = _inputActionMap.FindAction("Jump");
@@ -195,6 +200,9 @@ namespace Systems.Player
             
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed -= OnInteract;
+            
+            var pauseInputAction = _inputActionMap.FindAction("Pause");
+            pauseInputAction.performed -= OnPause;
             
             _inputActionMap.Disable();
         }
@@ -326,12 +334,12 @@ namespace Systems.Player
 
         private void RespawnPlayer(Vector3 defaultRespawnPosition)
         {
-            var checkpoint = CheckpointManager.Instance.GetLastCheckpoint();
+            var spawnPoint = CheckpointManager.Instance.GetLastSpawnPoint();
             var spawnPosition = defaultRespawnPosition;
-            if (checkpoint)
+            if (spawnPoint != null) 
             {
-                checkpoint.RespawnAt();
-                spawnPosition = checkpoint.SpawnPosition;
+                spawnPoint.SpawnAt();
+                spawnPosition = spawnPoint.Position;
             }
             PlayerMovementController.ForceController.Teleport(spawnPosition);
         }
@@ -381,7 +389,14 @@ namespace Systems.Player
         private void OnInteract(InputAction.CallbackContext context)
         {
             if (DebugDisable) return;
-            if (_interactable) _interactable.Interact(InteractContext.Construct(gameObject));
+            if (!_interactable) return;
+            var interactionContext = InteractContext.Construct(gameObject);
+            if (_interactable.CanInteract(interactionContext)) _interactable.Interact(interactionContext);
+        }
+        
+        private void OnPause(InputAction.CallbackContext context)
+        {
+            UIManager.Instance.Pause();
         }
         
         private void OnSwitchShapes(InputAction.CallbackContext context)

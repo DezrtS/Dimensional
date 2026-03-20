@@ -128,12 +128,12 @@ namespace Systems.Grass
         private bool IsChunkVisible()
         {
             var cameraPosition = _cameraTransform.position;
-            var playerPosition = _playerTransform.position;
+            var visionPosition = _cameraTransform.position + _cameraTransform.forward * 5f;
             var dist = Vector3.Distance(cameraPosition, _chunkBounds.center);
             if (dist > _grassSettings.MaxGrassDistance)
                 return false;
             
-            var closestPoint = _chunkBounds.ClosestPoint(playerPosition);
+            var closestPoint = _chunkBounds.ClosestPoint(visionPosition);
             var toChunk = (closestPoint - cameraPosition).normalized;
             var dot = Vector3.Dot(_cameraTransform.forward, toChunk);
             if (dot < _grassSettings.MinChunkDot)

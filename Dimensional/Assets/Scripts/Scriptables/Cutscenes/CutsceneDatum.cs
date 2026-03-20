@@ -10,12 +10,14 @@ namespace Scriptables.Cutscenes
         [SerializeField] private GameObject cutscenePrefab;
         [SerializeField] private string cutsceneName;
         [SerializeField] private bool destroyOnStopped;
+        [SerializeField] private bool disablePlayer;
         
         [SerializeField] private EventDatum[] onPlayEventData;
         [SerializeField] private EventDatum[] onStopEventData;
         
         public string CutsceneName => cutsceneName;
         public bool DestroyOnStopped => destroyOnStopped;
+        public bool DisablePlayer => disablePlayer;
         
         public EventDatum[] OnPlayEventData => onPlayEventData;
         public EventDatum[] OnStopEventData => onStopEventData;

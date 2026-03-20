@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Double Jump
   m_EditorClassIdentifier: 
   movementActionName: Double Jump
+  movementActionIcon: {fileID: 1589260248, guid: 01582a02ffe2d1f4cac3a0222a5f1f8f, type: 3}
   movementActionType: 2
   shapeData:
+  - {fileID: 11400000, guid: ddd84f9b06cae16459e721b5fc888273, type: 2}
   - {fileID: 11400000, guid: 37a705e5358c5dd4cb35a6591d874538, type: 2}
   - {fileID: 11400000, guid: 95f61075fca81604eaa1ba873a201843, type: 2}
   - {fileID: 11400000, guid: eb24c54811217a848b850084d311472a, type: 2}

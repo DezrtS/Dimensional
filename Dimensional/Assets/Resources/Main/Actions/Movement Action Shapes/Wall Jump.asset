@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Wall Jump
   m_EditorClassIdentifier: 
   movementActionName: Wall Jump
+  movementActionIcon: {fileID: 1205854865, guid: 5cb299c2ad13cb34fb05accba3d771de, type: 3}
   movementActionType: 3
   shapeData:
   - {fileID: 11400000, guid: 0ca8a567a14fb314b9d3d6ebb0750958, type: 2}

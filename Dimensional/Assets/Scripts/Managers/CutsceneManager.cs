@@ -8,10 +8,13 @@ namespace Managers
 {
     public class CutsceneManager : Singleton<CutsceneManager>
     {
+        public static event Action CutsceneFinished;
         [SerializeField] private CutsceneDatum defaultCutsceneDatum;
         
         private Cutscene _selectedCutscene;
-        
+
+        public bool IsPlaying { get; private set; }
+
         private void Awake()
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
@@ -46,12 +49,17 @@ namespace Managers
             _selectedCutscene = cutscene;
             _selectedCutscene.Play();
             _selectedCutscene.Stopped += CutsceneOnStopped;
+            IsPlaying = true;
+            UIManager.Instance.SetUIHidden(true);
         }
 
         private void CutsceneOnStopped(Cutscene cutscene)
         {
             cutscene.Stopped -= CutsceneOnStopped;
+            CutsceneFinished?.Invoke();
             _selectedCutscene = null;
+            IsPlaying = false;
+            UIManager.Instance.SetUIHidden(false);
         }
 
         public void StopCutscene()

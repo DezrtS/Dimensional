@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Sphere Family Greeting
   m_EditorClassIdentifier: 
   isDialogueSkippable: 1
-  eventData: []
+  eventData:
+  - {fileID: 11400000, guid: 0d12f9c2eea3f8a429dfaf7c0c85b386, type: 2}
   dialogueLines:
   - dialogueSpeakerDatum: {fileID: 11400000, guid: e1900836d1bace547a00743cdf9c4bca, type: 2}
     text: Hey.

@@ -182,18 +182,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Open Wheel"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""602606da-01e5-4f72-82f6-7fd7ebf25236"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Switch Wheel"",
-                    ""type"": ""Button"",
-                    ""id"": ""dc80712e-55ab-425d-80f8-d1f48c091b04"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -235,31 +226,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""8180e8bd-4097-4f4e-ab88-4523101a6ce9"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""down"",
                     ""id"": ""320bffee-a40b-4347-ac70-c210eb8bc73a"",
                     ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""1c5327b5-f71c-4f60-99c7-4e737386f1d1"",
-                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -279,31 +248,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""left"",
-                    ""id"": ""2e46982e-44cc-431b-9f0b-c11910bf467a"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": ""right"",
                     ""id"": ""fcfe95b8-67b9-4526-84b5-5d0bc98d6400"",
                     ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""77bff152-3580-4b21-b6de-dcd0c7e41164"",
-                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -556,7 +503,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""up"",
                     ""id"": ""8f47d006-e389-46ee-97d1-9bc1a8fd0173"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -567,7 +514,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""down"",
                     ""id"": ""8bba64ec-153f-4e8a-b879-a9556fc51ce3"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -578,7 +525,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""left"",
                     ""id"": ""4b871bfa-e4f3-433f-af6d-4f2dac10c889"",
-                    ""path"": ""<Keyboard>/3"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -589,7 +536,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""right"",
                     ""id"": ""315ca793-c9ab-4b11-af6d-505bcd10cdb2"",
-                    ""path"": ""<Keyboard>/4"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -600,11 +547,11 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": """",
                     ""id"": ""133ee41b-8473-42b5-8722-a1922729a543"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Open Wheel"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -615,29 +562,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Open Wheel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6f6f3e4f-392b-4de8-8487-4085c5e51b15"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Switch Wheel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3fe03f20-374b-4fc0-882d-2a48c07bea70"",
-                    ""path"": ""<Keyboard>/j"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Switch Wheel"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1023,7 +948,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
                     ""id"": ""7607c7b6-cd76-4816-beef-bd0341cfe950"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -1685,7 +1610,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""up"",
                     ""id"": ""33681447-1413-43ac-8b1e-d59184fa99e8"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1696,7 +1621,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""down"",
                     ""id"": ""2f1966a2-0394-4760-bdd6-e6fff7f2e927"",
-                    ""path"": ""<Keyboard>/3"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1707,7 +1632,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""left"",
                     ""id"": ""ec73a15e-4601-47e1-9aa4-7049d0a5decb"",
-                    ""path"": ""<Keyboard>/4"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1718,7 +1643,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                 {
                     ""name"": ""right"",
                     ""id"": ""00c3d5cd-e4c0-4705-941f-d9185a381c29"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1804,8 +1729,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Air = m_Player.FindAction("Air", throwIfNotFound: true);
         m_Player_SwitchShapes = m_Player.FindAction("Switch Shapes", throwIfNotFound: true);
-        m_Player_OpenWheel = m_Player.FindAction("Open Wheel", throwIfNotFound: true);
-        m_Player_SwitchWheel = m_Player.FindAction("Switch Wheel", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Select = m_Dialogue.FindAction("Select", throwIfNotFound: true);
@@ -1933,8 +1857,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Air;
     private readonly InputAction m_Player_SwitchShapes;
-    private readonly InputAction m_Player_OpenWheel;
-    private readonly InputAction m_Player_SwitchWheel;
+    private readonly InputAction m_Player_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1987,13 +1910,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// </summary>
         public InputAction @SwitchShapes => m_Wrapper.m_Player_SwitchShapes;
         /// <summary>
-        /// Provides access to the underlying input action "Player/OpenWheel".
+        /// Provides access to the underlying input action "Player/Pause".
         /// </summary>
-        public InputAction @OpenWheel => m_Wrapper.m_Player_OpenWheel;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/SwitchWheel".
-        /// </summary>
-        public InputAction @SwitchWheel => m_Wrapper.m_Player_SwitchWheel;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2050,12 +1969,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @SwitchShapes.started += instance.OnSwitchShapes;
             @SwitchShapes.performed += instance.OnSwitchShapes;
             @SwitchShapes.canceled += instance.OnSwitchShapes;
-            @OpenWheel.started += instance.OnOpenWheel;
-            @OpenWheel.performed += instance.OnOpenWheel;
-            @OpenWheel.canceled += instance.OnOpenWheel;
-            @SwitchWheel.started += instance.OnSwitchWheel;
-            @SwitchWheel.performed += instance.OnSwitchWheel;
-            @SwitchWheel.canceled += instance.OnSwitchWheel;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -2097,12 +2013,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @SwitchShapes.started -= instance.OnSwitchShapes;
             @SwitchShapes.performed -= instance.OnSwitchShapes;
             @SwitchShapes.canceled -= instance.OnSwitchShapes;
-            @OpenWheel.started -= instance.OnOpenWheel;
-            @OpenWheel.performed -= instance.OnOpenWheel;
-            @OpenWheel.canceled -= instance.OnOpenWheel;
-            @SwitchWheel.started -= instance.OnSwitchWheel;
-            @SwitchWheel.performed -= instance.OnSwitchWheel;
-            @SwitchWheel.canceled -= instance.OnSwitchWheel;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -2946,19 +2859,12 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitchShapes(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Open Wheel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOpenWheel(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Switch Wheel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnSwitchWheel(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Dialogue" which allows adding and removing callbacks.

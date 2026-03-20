@@ -16,6 +16,7 @@ namespace User_Interface
         public Transform TargetTransform { get; private set; }
         protected Transform CameraTransform { get; private set; }
 
+        private bool _isDisabled;
         private bool _isTargetInRange;
         protected Camera Camera { get; private set; }
         protected bool DisableScaling { get; set; }
@@ -40,6 +41,8 @@ namespace User_Interface
 
         private void FixedUpdate()
         {
+            if (_isDisabled) return;
+            
             OnFixedUpdate();
             var targetDistance = GetTargetDistance();
             SetIsTargetInRange(targetDistance <= WorldUIAnchorDatum.Range);
@@ -56,6 +59,8 @@ namespace User_Interface
 
         private void LateUpdate()
         {
+            if (_isDisabled) return;
+            
             var screenPosition = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
             transform.position = screenPosition;
         }
@@ -88,6 +93,10 @@ namespace User_Interface
             return (angle - WorldUIAnchorDatum.MinAngle) / (WorldUIAnchorDatum.MaxAngle - WorldUIAnchorDatum.MinAngle);
         }
 
-        
+        public void SetIsDisabled(bool isDisabled)
+        {
+            _isDisabled = isDisabled;
+            if (_isDisabled && transform) transform.localScale = Vector3.zero;
+        }
     }
 }

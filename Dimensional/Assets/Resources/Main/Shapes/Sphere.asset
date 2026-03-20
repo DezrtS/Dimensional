@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeName: Sphere
   shapeType: 1
-  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
+  shapeIcon: {fileID: 257532281, guid: f7f187918784afa41a4ac2dbd0611b58, type: 3}
   shapeMovementActions:
   - movementActionType: 1
     movementActionDatum: {fileID: 11400000, guid: 5f6b197210dadab43b3c00dd4d1af18b, type: 2}

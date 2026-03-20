@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeName: Weight
   shapeType: 7
-  shapeIcon: {fileID: 865996388, guid: bf31ca08ec2bb5349830f09fe6bcd2a1, type: 3}
+  shapeIcon: {fileID: -479716155, guid: f7f187918784afa41a4ac2dbd0611b58, type: 3}
   shapeMovementActions:
   - movementActionType: 5
     movementActionDatum: {fileID: 11400000, guid: a0405e8931a856e4f8861d1f8e9fd2f7, type: 2}

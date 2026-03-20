@@ -9,10 +9,12 @@ namespace Scriptables.User_Interface
     public class MovementActionShapesDatum : ScriptableObject
     {
         [SerializeField] private string movementActionName;
+        [SerializeField] private Sprite movementActionIcon;
         [SerializeField] private MovementActionType movementActionType;
         [SerializeField] private ShapeDatum[] shapeData;
         
         public string MovementActionName => movementActionName;
+        public Sprite MovementActionIcon => movementActionIcon;
         public MovementActionType MovementActionType => movementActionType;
         public ShapeDatum[] ShapeData => shapeData;
     }

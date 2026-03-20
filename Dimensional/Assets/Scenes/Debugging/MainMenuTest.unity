@@ -1958,14 +1958,6 @@ PrefabInstance:
       propertyPath: FrequencyGain
       value: 0.1
       objectReference: {fileID: 0}
-    - target: {fileID: 3795164899832361039, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
-      propertyPath: gameStateEvents.Array.data[3].gameEventData.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3795164899832361039, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
-      propertyPath: 'gameStateEvents.Array.data[3].gameEventData.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 75c6946fb5c547b42b68ce1555aa6f79, type: 2}
     - target: {fileID: 4210990227715366463, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: spawnRate
       value: 0.1
@@ -1991,6 +1983,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5511276524055055771, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160466139459736188, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -2120,7 +2116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8810223812056739492, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: fillProgressOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9070893605553513952, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_IsActive

@@ -12,7 +12,7 @@ Shader "Custom/URP/CircularSine"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalRenderPipeline"}
+        Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalPipeline"}
 
         Pass
         {
