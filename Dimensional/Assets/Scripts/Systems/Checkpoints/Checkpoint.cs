@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Interfaces;
 using Managers;
+using Scriptables.Audio;
 using UnityEngine;
 using Utilities;
 
@@ -15,6 +16,8 @@ namespace Systems.Checkpoints
 
         [SerializeField] private bool isDefaultCheckpoint;
         [SerializeField] private Vector3 spawnOffset;
+        [Space] 
+        [SerializeField] private SpawnPointAudioDatum spawnPointAudioDatum;
         [Space] 
         [SerializeField] private Animator animator;
         [Space] 
@@ -34,6 +37,7 @@ namespace Systems.Checkpoints
         
         public string Id => _objectId.Id;
         public bool IsDefaultSpawnPoint => isDefaultCheckpoint;
+        public SpawnPointAudioDatum SpawnPointAudioDatum => spawnPointAudioDatum;
 
         public Vector3 Position => transform.position + spawnOffset;
 

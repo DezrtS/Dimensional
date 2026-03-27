@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030f85c3f73729f4f976f66ffb23b875, type: 3}
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: -6259591655355044448, guid: d425ef098e8c007499a20a221b95a409, type: 3}
+  m_Clip: {fileID: 7400000, guid: ab5db811ee71ed74d9d04a87a4774abc, type: 2}
   m_Position: {x: 0, y: 0, z: 0}
   m_EulerAngles: {x: 0, y: 0, z: 0}
   m_UseTrackMatchFields: 1
@@ -219,7 +219,7 @@ MonoBehaviour:
     m_Start: 1.0333333333333334
     m_ClipIn: 0
     m_Asset: {fileID: -3775487910360737594}
-    m_Duration: 2.2916666666666665
+    m_Duration: 3.083333333333333
     m_TimeScale: 1
     m_ParentTrack: {fileID: -1395912477494881812}
     m_EaseInDuration: 0
@@ -281,7 +281,7 @@ MonoBehaviour:
     m_Recordable: 0
     m_PostExtrapolationMode: 1
     m_PreExtrapolationMode: 1
-    m_PostExtrapolationTime: 0.7916666666666661
+    m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 1.0333333333333334
     m_DisplayName: Press Down
   - m_Version: 1

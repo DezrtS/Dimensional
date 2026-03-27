@@ -369,11 +369,13 @@ MonoBehaviour:
   gameEventData: []
   spawnTransform: {fileID: 298615982539456399}
   id: 0
+  spawnPointAudioDatum: {fileID: 11400000, guid: 73c3d1050c69ee048b1ab5589c48369e, type: 2}
   destinationId: 1
   destinationIsScene: 0
   reverseDirection: 0
   sceneTransition: {fileID: 0}
   lastCheckpointSaveData: {fileID: 11400000, guid: 84a64669df7b9e547b0e31f48f3c280b, type: 2}
+  canInteractSaveData: {fileID: 0}
   changeDefaultCamera: 0
   cameraId: 0
 --- !u!114 &6831392576144213807

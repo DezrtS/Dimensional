@@ -167,7 +167,7 @@ namespace Managers
             }
         }
 
-        private void Save()
+        public void Save()
         {
             if (dirtyVariables.Count <= 0) return;
 

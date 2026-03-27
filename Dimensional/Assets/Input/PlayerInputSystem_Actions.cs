@@ -1652,6 +1652,151 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Objectives"",
+            ""id"": ""b53270d4-7a31-40e3-b3ae-5d3d60c42923"",
+            ""actions"": [
+                {
+                    ""name"": ""Switch"",
+                    ""type"": ""Value"",
+                    ""id"": ""5a811ab4-7aac-4d76-b965-2c549639f914"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Open"",
+                    ""type"": ""Button"",
+                    ""id"": ""addb3bb9-d1be-46f1-bb65-cb6468fa2b47"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Locate"",
+                    ""type"": ""Button"",
+                    ""id"": ""d373f4ba-f3c0-4dc6-858d-47839c2d4588"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""01822267-1199-4fe7-a43f-848656380c6d"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""5e8ddada-358b-4297-88a1-909bcd1e7700"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""c2d4d70d-4a3f-4741-9171-5ac3cd18b4f1"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""4e2ed5fd-df8c-4458-be14-e2505988f80a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""8b9a8f3b-beda-4292-8ad9-02dc533ae8f0"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""21827a59-8040-4ba4-af15-6a3122da76d5"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf567b5e-924d-4239-a1e5-9008361fb7e7"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc08eb0d-f164-4d4d-9e7d-1d1c15a36d41"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c86f7c11-2285-4a8a-b21b-8487d6b0987e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Locate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e51b6181-2323-4c45-8637-060618b75d98"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Locate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1762,6 +1907,11 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_ActionSelection = asset.FindActionMap("Action Selection", throwIfNotFound: true);
         m_ActionSelection_SwitchAction = m_ActionSelection.FindAction("Switch Action", throwIfNotFound: true);
         m_ActionSelection_SelectShape = m_ActionSelection.FindAction("Select Shape", throwIfNotFound: true);
+        // Objectives
+        m_Objectives = asset.FindActionMap("Objectives", throwIfNotFound: true);
+        m_Objectives_Switch = m_Objectives.FindAction("Switch", throwIfNotFound: true);
+        m_Objectives_Open = m_Objectives.FindAction("Open", throwIfNotFound: true);
+        m_Objectives_Locate = m_Objectives.FindAction("Locate", throwIfNotFound: true);
     }
 
     ~@PlayerInputSystem_Actions()
@@ -1772,6 +1922,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_WheelSelection.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.WheelSelection.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_ActionSelection.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.ActionSelection.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Objectives.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.Objectives.Disable() has not been called.");
     }
 
     /// <summary>
@@ -2716,6 +2867,124 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     /// Provides a new <see cref="ActionSelectionActions" /> instance referencing this action map.
     /// </summary>
     public ActionSelectionActions @ActionSelection => new ActionSelectionActions(this);
+
+    // Objectives
+    private readonly InputActionMap m_Objectives;
+    private List<IObjectivesActions> m_ObjectivesActionsCallbackInterfaces = new List<IObjectivesActions>();
+    private readonly InputAction m_Objectives_Switch;
+    private readonly InputAction m_Objectives_Open;
+    private readonly InputAction m_Objectives_Locate;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Objectives".
+    /// </summary>
+    public struct ObjectivesActions
+    {
+        private @PlayerInputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public ObjectivesActions(@PlayerInputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Objectives/Switch".
+        /// </summary>
+        public InputAction @Switch => m_Wrapper.m_Objectives_Switch;
+        /// <summary>
+        /// Provides access to the underlying input action "Objectives/Open".
+        /// </summary>
+        public InputAction @Open => m_Wrapper.m_Objectives_Open;
+        /// <summary>
+        /// Provides access to the underlying input action "Objectives/Locate".
+        /// </summary>
+        public InputAction @Locate => m_Wrapper.m_Objectives_Locate;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Objectives; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="ObjectivesActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(ObjectivesActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="ObjectivesActions" />
+        public void AddCallbacks(IObjectivesActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ObjectivesActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ObjectivesActionsCallbackInterfaces.Add(instance);
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
+            @Open.started += instance.OnOpen;
+            @Open.performed += instance.OnOpen;
+            @Open.canceled += instance.OnOpen;
+            @Locate.started += instance.OnLocate;
+            @Locate.performed += instance.OnLocate;
+            @Locate.canceled += instance.OnLocate;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="ObjectivesActions" />
+        private void UnregisterCallbacks(IObjectivesActions instance)
+        {
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
+            @Open.started -= instance.OnOpen;
+            @Open.performed -= instance.OnOpen;
+            @Open.canceled -= instance.OnOpen;
+            @Locate.started -= instance.OnLocate;
+            @Locate.performed -= instance.OnLocate;
+            @Locate.canceled -= instance.OnLocate;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="ObjectivesActions.UnregisterCallbacks(IObjectivesActions)" />.
+        /// </summary>
+        /// <seealso cref="ObjectivesActions.UnregisterCallbacks(IObjectivesActions)" />
+        public void RemoveCallbacks(IObjectivesActions instance)
+        {
+            if (m_Wrapper.m_ObjectivesActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="ObjectivesActions.AddCallbacks(IObjectivesActions)" />
+        /// <seealso cref="ObjectivesActions.RemoveCallbacks(IObjectivesActions)" />
+        /// <seealso cref="ObjectivesActions.UnregisterCallbacks(IObjectivesActions)" />
+        public void SetCallbacks(IObjectivesActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ObjectivesActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ObjectivesActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="ObjectivesActions" /> instance referencing this action map.
+    /// </summary>
+    public ObjectivesActions @Objectives => new ObjectivesActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -3059,5 +3328,34 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSelectShape(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Objectives" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="ObjectivesActions.AddCallbacks(IObjectivesActions)" />
+    /// <seealso cref="ObjectivesActions.RemoveCallbacks(IObjectivesActions)" />
+    public interface IObjectivesActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Switch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitch(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Open" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpen(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Locate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLocate(InputAction.CallbackContext context);
     }
 }

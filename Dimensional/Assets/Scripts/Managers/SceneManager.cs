@@ -10,34 +10,6 @@ namespace Managers
         private string _nextScene = "MovementTest";
         private bool _loadingScene;
 
-        private void Awake()
-        {
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
-        }
-        
-        private void OnDisable()
-        {
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
-        }
-
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (dataTypes.Contains(DataType.Scene))
-            {
-                saveData.sceneData.scene = _loadingScene ? _nextScene : UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            }
-        }
-        
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (dataTypes.Contains(DataType.Scene))
-            {
-                LoadScene(saveData.sceneData.scene, false);
-            }
-        }
-
         public void LoadSceneWithTransition(string nextScene)
         {
             if (_loadingScene) return;
@@ -64,7 +36,7 @@ namespace Managers
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == sceneName) return;
             _nextScene = sceneName;
             _loadingScene = true;
-            if (saveData) SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Player, DataType.Action, DataType.Collectable, DataType.Quest, DataType.Scene });
+            if (saveData) SaveManager.Instance.Save();
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
         }
 

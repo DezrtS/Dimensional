@@ -581,10 +581,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDefaultCheckpoint: 0
   spawnOffset: {x: 0, y: 0.5, z: 0}
+  spawnPointAudioDatum: {fileID: 11400000, guid: 73c3d1050c69ee048b1ab5589c48369e, type: 2}
   animator: {fileID: 1755551651372682674}
   transitionTime: 1
   defaultMaterial: {fileID: 2100000, guid: ce307743b0a2fc345a5620435cb1c7db, type: 2}
   meshRenderer: {fileID: 2213815269310506483}
+  isLimitedCheckpoint: 0
+  limit: 0
+  damagedTextures: []
 --- !u!114 &4920375672895212057
 MonoBehaviour:
   m_ObjectHideFlags: 0

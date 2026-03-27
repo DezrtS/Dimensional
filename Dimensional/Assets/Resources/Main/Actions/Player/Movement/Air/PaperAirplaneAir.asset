@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PaperAirplaneAir
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
   subActionData: []
   actionAudioEvents:
   - eventReference:
@@ -90,7 +91,7 @@ MonoBehaviour:
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: 83b3243f4c0b44849a54db9b8f7950f0, type: 2}
   minVelocityMagnitude: 1
-  maxVelocityMagnitude: 15
+  maxVelocityMagnitude: 10
   flyFallSpeed: -2
   flyFallCurve:
     serializedVersion: 2

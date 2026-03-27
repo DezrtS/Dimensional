@@ -26,6 +26,16 @@ namespace Systems.Interactables
         
         private WorldUIAnchor _worldUIAnchor;
 
+        private void OnEnable()
+        {
+            if (_worldUIAnchor) _worldUIAnchor.SetIsDisabled(false);
+        }
+
+        private void OnDisable()
+        {
+            if (_worldUIAnchor) _worldUIAnchor.SetIsDisabled(true);
+        }
+        
         private void Start()
         {
             _worldUIAnchor = UIManager.Instance.SpawnWorldUIAnchor(worldUIAnchorDatum, gameObject, elementPoint);

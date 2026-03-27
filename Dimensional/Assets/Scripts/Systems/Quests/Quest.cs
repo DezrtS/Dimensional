@@ -22,7 +22,7 @@ namespace Systems.Quests
             _questState = questDatum.DefaultQuestState;
         }
 
-        private void OnEnable()
+        /*private void OnEnable()
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
             
@@ -34,9 +34,9 @@ namespace Systems.Quests
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
             
             QuestEventBus.EventFired -= QuestEventBusOnEventFired;
-        }
+        }*/
 
-        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        /*private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
             if (newValue != GameState.Preparing || _objectives == null) return;
             _objectives = new List<Objective>();
@@ -46,7 +46,7 @@ namespace Systems.Quests
                 objective.CompletionStateChanged += ObjectiveOnCompletionStateChanged;
                 _objectives.Add(objective);
             }
-        }
+        }*/
 
         private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
         {
@@ -61,7 +61,7 @@ namespace Systems.Quests
             saveData.questData.quests.Add(questInstanceData);
         }
 
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
+        /*private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
         {
             if (!dataTypes.Contains(DataType.Quest)) return;
             
@@ -99,7 +99,7 @@ namespace Systems.Quests
                 objective.CompletionStateChanged += ObjectiveOnCompletionStateChanged;
                 _objectives.Add(objective);
             }
-        }
+        }*/
         
         private void ObjectiveOnCompletionStateChanged(Objective objective, bool isCompleted)
         {

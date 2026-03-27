@@ -1,6 +1,7 @@
 using System;
 using Interfaces;
 using Managers;
+using Scriptables.Audio;
 using Scriptables.Events;
 using Scriptables.Save;
 using Scriptables.Scene_Transitions;
@@ -27,6 +28,8 @@ namespace Systems.Interactables
         [SerializeField] private Transform spawnTransform;
         [SerializeField] private string id;
         [Space]
+        [SerializeField] private SpawnPointAudioDatum spawnPointAudioDatum;
+        [Space]
         [SerializeField] private string destinationId;
         [Space]
         [SerializeField] private bool destinationIsScene;
@@ -44,6 +47,7 @@ namespace Systems.Interactables
 
         public string Id => id;
         public Vector3 Position => spawnTransform.position;
+        public SpawnPointAudioDatum SpawnPointAudioDatum => spawnPointAudioDatum;
         public bool IsDefaultSpawnPoint => false;
 
         private void OnEnable()

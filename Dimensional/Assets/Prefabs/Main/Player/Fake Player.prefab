@@ -86,6 +86,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1749749822709819205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3161529910746009952}
+  m_Layer: 0
+  m_Name: Eye Tracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3161529910746009952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749749822709819205}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.7748339, z: -3.0741014}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1894475269235956502}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2602413065676159924
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,6 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4157677128717741821}
   - component: {fileID: -6225749950678102934}
+  - component: {fileID: 4866453318463292492}
   m_Layer: 0
   m_Name: Fake Player
   m_TagString: Untagged
@@ -141,6 +173,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4866453318463292492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602413065676159924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9748b7bf0e2b484aa5f15717f9c7a23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.5
+  offset: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!1 &2690598454363987877
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +290,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7a59bd926a7eb4f4d8582be3229fae21, type: 2}
+  - {fileID: 2100000, guid: de2e41b2afcaee24595ae34a78d87bac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -444,6 +493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1894475269235956502}
+  - component: {fileID: 7346908698912095316}
   m_Layer: 0
   m_Name: Eyes
   m_TagString: Untagged
@@ -466,8 +516,31 @@ Transform:
   m_Children:
   - {fileID: 8075639487064490156}
   - {fileID: 8140820035841884879}
+  - {fileID: 3161529910746009952}
   m_Father: {fileID: 2512259865781638972}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7346908698912095316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5777554585022543515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61554cbe49894344281024cc107fc287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eyeMaterial: {fileID: 2100000, guid: d66e33f7533a6b24aa216ce7528e3b5c, type: 2}
+  createInstance: 0
+  eyeRenderers: []
+  trackPlayer: 0
+  target: {fileID: 3161529910746009952}
+  invertX: 0
+  invertY: 0
+  strength: 1
+  lookSpeed: 10
+  clampToCircle: 1
 --- !u!1 &7888681139298065641
 GameObject:
   m_ObjectHideFlags: 0

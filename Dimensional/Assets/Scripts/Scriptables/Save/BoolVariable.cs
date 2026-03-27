@@ -1,8 +1,22 @@
+using System;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scriptables.Save
 {
+    [Serializable]
+    public class BoolVariableInstance
+    {
+        public BoolVariable boolVariable;
+        public bool enabledOnTrue;
+
+        public bool IsEnabled()
+        {
+            return enabledOnTrue ? boolVariable.Value : !boolVariable.Value;
+        }
+    }
+    
     [CreateAssetMenu(fileName = "BoolVariable", menuName = "Scriptable Objects/Save/BoolVariable")]
     public class BoolVariable : SaveVariable
     {

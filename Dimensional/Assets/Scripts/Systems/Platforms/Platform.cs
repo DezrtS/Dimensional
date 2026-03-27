@@ -21,14 +21,18 @@ namespace Systems.Platforms
         
         public Vector3 Velocity { get; private set; }
 
-        private void Start()
+        private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
 
             if (!splineContainer) return;
-            Vector3 startPosition = splineContainer.EvaluatePosition(0);
-            if (autoOffset) offset = transform.position - startPosition;
-            transform.position = startPosition + offset;
+            if (autoOffset)
+            {
+                Vector3 startPosition = splineContainer.EvaluatePosition(0);
+                if (autoOffset) offset = transform.position - startPosition;   
+            }
+            Vector3 position = splineContainer.EvaluatePosition(durationOffset);
+            transform.position = position + offset;
         }
 
         private void FixedUpdate()

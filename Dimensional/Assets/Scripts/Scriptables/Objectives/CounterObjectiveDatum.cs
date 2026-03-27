@@ -13,7 +13,7 @@ namespace Scriptables.Objectives
         public int RequiredAmount => requiredAmount;
 
 
-        public override Objective CreateObjective()
+        /*public override Objective CreateObjective()
         {
             var counterObjective = new CounterObjective();
             counterObjective.Initialize(this);
@@ -25,6 +25,6 @@ namespace Scriptables.Objectives
             var counterObjective = JsonUtility.FromJson<CounterObjective>(rawData);
             counterObjective.Initialize(this);
             return counterObjective;
-        }
+        }*/
     }
 }

@@ -66,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Grass_Gradient:
-        m_Texture: {fileID: 2800000, guid: b6a8eadc06e939a45a8eaece93f3506a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3ea0d05f45a6b8345829db6ed1fdd5ef, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Grass_Gradient_Texture:
@@ -78,7 +78,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ground_Gradient:
-        m_Texture: {fileID: 2800000, guid: 794772b1b7d6ba043ae8448ca1d32e05, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5cd50b403701caf47ac6c95662c4822c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ground_Texture:
@@ -106,7 +106,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Path_Gradient:
-        m_Texture: {fileID: 2800000, guid: 1a4842a52acbc684da67f60e46a04393, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4a352104e4388314396045c21360ae27, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Path_Mask:
@@ -165,7 +165,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Path_Gradient_Noise_Scale: 2000
-    - _Path_Strength: 0.56
+    - _Path_Strength: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1

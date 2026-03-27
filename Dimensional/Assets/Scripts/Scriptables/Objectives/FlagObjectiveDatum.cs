@@ -10,7 +10,7 @@ namespace Scriptables.Objectives
         
         public string FlagId => flagId;
 
-        public override Objective CreateObjective()
+        /*public override Objective CreateObjective()
         {
             var flagObjective = new FlagObjective();
             flagObjective.Initialize(this);
@@ -22,6 +22,6 @@ namespace Scriptables.Objectives
             var flagObjective = JsonUtility.FromJson<FlagObjective>(rawData);
             flagObjective.Initialize(this);
             return flagObjective;
-        }
+        }*/
     }
 }

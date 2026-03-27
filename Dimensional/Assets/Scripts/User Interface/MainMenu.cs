@@ -7,11 +7,17 @@ namespace User_Interface
 {
     public class MainMenu : MonoBehaviour
     {
+        private static readonly int FlyHash = Animator.StringToHash("Fly");
+        
         [SerializeField] private GameObject mainMenu;
         [SerializeField] private GameObject saveMenu;
         [SerializeField] private GameObject creditsMenu;
-
+        [Space]
+        [SerializeField] private Animator playerAnimator;
+        [Space]
         [SerializeField] private string startScene;
+        [SerializeField] private string sandboxScene;
+        [SerializeField] private string creditsScene;
         [SerializeField] private StringVariable lastRegionSaveData;
 
         public void OpenMenu(int menuIndex)
@@ -46,6 +52,7 @@ namespace User_Interface
         {
             SaveManager.ResetAll();
             SceneManager.Instance.LoadSceneWithTransition(startScene);
+            FlyPlayer();
         }
 
         public void LoadSave(int saveId)
@@ -56,6 +63,24 @@ namespace User_Interface
                 return;
             }
             SceneManager.Instance.LoadSceneWithTransition(lastRegionSaveData.Value);
+            FlyPlayer();
+        }
+
+        public void LoadSandbox()
+        {
+            SceneManager.Instance.LoadSceneWithTransition(sandboxScene);
+            FlyPlayer();
+        }
+
+        public void LoadCredits()
+        {
+            SceneManager.Instance.LoadSceneWithTransition(creditsScene);
+            FlyPlayer();
+        }
+
+        private void FlyPlayer()
+        {
+            playerAnimator.SetTrigger(FlyHash);
         }
     }
 }
