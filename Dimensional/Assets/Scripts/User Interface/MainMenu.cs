@@ -16,9 +16,11 @@ namespace User_Interface
         [SerializeField] private Animator playerAnimator;
         [Space]
         [SerializeField] private string startScene;
+        [SerializeField] private string startSpawnPoint;
         [SerializeField] private string sandboxScene;
         [SerializeField] private string creditsScene;
         [SerializeField] private StringVariable lastRegionSaveData;
+        [SerializeField] private StringVariable lastSpawnPointSaveData;
 
         public void OpenMenu(int menuIndex)
         {
@@ -51,6 +53,7 @@ namespace User_Interface
         public void StartNewGame()
         {
             SaveManager.ResetAll();
+            lastSpawnPointSaveData.Value = startSpawnPoint;
             SceneManager.Instance.LoadSceneWithTransition(startScene);
             FlyPlayer();
         }
@@ -63,12 +66,6 @@ namespace User_Interface
                 return;
             }
             SceneManager.Instance.LoadSceneWithTransition(lastRegionSaveData.Value);
-            FlyPlayer();
-        }
-
-        public void LoadSandbox()
-        {
-            SceneManager.Instance.LoadSceneWithTransition(sandboxScene);
             FlyPlayer();
         }
 

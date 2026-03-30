@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
@@ -37,7 +38,12 @@ namespace Managers
             _nextScene = sceneName;
             _loadingScene = true;
             if (saveData) SaveManager.Instance.Save();
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            StartCoroutine(LoadSceneRoutine(sceneName));
+        }
+        
+        private static IEnumerator LoadSceneRoutine(string sceneName) 
+        {
+            yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
         }
 
         public void LoadScene(bool saveData = true)

@@ -121,7 +121,9 @@ namespace Systems.Movement
             
             var platform = platformTransform.GetComponent<Platform>();
             ParentPlatform = platform;
-            ForceController.AddVelocityComponent(VelocityType.Movement, -platform.Velocity);
+            var vel = platform.GetVelocityAtPoint(transform.position);
+            ForceController.AddVelocityComponent(VelocityType.Movement, -vel);
+            //ForceController.AddVelocityComponent(VelocityType.Movement, -platform.Velocity);
         }
 
         protected void UnPlatform()

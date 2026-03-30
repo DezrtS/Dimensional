@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 1, g: 0.6627451, b: 0.61960787, a: 1}
+  m_FogColor: {r: 0.61960787, g: 0.8156863, b: 1, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.005
   m_LinearFogStart: 0
@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.41960785, g: 0.47843137, b: 0.627451, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 33d70c14973cb7646a779f41c46ebdac, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2d0d0e6856f1a3645b0b06af8390c948, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -9526,7 +9526,7 @@ PrefabInstance:
     - target: {fileID: 3250751554763258670, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: cloudMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: b0ac95a172775414293f56d54b25f6cf, type: 2}
+      objectReference: {fileID: 2100000, guid: 958ae4237782c194f8e8dbe9da1a18e7, type: 2}
     - target: {fileID: 3250751554763258670, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: disableRuntimeMaterial
       value: 0
@@ -9691,6 +9691,10 @@ PrefabInstance:
       propertyPath: chunkSize.z
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 6584684497335371089, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: grassMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 1f043d38dfd5b634f8e971f4562b3ad4, type: 2}
     - target: {fileID: 6584684497335371089, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: sourceMeshes.Array.size
       value: 1
@@ -42095,14 +42099,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStormySaveData: {fileID: 11400000, guid: aceaf0254008990439b51373e135a79d, type: 2}
-  skyA: {fileID: 2100000, guid: 33d70c14973cb7646a779f41c46ebdac, type: 2}
-  skyB: {fileID: 2100000, guid: b3f79673b2aaf0740a9450c98b149d9c, type: 2}
+  skyA: {fileID: 2100000, guid: 2d0d0e6856f1a3645b0b06af8390c948, type: 2}
+  skyB: {fileID: 2100000, guid: 56c941199699d6e4ba5193f3b9d7f8c8, type: 2}
   fogColorA: {r: 0.61960787, g: 0.8156863, b: 1, a: 1}
   fogColorB: {r: 0.23529412, g: 0.38039216, b: 0.5176471, a: 1}
   fogDensityA: 0.005
   fogDensityB: 0.005
-  cloudA: {fileID: 2100000, guid: b0ac95a172775414293f56d54b25f6cf, type: 2}
-  cloudB: {fileID: 2100000, guid: 704d31a8a573868499af51b252140178, type: 2}
+  cloudA: {fileID: 2100000, guid: 958ae4237782c194f8e8dbe9da1a18e7, type: 2}
+  cloudB: {fileID: 2100000, guid: 4ae585a595c450446ae185aff718b192, type: 2}
   clouds: {fileID: 516852681}
   sunLight: {fileID: 1904173260}
   lightIntensityA: 1
@@ -56408,8 +56412,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gradient:
     serializedVersion: 2
-    key0: {r: 0.5647059, g: 0.28361, b: 0.22352941, a: 1}
-    key1: {r: 0.46226418, g: 0.21865065, b: 0.16789782, a: 1}
+    key0: {r: 1, g: 0.72359854, b: 0.54402506, a: 1}
+    key1: {r: 1, g: 0.7410377, b: 0.40566027, a: 1}
     key2: {r: 1, g: 1, b: 1, a: 0}
     key3: {r: 1, g: 1, b: 1, a: 0}
     key4: {r: 0.57861626, g: 0.3918093, b: 0.31842086, a: 0}
