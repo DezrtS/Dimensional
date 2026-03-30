@@ -165,7 +165,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Path_Gradient_Noise_Scale: 2000
-    - _Path_Strength: 0.56
+    - _Path_Strength: 0.58
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1

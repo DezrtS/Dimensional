@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerShapesSaveData: {fileID: 11400000, guid: 30c899766de1c9e4687ee56777203341, type: 2}
-  unlockedShapesSaveData: {fileID: 11400000, guid: 238a1f5d08eaf7347bb241fbe7cad9c1, type: 2}
+  unlockedShapesSaveData: {fileID: 11400000, guid: c8dfb25e930524c4e9560d7d2094ea47, type: 2}
   newShapesSaveData: {fileID: 11400000, guid: cccbba23a35e2c942a5a8546b8a1a44e, type: 2}
   revealDuration: 3
   movementActionShapesData:

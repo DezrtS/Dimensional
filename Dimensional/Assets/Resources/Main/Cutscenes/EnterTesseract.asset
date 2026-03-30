@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cutscenePrefab: {fileID: 4958872293779107633, guid: 05b1581c23b792440857ac6425fe4fc9, type: 3}
   cutsceneName: Enter Tesseract
-  destroyOnStopped: 1
+  destroyOnStopped: 0
+  disablePlayer: 1
   onPlayEventData:
   - {fileID: 11400000, guid: e820a4c537f5d5847b6251d4ed58d317, type: 2}
   onStopEventData:

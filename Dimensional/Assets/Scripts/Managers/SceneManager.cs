@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
@@ -9,34 +10,6 @@ namespace Managers
     {
         private string _nextScene = "MovementTest";
         private bool _loadingScene;
-
-        private void Awake()
-        {
-            SaveManager.Saving += SaveManagerOnSaving;
-            SaveManager.Loaded += SaveManagerOnLoaded;
-        }
-        
-        private void OnDisable()
-        {
-            SaveManager.Saving -= SaveManagerOnSaving;
-            SaveManager.Loaded -= SaveManagerOnLoaded;
-        }
-
-        private void SaveManagerOnSaving(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (dataTypes.Contains(DataType.Scene))
-            {
-                saveData.sceneData.scene = _loadingScene ? _nextScene : UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            }
-        }
-        
-        private void SaveManagerOnLoaded(SaveData saveData, List<DataType> dataTypes)
-        {
-            if (dataTypes.Contains(DataType.Scene))
-            {
-                LoadScene(saveData.sceneData.scene, false);
-            }
-        }
 
         public void LoadSceneWithTransition(string nextScene)
         {
@@ -64,8 +37,13 @@ namespace Managers
             if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == sceneName) return;
             _nextScene = sceneName;
             _loadingScene = true;
-            if (saveData) SaveManager.Instance.RequestSave(new List<DataType>() { DataType.Player, DataType.Action, DataType.Collectable, DataType.Quest, DataType.Scene });
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            if (saveData) SaveManager.Instance.Save();
+            StartCoroutine(LoadSceneRoutine(sceneName));
+        }
+        
+        private static IEnumerator LoadSceneRoutine(string sceneName) 
+        {
+            yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
         }
 
         public void LoadScene(bool saveData = true)

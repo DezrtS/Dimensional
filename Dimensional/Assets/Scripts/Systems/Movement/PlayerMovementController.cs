@@ -173,8 +173,12 @@ namespace Systems.Movement
         private void FixedUpdate()
         {
             _animator.SetBool("IsGrounded", IsGrounded);
-            
-            if (ParentPlatform) ForceController.SetVelocityComponent(VelocityType.Platform, ParentPlatform.Velocity);
+
+            if (ParentPlatform) //ForceController.SetVelocityComponent(VelocityType.Platform, ParentPlatform.Velocity);
+            {
+                var platformVelocity = ParentPlatform.GetVelocityAtPoint(transform.position);
+                ForceController.SetVelocityComponent(VelocityType.Platform, platformVelocity);
+            }
 
             var deltaTime = Time.fixedDeltaTime;
             var velocity = ForceController.GetVelocityComponent(VelocityType.Movement);

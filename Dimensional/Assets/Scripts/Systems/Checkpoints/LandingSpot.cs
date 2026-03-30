@@ -1,6 +1,7 @@
 using System;
 using Interfaces;
 using Managers;
+using Scriptables.Audio;
 using Scriptables.Cutscenes;
 using Scriptables.Save;
 using Systems.Cutscenes;
@@ -15,11 +16,14 @@ namespace Systems.Checkpoints
         [SerializeField] private Transform spawnTransform;
         [SerializeField] private string id;
         [Space]
+        [SerializeField] private SpawnPointAudioDatum spawnPointAudioDatum;
+        [Space]
         [SerializeField] private CutsceneDatum cutsceneDatum;
         [SerializeField] private Cutscene cutscene;
 
         public string Id => id;
         public Vector3 Position => spawnTransform.position;
+        public SpawnPointAudioDatum SpawnPointAudioDatum => spawnPointAudioDatum;
         public bool IsDefaultSpawnPoint => false;
         
         private void OnEnable()

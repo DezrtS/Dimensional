@@ -1,4 +1,5 @@
 using System;
+using Scriptables.Audio;
 using UnityEngine;
 
 namespace Interfaces
@@ -9,6 +10,7 @@ namespace Interfaces
         
         public string Id { get; }
         public Vector3 Position { get; }
+        public SpawnPointAudioDatum SpawnPointAudioDatum { get; }
         public bool IsDefaultSpawnPoint { get; }
 
         public void SpawnAt();

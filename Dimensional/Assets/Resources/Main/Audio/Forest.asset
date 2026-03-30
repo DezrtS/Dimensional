@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad403e65ad11c71428b0930238ea8bce, type: 3}
+  m_Name: Forest
+  m_EditorClassIdentifier: 
+  defaultMusicReference:
+    eventRef:
+      Guid:
+        Data1: 272748648
+        Data2: 1265269143
+        Data3: 1223472804
+        Data4: -1494709428
+      Path: event:/TutorialTheme
+  spawnPointMusics:
+  - musicReference:
+      eventRef:
+        Guid:
+          Data1: 1933784755
+          Data2: 1160428419
+          Data3: -1698388575
+          Data4: -2124999876
+        Path: event:/TessaractAppearsTheme
+    boolVariableInstances:
+    - boolVariable: {fileID: 11400000, guid: 54e5e1ff8e150ca49ba671262de55115, type: 2}
+      enabledOnTrue: 1

@@ -101,7 +101,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 257
     IgnoreTag: 
-    CameraRadius: 0.2
+    CameraRadius: 0.35
     DampingIntoCollision: 0
     DampingFromCollision: 0.5
 --- !u!114 &5041434193971136716
@@ -362,3 +362,4 @@ MonoBehaviour:
   defaultFOV: 60
   fovInterpolationSpeed: 5
   maxGamepadMotorAmplitude: 3
+  resetScreenShakeOnAwake: 1

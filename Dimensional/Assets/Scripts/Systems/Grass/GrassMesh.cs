@@ -58,7 +58,6 @@ namespace Systems.Grass
 
         private void Awake()
         {
-            _startPosition = transform.position;
             MeshFilter = GetComponent<MeshFilter>();
             
             if (!grassInteractionTexture)
@@ -89,6 +88,11 @@ namespace Systems.Grass
             grassPaintCompute.SetTexture(_kernel, InteractionTextureProperty, grassInteractionTexture);
             grassPaintCompute.SetBuffer(_kernel, PaintCommandBufferProperty, _paintCommandBuffer);
             grassPaintCompute.SetInt(TextureResolutionProperty, renderTextureSize);
+        }
+
+        private void Start()
+        {
+            _startPosition = transform.position;
         }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)

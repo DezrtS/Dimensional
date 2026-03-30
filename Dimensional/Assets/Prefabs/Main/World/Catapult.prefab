@@ -328,6 +328,38 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 816343263715038232, guid: cb0388fb035ccb84185278bb80cc5a6a, type: 3}
+--- !u!1 &1168991997747188112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 206019383226555171}
+  m_Layer: 0
+  m_Name: Can Interact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &206019383226555171
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168991997747188112}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8897033997349391661}
+  m_Father: {fileID: 8653872309337139729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2233695558326376312
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,13 +864,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5839789736770020639}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0000010610868, y: 1.3333328, z: -30.666668}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.3333328, z: -30.66667}
   m_LocalScale: {x: 1.2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 150433041425697649}
-  m_Father: {fileID: 8653872309337139729}
+  m_Father: {fileID: 206019383226555171}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4600936839389449108
 MonoBehaviour:
@@ -855,7 +887,10 @@ MonoBehaviour:
   interactableDatum: {fileID: 11400000, guid: 05195fab7fbbac241b584c0ae3d42b38, type: 2}
   worldUIAnchorDatum: {fileID: 11400000, guid: 3275e4d7ffbd1914f8f26f43e23dc114, type: 2}
   elementPoint: {fileID: 150433041425697649}
-  nextScene: Toxic Jungle
+  lastCheckpointSaveData: {fileID: 0}
+  reverse: 0
+  sceneTransition: {fileID: 0}
+  destinationId: 
   cutsceneDatum: {fileID: 11400000, guid: 58693d59e5a11e245b0f536510e65260, type: 2}
   cutscene: {fileID: 2895148560153621802}
 --- !u!135 &503368773854186028
@@ -1286,7 +1321,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1787095049318704895}
-  - {fileID: 8897033997349391661}
+  - {fileID: 206019383226555171}
   - {fileID: 6687778959858271588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1547,6 +1582,22 @@ PrefabInstance:
     - target: {fileID: 4958872293779107633, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
       propertyPath: m_Name
       value: Catapult
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466516297869672729, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.4601182
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466516297869672729, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.18312056
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466516297869672729, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.8095544
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466516297869672729, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.31524545
       objectReference: {fileID: 0}
     - target: {fileID: 5944638064015487110, guid: 799501707ca9023438fdf2867f12ea72, type: 3}
       propertyPath: m_SceneBindings.Array.data[6].value

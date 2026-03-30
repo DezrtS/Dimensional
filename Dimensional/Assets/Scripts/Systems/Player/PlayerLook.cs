@@ -5,12 +5,13 @@ using Scriptables.Player;
 using Systems.Forces;
 using Systems.Movement;
 using UnityEngine;
+using Utilities;
 
 namespace Systems.Player
 {
     public class PlayerLook : MonoBehaviour
     {
-        private static readonly int Fade = Shader.PropertyToID("_Fade");
+        private static readonly int Fade = Shader.PropertyToID("_DistanceFromCamera");
         [SerializeField] private PlayerLookDatum playerLookDatum;
         [SerializeField] private Dimensions lookDimensions;
         [Space] 
@@ -20,7 +21,7 @@ namespace Systems.Player
         [SerializeField] private float minDitherDistance = 5f;
         [SerializeField] private float maxDitherDistance = 10f;
         [SerializeField] private Material playerMaterial;
-
+        
         private Transform _cameraTransform;
         private IAim _aim;
         

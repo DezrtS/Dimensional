@@ -39,12 +39,14 @@ namespace Systems.Dialogue
         {
             DialogueManager.DialogueSpoken += DialogueManagerOnDialogueSpoken;
             DialogueManager.SequenceFinished += DialogueManagerOnSequenceFinished;
+            if (_speechBox) _speechBox.SetIsDisabled(false);
         }
 
         private void OnDisable()
         {
             DialogueManager.DialogueSpoken -= DialogueManagerOnDialogueSpoken;
             DialogueManager.SequenceFinished -= DialogueManagerOnSequenceFinished;
+            if (_speechBox) _speechBox.SetIsDisabled(true);
         }
         
         private void DialogueManagerOnSequenceFinished(DialogueSequenceDatum dialogueSequenceDatum)

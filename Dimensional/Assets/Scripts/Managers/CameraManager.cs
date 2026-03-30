@@ -85,6 +85,7 @@ namespace Managers
         private CinemachineBrain _cinemachineBrain;
         private CinemachineCamera _cinemachineCamera;
         private CinemachineThirdPersonFollow _thirdPersonFollow;
+        private CinemachineHardLookAt _cinemachineHardLookAt;
         private CinemachineBasicMultiChannelPerlin _cinemachineBasicMultiChannelPerlin;
         
         private Coroutine _transitionCoroutine;
@@ -106,6 +107,7 @@ namespace Managers
             TargetCinemachineCamera = _cinemachineCamera;
             _thirdPersonFollow = _cinemachineCamera.GetComponent<CinemachineThirdPersonFollow>();
             _thirdPersonFollow.Damping = thirdPersonDamping;
+            _cinemachineHardLookAt = _cinemachineCamera.GetComponent<CinemachineHardLookAt>();
             _cinemachineBasicMultiChannelPerlin = _cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
             SetFOV(defaultFOV);
             SetTargetFOV(defaultFOV);
@@ -139,6 +141,8 @@ namespace Managers
         public void SetIsActive(bool isActive)
         {
             ActiveStateChanged?.Invoke(Camera, isActive);
+            //_thirdPersonFollow.enabled = isActive;
+            _cinemachineHardLookAt.enabled = isActive;
         }
 
         public void SetCinemachineCamera(CinemachineCamera cinemachineCamera)
@@ -237,7 +241,6 @@ namespace Managers
             if (!from) from = TargetCinemachineCamera;
             if (!to) to = TargetCinemachineCamera;
             if (duration <= 0) style = CinemachineBlendDefinition.Styles.Cut;
-            
             if (_transitionCoroutine != null) StopCoroutine(_transitionCoroutine);
             _transitionCoroutine = StartCoroutine(TransitionRoutine(from, to, duration, style));
         }

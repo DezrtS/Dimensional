@@ -35,6 +35,7 @@ namespace Systems.Player
         [Space] 
         [SerializeField] private ResetPlayerDatum deathResetPlayerDatum;
         [Space]
+        [SerializeField] private PupilMaterialTracker pupilMaterialTracker;
         [SerializeField] private MeshRenderer[] eyeMeshRenderers;
         [SerializeField] private Material defaultEyeMaterial;
         [SerializeField] private Material dizzyEyeMaterial;
@@ -247,6 +248,7 @@ namespace Systems.Player
             _interactables.Remove(interactable);
             interactable.UnHover(InteractContext.Construct(gameObject));
             if (_interactable == interactable) _interactable = null;
+            if (_interactables.Count == 0) pupilMaterialTracker.SetTargetToDefault();
         }
 
         private void CheckInteractables()
@@ -256,6 +258,7 @@ namespace Systems.Player
             {
                 _interactable = _interactables[0];
                 _interactable.Hover(interactContext);
+                pupilMaterialTracker.SetTarget(_interactable.transform);
                 return;
             }
             
@@ -270,7 +273,11 @@ namespace Systems.Player
             }
             
             if (_interactable == closestInteractable) return;
-            if (_interactable) _interactable.UnHover(interactContext);
+            if (_interactable)
+            {
+                _interactable.UnHover(interactContext);
+                pupilMaterialTracker.SetTarget(_interactable.transform);
+            }
             _interactable = closestInteractable;
             _interactable.Hover(interactContext);
         }
@@ -293,7 +300,7 @@ namespace Systems.Player
                     break;
                 case GameState.Starting:
                     PlayerMovementController.Initialize(this);
-                    RespawnPlayer(transform.position);
+                    RespawnPlayer(transform.position, true);
                     break;
             }
         }
@@ -332,7 +339,7 @@ namespace Systems.Player
             StartCoroutine(ResetRoutine(resetPlayerDatum, defaultResetPosition));
         }
 
-        private void RespawnPlayer(Vector3 defaultRespawnPosition)
+        private void RespawnPlayer(Vector3 defaultRespawnPosition, bool isFirstTime = false)
         {
             var spawnPoint = CheckpointManager.Instance.GetLastSpawnPoint();
             var spawnPosition = defaultRespawnPosition;
@@ -340,6 +347,7 @@ namespace Systems.Player
             {
                 spawnPoint.SpawnAt();
                 spawnPosition = spawnPoint.Position;
+                if (isFirstTime && spawnPoint.SpawnPointAudioDatum) AudioManager.Instance.ChangeMusic(spawnPoint.SpawnPointAudioDatum.GetMusicReference());
             }
             PlayerMovementController.ForceController.Teleport(spawnPosition);
         }

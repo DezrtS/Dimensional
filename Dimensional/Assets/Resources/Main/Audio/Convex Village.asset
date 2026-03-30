@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad403e65ad11c71428b0930238ea8bce, type: 3}
+  m_Name: Convex Village
+  m_EditorClassIdentifier: 
+  defaultMusicReference:
+    eventRef:
+      Guid:
+        Data1: -1862037524
+        Data2: 1200638855
+        Data3: 517508992
+        Data4: -494594279
+      Path: event:/VillageThemeNormal
+  spawnPointMusics:
+  - musicReference:
+      eventRef:
+        Guid:
+          Data1: -1994509409
+          Data2: 1297449232
+          Data3: -179302766
+          Data4: 813411590
+        Path: event:/NewAbandonedVillageTheme
+    boolVariableInstances:
+    - boolVariable: {fileID: 11400000, guid: aceaf0254008990439b51373e135a79d, type: 2}
+      enabledOnTrue: 1

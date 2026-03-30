@@ -5,12 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Base.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Scenes/Debugging/Trailer.unity
-    guid: 5899a05809aeffd47a0d4764f2393a99
   - enabled: 1
     path: Assets/Scenes/Debugging/MainMenuTest.unity
     guid: a7a6b1b89ac50bd4db4a4c32e620c708
@@ -20,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main/Regions/MovementTest.unity
     guid: 0ae4ff59c7258c44692ed9a677e6b793
+  - enabled: 1
+    path: Assets/Scenes/Main/Levels/L1_ConvexVillage.unity
+    guid: da489b0e0542ada4cbd74ecb4980bb41
   - enabled: 1
     path: Assets/Scenes/Main/Levels/LevelTest.unity
     guid: 041f800589ca37b43ade4e2a8d763258
@@ -33,38 +30,20 @@ EditorBuildSettings:
     path: Assets/Scenes/Main/Levels/Level4Test.unity
     guid: 0224f356faeb5fa4bb736d0a54b7334e
   - enabled: 1
-    path: Assets/Scenes/Main/Levels/L1_ConvexVillage.unity
-    guid: da489b0e0542ada4cbd74ecb4980bb41
-  - enabled: 1
-    path: Assets/Scenes/Main/Levels/CombatTest.unity
-    guid: 27aa168b278ab6c4e999770d709f936f
+    path: Assets/Scenes/Main/Levels/Level5Test.unity
+    guid: ff4f31f0022994e4ab9f1786d1329fdc
   - enabled: 1
     path: Assets/Scenes/Main/Regions/Region1Test.unity
     guid: aad4f3850b515e74ea98b6e0acf98cee
   - enabled: 1
-    path: Assets/Materials/Main/Regions/Region 1/Region 1.unity
-    guid: 9f84811d7a1a6aa419690dfbcf40926b
-  - enabled: 1
-    path: Assets/Materials/Main/Regions/Region 2/Region 2.unity
-    guid: 3613788e1054bcd4088b6c1cabbe9cf8
-  - enabled: 1
-    path: Assets/Materials/Main/Regions/Region 3/Region 3.unity
-    guid: 298968f8f6762404fa8af38166f50a97
-  - enabled: 1
-    path: Assets/Materials/Main/Regions/Region 4/Region 4.unity
-    guid: e6d4055e6366de04c97e61901e22cbfe
-  - enabled: 1
-    path: Assets/Materials/Main/Regions/Region 5/Region 5.unity
-    guid: 98606a4f4d2892840b0c03df6088e332
-  - enabled: 1
-    path: Assets/Materials/Main/Regions/Region 6/Region 6.unity
-    guid: 93651cf172871644ea546f8314aa260b
-  - enabled: 1
-    path: Assets/Scenes/Main/Levels/Level5Test.unity
-    guid: ff4f31f0022994e4ab9f1786d1329fdc
-  - enabled: 1
     path: Assets/Scenes/Main/Regions/Toxic Jungle.unity
     guid: 547d6c72a51349846b87f23227832ed5
+  - enabled: 1
+    path: Assets/Scenes/Main/Locations/Sandbox.unity
+    guid: 32dc5e258b9c3a648857f7533110a2e0
+  - enabled: 1
+    path: Assets/Scenes/Main/Credits.unity
+    guid: 4dcf8af5f4995cf4ab45350ef71d21a8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: b41af7f0c31d62e499003e8c59a5bc2f, type: 3}
   m_UseUCBPForAssetBundles: 0

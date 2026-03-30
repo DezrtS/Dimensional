@@ -24,9 +24,9 @@ namespace Systems.Objectives
         
         public void SetIsCompleted(bool isCompleted)
         {
-            if (isCompleted == IsCompleted || (!isCompleted && !_objectiveDatum.CanUndo)) return;
+            /*if (isCompleted == IsCompleted || (!isCompleted && !_objectiveDatum.CanUndo)) return;
             IsCompleted = isCompleted;
-            CompletionStateChanged?.Invoke(this, isCompleted);
+            CompletionStateChanged?.Invoke(this, isCompleted);*/
         }
 
         public virtual string GetSaveData()

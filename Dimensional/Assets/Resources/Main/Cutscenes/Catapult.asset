@@ -18,5 +18,6 @@ MonoBehaviour:
   disablePlayer: 1
   onPlayEventData:
   - {fileID: 11400000, guid: e820a4c537f5d5847b6251d4ed58d317, type: 2}
+  - {fileID: 11400000, guid: 4d6ef044cc0914f4ea693671b0686553, type: 2}
   onStopEventData:
   - {fileID: 11400000, guid: 3de2788d4a994604b922b1a25ca2b6fe, type: 2}

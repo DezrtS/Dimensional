@@ -39,7 +39,11 @@ namespace Systems.Cutscenes
         private void DirectorOnPlayed(PlayableDirector playableDirector)
         {
             Played?.Invoke(this);
-            if (_cutsceneDatum.DisablePlayer) PlayerController.Instance.HidePlayer.SetIsHidden(true);
+            if (_cutsceneDatum.DisablePlayer)
+            {
+                PlayerController.Instance.PlayerMovementController.CancelAllActions();
+                PlayerController.Instance.HidePlayer.SetIsHidden(true);
+            }
         }
 
         private void DirectorOnPaused(PlayableDirector playableDirector)
