@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c74290ebbaf7e4092b15591931fb8a, type: 3}
+  m_Name: All New Shapes
+  m_EditorClassIdentifier: 
+  id: all_new_shapes
+  save: 1
+  load: 1
+  movementActionShapesData:
+  - {fileID: 11400000, guid: 54bf3885ca317b54b9083b945180b24b, type: 2}
+  - {fileID: 11400000, guid: fc7f74cd09fbb1b47a6147895c6497d9, type: 2}
+  - {fileID: 11400000, guid: 7144eb8f1b5ff314eaf47ab3ef0be7ab, type: 2}
+  - {fileID: 11400000, guid: 8bed3ef6eb3888d4fbcf75af927a0b35, type: 2}
+  - {fileID: 11400000, guid: aeaaed924407a90468c1cdb83b2a184f, type: 2}
+  - {fileID: 11400000, guid: 6611473798e76034eaf6d7ff01be197b, type: 2}
+  - {fileID: 11400000, guid: f46f66be09f21e847a179f4fa5211762, type: 2}
+  defaultValue:
+    newActionShapes:
+    - movementActionType: 1
+      shapeTypes: 010000000200000003000000040000000500000006000000070000000800000009000000
+    - movementActionType: 2
+      shapeTypes: 010000000200000003000000040000000500000006000000070000000800000009000000
+    - movementActionType: 3
+      shapeTypes: 010000000200000003000000040000000500000006000000070000000800000009000000
+    - movementActionType: 4
+      shapeTypes: 010000000200000003000000040000000500000006000000070000000800000009000000
+    - movementActionType: 5
+      shapeTypes: 010000000200000003000000040000000500000006000000070000000800000009000000
+    - movementActionType: 6
+      shapeTypes: 010000000200000003000000040000000500000006000000070000000800000009000000
+    - movementActionType: 7
+      shapeTypes: 010000000200000003000000040000000500000006000000070000000800000009000000

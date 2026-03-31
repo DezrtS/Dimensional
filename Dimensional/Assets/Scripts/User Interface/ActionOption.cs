@@ -24,6 +24,12 @@ namespace User_Interface
             ResetColors();
         }
 
+        public void Initialize(Sprite defaultIcon)
+        {
+            ResetColors();
+            actionIcon.sprite = defaultIcon;
+        }
+
         private void ResetColors()
         {
             background.color = _defaultBackgroundColor;

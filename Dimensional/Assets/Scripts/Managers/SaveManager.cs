@@ -93,6 +93,7 @@ namespace Managers
         public static event SaveDataEventHandler Saving;
         public static event SaveDataEventHandler Loaded;
         
+        [SerializeField] private List<SaveVariable> saveVariables;
         [SerializeField] private List<SaveVariable> dirtyVariables = new List<SaveVariable>();
         [SerializeField] private bool resetAllOnAwake;
         
@@ -108,7 +109,6 @@ namespace Managers
         private const string WorldSaveFileName = "WorldSave";
         private const string SceneSaveFileName = "SceneSave";
         
-        private static readonly List<SaveVariable> SaveVariables = new();
         private SaveData _saveData;
 
         public static int SaveId { get; set; }
@@ -131,22 +131,16 @@ namespace Managers
             if (!dirtyVariables.Contains(saveVariable)) dirtyVariables.Add(saveVariable);
         }
 
-        public static void Register(SaveVariable saveVariable)
+        public void ResetAll()
         {
-            if (SaveVariables.Contains(saveVariable)) return;
-            SaveVariables.Add(saveVariable);
-        }
-
-        public static void ResetAll()
-        {
-            foreach (var saveVariable in SaveVariables)
+            foreach (var saveVariable in saveVariables)
             {
                 saveVariable.Reset();
             }
             Save(string.Empty, SaveFileName);
         }
 
-        private static void Load()
+        private void Load()
         {
             var saveData = Load<SaveData2>(SaveFileName);
             if (saveData == null)
@@ -156,7 +150,7 @@ namespace Managers
             }
             
             var dictionary = saveData.entries.ToDictionary(x => x.id, x => x);
-            foreach (var saveVariable in SaveVariables)
+            foreach (var saveVariable in saveVariables)
             {
                 if (!saveVariable.Load || !dictionary.ContainsKey(saveVariable.Id))
                 {

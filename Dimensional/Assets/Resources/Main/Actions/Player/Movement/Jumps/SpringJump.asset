@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: SpringJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
+  subActionData: []
   actionAudioEvents:
   - eventReference:
       Guid:
@@ -24,24 +26,27 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 2
-  hasScreenShake: 0
+  actionContextModifierData: []
   actionScreenShakeEvent:
+    hasScreenShake: 0
     activationEventType: 0
-    duration: 0
-    amplitude: 0
-    amplitudeCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    frequency: 0
-    frequencyCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    screenShakeEventData:
+      hasDuration: 0
+      duration: 0
+      amplitude: 0
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 0
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 786027cb90f063c4c85fed0e990528de, type: 2}
   movementActionType: 1
@@ -50,8 +55,9 @@ MonoBehaviour:
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: 91b6398af6eca114ca8f937dea211c45, type: 2}
   stopMovementOnDisable: 0
+  resetMovementOnDisable: 0
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 7, z: 0}
+  movementVector: {x: 0, y: 10, z: 0}
   hasRight: 0
   isXDistance: 0
   isRightBlend: 0
@@ -83,7 +89,7 @@ MonoBehaviour:
   hasUp: 1
   isYDistance: 1
   isUpBlend: 0
-  upDuration: 0.7
+  upDuration: 1
   upCurve:
     serializedVersion: 2
     m_Curve:

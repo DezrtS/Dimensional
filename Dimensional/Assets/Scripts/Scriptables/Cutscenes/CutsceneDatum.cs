@@ -14,6 +14,7 @@ namespace Scriptables.Cutscenes
         
         [SerializeField] private EventDatum[] onPlayEventData;
         [SerializeField] private EventDatum[] onStopEventData;
+        [SerializeField] private GameEventDatum[] onStopGameEventData;
         
         public string CutsceneName => cutsceneName;
         public bool DestroyOnStopped => destroyOnStopped;
@@ -21,6 +22,7 @@ namespace Scriptables.Cutscenes
         
         public EventDatum[] OnPlayEventData => onPlayEventData;
         public EventDatum[] OnStopEventData => onStopEventData;
+        public GameEventDatum[] OnStopGameEventData => onStopGameEventData;
 
         public Cutscene SpawnCutscene(Transform parent)
         {

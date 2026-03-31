@@ -42,7 +42,7 @@ namespace Debugging
             _actionSelectionWheel2.Cancelled += SelectionWheelOnCancelled;
             
             _actionSelectionWheel1.QuickSelect(Vector2.up);
-            PlayerController.Instance.SwitchedWheel += PlayerControllerOnSwitchedWheel;
+            //PlayerController.Instance.SwitchedWheel += PlayerControllerOnSwitchedWheel;
         }
 
         private void OnDisable()

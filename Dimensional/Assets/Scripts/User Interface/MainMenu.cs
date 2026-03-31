@@ -52,7 +52,7 @@ namespace User_Interface
 
         public void StartNewGame()
         {
-            SaveManager.ResetAll();
+            SaveManager.Instance.ResetAll();
             lastSpawnPointSaveData.Value = startSpawnPoint;
             SceneManager.Instance.LoadSceneWithTransition(startScene);
             FlyPlayer();

@@ -23,12 +23,20 @@ namespace Managers
         private EventInstance _musicInstance;
         private EventReference _nextMusicReference;
         private bool _musicIsChanging;
+        private bool _isMusicMuted;
 
         private void Awake()
         {
             eventInstances = new List<EventInstance>();
             if (!startMusicOnAwake) return;
             PlayMusic(defaultMusic);
+        }
+
+        private void Update()
+        {
+            if (!Input.GetKeyDown(KeyCode.M)) return;
+            _isMusicMuted = !_isMusicMuted;
+            _musicInstance.setVolume(_isMusicMuted ? 0f : 1f);
         }
 
         public void ChangeMusic(EventReference newMusic)
@@ -63,6 +71,7 @@ namespace Managers
         {
             _musicInstance = CreateEventInstance(musicReference);
             _musicInstance.start();
+            _musicInstance.setVolume(_isMusicMuted ? 0f : 1f);
         }
 
         public static EventInstance CreateEventInstance(EventReference eventReference)

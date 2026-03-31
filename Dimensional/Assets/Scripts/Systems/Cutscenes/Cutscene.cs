@@ -42,6 +42,7 @@ namespace Systems.Cutscenes
             if (_cutsceneDatum.DisablePlayer)
             {
                 PlayerController.Instance.PlayerMovementController.CancelAllActions();
+                PlayerController.Instance.PlayerMovementController.ForceController.IsKinematic = true;
                 PlayerController.Instance.HidePlayer.SetIsHidden(true);
             }
         }
@@ -55,7 +56,12 @@ namespace Systems.Cutscenes
         {
             Stopped?.Invoke(this);
             EventManager.SendEvents(_cutsceneDatum.OnStopEventData);
-            if (_cutsceneDatum.DisablePlayer) PlayerController.Instance.HidePlayer.SetIsHidden(false);
+            if (_cutsceneDatum.OnStopGameEventData is { Length: > 0 }) EventManager.HandleEvents(_cutsceneDatum.OnStopGameEventData);
+            if (_cutsceneDatum.DisablePlayer)
+            {
+                PlayerController.Instance.HidePlayer.SetIsHidden(false);
+                PlayerController.Instance.PlayerMovementController.ForceController.IsKinematic = false;
+            }
             if (_cutsceneDatum.DestroyOnStopped) Destroy(gameObject);
         }
 

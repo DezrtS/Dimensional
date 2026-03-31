@@ -29,7 +29,14 @@ namespace Scriptables.Save
         private Dictionary<ShapeType, Dictionary<MovementActionType, MovementActionDatum>> _shapeActionDictionary;
         private Dictionary<MovementActionType, MovementActionDatum> _movementActionDictionary;
         
-        public MovementActionShapesPreset Value => _runtimeValue;
+        public MovementActionShapesPreset Value
+        {
+            get
+            {
+                EnsureRuntime();
+                return _runtimeValue;
+            }
+        }
 
         public void SetMovementActionShapesPreset(MovementActionType movementActionType, ShapeType shapeType)
         {
@@ -40,6 +47,11 @@ namespace Scriptables.Save
 
             SetupMovementActionDictionary();
             SetIsDirty();
+        }
+        
+        private void EnsureRuntime()
+        {
+            if (_runtimeValue?.movementActionShapes == null) Reset();
         }
 
         public override string Capture()

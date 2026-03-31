@@ -179,6 +179,6 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _cameraPosition: {r: -0.08825802, g: 28.39938, b: 0.07104276, a: 0}
+    - _cameraPosition: {r: -0.034708936, g: 28.567541, b: 0.037405703, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

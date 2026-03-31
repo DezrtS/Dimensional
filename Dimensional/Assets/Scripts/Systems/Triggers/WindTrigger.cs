@@ -10,15 +10,22 @@ namespace Systems.Triggers
     {
         [SerializeField] private float windSpeed;
         [SerializeField] private Vector3 windDirection;
+        [SerializeField] private float maxForceSpeed = 25f;
+        [Range(-1, 1)] [SerializeField] private float minVelocityDot = 0.5f;
         
         private readonly List<ForceController> _forceControllers = new List<ForceController>();
 
         private void FixedUpdate()
         {
+            var fixedDeltaTime = Time.fixedDeltaTime;
             for (var i = _forceControllers.Count - 1; i >= 0; i--)
             {
                 var controller = _forceControllers[i];
-                controller.ApplyForce(transform.rotation * (windDirection * windSpeed), ForceMode.Force);
+                var velocity = controller.GetVelocity();
+                var forceDirection = transform.rotation * windDirection;
+                var velocityDot = Vector3.Dot(velocity.normalized, windDirection);
+                if (velocity.magnitude >= maxForceSpeed && velocityDot >= minVelocityDot) continue;
+                controller.ApplyForce(forceDirection * windSpeed, ForceMode.Force);
             }
         }
 

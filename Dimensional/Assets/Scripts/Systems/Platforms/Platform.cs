@@ -7,13 +7,14 @@ namespace Systems.Platforms
     public class Platform : MonoBehaviour
     {
         [SerializeField] private bool canMove = true;
+        [SerializeField] private bool canRotate;
         [SerializeField] private SplineContainer splineContainer;
 
         [Header("Position")]
         [SerializeField] private Vector3 offset;
         [SerializeField] private bool autoOffset;
 
-        [Range(0, 1)] [SerializeField] private float durationOffset;
+        [Range(-1, 1)] [SerializeField] private float durationOffset;
         [SerializeField] private float duration = 1f;
         [SerializeField] private AnimationCurve animationCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
@@ -25,7 +26,7 @@ namespace Systems.Platforms
         [SerializeField] private AnimationCurve angularZ = AnimationCurve.Constant(0, 1, 1);
 
         [SerializeField] private float rotationDuration = 1f;
-        [Range(0, 1)] [SerializeField] private float rotationOffset;
+        [Range(-1, 1)] [SerializeField] private float rotationOffset;
 
         private Rigidbody _rigidbody;
         private float _timer;
@@ -55,36 +56,31 @@ namespace Systems.Platforms
 
             var deltaTime = Time.fixedDeltaTime;
             _timer += deltaTime;
+            
+            if (canRotate)
+            {
+                var rotationTime = (_timer / rotationDuration) + rotationOffset * rotationDuration;
+                var normalizedRotationTime = Mathf.Repeat(rotationTime, 1f);
 
-            // =========================
-            // ROTATION (runs even without spline)
-            // =========================
+                var angularMultiplier = new Vector3(
+                    angularX.Evaluate(normalizedRotationTime),
+                    angularY.Evaluate(normalizedRotationTime),
+                    angularZ.Evaluate(normalizedRotationTime)
+                );
 
-            var rotationTime = (_timer / rotationDuration) + rotationOffset * rotationDuration;
-            var normalizedRotationTime = Mathf.Repeat(rotationTime, 1f);
+                // Convert to radians/sec internally
+                AngularVelocity = Vector3.Scale(constantAngularVelocity, angularMultiplier) * Mathf.Deg2Rad;
 
-            var angularMultiplier = new Vector3(
-                angularX.Evaluate(normalizedRotationTime),
-                angularY.Evaluate(normalizedRotationTime),
-                angularZ.Evaluate(normalizedRotationTime)
-            );
-
-            // Convert to radians/sec internally
-            AngularVelocity = Vector3.Scale(constantAngularVelocity, angularMultiplier) * Mathf.Deg2Rad;
-
-            var deltaRotation = Quaternion.Euler(AngularVelocity * (Mathf.Rad2Deg * deltaTime));
-            _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
-
-            // =========================
-            // POSITION (requires spline)
-            // =========================
+                var deltaRotation = Quaternion.Euler(AngularVelocity * (Mathf.Rad2Deg * deltaTime));
+                _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);   
+            }
 
             if (!splineContainer) return;
 
-            var time = _timer / duration + (durationOffset * duration);
+            var time = _timer / duration + durationOffset;
             var normalizedTime = Mathf.Clamp01(animationCurve.Evaluate(time));
 
-            var nextTime = (_timer + deltaTime) / duration + (durationOffset * duration);
+            var nextTime = (_timer + deltaTime) / duration + durationOffset;
             var nextNormalizedTime = Mathf.Clamp01(animationCurve.Evaluate(nextTime));
 
             Vector3 currentTarget = splineContainer.EvaluatePosition(normalizedTime);

@@ -71,10 +71,10 @@ Shader "Custom/DitheredDiffuse"
             }
 
             // 4x4 Bayer matrix
-            float Dither4x4(int2 pixelPos)
+            float Dither4x4(uint2 pixelPos)
             {
-                int x = pixelPos.x % 4;
-                int y = pixelPos.y % 4;
+                uint x = pixelPos.x % 4;
+                uint y = pixelPos.y % 4;
 
                 int index = x + y * 4;
 
@@ -93,7 +93,7 @@ Shader "Custom/DitheredDiffuse"
             {
                 // --- DITHER ---
                 float2 screenUV = i.screenPos.xy / i.screenPos.w;
-                int2 pixelPos = int2(screenUV * _ScreenParams.xy / _DitherScale);
+                int2 pixelPos = uint2(screenUV * _ScreenParams.xy / _DitherScale);
 
                 float ditherValue = Dither4x4(pixelPos);
                 clip(_DistanceFromCamera - ditherValue);
