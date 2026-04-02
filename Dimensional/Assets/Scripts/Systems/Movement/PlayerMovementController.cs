@@ -184,7 +184,7 @@ namespace Systems.Movement
             var velocity = ForceController.GetVelocityComponent(VelocityType.Movement);
             root.localScale = Vector3.Lerp(root.localScale,
                 new Vector3(1, 1 + Mathf.Abs(velocity.y * scaleStrength), 1), deltaTime * scaleSpeed);
-            _animator.SetFloat("yVelocity", velocity.y);
+            //_animator.SetFloat("yVelocity", velocity.y);
             
             if (velocity.magnitude > 0.1f) windStreaksParticleSystem.transform.forward = -velocity.normalized;
             if (velocity.magnitude > windStreaksVelocityThreshold && !windStreaksParticleSystem.isPlaying) windStreaksParticleSystem.Play();
@@ -376,7 +376,7 @@ namespace Systems.Movement
                 _isCrouching = false;
             }
             
-            if (IsGrounded || _diveMovementAction.IsActive || _dashMovementAction.IsActive) return;
+            if (IsGrounded || _diveMovementAction.IsActive || _dashMovementAction.IsActive || _diveMovementAction.ActionDatum == defaultActionDatum) return;
             
             CancelJumping();
             StartDiving();

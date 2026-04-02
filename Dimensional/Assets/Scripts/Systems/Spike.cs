@@ -17,6 +17,7 @@ namespace Systems
             
             if (hitObject.TryGetComponent(out Health health))
             {
+                if (health.IsInvincible) return;
                 health.Damage(damage);
             }
             

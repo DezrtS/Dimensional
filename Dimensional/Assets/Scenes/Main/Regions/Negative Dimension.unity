@@ -19033,11 +19033,11 @@ PrefabInstance:
     - target: {fileID: 3046191874044748012, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: 'visualEffects.Array.data[0]'
       value: 
-      objectReference: {fileID: 1031809173}
+      objectReference: {fileID: 0}
     - target: {fileID: 3046191874044748012, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: 'visualEffects.Array.data[1]'
       value: 
-      objectReference: {fileID: 1031809172}
+      objectReference: {fileID: 0}
     - target: {fileID: 3206800854426569070, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: m_Name
       value: Debug Rigidbody Player
@@ -19202,16 +19202,6 @@ PrefabInstance:
 --- !u!4 &1031809171 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5542193874189235521, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
-  m_PrefabInstance: {fileID: 1031809170}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &1031809172 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 5491432006957462810, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
-  m_PrefabInstance: {fileID: 1031809170}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &1031809173 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 787557238506134038, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
   m_PrefabInstance: {fileID: 1031809170}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1031809187

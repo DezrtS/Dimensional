@@ -11,6 +11,8 @@ namespace Scriptables.Actions.Movement
         [SerializeField] private MovementActionType movementActionType;
         [Space(10)] 
         [SerializeField] private bool performEventOnGrounded;
+        [SerializeField] private bool onGrounded = true;
+        [SerializeField] private bool disableOnTrigger;
         [SerializeField] private ActionEventType groundedActionEventType;
         [Space(10)] 
         [SerializeField] private bool hasMovementDatum;
@@ -19,6 +21,8 @@ namespace Scriptables.Actions.Movement
         public MovementActionType MovementActionType => movementActionType;
         
         public bool PerformEventOnGrounded => performEventOnGrounded;
+        public bool OnGrounded => onGrounded;
+        public bool DisableOnTrigger => disableOnTrigger;
         public ActionEventType GroundedActionEventType => groundedActionEventType;
         
         public bool HasMovementDatum => hasMovementDatum;

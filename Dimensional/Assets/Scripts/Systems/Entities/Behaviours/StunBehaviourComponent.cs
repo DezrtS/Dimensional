@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Systems.Forces;
 using Scriptables.Entities;
 using Systems.Movement;
@@ -10,6 +11,7 @@ namespace Systems.Entities.Behaviours
     {
         private static readonly int StunHash = Animator.StringToHash("Stun");
         private static readonly int RecoverHash = Animator.StringToHash("Recover");
+        private static readonly int IsStunnedHash = Animator.StringToHash("IsStunned");
         public event Action Stunned;
         public event Action Landed;
         public event Action Recovered;
@@ -35,6 +37,7 @@ namespace Systems.Entities.Behaviours
         public void Stun(Vector3 direction)
         {
             if (_isStunned || _isRecovering) return;
+            if (_animator) _animator.SetBool(IsStunnedHash, true);
             _isStunned = true;
             _isRecovering = false;
             _timer = 0;
@@ -50,30 +53,29 @@ namespace Systems.Entities.Behaviours
             if (!isGrounded) return;
             _movementController.Grounded -= MovementControllerOnGrounded;
             _isStunned = false;
-            _isRecovering = true;
             _timer = 0;
             Landed?.Invoke();
+            StartCoroutine(RecoverRoutine());
         }
 
         private void FixedUpdate()
         {
-            if (_isStunned)
-            {
-                _timer += Time.fixedDeltaTime;
-                var currentVelocity = _forceController.GetVelocityComponent(VelocityType.Movement);
-                var velocity = _rotation * new Vector3(0, 0, stunBehaviourDatum.ZCurve.Evaluate(_timer / stunBehaviourDatum.ZDuration) * stunBehaviourDatum.ZVelocity);
-                velocity.y = currentVelocity.y;
-                _forceController.SetVelocityComponent(VelocityType.Movement, velocity);   
-            }
-            else if (_isRecovering)
-            {
-                _timer += Time.fixedDeltaTime;
-                if (_timer < stunBehaviourDatum.RecoverDelay) return;
-                _isRecovering = false;
-                _timer = 0;
-                Recovered?.Invoke();
-                if (_animator) _animator.SetTrigger(RecoverHash);
-            }
+            if (!_isStunned) return;
+            _timer += Time.fixedDeltaTime;
+            var currentVelocity = _forceController.GetVelocityComponent(VelocityType.Movement);
+            var velocity = _rotation * new Vector3(0, 0, stunBehaviourDatum.ZCurve.Evaluate(_timer / stunBehaviourDatum.ZDuration) * stunBehaviourDatum.ZVelocity);
+            velocity.y = currentVelocity.y;
+            _forceController.SetVelocityComponent(VelocityType.Movement, velocity);
+        }
+
+        private IEnumerator RecoverRoutine()
+        {
+            yield return new WaitForSeconds(stunBehaviourDatum.RecoverDelay);
+            if (_animator) _animator.SetTrigger(RecoverHash);
+            yield return new WaitForSeconds(0.25f);
+            _isRecovering = false;
+            Recovered?.Invoke();
+            if (_animator) _animator.SetBool(IsStunnedHash, false);
         }
     }
 }

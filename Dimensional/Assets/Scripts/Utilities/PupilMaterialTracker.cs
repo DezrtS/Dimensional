@@ -50,7 +50,7 @@ namespace Utilities
         public void SetTarget(Transform eyeTarget) => _target = eyeTarget; 
         public void SetTargetToDefault() => _target = target; 
 
-        private void LateUpdate()
+        private void FixedUpdate()
         {
             if (!_target) return;
             
@@ -72,7 +72,7 @@ namespace Utilities
             
             look *= strength;
             
-            _currentLook = Vector2.Lerp(_currentLook, look, Time.deltaTime * lookSpeed);
+            _currentLook = Vector2.Lerp(_currentLook, look, Time.fixedDeltaTime * lookSpeed);
             _material.SetVector(PupilDirID, new Vector4(_currentLook.x, _currentLook.y, 0f, 0f));
         }
     }
