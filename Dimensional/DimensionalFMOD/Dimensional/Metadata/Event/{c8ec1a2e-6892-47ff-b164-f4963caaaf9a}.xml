@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{c8ec1a2e-6892-47ff-b164-f4963caaaf9a}">
 		<property name="name">
-			<value>Main Menu Theme</value>
+			<value>Main Menu Theme 2</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
 		</property>
 		<relationship name="folder">
-			<destination>{6678ba0c-56ff-494b-9c05-5d900eaeadea}</destination>
+			<destination>{43e5ad33-7ac6-4232-b7ba-6fc21e894e6e}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{57c4cfef-3083-47bb-9d2e-a0f37d7aee75}</destination>
@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{5bae66cc-fe8a-4fdd-a6a2-ee1d947dc2cd}">
+		<property name="volume">
+			<value>-22</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{88e32c19-f8c8-4792-9d92-c27dd2e2a5a6}</destination>
 		</relationship>
