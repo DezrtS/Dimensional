@@ -106,7 +106,7 @@ namespace Systems.Checkpoints
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_isActive || _respawnCount >= limit) return;
+            if (_isActive || (isLimitedCheckpoint && _respawnCount >= limit)) return;
 
             if (!other.gameObject.CompareTag("Player")) return;
             Entered?.Invoke(this);

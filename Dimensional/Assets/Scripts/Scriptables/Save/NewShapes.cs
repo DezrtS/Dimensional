@@ -47,7 +47,14 @@ namespace Scriptables.Save
         
         public void RemoveNewShape(MovementActionType movementActionType, ShapeType shapeType)
         {
-            if (_newActionShapes[movementActionType].Contains(shapeType)) _newActionShapes[movementActionType].Remove(shapeType);
+            if (_newActionShapes[movementActionType].Contains(shapeType))
+            {
+                _newActionShapes[movementActionType].Remove(shapeType);
+                foreach (var newActionShape in _runtimeValue.newActionShapes.Where(newActionShape => newActionShape.movementActionType == movementActionType))
+                {
+                    newActionShape.shapeTypes.Remove(shapeType);
+                }
+            }
             SetIsDirty();
         }
 

@@ -16,7 +16,7 @@ namespace Managers
         [SerializeField] private EventReference defaultMusic;
         [SerializeField] private bool startMusicOnAwake;
         [Space]
-        [SerializeField] private float musicChangeDelay;
+        [SerializeField] private float fadeDuration = 1f;
 
         private static List<EventInstance> eventInstances;
         
@@ -41,7 +41,7 @@ namespace Managers
 
         public void ChangeMusic(EventReference newMusic)
         {
-            if (_nextMusicReference.Guid == newMusic.Guid) return;
+            if (!_nextMusicReference.IsNull && _nextMusicReference.Guid == newMusic.Guid) return;
             
             _nextMusicReference = newMusic;
             if (!_musicIsChanging)
@@ -53,19 +53,74 @@ namespace Managers
         private IEnumerator ChangeMusicRoutine()
         {
             _musicIsChanging = true;
-            StopMusic(STOP_MODE.ALLOWFADEOUT);
-            yield return new WaitForSeconds(musicChangeDelay);
-            while (true)
+
+            // Store current instance
+            EventInstance oldInstance = _musicInstance;
+
+            // Create and start new music at 0 volume
+            EventInstance newInstance = CreateEventInstance(_nextMusicReference);
+            newInstance.start();
+            newInstance.setVolume(0f);
+
+            float time = 0f;
+
+            while (time < fadeDuration)
             {
-                _musicInstance.getPlaybackState(out var state);
-                if (state != PLAYBACK_STATE.STOPPING) break;
+                time += Time.deltaTime;
+                float t = time / fadeDuration;
+
+                float oldVolume = Mathf.Lerp(1f, 0f, t);
+                float newVolume = Mathf.Lerp(0f, 1f, t);
+
+                oldInstance.setVolume(_isMusicMuted ? 0f : oldVolume);
+                newInstance.setVolume(_isMusicMuted ? 0f : newVolume);
+
                 yield return null;
             }
-            PlayMusic(_nextMusicReference);
+
+            // Ensure final values
+            newInstance.setVolume(_isMusicMuted ? 0f : 1f);
+            oldInstance.setVolume(0f);
+
+            // Stop and release old music
+            oldInstance.stop(STOP_MODE.IMMEDIATE);
+            oldInstance.release();
+
+            // Swap reference
+            _musicInstance = newInstance;
+
             _musicIsChanging = false;
         }
 
-        public void StopMusic(STOP_MODE stopMode) => _musicInstance.stop(stopMode);
+        public void StopMusic()
+        {
+            if (_musicInstance.isValid())
+            {
+                StartCoroutine(FadeOutAndStop(_musicInstance));
+            }
+        }
+        
+        private IEnumerator FadeOutAndStop(EventInstance instance)
+        {
+            float time = 0f;
+
+            instance.getVolume(out float startVolume);
+
+            while (time < fadeDuration)
+            {
+                time += Time.deltaTime;
+                float t = time / fadeDuration;
+
+                float volume = Mathf.Lerp(startVolume, 0f, t);
+                instance.setVolume(volume);
+
+                yield return null;
+            }
+
+            instance.setVolume(0f);
+            instance.stop(STOP_MODE.IMMEDIATE);
+            instance.release();
+        }
 
         private void PlayMusic(EventReference musicReference)
         {

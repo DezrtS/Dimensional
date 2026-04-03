@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: SphereWallJump
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
+  subActionData: []
   actionAudioEvents:
   - eventReference:
       Guid:
@@ -24,34 +26,40 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 1
-  hasScreenShake: 0
+  actionContextModifierData: []
   actionScreenShakeEvent:
+    hasScreenShake: 0
     activationEventType: 0
-    duration: 0
-    amplitude: 0
-    amplitudeCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    frequency: 0
-    frequencyCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    screenShakeEventData:
+      hasDuration: 0
+      duration: 0
+      amplitude: 0
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 0
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 7a6eb3256a3ffaf4da440968f4e7d466, type: 2}
   movementActionType: 3
   performEventOnGrounded: 0
+  onGrounded: 1
+  disableOnTrigger: 0
   groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0
+  resetMovementOnDisable: 0
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 2, z: 7}
+  movementVector: {x: 0, y: 2, z: 8}
   hasRight: 1
   isXDistance: 0
   isRightBlend: 0
