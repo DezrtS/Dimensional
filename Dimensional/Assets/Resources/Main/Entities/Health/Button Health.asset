@@ -21,7 +21,7 @@ MonoBehaviour:
       Data2: 1160461560
       Data3: 1530565777
       Data4: -1300865506
-    Path: event:/PressButton
+    Path: event:/UI/PressButton
   deathSound:
     Guid:
       Data1: 0

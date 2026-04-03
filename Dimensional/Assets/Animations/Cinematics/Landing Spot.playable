@@ -375,7 +375,7 @@ MonoBehaviour:
       Data2: 1181398716
       Data3: -2118042180
       Data4: -243953754
-    Path: event:/GroundPound
+    Path: event:/SFX/GroundPound
   StopType: 0
   Parameters: []
 --- !u!114 &11400000

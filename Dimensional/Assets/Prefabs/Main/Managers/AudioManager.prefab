@@ -51,9 +51,9 @@ MonoBehaviour:
       Data2: 1265269143
       Data3: 1223472804
       Data4: -1494709428
-    Path: event:/TutorialTheme
+    Path: event:/Music/TutorialTheme
   startMusicOnAwake: 1
-  musicChangeDelay: 0
+  fadeDuration: 1
 --- !u!114 &4656057143729007131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,42 +72,42 @@ MonoBehaviour:
       Data2: 1105272355
       Data3: -2025228150
       Data4: 441773376
-    Path: event:/Walk
+    Path: event:/SFX/Walk
   wallSlide:
     Guid:
       Data1: 210470586
       Data2: 1265166940
       Data3: -1017299532
       Data4: -1491806305
-    Path: event:/WallSlide
+    Path: event:/SFX/WallSlide
   balloonJump:
     Guid:
       Data1: 860121881
       Data2: 1311407883
       Data3: 1836634516
       Data4: -889709099
-    Path: event:/BalloonJump
+    Path: event:/SFX/BalloonJump
   springJump:
     Guid:
       Data1: 1839149501
       Data2: 1176948225
       Data3: 1231551890
       Data4: -370594178
-    Path: event:/SpringJump
+    Path: event:/SFX/SpringJump
   parachuteDeploy:
     Guid:
       Data1: 66335378
       Data2: 1145544333
       Data3: 2117282986
       Data4: 505063354
-    Path: event:/ParachuteDeploy
+    Path: event:/SFX/ParachuteDeploy
   parachuteGlide:
     Guid:
       Data1: -263076225
       Data2: 1152228617
       Data3: -985897329
       Data4: -2028369071
-    Path: event:/ParachuteGlide
+    Path: event:/SFX/ParachuteGlide
   enterLevel:
     Guid:
       Data1: 0
@@ -121,4 +121,4 @@ MonoBehaviour:
       Data2: 1160461560
       Data3: 1530565777
       Data4: -1300865506
-    Path: event:/PressButton
+    Path: event:/UI/PressButton

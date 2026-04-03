@@ -19,7 +19,7 @@ MonoBehaviour:
         Data2: 1200638855
         Data3: 517508992
         Data4: -494594279
-      Path: event:/VillageThemeNormal
+      Path: event:/Music/VillageThemeNormal
   spawnPointMusics:
   - musicReference:
       eventRef:
@@ -28,7 +28,7 @@ MonoBehaviour:
           Data2: 1297449232
           Data3: -179302766
           Data4: 813411590
-        Path: event:/NewAbandonedVillageTheme
+        Path: event:/Music/NewAbandonedVillageTheme
     boolVariableInstances:
     - boolVariable: {fileID: 11400000, guid: aceaf0254008990439b51373e135a79d, type: 2}
       enabledOnTrue: 1

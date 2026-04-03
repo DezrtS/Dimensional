@@ -650,7 +650,7 @@ MonoBehaviour:
       Data2: 1123969659
       Data3: 1998193815
       Data4: 1110183485
-    Path: event:/LandOnGround
+    Path: event:/SFX/LandOnGround
   StopType: 0
   Parameters: []
 --- !u!74 &-3894988058490266602
@@ -1083,7 +1083,7 @@ MonoBehaviour:
       Data2: 1089748999
       Data3: 1543810743
       Data4: -687232929
-    Path: event:/PortalIdle
+    Path: event:/SFX/PortalIdle
   StopType: 0
   Parameters: []
 --- !u!114 &-941577381844231421
@@ -1224,7 +1224,7 @@ MonoBehaviour:
       Data2: 1276839981
       Data3: 1962118075
       Data4: 1922537791
-    Path: event:/PortalClosing
+    Path: event:/SFX/PortalClosing
   StopType: 0
   Parameters: []
 --- !u!114 &2597112260147532386
@@ -1500,7 +1500,7 @@ MonoBehaviour:
       Data2: 1157393858
       Data3: 1567204793
       Data4: -1483865002
-    Path: event:/PortalOpening
+    Path: event:/SFX/PortalOpening
   StopType: 0
   Parameters: []
 --- !u!114 &8352989094977263603

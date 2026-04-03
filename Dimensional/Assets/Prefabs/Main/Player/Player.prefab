@@ -608,7 +608,7 @@ MonoBehaviour:
       Data2: 1123969659
       Data3: 1998193815
       Data4: 1110183485
-    Path: event:/LandOnGround
+    Path: event:/SFX/LandOnGround
   landEffect: {fileID: 122335415533636764}
   windStreaksVelocityThreshold: 15
   windStreaksParticleSystem: {fileID: 8488002487925804121}
@@ -763,7 +763,7 @@ MonoBehaviour:
       Data2: 1105272355
       Data3: -2025228150
       Data4: 441773376
-    Path: event:/Walk
+    Path: event:/SFX/Walk
 --- !u!114 &2182314071344092380
 MonoBehaviour:
   m_ObjectHideFlags: 0

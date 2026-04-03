@@ -47,7 +47,7 @@ MonoBehaviour:
           Data2: 1122354257
           Data3: 828844929
           Data4: -1660349603
-        Path: event:/HeySphereDialogue
+        Path: event:/SFX/HeySphereDialogue
   - dialogueSpeakerDatum: {fileID: 11400000, guid: ab77ab589d4b0f341b092419ed4d727f, type: 2}
     text: Alright, goodbye Sphere.
     hasVoiceActing: 0

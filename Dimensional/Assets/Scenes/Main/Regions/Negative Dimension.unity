@@ -10801,7 +10801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: defaultMusic.Path
-      value: event:/Main Area Theme
+      value: event:/Music/Main Area Theme
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: startMusicOnAwake

@@ -700,7 +700,7 @@ MonoBehaviour:
       Data2: 1123969659
       Data3: 1998193815
       Data4: 1110183485
-    Path: event:/LandOnGround
+    Path: event:/SFX/LandOnGround
   StopType: 0
   Parameters: []
 --- !u!114 &-1830680276894932415
@@ -1288,7 +1288,7 @@ MonoBehaviour:
       Data2: 1092423254
       Data3: 829420428
       Data4: 1906781754
-    Path: event:/TessaractMoving
+    Path: event:/SFX/TessaractMoving
   StopType: 0
   Parameters: []
 --- !u!114 &8103301692023901982

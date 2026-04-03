@@ -292,6 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthDatum: {fileID: 11400000, guid: b830fba58db59494387ec1a3bd6489e7, type: 2}
+  healthSaveData: {fileID: 0}
   destroyOnDeath: 0
 --- !u!114 &3875366664236168819
 MonoBehaviour:
