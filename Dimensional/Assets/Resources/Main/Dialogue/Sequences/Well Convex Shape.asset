@@ -13,12 +13,10 @@ MonoBehaviour:
   m_Name: Well Convex Shape
   m_EditorClassIdentifier: 
   isDialogueSkippable: 1
-  eventData:
-  - {fileID: 11400000, guid: a41137b584450bf46b65df371358fb2d, type: 2}
-  - {fileID: 11400000, guid: a59abb7a0b5eb5149b8c147b98f8d64c, type: 2}
+  eventData: []
   dialogueLines:
   - dialogueSpeakerDatum: {fileID: 11400000, guid: c5505281a365a1c4a97565b984aa6ce2, type: 2}
-    text: What do you want Sphere?
+    text: Stop bothering me Sphere.
     hasVoiceActing: 0
     eventReference:
       eventRef:
@@ -29,29 +27,7 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: c5505281a365a1c4a97565b984aa6ce2, type: 2}
-    text: Don't bother me while I'm working.
-    hasVoiceActing: 0
-    eventReference:
-      eventRef:
-        Guid:
-          Data1: 0
-          Data2: 0
-          Data3: 0
-          Data4: 0
-        Path: 
-  - dialogueSpeakerDatum: {fileID: 11400000, guid: c5505281a365a1c4a97565b984aa6ce2, type: 2}
-    text: If you're here for water, wait your turn.
-    hasVoiceActing: 0
-    eventReference:
-      eventRef:
-        Guid:
-          Data1: 0
-          Data2: 0
-          Data3: 0
-          Data4: 0
-        Path: 
-  - dialogueSpeakerDatum: {fileID: 11400000, guid: c5505281a365a1c4a97565b984aa6ce2, type: 2}
-    text: Otherwise, go exploring like you always do.
+    text: Go exploring or something, I'm going to be here for a while
     hasVoiceActing: 0
     eventReference:
       eventRef:

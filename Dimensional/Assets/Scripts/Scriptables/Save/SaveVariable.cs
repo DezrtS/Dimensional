@@ -19,11 +19,6 @@ namespace Scriptables.Save
 
         private bool _isDirty;
 
-        private void OnEnable()
-        {
-            SaveManager.Register(this);
-        }
-
         public virtual string Capture()
         {
             _isDirty = false;

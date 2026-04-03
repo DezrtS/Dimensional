@@ -15,6 +15,7 @@ namespace Managers
         
         private Dictionary<string, ISpawnPoint> _spawnPoints;
         private string _lastSpawnPointId = string.Empty;
+        private string _lastNonLimitedSpawnPointId = string.Empty;
 
         private bool _lastSpawnPointExists;
         
@@ -56,8 +57,19 @@ namespace Managers
                 return;
             }
 
-            if (spawnPoint.IsDefaultSpawnPoint) _lastSpawnPointId = spawnPoint.Id;
+            if (spawnPoint.IsDefaultSpawnPoint)
+            {
+                _lastSpawnPointId = spawnPoint.Id;
+                _lastNonLimitedSpawnPointId = spawnPoint.Id;
+            }
             spawnPoint.Entered += SpawnPointOnEntered;
+        }
+
+        public void DisableSpawnPoint(ISpawnPoint spawnPoint)
+        {
+            if (spawnPoint.Id != _lastSpawnPointId) return;
+            _lastSpawnPointId = _lastNonLimitedSpawnPointId;
+            lastSpawnPointSaveData.Value = _lastSpawnPointId;
         }
 
         private void SpawnPointOnEntered(ISpawnPoint spawnPoint)
@@ -66,6 +78,7 @@ namespace Managers
             if (lastSpawnPoint != null) LastSpawnPointChanged?.Invoke(lastSpawnPoint);
             _lastSpawnPointId = spawnPoint.Id;
             lastSpawnPointSaveData.Value = spawnPoint.Id;
+            if (!spawnPoint.IsLimited) _lastNonLimitedSpawnPointId = spawnPoint.Id;
         }
 
         private ISpawnPoint GetSpawnPoint(string id)

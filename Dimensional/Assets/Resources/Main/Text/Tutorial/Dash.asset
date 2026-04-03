@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f000c26c39a562241997b635a8330ff2, type: 3}
   m_Name: Dash
   m_EditorClassIdentifier: 
-  text: Dash to extend your jumps
+  text: Press <sprite=7> to Dash

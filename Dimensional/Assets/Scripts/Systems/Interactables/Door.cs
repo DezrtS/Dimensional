@@ -49,6 +49,7 @@ namespace Systems.Interactables
         public Vector3 Position => spawnTransform.position;
         public SpawnPointAudioDatum SpawnPointAudioDatum => spawnPointAudioDatum;
         public bool IsDefaultSpawnPoint => false;
+        public bool IsLimited => false;
 
         private void OnEnable()
         {

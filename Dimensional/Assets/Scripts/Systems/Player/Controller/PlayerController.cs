@@ -22,7 +22,7 @@ namespace Systems.Player
 {
     public class PlayerController : Singleton<PlayerController>, IEntity, IMove, IAim
     {
-        public event Action SwitchedWheel;
+        public static event Action Respawned;
         
         [SerializeField] private bool setCameraFollowOnStart;
         [SerializeField] private bool setCameraLookOnStart;
@@ -341,6 +341,7 @@ namespace Systems.Player
 
         private void RespawnPlayer(Vector3 defaultRespawnPosition, bool isFirstTime = false)
         {
+            Respawned?.Invoke();
             var spawnPoint = CheckpointManager.Instance.GetLastSpawnPoint();
             var spawnPosition = defaultRespawnPosition;
             if (spawnPoint != null) 

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RocketDash
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
   subActionData: []
   actionAudioEvents:
   - eventReference:
@@ -90,8 +91,9 @@ MonoBehaviour:
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 0
+  resetMovementOnDisable: 0
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 1, z: 20}
+  movementVector: {x: 0, y: 1, z: 22}
   hasRight: 1
   isXDistance: 0
   isRightBlend: 0

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f000c26c39a562241997b635a8330ff2, type: 3}
   m_Name: Dive
   m_EditorClassIdentifier: 
-  text: Use <sprite=2> while airborne to Dive
+  text: Press <sprite=2> while airborne to Dive

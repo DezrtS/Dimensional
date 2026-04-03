@@ -20,17 +20,24 @@ MonoBehaviour:
     effectStartEventType: 2
     stopOnActionEnd: 0
   actionAnimations:
-  - animationName: Compress
-    animationEventType: 0
+  - animationName: IsCompressed
+    animationValue: 1
+    animationEventType: 1
     animationStartEventType: 1
-  - animationName: Stretch
-    animationEventType: 0
+  - animationName: IsStretched
+    animationValue: 1
+    animationEventType: 1
     animationStartEventType: 2
-  - animationName: Stretch
-    animationEventType: 0
-    animationStartEventType: 4
-  - animationName: Stretch
-    animationEventType: 0
-    animationStartEventType: 5
+  actionGrassEffect:
+    grassEffectStartEventType: 0
+    grassEffectData:
+      interactionRadius: 0
+      interactionStrength: 0
+      interactionLayerMask:
+        serializedVersion: 2
+        m_Bits: 0
+      checkDistance: 0
+      scaleDistance: 0
+      scaleRange: {x: 0, y: 0}
   shapeType: 2
   activationEventType: 1

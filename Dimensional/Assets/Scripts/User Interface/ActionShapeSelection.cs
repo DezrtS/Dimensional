@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Managers;
 using Scriptables.Save;
 using Scriptables.Shapes;
@@ -21,6 +20,7 @@ namespace User_Interface
         
         [Header("Save Data")]
         [SerializeField] private PlayerShapes playerShapesSaveData;
+        [SerializeField] private IntListVariable unlockedActionsSaveData;
         [SerializeField] private IntListVariable unlockedShapesSaveData;
         [SerializeField] private NewShapes newShapesSaveData;
         [Space]
@@ -42,6 +42,7 @@ namespace User_Interface
         [Space]
         [SerializeField] private GameObject newShapesNotifierGameObject;
         [Space]
+        [SerializeField] private Sprite defaultIconSprite;
         [SerializeField] private Color newShapeBackgroundColor;
         [SerializeField] private Color newShapeTextColor;
         [SerializeField] private Color newShapeIconColor;
@@ -49,6 +50,7 @@ namespace User_Interface
         private InputActionMap _inputActionMap;
         private Animator _animator;
 
+        private List<MovementActionShapesDatum> _unlockedActions;
         private Dictionary<MovementActionType, List<ShapeDatum>> _actionShapes;
         private Dictionary<MovementActionType, ShapeType> _selectedShapes;
         
@@ -61,6 +63,7 @@ namespace User_Interface
         private void OnEnable()
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+            unlockedActionsSaveData.ValueChanged += UnlockedActionsSaveDataOnValueChanged;
             unlockedShapesSaveData.ValueChanged += UnlockedShapesSaveDataOnValueChanged;
             newShapesSaveData.ValueChanged += NewShapesSaveDataOnValueChanged;
         }
@@ -68,6 +71,7 @@ namespace User_Interface
         private void OnDisable()
         {
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+            unlockedActionsSaveData.ValueChanged -= UnlockedActionsSaveDataOnValueChanged;
             unlockedShapesSaveData.ValueChanged -= UnlockedShapesSaveDataOnValueChanged;
             newShapesSaveData.ValueChanged -= NewShapesSaveDataOnValueChanged;
             UnassignControls();
@@ -81,7 +85,15 @@ namespace User_Interface
                 _selectedShapes.Add(movementActionShape.MovementActionType, movementActionShape.ShapeType);
             }
 
+            DefineUnlockedActions();
             DefineUnlockedShapes();
+            CheckNewShapes();
+            UpdateUI();
+        }
+        
+        private void UnlockedActionsSaveDataOnValueChanged()
+        {
+            DefineUnlockedActions();
             CheckNewShapes();
             UpdateUI();
         }
@@ -89,6 +101,7 @@ namespace User_Interface
         private void UnlockedShapesSaveDataOnValueChanged()
         {
             DefineUnlockedShapes();
+            CheckNewShapes();
             UpdateUI();
         }
         
@@ -120,13 +133,15 @@ namespace User_Interface
             }
         }
 
-        private void CheckNewShapes()
+        private void DefineUnlockedActions()
         {
-            var hasNewShapes = MovementAction.MovementActionTypesList.Any(movementActionType => newShapesSaveData.GetNewActionShapes(movementActionType).Count > 0);
-            if (hasNewShapes) _animator.SetTrigger("New Shapes");
-            newShapesNotifierGameObject.SetActive(hasNewShapes);
-            leftDPadImage.color = hasNewShapes ? newShapeIconColor : Color.white;
-            rightDPadImage.color = hasNewShapes ? newShapeIconColor : Color.white;
+            _unlockedActions = new List<MovementActionShapesDatum>();
+            foreach (var movementActionShapeDatum in movementActionShapesData)
+            {
+                if (unlockedActionsSaveData.Value.list.Contains((int)movementActionShapeDatum.MovementActionType)) _unlockedActions.Add(movementActionShapeDatum);
+            }
+            
+            _currentActionIndex = 0;
         }
 
         private void DefineUnlockedShapes()
@@ -142,6 +157,21 @@ namespace User_Interface
                 }
             }
         }
+        
+        private void CheckNewShapes()
+        {
+            var hasNewShapes = false;
+            foreach (var movementActionShapesDatum in _unlockedActions)
+            {
+                hasNewShapes = newShapesSaveData.GetNewActionShapes(movementActionShapesDatum.MovementActionType).Count > 0;
+                if (hasNewShapes) break;
+            }
+            
+            if (hasNewShapes) _animator.SetTrigger("New Shapes");
+            newShapesNotifierGameObject.SetActive(hasNewShapes);
+            leftDPadImage.color = hasNewShapes ? newShapeIconColor : Color.white;
+            rightDPadImage.color = hasNewShapes ? newShapeIconColor : Color.white;
+        }
 
         public void EnableCanSwitch() => _canSwitch = true;
         
@@ -149,16 +179,33 @@ namespace User_Interface
 
         public void UpdateUI()
         {
-            var datum = movementActionShapesData[_currentActionIndex];
-            var actionCount = movementActionShapesData.Length;
+            if (_unlockedActions.Count <= 0 || _actionShapes.Count <= 0) return;
+            
+            var datum = _unlockedActions[_currentActionIndex];
+            var actionCount = _unlockedActions.Count;
             var rightActionIndex = (_currentActionIndex + 1 + actionCount) % actionCount;
             var leftActionIndex = (_currentActionIndex - 1 + actionCount) % actionCount;
             
             selectedAction.text = datum.MovementActionName;
-            rightActionOption.Initialize(movementActionShapesData[rightActionIndex]);
-            if (newShapesSaveData.GetNewActionShapes(movementActionShapesData[rightActionIndex].MovementActionType).Count > 0) rightActionOption.SetIsNew(newShapeBackgroundColor, newShapeTextColor);
-            leftActionOption.Initialize(movementActionShapesData[leftActionIndex]);
-            if (newShapesSaveData.GetNewActionShapes(movementActionShapesData[leftActionIndex].MovementActionType).Count > 0) leftActionOption.SetIsNew(newShapeBackgroundColor, newShapeTextColor);
+            if (rightActionIndex == _currentActionIndex)
+            {
+                rightActionOption.Initialize(defaultIconSprite);
+            }
+            else
+            {
+                rightActionOption.Initialize(_unlockedActions[rightActionIndex]);
+                if (newShapesSaveData.GetNewActionShapes(_unlockedActions[rightActionIndex].MovementActionType).Count > 0) rightActionOption.SetIsNew(newShapeBackgroundColor, newShapeTextColor);   
+            }
+
+            if (leftActionIndex == _currentActionIndex)
+            {
+                leftActionOption.Initialize(defaultIconSprite);
+            }
+            else
+            {
+                leftActionOption.Initialize(_unlockedActions[leftActionIndex]);
+                if (newShapesSaveData.GetNewActionShapes(_unlockedActions[leftActionIndex].MovementActionType).Count > 0) leftActionOption.SetIsNew(newShapeBackgroundColor, newShapeTextColor);
+            }
             
             var shapeData = _actionShapes[datum.MovementActionType];
             var shapeCount = shapeData.Count;
@@ -236,7 +283,9 @@ namespace User_Interface
         private void SwitchAction(int direction)
         {
             if (!_canSwitch) return;
-            var actionCount = movementActionShapesData.Length;
+            
+            if (_unlockedActions.Count <= 1) return;
+            var actionCount = _unlockedActions.Count;
             _currentActionIndex = (_currentActionIndex + direction + actionCount) % actionCount;
             _animator.SetTrigger(direction > 0 ? "Right" : "Left");
         }
@@ -244,7 +293,7 @@ namespace User_Interface
         private void SwitchShape(int direction)
         {
             if (!_canSwitch) return;
-            var movementActionType = movementActionShapesData[_currentActionIndex].MovementActionType;
+            var movementActionType = _unlockedActions[_currentActionIndex].MovementActionType;
             var shapes = _actionShapes[movementActionType];
 
             if (shapes.Count <= 1) return;
@@ -260,7 +309,7 @@ namespace User_Interface
 
         private int FindCurrentShapeIndex()
         {
-            var movementActionType = movementActionShapesData[_currentActionIndex].MovementActionType;
+            var movementActionType = _unlockedActions[_currentActionIndex].MovementActionType;
             var selectedShapeType = _selectedShapes[movementActionType];
             var shapes = _actionShapes[movementActionType];
             
@@ -269,6 +318,8 @@ namespace User_Interface
         
         private void OnDpadInput(InputAction.CallbackContext context)
         {
+            if (_unlockedActions.Count <= 0) return;
+            
             if (!_isRevealed)
             {
                 SetIsRevealed(true);

@@ -182,10 +182,13 @@ namespace Systems.Visual_Effects
                 switch (actionAnimation.AnimationEventType)
                 {
                     case AnimationEventType.Bool:
-                        Animator.SetBool(actionAnimation.AnimationName, true);
+                        Animator.SetBool(actionAnimation.AnimationName, actionAnimation.AnimationValue >= 1);
                         break;
                     case AnimationEventType.Trigger:
                         Animator.SetTrigger(actionAnimation.AnimationName);
+                        break;
+                    case AnimationEventType.Float:
+                        Animator.SetFloat(actionAnimation.AnimationName, actionAnimation.AnimationValue);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

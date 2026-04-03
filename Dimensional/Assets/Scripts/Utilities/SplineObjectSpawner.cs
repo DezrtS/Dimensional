@@ -57,6 +57,7 @@ namespace Utilities
 
             for (int i = 0; i <= count; i++)
             {
+                if (i == count && spline.Spline.Closed) break;
                 float t = Mathf.Clamp01((float)i / count);
 
                 Vector3 pos = spline.EvaluatePosition(t);

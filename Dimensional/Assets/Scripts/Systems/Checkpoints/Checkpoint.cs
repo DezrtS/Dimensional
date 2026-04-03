@@ -3,6 +3,7 @@ using System.Collections;
 using Interfaces;
 using Managers;
 using Scriptables.Audio;
+using Systems.Player;
 using UnityEngine;
 using Utilities;
 
@@ -37,6 +38,7 @@ namespace Systems.Checkpoints
         
         public string Id => _objectId.Id;
         public bool IsDefaultSpawnPoint => isDefaultCheckpoint;
+        public bool IsLimited => isLimitedCheckpoint;
         public SpawnPointAudioDatum SpawnPointAudioDatum => spawnPointAudioDatum;
 
         public Vector3 Position => transform.position + spawnOffset;
@@ -53,12 +55,14 @@ namespace Systems.Checkpoints
         {
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
             CheckpointManager.LastSpawnPointChanged += InstanceOnLastSpawnPointChanged;
+            PlayerController.Respawned += PlayerControllerOnRespawned;
         }
 
         private void OnDisable()
         {
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
             CheckpointManager.LastSpawnPointChanged -= InstanceOnLastSpawnPointChanged;
+            PlayerController.Respawned -= PlayerControllerOnRespawned;
         }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
@@ -72,6 +76,14 @@ namespace Systems.Checkpoints
             if (!spawnPoint.Id.Equals(Id)) return;
             Disable();
         }
+        
+        private void PlayerControllerOnRespawned()
+        {
+            if (!IsLimited || _respawnCount < limit) return;
+            _respawnCount = 0;
+            var ratio = Mathf.Clamp(_respawnCount / (float)limit * (damagedTextures.Length), 0, damagedTextures.Length - 1);
+            _material.SetTexture("_Mask", damagedTextures[(int)ratio]);
+        }
 
         public void SpawnAt()
         {
@@ -81,7 +93,12 @@ namespace Systems.Checkpoints
                 _material.SetTexture("_Mask", damagedTextures[(int)ratio]);
                 _respawnCount++;
 
-                if (_respawnCount >= limit) StartCoroutine(ExitedRoutine());
+                if (_respawnCount >= limit)
+                {
+                    StartCoroutine(ExitedRoutine());
+                    CheckpointManager.Instance.DisableSpawnPoint(this);
+                    _isActive = false;
+                }
             }
             if (!animator) return;
             animator.SetTrigger("Open");
@@ -89,7 +106,7 @@ namespace Systems.Checkpoints
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_isActive) return;
+            if (_isActive || (isLimitedCheckpoint && _respawnCount >= limit)) return;
 
             if (!other.gameObject.CompareTag("Player")) return;
             Entered?.Invoke(this);

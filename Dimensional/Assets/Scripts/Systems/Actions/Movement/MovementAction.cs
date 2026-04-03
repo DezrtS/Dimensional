@@ -135,7 +135,7 @@ namespace Systems.Actions.Movement
 
         private void MovementControllerOnGrounded(bool isGrounded)
         {
-            if (!isGrounded) return;
+            if (isGrounded != _movementActionDatum.OnGrounded) return;
             
             switch (_movementActionDatum.GroundedActionEventType)
             {
@@ -165,6 +165,12 @@ namespace Systems.Actions.Movement
             base.HandleActivation(context);
             if (_movementActionDatum.PerformEventOnGrounded) MovementController.Grounded += MovementControllerOnGrounded;
             if (_movementActionDatum.HasMovementDatum) MovementController.CurrentMovementControllerDatum = _movementActionDatum.MovementControllerDatum;
+        }
+
+        protected override void HandleTrigger(ActionContext context)
+        {
+            base.HandleTrigger(context);
+            if (_movementActionDatum.PerformEventOnGrounded && _movementActionDatum.DisableOnTrigger) MovementController.Grounded -= MovementControllerOnGrounded;
         }
 
         protected override void HandleDeactivation(ActionContext context)

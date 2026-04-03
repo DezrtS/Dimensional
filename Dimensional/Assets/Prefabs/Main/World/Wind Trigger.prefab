@@ -127,6 +127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windSpeed: 25
   windDirection: {x: 0, y: 1, z: 0}
+  maxForceSpeed: 25
+  minVelocityDot: 0.5
 --- !u!114 &5592291046037840217
 MonoBehaviour:
   m_ObjectHideFlags: 0

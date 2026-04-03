@@ -14,6 +14,7 @@ namespace Systems.Shaders
         [SerializeField] private float cloudHeight;
         [SerializeField] private Mesh quadMesh;
         [SerializeField] private Material cloudMaterial;
+        [SerializeField] private float boundsSize = 2500f;
 
         [SerializeField] private bool disableRuntimeMaterial;
 
@@ -38,7 +39,7 @@ namespace Systems.Shaders
             {
                 shadowCastingMode = ShadowCastingMode.Off,
                 receiveShadows = false,
-                worldBounds = new Bounds(Vector3.zero, Vector3.one * 2500f)
+                worldBounds = new Bounds(Vector3.zero, Vector3.one * boundsSize)
             };
 
             var instance = CameraManager.Instance;

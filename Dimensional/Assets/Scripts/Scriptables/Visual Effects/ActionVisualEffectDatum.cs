@@ -36,24 +36,28 @@ namespace Scriptables.Visual_Effects
     public enum AnimationEventType
     {
         Trigger,
-        Bool
+        Bool,
+        Float
     }
 
     [Serializable]
     public struct ActionAnimation
     {
         [SerializeField] private string animationName;
+        [SerializeField] private float animationValue;
         [SerializeField] private AnimationEventType animationEventType;
         [SerializeField] private ActionEventType animationStartEventType;
         
         public string AnimationName => animationName;
+        public float AnimationValue => animationValue; 
         public AnimationEventType AnimationEventType => animationEventType;
         public ActionEventType AnimationStartEventType => animationStartEventType;
 
-        public ActionAnimation(string animationName, AnimationEventType animationEventType,
+        public ActionAnimation(string animationName, float animationValue, AnimationEventType animationEventType,
             ActionEventType animationStartEventType)
         {
             this.animationName = animationName;
+            this.animationValue = animationValue;
             this.animationEventType = animationEventType;
             this.animationStartEventType = animationStartEventType;
         }

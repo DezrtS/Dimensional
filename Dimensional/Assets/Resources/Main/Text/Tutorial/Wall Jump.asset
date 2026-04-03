@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f000c26c39a562241997b635a8330ff2, type: 3}
   m_Name: Wall Jump
   m_EditorClassIdentifier: 
-  text: Press <sprite=6> while sliding on a wall to Wall Jump
+  text: Hold <sprite=6> while sliding on a wall to Wall Jump

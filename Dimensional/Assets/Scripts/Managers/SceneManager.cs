@@ -14,7 +14,7 @@ namespace Managers
         public void LoadSceneWithTransition(string nextScene)
         {
             if (_loadingScene) return;
-            
+            AudioManager.Instance.StopMusic();
             _nextScene = nextScene;
             _loadingScene = true;
             UIManager.TransitionFinished += UIManagerOnTransitionFinished;

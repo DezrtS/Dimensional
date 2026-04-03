@@ -12,6 +12,7 @@ namespace Interfaces
         public Vector3 Position { get; }
         public SpawnPointAudioDatum SpawnPointAudioDatum { get; }
         public bool IsDefaultSpawnPoint { get; }
+        public bool IsLimited { get; }
 
         public void SpawnAt();
     }

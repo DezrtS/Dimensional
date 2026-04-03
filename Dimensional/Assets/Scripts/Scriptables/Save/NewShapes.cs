@@ -47,7 +47,14 @@ namespace Scriptables.Save
         
         public void RemoveNewShape(MovementActionType movementActionType, ShapeType shapeType)
         {
-            if (_newActionShapes[movementActionType].Contains(shapeType)) _newActionShapes[movementActionType].Remove(shapeType);
+            if (_newActionShapes[movementActionType].Contains(shapeType))
+            {
+                _newActionShapes[movementActionType].Remove(shapeType);
+                foreach (var newActionShape in _runtimeValue.newActionShapes.Where(newActionShape => newActionShape.movementActionType == movementActionType))
+                {
+                    newActionShape.shapeTypes.Remove(shapeType);
+                }
+            }
             SetIsDirty();
         }
 
@@ -90,12 +97,14 @@ namespace Scriptables.Save
             _newActionShapes = new Dictionary<MovementActionType, List<ShapeType>>();
             foreach (var newActionShape in _runtimeValue.newActionShapes)
             {
-                _newActionShapes.Add(newActionShape.movementActionType, newActionShape.shapeTypes);
+                var shapeTypes = newActionShape.shapeTypes.Where(shapeType => _movementActionShapesDictionary[newActionShape.movementActionType].Contains(shapeType)).ToList();
+                _newActionShapes.Add(newActionShape.movementActionType, shapeTypes);
             }
         }
 
         public List<ShapeType> GetNewActionShapes(MovementActionType movementActionType)
         {
+            if (_runtimeValue?.newActionShapes == null) Reset();
             return _newActionShapes.GetValueOrDefault(movementActionType);
         }
     }
