@@ -5,7 +5,7 @@
 			<value>ConeShapeDialogue</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>0</value>
 		</property>
 		<relationship name="folder">
 			<destination>{2fb718e4-07fb-4270-8143-efd55d600447}</destination>
