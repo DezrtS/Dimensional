@@ -121,6 +121,7 @@ namespace Managers
             GameManager.GameStateChanged += GameManagerOnGameStateChanged;
             GameManager.WorldDimensionsChanged += GameManagerOnWorldDimensionsChanged;
             if (lockAndHideCursor) LockAndHideCursor();
+            else UnlockAndShowCursor();
         }
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)

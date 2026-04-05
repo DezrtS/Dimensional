@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace User_Interface
 {
-    public abstract class WorldUIAnchor : MonoBehaviour
+    public class WorldUIAnchor : MonoBehaviour
     {
         protected WorldUIAnchorDatum WorldUIAnchorDatum { get; private set; }
 
@@ -30,7 +30,7 @@ namespace User_Interface
             transform.localScale = Vector3.zero;
         }
 
-        protected abstract void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform);
+        protected virtual void OnInitialize(WorldUIAnchorDatum worldUIAnchorDatum, GameObject holderGameObject, Transform worldTransform) {}
 
         private void Start()
         {
@@ -49,6 +49,7 @@ namespace User_Interface
             if (DisableScaling) return;
             
             var distanceRatio = WorldUIAnchorDatum.UseDistanceScaling ? GetDistanceRatio() : 0;
+            if (WorldUIAnchorDatum.ReverseDistanceScaling) distanceRatio = 1 - distanceRatio;
             var angleRatio = WorldUIAnchorDatum.UseAngleScaling ? GetAngleRatio() : 0;
             var ratio = Mathf.Clamp01(Mathf.Max(distanceRatio, angleRatio));
             var size = WorldUIAnchorDatum.SizeCurve.Evaluate(ratio);
@@ -62,6 +63,7 @@ namespace User_Interface
             if (_isDisabled) return;
             
             var screenPosition = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);
+            screenPosition.z = 0;
             transform.position = screenPosition;
         }
 

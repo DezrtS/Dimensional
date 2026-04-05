@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace User_Interface.Visual_Effects
@@ -24,13 +25,12 @@ namespace User_Interface.Visual_Effects
         [SerializeField] private AnimationCurve transparencyCurve;
         [SerializeField] private AnimationCurve rotationCurve;
 
-        private float _duration;
-        private float _timer;
-        private bool _reverse;
+        private Coroutine _currentRoutine;
 
         private void Awake()
         {
             if (!fillProgressOnAwake) return;
+
             material.SetFloat(Progress, progressCurve.Evaluate(0));
             material.SetFloat(Transparency, transparencyCurve.Evaluate(0));
             material.SetFloat(Rotation, rotationCurve.Evaluate(0) * rotation);
@@ -41,26 +41,43 @@ namespace User_Interface.Visual_Effects
 
         public void Transition(bool invert, bool reverse, float duration = -1)
         {
-            _duration = duration <= 0 ? defaultDuration : duration;
-            _timer = _duration;
-            _reverse = reverse;
+            if (_currentRoutine != null)
+                StopCoroutine(_currentRoutine);
+
+            var finalDuration = duration <= 0 ? defaultDuration : duration; 
+
             material.SetFloat(InvertMask, invert ? 1f : 0f);
+
+            _currentRoutine = StartCoroutine(TransitionRoutine(finalDuration, reverse));
         }
 
-        private void Update()
+        private IEnumerator TransitionRoutine(float duration, bool reverse)
         {
-            if (_timer <= 0) return;
+            var timer = 0f;
+
+            while (timer < duration)
+            {
+                timer += Time.unscaledDeltaTime;
+                var ratio = Mathf.Clamp01(timer / duration);
+
+                if (reverse)
+                    ratio = 1f - ratio;
+
+                material.SetFloat(Progress, progressCurve.Evaluate(ratio));
+                material.SetFloat(Transparency, transparencyCurve.Evaluate(ratio));
+                material.SetFloat(Rotation, rotationCurve.Evaluate(ratio) * rotation);
+
+                yield return null;
+            }
             
-            _timer -= Time.deltaTime;
-            var ratio = _timer / _duration;
-            if (!_reverse) ratio = 1f - ratio;
-            material.SetFloat(Progress, progressCurve.Evaluate(ratio));
-            material.SetFloat(Transparency, transparencyCurve.Evaluate(ratio));
-            material.SetFloat(Rotation, rotationCurve.Evaluate(ratio) * rotation);
-            
-            if (!(_timer <= 0)) return;
+            var finalRatio = reverse ? 0f : 1f;
+
+            material.SetFloat(Progress, progressCurve.Evaluate(finalRatio));
+            material.SetFloat(Transparency, transparencyCurve.Evaluate(finalRatio));
+            material.SetFloat(Rotation, rotationCurve.Evaluate(finalRatio) * rotation);
+
             Finished?.Invoke();
-            _timer = 0;
+            _currentRoutine = null;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Managers
         
         [field: Header("SFXs")]
         [field: SerializeField] private EventReference enterLevel;
+        [field: SerializeField] private EventReference closeDoor;
         [field: SerializeField] private EventReference collectCollectable;
         
         public EventReference Walk => walk;
@@ -26,6 +27,7 @@ namespace Managers
         public EventReference ParachuteGlide => parachuteGlide;
         
         public EventReference EnterLevel => enterLevel;
+        public EventReference CloseDoor => closeDoor;
         public EventReference CollectCollectable => collectCollectable;
     }
 }

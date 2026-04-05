@@ -41,6 +41,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7568a72e279d464479c45aeafc41d7ca, type: 2}
   movementActionType: 5
   performEventOnGrounded: 0
+  onGrounded: 1
+  disableOnTrigger: 0
   groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
@@ -113,7 +115,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5
+      value: -0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -122,7 +124,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.75
-      value: -1
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 136

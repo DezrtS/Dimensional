@@ -26,6 +26,32 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 1
     activationEventType: 1
+    isSpeedBasedAudio: 1
+    speedRange: {x: 0, y: 15}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionContextModifierData: []
   actionScreenShakeEvent:
     hasScreenShake: 1
@@ -87,6 +113,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba209abf422e21d4aa5af1bde3b3432c, type: 2}
   movementActionType: 7
   performEventOnGrounded: 1
+  onGrounded: 1
+  disableOnTrigger: 0
   groundedActionEventType: 3
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: 83b3243f4c0b44849a54db9b8f7950f0, type: 2}

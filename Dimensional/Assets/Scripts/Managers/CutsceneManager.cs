@@ -51,6 +51,7 @@ namespace Managers
             _selectedCutscene.Stopped += CutsceneOnStopped;
             IsPlaying = true;
             UIManager.Instance.SetUIHidden(true);
+            QuestManager.Instance.SetObjectivesHidden(true);
         }
 
         private void CutsceneOnStopped(Cutscene cutscene)
@@ -60,6 +61,7 @@ namespace Managers
             _selectedCutscene = null;
             IsPlaying = false;
             UIManager.Instance.SetUIHidden(false);
+            QuestManager.Instance.SetObjectivesHidden(false);
         }
 
         public void StopCutscene()

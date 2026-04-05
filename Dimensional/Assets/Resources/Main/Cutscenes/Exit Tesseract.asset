@@ -15,9 +15,10 @@ MonoBehaviour:
   cutscenePrefab: {fileID: 7956292630454773036, guid: 07dcc9ac7f12cb645873fe961ed68f86, type: 3}
   cutsceneName: Exit Tesseract
   destroyOnStopped: 0
-  disablePlayer: 0
+  disablePlayer: 1
   onPlayEventData:
   - {fileID: 11400000, guid: e820a4c537f5d5847b6251d4ed58d317, type: 2}
   onStopEventData:
   - {fileID: 11400000, guid: 3de2788d4a994604b922b1a25ca2b6fe, type: 2}
   - {fileID: 11400000, guid: 608e8254d3deb204a985a02e39b03786, type: 2}
+  onStopGameEventData: []

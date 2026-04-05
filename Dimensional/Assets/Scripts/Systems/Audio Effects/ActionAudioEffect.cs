@@ -4,6 +4,7 @@ using FMODUnity;
 using Managers;
 using Scriptables.Actions;
 using Systems.Actions;
+using Systems.Forces;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
@@ -38,9 +39,17 @@ namespace Systems.Audio_Effects
             else AudioManager.PlayOneShot(_actionAudioEvent.EventReference);
         }
 
+        public void UpdateSpeedBasedAudio(Vector3 velocity, bool isGrounded)
+        {
+            if (_actionAudioEvent.IsSpeedBasedAudio && _actionAudioEvent.CreateInstance)
+            {
+                _actionAudioEvent.AdjustInstanceVolume(velocity, isGrounded, _eventInstance);
+            }
+        }
+
         public void Stop()
         {
-            if (_actionAudioEvent.CreateInstance) _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            if (_actionAudioEvent.CreateInstance) _eventInstance.stop(STOP_MODE.IMMEDIATE);
         }
 
         public void Destroy()

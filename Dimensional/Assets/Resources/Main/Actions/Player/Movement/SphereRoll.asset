@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: SphereRoll
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
+  subActionData: []
   actionAudioEvents:
   - eventReference:
       Guid:
@@ -24,6 +26,33 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 1
     activationEventType: 1
+    isSpeedBasedAudio: 1
+    playOnlyOnGrounded: 0
+    speedRange: {x: 0, y: 20}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   - eventReference:
       Guid:
         Data1: 651616053
@@ -34,28 +63,60 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 1
     activationEventType: 1
-  hasScreenShake: 0
+    isSpeedBasedAudio: 1
+    playOnlyOnGrounded: 1
+    speedRange: {x: 0, y: 20}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  actionContextModifierData: []
   actionScreenShakeEvent:
+    hasScreenShake: 0
     activationEventType: 0
-    duration: 0
-    amplitude: 0
-    amplitudeCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    frequency: 0
-    frequencyCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    screenShakeEventData:
+      hasDuration: 0
+      duration: 0
+      amplitude: 0
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 0
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
   actionVisualEffectData:
   - {fileID: 11400000, guid: 794fb69ba94c9a24782e8c5bf5bb3185, type: 2}
   movementActionType: 8
   performEventOnGrounded: 0
+  onGrounded: 1
+  disableOnTrigger: 0
   groundedActionEventType: 0
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: 879d2ee821ff3aa45a0fb12ec4d03b9d, type: 2}

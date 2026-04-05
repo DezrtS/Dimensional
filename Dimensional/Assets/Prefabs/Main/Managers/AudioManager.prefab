@@ -115,6 +115,13 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  closeDoor:
+    Guid:
+      Data1: -362188971
+      Data2: 1161926697
+      Data3: 1494131840
+      Data4: -1082946548
+    Path: event:/SFX/DoorClosing
   collectCollectable:
     Guid:
       Data1: 1095132149

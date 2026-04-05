@@ -112,6 +112,7 @@ namespace Systems.Interactables
         private void DoorOnOpened(InteractContext interactContext, string from, string to)
         {
             if (id != to) return;
+            AudioManager.PlayOneShot(FMODReferenceManager.Instance.CloseDoor, transform.position);
             interactContext.SourceGameObject.GetComponent<ForceController>().Teleport(spawnTransform.position);
             if (_cameraTransition) _cameraTransition.TransitionFrom();
         }

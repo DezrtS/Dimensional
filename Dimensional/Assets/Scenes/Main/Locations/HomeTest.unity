@@ -3517,8 +3517,28 @@ PrefabInstance:
       value: Managers
       objectReference: {fileID: 0}
     - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: defaultMusic.Path
+      value: event:/Music/HouseTheme
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: startMusicOnAwake
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: defaultMusic.Guid.Data1
+      value: 107986865
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: defaultMusic.Guid.Data2
+      value: 1291794206
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: defaultMusic.Guid.Data3
+      value: 83361183
+      objectReference: {fileID: 0}
+    - target: {fileID: 6170692552884750673, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: defaultMusic.Guid.Data4
+      value: -1034954425
       objectReference: {fileID: 0}
     - target: {fileID: 6308891588487779745, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: Target.TrackingTarget
@@ -6606,10 +6626,13 @@ MonoBehaviour:
   mainMenu: {fileID: 2071028678}
   saveMenu: {fileID: 1690634570}
   creditsMenu: {fileID: 1690634570}
+  playerAnimator: {fileID: 0}
   startScene: 
+  startSpawnPoint: 
   sandboxScene: 
   creditsScene: 
   lastRegionSaveData: {fileID: 0}
+  lastSpawnPointSaveData: {fileID: 0}
 --- !u!1 &1309819806
 GameObject:
   m_ObjectHideFlags: 0
@@ -8966,11 +8989,11 @@ PrefabInstance:
     - target: {fileID: 3046191874044748012, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: 'visualEffects.Array.data[0]'
       value: 
-      objectReference: {fileID: 1592376664}
+      objectReference: {fileID: 0}
     - target: {fileID: 3046191874044748012, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: 'visualEffects.Array.data[1]'
       value: 
-      objectReference: {fileID: 1592376663}
+      objectReference: {fileID: 0}
     - target: {fileID: 3206800854426569070, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: m_Name
       value: Debug Rigidbody Player
@@ -9128,16 +9151,6 @@ PrefabInstance:
 --- !u!4 &1592376662 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5542193874189235521, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
-  m_PrefabInstance: {fileID: 1592376661}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &1592376663 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 5491432006957462810, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
-  m_PrefabInstance: {fileID: 1592376661}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &1592376664 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 787557238506134038, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
   m_PrefabInstance: {fileID: 1592376661}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1604278892

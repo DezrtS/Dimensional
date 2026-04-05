@@ -167,9 +167,6 @@ namespace Systems.Player
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed += OnInteract;
             
-            var pauseInputAction = _inputActionMap.FindAction("Pause");
-            pauseInputAction.performed += OnPause;
-            
             _inputActionMap.Enable();
         }
 
@@ -201,10 +198,7 @@ namespace Systems.Player
             
             var interactInputAction = _inputActionMap.FindAction("Interact");
             interactInputAction.performed -= OnInteract;
-            
-            var pauseInputAction = _inputActionMap.FindAction("Pause");
-            pauseInputAction.performed -= OnPause;
-            
+
             _inputActionMap.Disable();
         }
 
@@ -401,11 +395,6 @@ namespace Systems.Player
             if (!_interactable) return;
             var interactionContext = InteractContext.Construct(gameObject);
             if (_interactable.CanInteract(interactionContext)) _interactable.Interact(interactionContext);
-        }
-        
-        private void OnPause(InputAction.CallbackContext context)
-        {
-            UIManager.Instance.Pause();
         }
         
         private void OnSwitchShapes(InputAction.CallbackContext context)

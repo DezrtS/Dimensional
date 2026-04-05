@@ -66,7 +66,7 @@ namespace Managers
 
             while (time < fadeDuration)
             {
-                time += Time.deltaTime;
+                time += Time.unscaledDeltaTime;
                 float t = time / fadeDuration;
 
                 float oldVolume = Mathf.Lerp(1f, 0f, t);
@@ -108,7 +108,7 @@ namespace Managers
 
             while (time < fadeDuration)
             {
-                time += Time.deltaTime;
+                time += Time.unscaledDeltaTime;
                 float t = time / fadeDuration;
 
                 float volume = Mathf.Lerp(startVolume, 0f, t);

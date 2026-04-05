@@ -14,4 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakerKey: dad
   speakerName: Dad
-  speakerIcon: {fileID: -1590509086, guid: 5175e7d8756e14849b4272d58e9ad4ae, type: 3}
+  speakerIcon: {fileID: 173683495, guid: ef907d7a4c5775d4e881c42eb8b4acf8, type: 3}
+  speakerSound:
+    eventRef:
+      Guid:
+        Data1: 1907552376
+        Data2: 1147163902
+        Data3: 1475523490
+        Data4: -1693635055
+      Path: event:/SFX/ConvexShapeDialogue
+  soundFrequency: 6

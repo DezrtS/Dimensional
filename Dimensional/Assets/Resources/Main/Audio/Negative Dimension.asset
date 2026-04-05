@@ -15,9 +15,20 @@ MonoBehaviour:
   defaultMusicReference:
     eventRef:
       Guid:
-        Data1: 919982338
-        Data2: 1310665408
-        Data3: 866858935
-        Data4: 1461101141
-      Path: event:/Music/NegativeDimensionTheme
-  spawnPointMusics: []
+        Data1: 1062544049
+        Data2: 1261351126
+        Data3: 1594432130
+        Data4: 1486234973
+      Path: event:/Music/NegativeTheme
+  spawnPointMusics:
+  - musicReference:
+      eventRef:
+        Guid:
+          Data1: 919982338
+          Data2: 1310665408
+          Data3: 866858935
+          Data4: 1461101141
+        Path: event:/Music/NegativeDimensionTheme
+    boolVariableInstances:
+    - boolVariable: {fileID: 11400000, guid: 092316777c937a64385331c59370dcf7, type: 2}
+      enabledOnTrue: 1

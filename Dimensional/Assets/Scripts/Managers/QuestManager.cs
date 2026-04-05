@@ -7,6 +7,7 @@ using Systems.Cutscenes;
 using Systems.Objectives;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using Utilities;
 
@@ -14,6 +15,8 @@ namespace Managers
 {
     public class QuestManager : Singleton<QuestManager>
     {
+        public static event Action<bool> ObjectivesRevealedStateChanged;
+        
         [SerializeField] private QuestDatum[] questData;
         
         [SerializeField] private CutsceneDatum cutsceneDatum;
@@ -24,7 +27,31 @@ namespace Managers
         [SerializeField] private float materialChangeDuration;
         
         private ObjectiveLocation _objectiveLocation;
+        private InputActionMap _inputActionMap;
+
+        private bool _isToggleDisabled;
+
+        public bool IsHidden { get; private set; }
+
+        protected override void OnEnable()
+        {
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+            base.OnEnable();
+        }
+
+        private void OnDisable()
+        {
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+            UnassignControls();
+        }
         
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        {
+            if (newValue != GameState.Initializing) return;
+            _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Objectives");
+            AssignControls();
+        }
+
         private void Awake()
         {
             foreach (var questDatum in questData)
@@ -33,50 +60,37 @@ namespace Managers
             }
         }
 
-        public void SetObjectiveTarget(GameObject objectiveTarget)
+        public void SetObjectivesHidden(bool isHidden)
         {
-            cinemachineCamera.LookAt = objectiveTarget.transform;
-            CutsceneManager.Instance.PlayCutscene(cutscene, cutsceneDatum);
+            _isToggleDisabled = isHidden;
+            if (IsHidden) return;
+            ObjectivesRevealedStateChanged?.Invoke(!isHidden);
         }
 
-        public void StartMaterialChange()
+        private void OnToggle(InputAction.CallbackContext context)
         {
-            // Fade IN (0 → 1)
-            StopAllCoroutines();
-            StartCoroutine(MaterialChangeRoutine(0f, 1f));
+            if (_isToggleDisabled) return;
+            Toggle();
         }
 
-        public void StopMaterialChange()
+        private void Toggle()
         {
-            // Fade OUT (1 → 0)
-            StopAllCoroutines();
-            StartCoroutine(MaterialChangeRoutine(1f, 0f));
+            IsHidden = !IsHidden;
+            ObjectivesRevealedStateChanged?.Invoke(!IsHidden);
         }
 
-        private IEnumerator MaterialChangeRoutine(float start, float end)
+        private void AssignControls()
         {
-            float elapsed = 0f;
-
-            // Cache the property ID for performance
-            int transparencyID = Shader.PropertyToID("_Transparency");
-
-            // Ensure material starts at the correct value
-            locationMaterial.SetFloat(transparencyID, start);
-
-            while (elapsed < materialChangeDuration)
-            {
-                elapsed += Time.deltaTime;
-                float t = elapsed / materialChangeDuration;
-
-                float value = Mathf.Lerp(start, end, t);
-                locationMaterial.SetFloat(transparencyID, value);
-
-                yield return null;
-            }
-
-            // Snap to final value
-            locationMaterial.SetFloat(transparencyID, end);
+            var toggleInputAction = _inputActionMap.FindAction("Toggle");
+            toggleInputAction.performed += OnToggle;
+            _inputActionMap.Enable();
         }
 
+        private void UnassignControls()
+        {
+            var toggleInputAction = _inputActionMap.FindAction("Toggle");
+            toggleInputAction.performed -= OnToggle;
+            _inputActionMap.Disable();
+        }
     }
 }

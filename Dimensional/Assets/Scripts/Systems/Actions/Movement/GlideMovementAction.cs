@@ -24,6 +24,8 @@ namespace Systems.Actions.Movement
             _timer = 0;
             _reachedFallThreshold = false;
             base.OnActivation(context);
+            _previousMaxFallSpeed = MovementController.ForceController.MaxFallSpeed;
+            _previousMass = MovementController.ForceController.Mass;
         }
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
@@ -59,8 +61,6 @@ namespace Systems.Actions.Movement
 
         protected override void OnTrigger(ActionContext context)
         {
-            _previousMaxFallSpeed = MovementController.ForceController.MaxFallSpeed;
-            _previousMass = MovementController.ForceController.Mass;
             _timer = _glideMovementActionDatum.GlideFallTimeThreshold;
         }
 

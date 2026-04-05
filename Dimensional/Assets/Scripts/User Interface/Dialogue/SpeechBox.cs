@@ -22,9 +22,13 @@ namespace User_Interface.Dialogue
         [Space] 
         [SerializeField] private Image iconImage;
         [SerializeField] private TextMeshProUGUI nameText;
+
+        private int _typingSpeed = 1; 
+        private int _characterCount;
         
         private Animator _animator;
         private DialogueLine _dialogueLine;
+        private DialogueSpeakerDatum _dialogueSpeakerDatum;
         private UIArm _uiArm;
         
         private EventInstance _eventInstance;
@@ -35,11 +39,20 @@ namespace User_Interface.Dialogue
             _uiArm = GetComponent<UIArm>();
 
             typewriterByCharacter.onTextShowed.AddListener(OnTextShown);
+            typewriterByCharacter.onCharacterVisible.AddListener(OnCharacterVisible);
+        }
+        
+        private void OnCharacterVisible(char c)
+        {
+            _characterCount++;
+
+            if (_characterCount % (_dialogueSpeakerDatum.SoundFrequency * _typingSpeed) != 0) return;
+            AudioManager.PlayOneShot(_dialogueSpeakerDatum.SpeakerSound, transform.position);
         }
 
         private void OnTextShown()
         {
-            typewriterByCharacter.SetTypewriterSpeed(1);
+            SetTypingSpeed(1);
             TypewriterFinished?.Invoke();
         }
 
@@ -48,9 +61,11 @@ namespace User_Interface.Dialogue
         public void SetDialogueLine(DialogueLine dialogueLine)
         {
             _dialogueLine = dialogueLine;
-            nameText.text = dialogueLine.DialogueSpeakerDatum.SpeakerName;
-            iconImage.sprite = dialogueLine.DialogueSpeakerDatum.SpeakerIcon;
+            _dialogueSpeakerDatum = dialogueLine.DialogueSpeakerDatum;
+            nameText.text = _dialogueSpeakerDatum.SpeakerName;
+            iconImage.sprite = _dialogueSpeakerDatum.SpeakerIcon;
             textAnimator.SetText(_dialogueLine.Text, true);
+            _characterCount = 0;
 
             if (_eventInstance.isValid()) _eventInstance.stop(STOP_MODE.IMMEDIATE);
             
@@ -70,7 +85,7 @@ namespace User_Interface.Dialogue
 
         public void SkipDialogue()
         {
-            typewriterByCharacter.SetTypewriterSpeed(4);
+            SetTypingSpeed(4);
             //typewriterByCharacter.SkipTypewriter();
         }
         
@@ -83,6 +98,12 @@ namespace User_Interface.Dialogue
             _eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
 
+        private void SetTypingSpeed(int speed)
+        {
+            _typingSpeed = speed;
+            typewriterByCharacter.SetTypewriterSpeed(_typingSpeed);
+        }
+        
         protected override void OnFixedUpdate()
         {
             var elementScreenPos = Camera.WorldToScreenPoint(WorldTransform.position + WorldUIAnchorDatum.Offset);

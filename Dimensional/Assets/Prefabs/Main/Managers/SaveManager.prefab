@@ -79,6 +79,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a6c87ef7595653e49a109f5309707f57, type: 2}
   - {fileID: 11400000, guid: 4022a8a3f5935b94397e5e102efccd96, type: 2}
   - {fileID: 11400000, guid: 557e60112943113498de8fabf0c80ce9, type: 2}
+  - {fileID: 11400000, guid: 092316777c937a64385331c59370dcf7, type: 2}
   dirtyVariables: []
   resetAllOnAwake: 0
   saveOnQuit: 1

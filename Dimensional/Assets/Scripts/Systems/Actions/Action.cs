@@ -64,7 +64,6 @@ namespace Systems.Actions
         private float _activationTimer;
 
         private List<Action> _subActions;
-        private List<ActionAudioEffect> _actionAudioEffects;
         private List<ActionVisualEffect> _actionVisualEffects;
         
         private ScreenShakeEvent _screenShakeEvent;
@@ -73,6 +72,7 @@ namespace Systems.Actions
         public bool IsActive { get; private set; }
         public bool IsTriggering { get; private set; }
         protected ActionContext PreviousContext { get; private set; }
+        protected List<ActionAudioEffect> ActionAudioEffects { get; private set; }
 
         public virtual void Initialize(ActionDatum actionDatum)
         {
@@ -96,12 +96,12 @@ namespace Systems.Actions
                 }    
             }
             
-            _actionAudioEffects = new List<ActionAudioEffect>();
+            ActionAudioEffects = new List<ActionAudioEffect>();
             if (ActionDatum.ActionAudioEvents != null)
             {
                 foreach (var actionAudioEvent in ActionDatum.ActionAudioEvents)
                 {
-                    _actionAudioEffects.Add(new ActionAudioEffect(actionAudioEvent, gameObject));
+                    ActionAudioEffects.Add(new ActionAudioEffect(actionAudioEvent, gameObject));
                 }
             }
 
@@ -304,7 +304,7 @@ namespace Systems.Actions
 
         private void PlayActionAudio(ActionEventType actionEventType)
         {
-            foreach (var actionAudioEffect in _actionAudioEffects)
+            foreach (var actionAudioEffect in ActionAudioEffects)
             {
                 actionAudioEffect.Play(actionEventType);
             }
@@ -312,7 +312,7 @@ namespace Systems.Actions
 
         private void StopActionAudio()
         {
-            foreach (var actionAudioEffect in _actionAudioEffects)
+            foreach (var actionAudioEffect in ActionAudioEffects)
             {
                 actionAudioEffect.Stop();
             }
@@ -348,11 +348,11 @@ namespace Systems.Actions
 
         public void Destroy()
         {
-            foreach (var actionAudioEffect in _actionAudioEffects)
+            foreach (var actionAudioEffect in ActionAudioEffects)
             {
                 actionAudioEffect.Destroy();
             }
-            _actionAudioEffects.Clear();
+            ActionAudioEffects.Clear();
             
             for (var i = _actionVisualEffects.Count - 1; i >= 0; i--)
             {

@@ -180,15 +180,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Pause"",
-                    ""type"": ""Button"",
-                    ""id"": ""602606da-01e5-4f72-82f6-7fd7ebf25236"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -543,28 +534,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""action"": ""Switch Shapes"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""133ee41b-8473-42b5-8722-a1922729a543"",
-                    ""path"": ""<Gamepad>/start"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""62de4531-c64c-4276-a1a6-09614651750c"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1683,6 +1652,15 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Toggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""3931a737-23c6-43e8-9406-cbd8379ab207"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1795,6 +1773,67 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
                     ""action"": ""Locate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8912eb47-ec41-4374-908e-276f451d11ef"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d1a248da-ac28-4f5d-9f52-1c753083581c"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Toggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Pause"",
+            ""id"": ""28f1bc89-b8c9-498e-bb46-0b82d3117aa6"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""3836756e-7394-4d11-951e-6b834321947b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3b67569c-f854-419a-90ba-afa498787ec7"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39ee5ecc-b311-49a8-a778-ffda607879f0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1874,7 +1913,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Air = m_Player.FindAction("Air", throwIfNotFound: true);
         m_Player_SwitchShapes = m_Player.FindAction("Switch Shapes", throwIfNotFound: true);
-        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // Dialogue
         m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
         m_Dialogue_Select = m_Dialogue.FindAction("Select", throwIfNotFound: true);
@@ -1912,6 +1950,10 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         m_Objectives_Switch = m_Objectives.FindAction("Switch", throwIfNotFound: true);
         m_Objectives_Open = m_Objectives.FindAction("Open", throwIfNotFound: true);
         m_Objectives_Locate = m_Objectives.FindAction("Locate", throwIfNotFound: true);
+        m_Objectives_Toggle = m_Objectives.FindAction("Toggle", throwIfNotFound: true);
+        // Pause
+        m_Pause = asset.FindActionMap("Pause", throwIfNotFound: true);
+        m_Pause_Pause = m_Pause.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@PlayerInputSystem_Actions()
@@ -1923,6 +1965,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         UnityEngine.Debug.Assert(!m_WheelSelection.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.WheelSelection.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_ActionSelection.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.ActionSelection.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Objectives.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.Objectives.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Pause.enabled, "This will cause a leak and performance issues, PlayerInputSystem_Actions.Pause.Disable() has not been called.");
     }
 
     /// <summary>
@@ -2008,7 +2051,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Air;
     private readonly InputAction m_Player_SwitchShapes;
-    private readonly InputAction m_Player_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -2060,10 +2102,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// Provides access to the underlying input action "Player/SwitchShapes".
         /// </summary>
         public InputAction @SwitchShapes => m_Wrapper.m_Player_SwitchShapes;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Pause".
-        /// </summary>
-        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2120,9 +2158,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @SwitchShapes.started += instance.OnSwitchShapes;
             @SwitchShapes.performed += instance.OnSwitchShapes;
             @SwitchShapes.canceled += instance.OnSwitchShapes;
-            @Pause.started += instance.OnPause;
-            @Pause.performed += instance.OnPause;
-            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -2164,9 +2199,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @SwitchShapes.started -= instance.OnSwitchShapes;
             @SwitchShapes.performed -= instance.OnSwitchShapes;
             @SwitchShapes.canceled -= instance.OnSwitchShapes;
-            @Pause.started -= instance.OnPause;
-            @Pause.performed -= instance.OnPause;
-            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -2874,6 +2906,7 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     private readonly InputAction m_Objectives_Switch;
     private readonly InputAction m_Objectives_Open;
     private readonly InputAction m_Objectives_Locate;
+    private readonly InputAction m_Objectives_Toggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Objectives".
     /// </summary>
@@ -2897,6 +2930,10 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// Provides access to the underlying input action "Objectives/Locate".
         /// </summary>
         public InputAction @Locate => m_Wrapper.m_Objectives_Locate;
+        /// <summary>
+        /// Provides access to the underlying input action "Objectives/Toggle".
+        /// </summary>
+        public InputAction @Toggle => m_Wrapper.m_Objectives_Toggle;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -2932,6 +2969,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Locate.started += instance.OnLocate;
             @Locate.performed += instance.OnLocate;
             @Locate.canceled += instance.OnLocate;
+            @Toggle.started += instance.OnToggle;
+            @Toggle.performed += instance.OnToggle;
+            @Toggle.canceled += instance.OnToggle;
         }
 
         /// <summary>
@@ -2952,6 +2992,9 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
             @Locate.started -= instance.OnLocate;
             @Locate.performed -= instance.OnLocate;
             @Locate.canceled -= instance.OnLocate;
+            @Toggle.started -= instance.OnToggle;
+            @Toggle.performed -= instance.OnToggle;
+            @Toggle.canceled -= instance.OnToggle;
         }
 
         /// <summary>
@@ -2985,6 +3028,102 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
     /// Provides a new <see cref="ObjectivesActions" /> instance referencing this action map.
     /// </summary>
     public ObjectivesActions @Objectives => new ObjectivesActions(this);
+
+    // Pause
+    private readonly InputActionMap m_Pause;
+    private List<IPauseActions> m_PauseActionsCallbackInterfaces = new List<IPauseActions>();
+    private readonly InputAction m_Pause_Pause;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Pause".
+    /// </summary>
+    public struct PauseActions
+    {
+        private @PlayerInputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public PauseActions(@PlayerInputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Pause/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_Pause_Pause;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Pause; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="PauseActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(PauseActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="PauseActions" />
+        public void AddCallbacks(IPauseActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PauseActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PauseActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="PauseActions" />
+        private void UnregisterCallbacks(IPauseActions instance)
+        {
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PauseActions.UnregisterCallbacks(IPauseActions)" />.
+        /// </summary>
+        /// <seealso cref="PauseActions.UnregisterCallbacks(IPauseActions)" />
+        public void RemoveCallbacks(IPauseActions instance)
+        {
+            if (m_Wrapper.m_PauseActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="PauseActions.AddCallbacks(IPauseActions)" />
+        /// <seealso cref="PauseActions.RemoveCallbacks(IPauseActions)" />
+        /// <seealso cref="PauseActions.UnregisterCallbacks(IPauseActions)" />
+        public void SetCallbacks(IPauseActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PauseActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PauseActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="PauseActions" /> instance referencing this action map.
+    /// </summary>
+    public PauseActions @Pause => new PauseActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -3127,13 +3266,6 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitchShapes(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPause(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Dialogue" which allows adding and removing callbacks.
@@ -3357,5 +3489,27 @@ public partial class @PlayerInputSystem_Actions: IInputActionCollection2, IDispo
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLocate(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Toggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggle(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Pause" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="PauseActions.AddCallbacks(IPauseActions)" />
+    /// <seealso cref="PauseActions.RemoveCallbacks(IPauseActions)" />
+    public interface IPauseActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
     }
 }

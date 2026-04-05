@@ -80,6 +80,11 @@ namespace Managers
         public Dimensions WorldDimensions { get; private set; }
         public InputActionAsset InputActionAsset => defaultInputActionAsset;
 
+        private void Awake()
+        {
+            SetTimeScale();
+        }
+
         private void Start()
         {
             SetWorldDimensions(defaultWorldDimensions);
@@ -96,7 +101,7 @@ namespace Managers
 
         public static void SetTimeScale(float timeScale = 1)
         {
-            var clampedTimeScale = Mathf.Clamp(timeScale, 0.1f, 1f);
+            var clampedTimeScale = Mathf.Clamp(timeScale, 0f, 1f);
             Time.timeScale = clampedTimeScale;
             Time.fixedDeltaTime = 0.02f * clampedTimeScale;
         }

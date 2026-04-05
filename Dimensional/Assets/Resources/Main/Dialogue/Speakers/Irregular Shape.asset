@@ -14,4 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakerKey: irregularShape
   speakerName: Irregular Shape
-  speakerIcon: {fileID: -1590509086, guid: 5175e7d8756e14849b4272d58e9ad4ae, type: 3}
+  speakerIcon: {fileID: 886870603, guid: 805455c503c8e894d8b44cd6644f8821, type: 3}
+  speakerSound:
+    eventRef:
+      Guid:
+        Data1: -1869269402
+        Data2: 1087406335
+        Data3: 1158826891
+        Data4: 360850010
+      Path: event:/SFX/IrregularShapeDialogue
+  soundFrequency: 6

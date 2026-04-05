@@ -7,6 +7,7 @@ using Systems.Events;
 using Systems.Events.Busses;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using User_Interface;
 using User_Interface.Selection_Wheels;
 using User_Interface.Visual_Effects;
@@ -28,6 +29,8 @@ namespace Managers
         public static event Action TransitionFinished;
 
         [SerializeField] private GameObject controls;
+        [SerializeField] private bool canPause = true;
+        [SerializeField] private bool enableUIControls;
         [Space]
         [SerializeField] private bool showAreaTitle = true;
         [SerializeField] private AreaTitle areaTitle;
@@ -40,11 +43,14 @@ namespace Managers
         [SerializeField] private Transform interactableIconTransform;
         [Space]
         [SerializeField] private TutorialText tutorialText;
+        [SerializeField] private TutorialText objectivesText;
         [Space]
         [SerializeField] private GameObject fade;
         [SerializeField] private GameObject actionSelectionWheelTransform;
         [SerializeField] private GameObject shapeSelectionWheelTransform;
         [SerializeField] private SelectionWheelDatum actionSelectionWheelDatum;
+        
+        private InputActionMap _inputActionMap;
         
         private MaskReveal _maskReveal;
         private SelectionWheel _actionSelectionWheel;
@@ -84,6 +90,9 @@ namespace Managers
                             break;
                         case DisplayType.Boss:
                             break;
+                        case DisplayType.Objective:
+                            objectivesText.ShowText(displayTextEvent.Text, displayTextEvent.DisplayDuration, displayTextEvent.HasDisplayDuration);
+                            break;
                     }
                     break;
                 case HideTextEvent hideTextEvent:
@@ -96,6 +105,9 @@ namespace Managers
                             areaTitle.HideArea();
                             break;
                         case DisplayType.Boss:
+                            break;
+                        case DisplayType.Objective:
+                            objectivesText.HideText();
                             break;
                     }
 
@@ -110,9 +122,18 @@ namespace Managers
 
         private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
         {
-            if (newValue != GameState.Playing) return;
-            if (!showAreaTitle) return;
-            areaTitle.ShowArea(areaName, areaTitleDuration);
+            switch (newValue)
+            {
+                case GameState.Initializing:
+                    _inputActionMap = GameManager.Instance.InputActionAsset.FindActionMap("Pause");
+                    if (canPause) AssignControls();
+                    if (enableUIControls) GameManager.Instance.SwitchInputActionMaps("UI");
+                    break;
+                case GameState.Playing:
+                    if (!showAreaTitle) return;
+                    areaTitle.ShowArea(areaName, areaTitleDuration);
+                    break;
+            }
         }
 
         private void Update()
@@ -154,6 +175,11 @@ namespace Managers
             }
         }
 
+        private void OnPause(InputAction.CallbackContext context)
+        {
+            Pause();
+        }
+
         public void Pause()
         {
             _isPaused = !_isPaused;
@@ -161,11 +187,13 @@ namespace Managers
             {
                 ActivateUI(UserInterfaceType.Pause);
                 CameraManager.Instance.UnlockAndShowCursor();
+                Time.timeScale = 0;
             }
             else
             {
                 CameraManager.Instance.LockAndHideCursor();
                 DeactivateUI();
+                Time.timeScale = 1;
             }
         }
 
@@ -203,6 +231,21 @@ namespace Managers
         {
             UIEventBus.EventFired -= UIEventBusOnEventFired;
             GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+            UnassignControls();
+        }
+        
+        private void AssignControls()
+        {
+            var pauseInputAction = _inputActionMap.FindAction("Pause");
+            pauseInputAction.performed += OnPause;
+            _inputActionMap.Enable();
+        }
+
+        private void UnassignControls()
+        {
+            var pauseInputAction = _inputActionMap.FindAction("Pause");
+            pauseInputAction.performed -= OnPause;
+            _inputActionMap.Disable();
         }
     }
 }

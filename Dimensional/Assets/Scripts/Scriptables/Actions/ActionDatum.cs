@@ -1,4 +1,5 @@
 using System;
+using FMOD.Studio;
 using FMODUnity;
 using Managers;
 using Scriptables.Actions.Modifiers;
@@ -16,11 +17,30 @@ namespace Scriptables.Actions
         [SerializeField] private bool attachToGameObject;
         [SerializeField] private bool createInstance;
         [SerializeField] private ActionEventType activationEventType;
+        [Space]
+        [SerializeField] private bool isSpeedBasedAudio;
+        [SerializeField] private bool playOnlyOnGrounded;
+        [SerializeField] private Vector2 speedRange;
+        [SerializeField] private AnimationCurve curve;
         
         public EventReference EventReference => eventReference;
         public bool AttachToGameObject => attachToGameObject;
         public bool CreateInstance => createInstance;
         public ActionEventType ActivationEventType => activationEventType;
+        public bool IsSpeedBasedAudio => isSpeedBasedAudio;
+
+        public void AdjustInstanceVolume(Vector3 velocity, bool isGrounded, EventInstance eventInstance)
+        {
+            if (playOnlyOnGrounded && !isGrounded)
+            {
+                eventInstance.setVolume(0);
+                return;
+            }
+            
+            var speed = velocity.magnitude;
+            var speedRatio = (speed - speedRange.x) / (speedRange.y - speedRange.x);
+            eventInstance.setVolume(curve.Evaluate(speedRatio));
+        }
     }
 
     [Serializable]

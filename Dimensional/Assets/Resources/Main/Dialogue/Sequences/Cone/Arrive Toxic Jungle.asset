@@ -50,7 +50,7 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: 898383444ddfe8447aa8ed4370564c42, type: 2}
-    text: More importantly, welcome to <color=blue>Iregular Peak</color>.
+    text: More importantly, welcome to <color=green>Iregular Peak</color>.
     hasVoiceActing: 0
     eventReference:
       eventRef:

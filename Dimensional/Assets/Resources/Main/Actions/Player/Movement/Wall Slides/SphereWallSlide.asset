@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: SphereWallSlide
   m_EditorClassIdentifier: 
   activationTime: 0
+  deactivateParentActionsOnDeactivate: 0
+  subActionData: []
   actionAudioEvents:
   - eventReference:
       Guid:
@@ -24,31 +26,64 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 1
     activationEventType: 2
-  hasScreenShake: 0
+    isSpeedBasedAudio: 1
+    playOnlyOnGrounded: 0
+    speedRange: {x: 2, y: 10}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  actionContextModifierData: []
   actionScreenShakeEvent:
+    hasScreenShake: 0
     activationEventType: 0
-    duration: 0
-    amplitude: 0
-    amplitudeCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    frequency: 0
-    frequencyCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    screenShakeEventData:
+      hasDuration: 0
+      duration: 0
+      amplitude: 0
+      amplitudeCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      frequency: 0
+      frequencyCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
   actionVisualEffectData: []
   movementActionType: 11
   performEventOnGrounded: 0
+  onGrounded: 1
+  disableOnTrigger: 0
   groundedActionEventType: 0
   hasMovementDatum: 1
   movementControllerDatum: {fileID: 11400000, guid: c3cbe19673263bf4e8e2a94121330dd5, type: 2}
   stopMovementOnDisable: 1
+  resetMovementOnDisable: 0
   disableDurationLimit: 1
   movementVector: {x: 0, y: -5, z: 0}
   hasRight: 0

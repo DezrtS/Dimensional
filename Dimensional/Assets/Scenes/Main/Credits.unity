@@ -332,7 +332,15 @@ PrefabInstance:
       value: -0.03378266
       objectReference: {fileID: 0}
     - target: {fileID: 2479267031909844102, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: canPause
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479267031909844102, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: showAreaTitle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837768227530053489, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2986155271433478179, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
@@ -535,10 +543,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1830011887226832951, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
-      insertIndex: 0
+      insertIndex: 14
       addedObject: {fileID: 1122016723}
     - targetCorrespondingSourceObject: {fileID: 1830011887226832951, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
-      insertIndex: 1
+      insertIndex: 15
       addedObject: {fileID: 1116154498}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}

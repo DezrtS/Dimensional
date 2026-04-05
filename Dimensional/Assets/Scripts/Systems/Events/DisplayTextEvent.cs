@@ -9,6 +9,7 @@ namespace Systems.Events
         Tutorial,
         Area,
         Boss,
+        Objective,
     }
     
     [Serializable]

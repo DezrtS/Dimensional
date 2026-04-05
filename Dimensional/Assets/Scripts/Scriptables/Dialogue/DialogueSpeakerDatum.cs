@@ -1,4 +1,6 @@
+using FMODUnity;
 using UnityEngine;
+using Utilities;
 
 namespace Scriptables.Dialogue
 {
@@ -9,8 +11,14 @@ namespace Scriptables.Dialogue
         [SerializeField] private string speakerName;
         [SerializeField] private Sprite speakerIcon;
         
+        [SerializeField] private EventReferenceWrapper speakerSound;
+        [SerializeField] private int soundFrequency;
+        
         public string SpeakerKey => speakerKey;
         public string SpeakerName => speakerName;
         public Sprite SpeakerIcon => speakerIcon;
+        
+        public EventReference SpeakerSound => speakerSound.eventRef;
+        public int SoundFrequency => soundFrequency;
     }
 }

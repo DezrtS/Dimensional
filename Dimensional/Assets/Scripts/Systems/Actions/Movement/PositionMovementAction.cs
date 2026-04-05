@@ -52,6 +52,8 @@ namespace Systems.Actions.Movement
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
+            base.OnFixedUpdate(fixedDeltaTime);
+            
             if (!IsMoving) return;
             HandleMovement(_movementTimer);
             _movementTimer += fixedDeltaTime;

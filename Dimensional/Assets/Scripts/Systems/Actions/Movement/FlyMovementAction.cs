@@ -31,10 +31,15 @@ namespace Systems.Actions.Movement
             MovementController.ForceController.MaxFallSpeed = maxFallSpeed;
         }
 
-        protected override void OnTrigger(ActionContext context)
+        protected override void OnActivation(ActionContext context)
         {
+            base.OnActivation(context);
             _previousMaxFallSpeed = MovementController.ForceController.MaxFallSpeed;
             _previousMass = MovementController.ForceController.Mass;
+        }
+
+        protected override void OnTrigger(ActionContext context)
+        {
             base.OnTrigger(context);
             MovementController.ForceController.Mass = _flyMovementActionDatum.FlyMass;
         }

@@ -194,6 +194,21 @@ namespace Systems.Actions.Movement
             if (_movementActionDatum.HasMovementDatum) MovementController.ResetMovementControllerDatum();
         }
 
+        protected override void OnFixedUpdate(float fixedDeltaTime)
+        {
+            base.OnFixedUpdate(fixedDeltaTime);
+            UpdateSpeedBasedAudio();
+        }
+        
+        private void UpdateSpeedBasedAudio()
+        {
+            var velocity = MovementController.ForceController.GetVelocity();
+            foreach (var actionAudioEffect in ActionAudioEffects)
+            {
+                actionAudioEffect.UpdateSpeedBasedAudio(velocity, MovementController.IsGrounded);
+            }
+        }
+
         protected override void OnEntityChanged(ActionContext context)
         {
             MovementController = context.SourceGameObject.GetComponent<MovementController>();

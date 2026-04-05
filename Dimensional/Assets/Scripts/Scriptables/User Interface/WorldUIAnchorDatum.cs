@@ -14,6 +14,7 @@ namespace Scriptables.User_Interface
 
         [Header("UI Scaling")]
         [SerializeField] private bool useDistanceScaling;
+        [SerializeField] private bool reverseDistanceScaling;
         [SerializeField] private float minDistance;
         [SerializeField] private float maxDistance;
         
@@ -26,6 +27,7 @@ namespace Scriptables.User_Interface
         public Vector3 Offset => offset;
         public float Range => range;
         public bool UseDistanceScaling => useDistanceScaling;
+        public bool ReverseDistanceScaling => reverseDistanceScaling;
         public float MinDistance => minDistance;
         public float MaxDistance => maxDistance;
         public bool UseAngleScaling => useAngleScaling;

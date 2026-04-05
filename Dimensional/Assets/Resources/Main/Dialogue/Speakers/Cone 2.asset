@@ -14,4 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakerKey: cone
   speakerName: Cone
-  speakerIcon: {fileID: 3351748369286481944, guid: 4dffe6eab57ca4e4ba2f967307bd1c29, type: 3}
+  speakerIcon: {fileID: 2140785172, guid: 00490ddf2e7466d43b70a2a58d542600, type: 3}
+  speakerSound:
+    eventRef:
+      Guid:
+        Data1: 1972438799
+        Data2: 1215788940
+        Data3: 594411138
+        Data4: 1921363064
+      Path: event:/SFX/ConeShapeDialogue
+  soundFrequency: 6
