@@ -5,7 +5,7 @@
 			<value>RollingOnSurface</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{2fb718e4-07fb-4270-8143-efd55d600447}</destination>
@@ -75,6 +75,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{003b23d7-96b4-4b31-9442-d01f788eda35}">
+		<relationship name="modulators">
+			<destination>{b4377224-5865-4cd8-81ea-df3c706fa82f}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{d12c07a5-b98f-43b7-8517-a6adb6ca014b}</destination>
 		</relationship>
@@ -100,6 +103,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{2d8d7ec1-c7d5-482a-85a2-d015ab97d2f5}">
+		<property name="volume">
+			<value>-8</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -130,9 +136,21 @@
 			<destination>{24f48e2e-ea3d-4248-baa5-5fbe5820372c}</destination>
 		</relationship>
 	</object>
+	<object class="ADSRModulator" id="{b4377224-5865-4cd8-81ea-df3c706fa82f}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{d12c07a5-b98f-43b7-8517-a6adb6ca014b}">
 		<relationship name="effects">
 			<destination>{0880d2d9-50c0-4550-aa8e-11db778d2cbf}</destination>
+			<destination>{194ad675-7542-461f-abc8-9c551a8632fb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{101c8088-be0a-4b71-9777-06097b57dba1}" />
@@ -145,5 +163,6 @@
 	<object class="MixerBusPanner" id="{3d8dc81a-be84-467a-95bd-d0a88a035f66}" />
 	<object class="EventCondition" id="{24f48e2e-ea3d-4248-baa5-5fbe5820372c}" />
 	<object class="MixerBusFader" id="{0880d2d9-50c0-4550-aa8e-11db778d2cbf}" />
+	<object class="SpatialiserEffect" id="{194ad675-7542-461f-abc8-9c551a8632fb}" />
 	<object class="MixerBusFader" id="{b81fc209-1019-42ae-8c80-2506c740ee18}" />
 </objects>

@@ -26,6 +26,15 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 1
+    isSpeedBasedAudio: 0
+    playOnlyOnGrounded: 0
+    speedRange: {x: 0, y: 0}
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionContextModifierData: []
   actionScreenShakeEvent:
     hasScreenShake: 0
@@ -59,7 +68,7 @@ MonoBehaviour:
   stopMovementOnDisable: 0
   resetMovementOnDisable: 0
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 2, z: 8}
+  movementVector: {x: 0, y: 2, z: 9}
   hasRight: 1
   isXDistance: 0
   isRightBlend: 0

@@ -49,32 +49,41 @@ MonoBehaviour:
   stopMovementOnDisable: 0
   resetMovementOnDisable: 0
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 0, z: 30}
+  movementVector: {x: 20, y: 0, z: 30}
   hasRight: 1
   isXDistance: 0
   isRightBlend: 0
-  rightDuration: 0.3
+  rightDuration: 1
   rightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
+      value: 0
+      inSlope: 4.092177
+      outSlope: 4.092177
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13666236
+    - serializedVersion: 3
+      time: 0.5
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 34
+      tangentMode: 136
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      value: -1
+      inSlope: -8.215171
+      outSlope: -8.215171
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.11584699
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

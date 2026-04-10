@@ -19,7 +19,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f7e08f12c324a9f489a0619efa32e49d, type: 2}
   dialogueLines:
   - dialogueSpeakerDatum: {fileID: 11400000, guid: 898383444ddfe8447aa8ed4370564c42, type: 2}
-    text: No no no... What happened? Where'd all my customers go?
+    text: No no no. What happened? Where'd all my customers go?
     hasVoiceActing: 0
     eventReference:
       eventRef:
@@ -41,7 +41,7 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: 898383444ddfe8447aa8ed4370564c42, type: 2}
-    text: What...? Really...? A portal in the sky?
+    text: What? Really? A portal in the sky?
     hasVoiceActing: 0
     eventReference:
       eventRef:
@@ -63,7 +63,7 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: 898383444ddfe8447aa8ed4370564c42, type: 2}
-    text: Thats terrible... All those lost profits.
+    text: Thats terrible. All those profits, gone, just like that.
     hasVoiceActing: 0
     eventReference:
       eventRef:
@@ -85,7 +85,18 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: 898383444ddfe8447aa8ed4370564c42, type: 2}
-    text: ... Hang on.
+    text: ...
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
+  - dialogueSpeakerDatum: {fileID: 11400000, guid: 898383444ddfe8447aa8ed4370564c42, type: 2}
+    text: Hang on.
     hasVoiceActing: 0
     eventReference:
       eventRef:

@@ -339,6 +339,10 @@ PrefabInstance:
       propertyPath: showAreaTitle
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2514874152514970455, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: m_FirstSelected
+      value: 
+      objectReference: {fileID: 1116154499}
     - target: {fileID: 2837768227530053489, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2949,6 +2953,11 @@ PrefabInstance:
 --- !u!224 &1116154498 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
+  m_PrefabInstance: {fileID: 1116154497}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1116154499 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3688852277013019386, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
   m_PrefabInstance: {fileID: 1116154497}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1122016722

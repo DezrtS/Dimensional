@@ -7,6 +7,7 @@ namespace Systems.Triggers
     public class HurtTrigger : MonoBehaviour
     {
         [SerializeField] private Vector3 direction;
+        [SerializeField] private bool autoDirection;
         [SerializeField] private int damage;
 
         private void OnTriggerEnter(Collider other)
@@ -17,7 +18,8 @@ namespace Systems.Triggers
             }
             
             if (!other.TryGetComponent(out StunBehaviourComponent stunBehaviour)) return;
-            stunBehaviour.Stun(direction);
+            var dir = autoDirection ? (other.transform.position - transform.position).normalized : direction;
+            stunBehaviour.Stun(dir);
         }
     }
 }

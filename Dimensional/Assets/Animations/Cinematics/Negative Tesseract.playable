@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9116143058945453059
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
+  m_Name: Signal Emitter
+  m_EditorClassIdentifier: 
+  m_Time: 3.5
+  m_Retroactive: 0
+  m_EmitOnce: 0
+  m_Asset: {fileID: 11400000, guid: 006df0d5cc246b04f8c0d4299157104f, type: 2}
 --- !u!114 &-9034074548900770611
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -426,7 +442,7 @@ MonoBehaviour:
     m_Start: 5
     m_ClipIn: 0
     m_Asset: {fileID: 7919228624872990737}
-    m_Duration: 13
+    m_Duration: 11
     m_TimeScale: 1
     m_ParentTrack: {fileID: -4370555128164604032}
     m_EaseInDuration: 0
@@ -809,6 +825,22 @@ MonoBehaviour:
     m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 0}
+--- !u!114 &105499303543178043
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
+  m_Name: Signal Emitter
+  m_EditorClassIdentifier: 
+  m_Time: 15
+  m_Retroactive: 0
+  m_EmitOnce: 0
+  m_Asset: {fileID: 11400000, guid: 778c4053e5ff3d5448231d4c5438e8f1, type: 2}
 --- !u!114 &322662603068949682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1297,7 +1329,7 @@ MonoBehaviour:
       Slot13: 0
       Slot14: 0
       Slot15: 0
-  EventLength: 0
+  EventLength: Infinity
   eventName: 
   EventReference:
     Guid:
@@ -1332,6 +1364,8 @@ MonoBehaviour:
   m_Markers:
     m_Objects:
     - {fileID: 1899404110093741127}
+    - {fileID: 105499303543178043}
+    - {fileID: -9116143058945453059}
 --- !u!114 &8103301692023901982
 MonoBehaviour:
   m_ObjectHideFlags: 1

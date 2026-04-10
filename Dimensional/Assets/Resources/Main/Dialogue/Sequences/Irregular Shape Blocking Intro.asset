@@ -53,8 +53,18 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: 313e767aa05468e43bf6fd6f8ac9e245, type: 2}
-    text: That path takes you down the Irregular Trial. I doubt someone with your
-      "curves" could handle it.
+    text: That path takes you down the <color=yellow>Irregular Trial</color>.
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
+  - dialogueSpeakerDatum: {fileID: 11400000, guid: 313e767aa05468e43bf6fd6f8ac9e245, type: 2}
+    text: I doubt someone with your "curves" could handle it.
     hasVoiceActing: 0
     eventReference:
       eventRef:

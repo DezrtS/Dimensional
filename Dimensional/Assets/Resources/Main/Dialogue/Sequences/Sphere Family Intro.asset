@@ -30,8 +30,18 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: bf8f05134ff2eb948b04658607306c38, type: 2}
-    text: You're not going to accomplish anything if you spend all your days exploring
-      and sleeping in.
+    text: You're not going to accomplish anything Sphere,
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
+  - dialogueSpeakerDatum: {fileID: 11400000, guid: bf8f05134ff2eb948b04658607306c38, type: 2}
+    text: If you spend all your days exploring and sleeping in.
     hasVoiceActing: 0
     eventReference:
       eventRef:
@@ -86,8 +96,18 @@ MonoBehaviour:
           Data4: 0
         Path: 
   - dialogueSpeakerDatum: {fileID: 11400000, guid: bf8f05134ff2eb948b04658607306c38, type: 2}
-    text: Good. You can start by getting us some water from the village well, we're
-      almost out.
+    text: Good. Then as a start, can you get us some water, we're almost out.
+    hasVoiceActing: 0
+    eventReference:
+      eventRef:
+        Guid:
+          Data1: 0
+          Data2: 0
+          Data3: 0
+          Data4: 0
+        Path: 
+  - dialogueSpeakerDatum: {fileID: 11400000, guid: bf8f05134ff2eb948b04658607306c38, type: 2}
+    text: Grab a bucket from the village well.
     hasVoiceActing: 0
     eventReference:
       eventRef:

@@ -27,6 +27,15 @@ MonoBehaviour:
     attachToGameObject: 1
     createInstance: 0
     activationEventType: 1
+    isSpeedBasedAudio: 0
+    playOnlyOnGrounded: 0
+    speedRange: {x: 0, y: 0}
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   actionContextModifierData: []
   actionScreenShakeEvent:
     hasScreenShake: 0
@@ -52,16 +61,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 889a2c107792a6645908e82ba4fe8b61, type: 2}
   movementActionType: 5
   performEventOnGrounded: 0
+  onGrounded: 1
+  disableOnTrigger: 0
   groundedActionEventType: 0
   hasMovementDatum: 0
   movementControllerDatum: {fileID: 0}
   stopMovementOnDisable: 1
+  resetMovementOnDisable: 0
   disableDurationLimit: 0
-  movementVector: {x: 0, y: 0, z: 5}
+  movementVector: {x: 0, y: 0, z: 10}
   hasRight: 1
   isXDistance: 0
   isRightBlend: 0
-  rightDuration: 0.3
+  rightDuration: 0.6
   rightCurve:
     serializedVersion: 2
     m_Curve:
@@ -89,7 +101,7 @@ MonoBehaviour:
   hasUp: 1
   isYDistance: 0
   isUpBlend: 0
-  upDuration: 0.3
+  upDuration: 0.6
   upCurve:
     serializedVersion: 2
     m_Curve:
@@ -117,7 +129,7 @@ MonoBehaviour:
   hasForward: 1
   isZDistance: 1
   isForwardBlend: 0
-  forwardDuration: 0.3
+  forwardDuration: 0.6
   forwardCurve:
     serializedVersion: 2
     m_Curve:

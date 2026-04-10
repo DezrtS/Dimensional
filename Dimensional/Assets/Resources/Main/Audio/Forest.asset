@@ -30,5 +30,7 @@ MonoBehaviour:
           Data4: -2124999876
         Path: event:/TessaractAppearsTheme
     boolVariableInstances:
-    - boolVariable: {fileID: 11400000, guid: 54e5e1ff8e150ca49ba671262de55115, type: 2}
+    - boolVariable: {fileID: 11400000, guid: aceaf0254008990439b51373e135a79d, type: 2}
       enabledOnTrue: 1
+    - boolVariable: {fileID: 11400000, guid: e15f4d5e678c0d74db80e495e7aaa475, type: 2}
+      enabledOnTrue: 0
