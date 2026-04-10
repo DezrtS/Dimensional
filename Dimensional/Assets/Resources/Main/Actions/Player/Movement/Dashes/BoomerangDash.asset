@@ -15,7 +15,26 @@ MonoBehaviour:
   activationTime: 0
   deactivateParentActionsOnDeactivate: 0
   subActionData: []
-  actionAudioEvents: []
+  actionAudioEvents:
+  - eventReference:
+      Guid:
+        Data1: 1332392819
+        Data2: 1156699811
+        Data3: 2078798724
+        Data4: 1262252873
+      Path: event:/SFX/Boomerang
+    attachToGameObject: 1
+    createInstance: 0
+    activationEventType: 1
+    isSpeedBasedAudio: 0
+    playOnlyOnGrounded: 0
+    speedRange: {x: 0, y: 0}
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 0
+      m_PostInfinity: 0
+      m_RotationOrder: 0
   actionContextModifierData: []
   actionScreenShakeEvent:
     hasScreenShake: 0
