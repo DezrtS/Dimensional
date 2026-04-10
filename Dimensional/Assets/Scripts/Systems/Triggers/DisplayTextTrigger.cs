@@ -26,14 +26,24 @@ namespace Systems.Triggers
         private void OnTriggerEnter(Collider other)
         {
             if ((_isTriggered && !showAfterTrigger) || _isCompleted) return;
-            if (other.CompareTag("Player")) displayTextEvent.Handle();
+            if (other.CompareTag("Player")) Show();
         }
 
         private void OnTriggerExit(Collider other)
         {
             if ((_isTriggered && !showAfterTrigger) || _isCompleted) return;
-            if (hideOnExit && other.CompareTag("Player")) new HideTextEvent { DisplayType = displayTextEvent.DisplayType }.Handle();
+            if (hideOnExit && other.CompareTag("Player")) Hide();
             _isTriggered = true;
+        }
+
+        public void Show()
+        {
+            displayTextEvent.Handle();
+        }
+
+        public void Hide()
+        {
+            new HideTextEvent { DisplayType = displayTextEvent.DisplayType }.Handle();
         }
     }
 }

@@ -17,11 +17,11 @@ MonoBehaviour:
   reviveInvincibilityDuration: 1
   hurtSound:
     Guid:
-      Data1: -1882465895
-      Data2: 1160461560
-      Data3: 1530565777
-      Data4: -1300865506
-    Path: event:/UI/PressButton
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   deathSound:
     Guid:
       Data1: 0

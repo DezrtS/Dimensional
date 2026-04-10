@@ -129,3 +129,10 @@ MonoBehaviour:
       Data3: -1038549613
       Data4: -384812807
     Path: event:/SFX/CollectCoin
+  pressButton:
+    Guid:
+      Data1: -1882465895
+      Data2: 1160461560
+      Data3: 1530565777
+      Data4: -1300865506
+    Path: event:/UI/PressButton

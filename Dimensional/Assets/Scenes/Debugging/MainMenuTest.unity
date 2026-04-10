@@ -403,7 +403,7 @@ PrefabInstance:
     - target: {fileID: 4790675814917212196, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 869443032}
+      objectReference: {fileID: 1435688297}
     - target: {fileID: 4790675814917212196, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
@@ -788,7 +788,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &188598559 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 4113942644303657415, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3688852277013019386, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
   m_PrefabInstance: {fileID: 188598557}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &188598560 stripped
@@ -796,7 +796,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4790675814917212196, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
   m_PrefabInstance: {fileID: 188598557}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 188598559}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -1668,6 +1668,18 @@ PrefabInstance:
       propertyPath: m_text
       value: Options
       objectReference: {fileID: 0}
+    - target: {fileID: 4987126008556849130, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
+      propertyPath: m_fontColor.a
+      value: 0.1764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987126008556849130, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 770633454
+      objectReference: {fileID: 0}
+    - target: {fileID: 6146845418124981691, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1748,6 +1760,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7441500422357398315, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1758,17 +1774,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6786715034235619231, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
   m_PrefabInstance: {fileID: 811051863}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &869443032 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4790675814917212196, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
-  m_PrefabInstance: {fileID: 811051863}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &956161092
 GameObject:
   m_ObjectHideFlags: 0
@@ -9035,7 +9040,7 @@ PrefabInstance:
     - target: {fileID: 4790675814917212196, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 869443032}
+      objectReference: {fileID: 160342561}
     - target: {fileID: 4790675814917212196, guid: 6c1517b9347985043b7bd4b06b7af81c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1

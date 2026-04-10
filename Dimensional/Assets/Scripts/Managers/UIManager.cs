@@ -44,6 +44,7 @@ namespace Managers
         [Space]
         [SerializeField] private TutorialText tutorialText;
         [SerializeField] private TutorialText objectivesText;
+        [SerializeField] private TutorialText bossText;
         [Space]
         [SerializeField] private GameObject fade;
         [SerializeField] private GameObject actionSelectionWheelTransform;
@@ -89,6 +90,7 @@ namespace Managers
                             areaTitle.ShowArea(displayTextEvent.Text, displayTextEvent.DisplayDuration, displayTextEvent.HasDisplayDuration);
                             break;
                         case DisplayType.Boss:
+                            bossText.ShowText(displayTextEvent.Text, displayTextEvent.DisplayDuration, displayTextEvent.HasDisplayDuration);
                             break;
                         case DisplayType.Objective:
                             objectivesText.ShowText(displayTextEvent.Text, displayTextEvent.DisplayDuration, displayTextEvent.HasDisplayDuration);
@@ -105,6 +107,7 @@ namespace Managers
                             areaTitle.HideArea();
                             break;
                         case DisplayType.Boss:
+                            bossText.HideText();
                             break;
                         case DisplayType.Objective:
                             objectivesText.HideText();

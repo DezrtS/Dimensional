@@ -45,6 +45,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89efaeca3818c5c4eb9e1075141e2317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boolVariable: {fileID: 0}
+  eventReference:
+    Guid:
+      Data1: 1520692653
+      Data2: 1076694017
+      Data3: 489602975
+      Data4: 1484398767
+    Path: event:/SFX/RainInAir
   offset: {x: 0, y: 35, z: 0}
   rainParticleSystem: {fileID: 5112688676392080629}
 --- !u!1 &2717393341830627491
@@ -92,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunkSize: {x: 25, y: 25, z: 25}
+  offset: {x: 0, y: 0, z: 0}
   grassCompute: {fileID: 7200000, guid: 9033b2d2a8cd0754bad7931f53799af5, type: 3}
   grassMaterial: {fileID: 2100000, guid: 0e1e2a5f36fe5704c9cc100894a4cad6, type: 2}
   grassSettings:
@@ -99,11 +108,6 @@ MonoBehaviour:
     MinChunkDot: -0.5
     MaxChunkDot: 0.8
     BladesPerSquareUnit: 16
-    BladeSegments: 3
-    BladeHeight: 0.8
-    BladeWidth: 0.25
-    WidthTaper: 0.3
-    CurveFactor: 1
     MaskLayer:
       serializedVersion: 2
       m_Bits: 4096
@@ -275,6 +279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1524615163817154235}
   - component: {fileID: 443604843208157351}
+  - component: {fileID: 8412447188232792554}
   m_Layer: 0
   m_Name: Wind Effect
   m_TagString: Untagged
@@ -318,6 +323,37 @@ MonoBehaviour:
   maxSpawnRange: {x: 50, y: 50, z: -10}
   spawnRate: 0.5
   spawnRateVariation: 0.5
+--- !u!114 &8412447188232792554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7687874657021747721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1667150019
+      Data2: 1267050143
+      Data3: 48823484
+      Data4: -666347720
+    Path: event:/SFX/AirSuckedIntoPortal
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &4589495917418896261
 PrefabInstance:
   m_ObjectHideFlags: 0

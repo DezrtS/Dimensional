@@ -18,6 +18,7 @@ namespace Managers
         [field: SerializeField] private EventReference enterLevel;
         [field: SerializeField] private EventReference closeDoor;
         [field: SerializeField] private EventReference collectCollectable;
+        [field: SerializeField] private EventReference pressButton;
         
         public EventReference Walk => walk;
         public EventReference WallSlide => wallSlide;
@@ -29,5 +30,6 @@ namespace Managers
         public EventReference EnterLevel => enterLevel;
         public EventReference CloseDoor => closeDoor;
         public EventReference CollectCollectable => collectCollectable;
+        public EventReference PressButton => pressButton;
     }
 }

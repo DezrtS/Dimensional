@@ -10,15 +10,26 @@ namespace Systems.Cameras
         [SerializeField] private int id;
         private CinemachineCamera _cinemachineCamera;
 
+        private void OnEnable()
+        {
+            GameManager.GameStateChanged += GameManagerOnGameStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.GameStateChanged -= GameManagerOnGameStateChanged;
+        }
+
+        private void GameManagerOnGameStateChanged(GameState oldValue, GameState newValue)
+        {
+            if (newValue != GameState.Initializing) return;
+            CameraManager.Instance.TransitionInvoked += CameraManagerOnTransitionInvoked;
+            CameraManager.Instance.CinemachineCameraChanged += CameraManagerOnCinemachineCameraChanged;
+        }
+        
         private void Awake()
         {
             _cinemachineCamera = GetComponent<CinemachineCamera>();
-        }
-
-        private void Start()
-        {
-            CameraManager.Instance.TransitionInvoked += CameraManagerOnTransitionInvoked;
-            CameraManager.Instance.CinemachineCameraChanged += CameraManagerOnCinemachineCameraChanged;
         }
 
         private void CameraManagerOnCinemachineCameraChanged(int cameraId)

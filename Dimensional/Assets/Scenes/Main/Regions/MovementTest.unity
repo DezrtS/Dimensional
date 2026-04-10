@@ -676,6 +676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
+  canRotate: 0
   splineContainer: {fileID: 451431372}
   offset: {x: 0, y: 0, z: 0}
   autoOffset: 1
@@ -705,6 +706,81 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 4
+  constantAngularVelocity: {x: 0, y: 0, z: 0}
+  angularX:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularY:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularZ:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotationDuration: 1
+  rotationOffset: 0
 --- !u!54 &15709537
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1177,6 +1253,10 @@ PrefabInstance:
     - target: {fileID: 4943767583605389322, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: m_Name
       value: Door (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: id
@@ -12103,7 +12183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &189781168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14410,6 +14490,10 @@ PrefabInstance:
     - target: {fileID: 4943767583605389322, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
       propertyPath: m_Name
       value: Portal (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6312266450238997567, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
       propertyPath: id
@@ -26395,6 +26479,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: id
       value: -1
@@ -28886,6 +28974,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: id
       value: -1
@@ -28954,11 +29046,6 @@ Transform:
   - {fileID: 111014779}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &664910676 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 787557238506134038, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
-  m_PrefabInstance: {fileID: 1928030055}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &670131202
 Mesh:
   m_ObjectHideFlags: 0
@@ -31280,7 +31367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &731792895
 Transform:
   m_ObjectHideFlags: 0
@@ -31554,7 +31641,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &747972746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32807,6 +32894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
+  canRotate: 0
   splineContainer: {fileID: 1268894858}
   offset: {x: 0, y: 0, z: 0}
   autoOffset: 1
@@ -32836,6 +32924,81 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 4
+  constantAngularVelocity: {x: 0, y: 0, z: 0}
+  angularX:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularY:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularZ:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotationDuration: 1
+  rotationOffset: 0
 --- !u!65 &766457840
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36211,6 +36374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
+  canRotate: 0
   splineContainer: {fileID: 451431372}
   offset: {x: 0, y: 0, z: 0}
   autoOffset: 1
@@ -36240,6 +36404,81 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 4
+  constantAngularVelocity: {x: 0, y: 0, z: 0}
+  angularX:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularY:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularZ:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotationDuration: 1
+  rotationOffset: 0
 --- !u!54 &890783297
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -36420,6 +36659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
+  canRotate: 0
   splineContainer: {fileID: 159983936}
   offset: {x: 0, y: 0, z: 0}
   autoOffset: 1
@@ -36449,6 +36689,81 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 4
+  constantAngularVelocity: {x: 0, y: 0, z: 0}
+  angularX:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularY:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  angularZ:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotationDuration: 1
+  rotationOffset: 0
 --- !u!33 &897484323
 MeshFilter:
   m_ObjectHideFlags: 10
@@ -43143,6 +43458,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Portal (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6312266450238997567, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
       propertyPath: id
       value: 115c2451-0b0d-4457-956f-9ec13ae5167d
@@ -45079,6 +45398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5430494591229526391, guid: 6e97f10b2ef0b2d49a3929ff28a33121, type: 3}
       propertyPath: id
       value: -1
@@ -46434,6 +46757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: -1, y: 0, z: 0}
+  autoDirection: 0
   damage: 6
 --- !u!1001 &1156895037
 PrefabInstance:
@@ -55831,6 +56155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Portal (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6312266450238997567, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
       propertyPath: id
       value: 0b541076-7c39-4e66-bdd5-b83d3d20d5d2
@@ -56009,6 +56337,91 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1001 &1314480327
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 39845801676372424, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: unlockableShapes.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 39845801676372424, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: 'unlockableShapes.Array.data[1]'
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 39845801676372424, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: 'unlockableShapes.Array.data[2]'
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 39845801676372424, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: 'unlockableShapes.Array.data[3]'
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 39845801676372424, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: 'unlockableShapes.Array.data[4]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 39845801676372424, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: 'unlockableShapes.Array.data[5]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 39845801676372424, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: 'unlockableShapes.Array.data[6]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5796944302669076273, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_Name
+      value: Shape Press
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.899517
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.07441664
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -98.905495
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8847473083703283286, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: abd286823126d374c8e0c98c2bce24ac, type: 3}
 --- !u!43 &1316521996
 Mesh:
   m_ObjectHideFlags: 0
@@ -68120,11 +68533,6 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
---- !u!2083052967 &1494864906 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 5491432006957462810, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
-  m_PrefabInstance: {fileID: 1928030055}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1504170580
 GameObject:
   m_ObjectHideFlags: 0
@@ -70388,6 +70796,10 @@ PrefabInstance:
     - target: {fileID: 4943767583605389322, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
       propertyPath: m_Name
       value: Portal (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6312266450238997567, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
       propertyPath: id
@@ -72968,7 +73380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1661996963
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -73964,6 +74376,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cb0388fb035ccb84185278bb80cc5a6a, type: 3}
       propertyPath: m_Name
       value: Catapult
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cb0388fb035ccb84185278bb80cc5a6a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -83131,6 +83547,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Portal
       objectReference: {fileID: 0}
+    - target: {fileID: 4943767583605389322, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6312266450238997567, guid: 8a2579291ab8687409cadc778ade787d, type: 3}
       propertyPath: id
       value: 5938f5fa-52ab-410e-a7da-aa35078a983f
@@ -85388,6 +85808,28 @@ PlayableDirector:
     value: {fileID: 148875986}
   - key: {fileID: -5375872192826955375, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
     value: {fileID: 1916628832}
+  - key: {fileID: -8693788508838846413, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -4787348851266479725, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 8586603450435179295, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -4475357914736462134, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -1464321777910760350, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -8783735545375718120, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -4192524133978441125, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 389352888731367299, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -6449640013528478566, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 7688264513293930795, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 564338456029814259, guid: d6050029a8a4ed84a9efd5da03649cdc, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References:
     - 1006d684cf16ec2418220bd4571b7843: {fileID: 1673491698}
@@ -85725,11 +86167,11 @@ PrefabInstance:
     - target: {fileID: 3046191874044748012, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: 'visualEffects.Array.data[0]'
       value: 
-      objectReference: {fileID: 664910676}
+      objectReference: {fileID: 0}
     - target: {fileID: 3046191874044748012, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: 'visualEffects.Array.data[1]'
       value: 
-      objectReference: {fileID: 1494864906}
+      objectReference: {fileID: 0}
     - target: {fileID: 3206800854426569070, guid: 8b95cb1a654cd7843a3d0d35204d4fa2, type: 3}
       propertyPath: m_Name
       value: Debug Rigidbody Player
@@ -93077,6 +93519,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Convex NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 8301414188649246487, guid: ea9867bc5dbbd58428ccf1907417e2f7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -93390,6 +93836,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1020062232906132642, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020062232906132642, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -20
+      objectReference: {fileID: 0}
     - target: {fileID: 1748254121144882848, guid: 54c1c0a101ee04b42bd91ea95e8ecb7e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -93910,3 +94364,4 @@ SceneRoots:
   - {fileID: 29125067}
   - {fileID: 1117147911}
   - {fileID: 596122545}
+  - {fileID: 1314480327}
